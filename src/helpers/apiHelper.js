@@ -37,8 +37,7 @@ axios.interceptors.response.use(
  * Sets the default authorization
  * @param {*} token
  */
-const setAuthorization = () => {
-	const token = getAccessToken();
+const setAuthorization = (token) => {
 	axios.defaults.headers.common["Authorization"] = "Bearer " + token;
 };
 
