@@ -1,8 +1,8 @@
 import axios from "axios";
-import { getAccessToken } from "../constants";
+import { devUrl, getAccessToken } from "../constants";
 
 // default
-axios.defaults.baseURL = "";
+axios.defaults.baseURL = devUrl;
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -24,10 +24,10 @@ axios.interceptors.response.use(
 				message = "Invalid credentials";
 				break;
 			case 404:
-				message = "Sorry! the data you are looking for could not be found";
+				message = error.response.data;
 				break;
 			default:
-				message = error.message || error;
+				message = error.response?.data?.message || error;
 		}
 		return Promise.reject(message);
 	}

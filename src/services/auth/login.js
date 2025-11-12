@@ -4,14 +4,12 @@ const api = new APIClient();
 
 async function loginUser(formData) {
 	try {
-		const response = await api.create("/login", formData);
-		if (response.data.token) {
-			sessionStorage.setItem("token", response.data.token);
-			sessionStorage.setItem("user", response.data.data);
-		}
-		return response.data.data;
+		const response = await api.create("/signin", formData);
+
+		return { user: response.data, token: response.token };
 	} catch (error) {
-		const errMsg = error.response?.message?.data;
+		const errMsg = error?.message;
+		// console.log(errMsg);
 		throw new Error(errMsg);
 	}
 }

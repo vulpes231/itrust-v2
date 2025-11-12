@@ -2,4 +2,7 @@ function getAccessToken() {
 	return sessionStorage.getItem("token") || null;
 }
 
-export { getAccessToken };
+const liveUrl = "";
+const devUrl = "http://localhost:5000";
+
+export { getAccessToken, liveUrl, devUrl };

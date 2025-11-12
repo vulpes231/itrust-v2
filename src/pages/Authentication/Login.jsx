@@ -14,10 +14,7 @@ import {
 	Spinner,
 } from "reactstrap";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
-
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
+import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
 
@@ -25,83 +22,85 @@ import withRouter from "../../Components/Common/withRouter";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-// actions
-// import { loginUser, socialLogin, resetLoginFlag } from "../../slices/thunks";
-
 import logoLight from "../../assets/images/logo-light.png";
-import { createSelector } from "reselect";
+
 import { logo } from "../../assets";
+import { loginUser } from "../../services/auth/login";
 
 const Login = (props) => {
-	const dispatch = useDispatch();
-	const selectLayoutState = (state) => state;
-	// const loginpageData = createSelector(selectLayoutState, (state) => ({
-	// 	user: state.Account.user,
-	// 	error: state.Login.error,
-	// 	loading: state.Login.loading,
-	// 	errorMsg: state.Login.errorMsg,
-	// }));
-	// Inside your component
-	// const { user, error, loading, errorMsg } = useSelector(loginpageData);
-
-	const [userLogin, setUserLogin] = useState([]);
+	const [form, setForm] = useState({ email: "", password: "" });
+	const [error, setError] = useState("");
 	const [passwordShow, setPasswordShow] = useState(false);
 
-	// useEffect(() => {
-	// 	if (user && user) {
-	// 		const updatedUserData =
-	// 			process.env.REACT_APP_DEFAULTAUTH === "firebase"
-	// 				? user.multiFactor.user.email
-	// 				: user.user.email;
-	// 		const updatedUserPassword =
-	// 			process.env.REACT_APP_DEFAULTAUTH === "firebase"
-	// 				? ""
-	// 				: user.user.confirm_password;
-	// 		setUserLogin({
-	// 			email: updatedUserData,
-	// 			password: updatedUserPassword,
-	// 		});
-	// 	}
-	// }, [user]);
+	const mutation = useMutation({
+		mutationFn: loginUser,
+		onError: (err) => {
+			console.log(err.message);
+			setError(err.message);
+		},
+		onSuccess: (user) => {
+			// console.log(user);
+		},
+	});
 
 	const validation = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
 
 		initialValues: {
-			email: userLogin.email || "admin@themesbrand.com" || "",
-			password: userLogin.password || "123456" || "",
+			email: form.email || "larou34@svk.jp" || "",
+			password: form.password || "12345" || "",
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().required("Please Enter Your Email"),
 			password: Yup.string().required("Please Enter Your Password"),
 		}),
 		onSubmit: (values) => {
-			// dispatch(loginUser(values, props.router.navigate));
+			console.log(values);
+			mutation.mutate(values);
 		},
 	});
 
-	const signIn = (type) => {
-		// dispatch(socialLogin(type, props.router.navigate));
-	};
+	const signIn = (type) => {};
 
 	//handleTwitterLoginResponse
-	// const twitterResponse = e => {}
+	const twitterResponse = (e) => {};
 
 	//for facebook and google authentication
 	const socialResponse = (type) => {
 		signIn(type);
 	};
 
-	// useEffect(() => {
-	// 	if (errorMsg) {
-	// 		setTimeout(() => {
-	// 			// dispatch(resetLoginFlag());
-	// 		}, 3000);
-	// 	}
-	// }, [dispatch, errorMsg]);
+	useEffect(() => {
+		if (mutation.isSuccess) {
+			// console.log(mutation.data);
+			sessionStorage.setItem("token", mutation.data.token);
+			sessionStorage.setItem("user", JSON.stringify(mutation.data.user));
+			const user = mutation.data.user;
+			if (user && user.accountStatus) {
+				if (user.accountStatus.emailVerified) {
+					// window.location.href = "/2fa";
+				} else if (user.accountStatus.banned) {
+					// window.location.href = "/appeal";
+				} else if (user.accountStatus.twoFaActivated) {
+					// window.location.href = "/appeal";
+				} else {
+					window.location.href = "/dashboard";
+				}
+			}
+		}
+	}, [mutation.isSuccess]);
 
-	document.title = "Basic SignIn | Itrust Investments";
+	useEffect(() => {
+		if (error) {
+			const timeout = setTimeout(() => {
+				setError("");
+			}, 3000);
+			return () => clearTimeout(timeout);
+		}
+	}, [error]);
+
+	document.title = "SignIn | Itrust Investments";
 	return (
 		<React.Fragment>
 			<ParticlesAuth>
@@ -129,12 +128,12 @@ const Login = (props) => {
 										<div className="text-center mt-2">
 											<h5 className="text-primary">Welcome Back !</h5>
 											<p className="text-muted">
-												Sign in to continue to Velzon.
+												Sign in to continue to Itrust.
 											</p>
 										</div>
-										{/* {errorMsg && errorMsg ? (
-											<Alert color="danger"> {errorMsg} </Alert>
-										) : null} */}
+										{error && error ? (
+											<Alert color="danger"> {error} </Alert>
+										) : null}
 										<div className="p-2 mt-4">
 											<Form
 												onSubmit={(e) => {
@@ -232,17 +231,19 @@ const Login = (props) => {
 												</div>
 												<div className="mt-4">
 													<Button
-														// disabled={error ? null : loading ? true : false}
+														disabled={
+															error ? null : mutation.isPending ? true : false
+														}
 														color="success"
 														className="btn btn-success w-100"
 														type="submit"
 													>
-														{/* {loading ? (
+														{mutation.isPending ? (
 															<Spinner size="sm" className="me-2">
 																{" "}
-																Loading...{" "}
+																Logging in...
 															</Spinner>
-														) : null} */}
+														) : null}
 														Sign In
 													</Button>
 												</div>
