@@ -100,7 +100,7 @@ const Login = (props) => {
 		}
 	}, [error]);
 
-	document.title = "SignIn | Itrust Investments";
+	document.title = "Login | Itrust Investments";
 	return (
 		<React.Fragment>
 			<ParticlesAuth>

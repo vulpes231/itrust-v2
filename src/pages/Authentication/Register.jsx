@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Row,
 	Col,
@@ -18,23 +18,24 @@ import { useFormik } from "formik";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-// action
-// import { registerUser, apiError, resetRegisterFlag } from "../../slices/thunks";
-
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
 import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "../../services/auth/register";
+import { logo } from "../../assets";
 
 //import images
 import logoLight from "../../assets/images/logo-light.png";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
-import { createSelector } from "reselect";
 
 const Register = () => {
 	const history = useNavigate();
-	const dispatch = useDispatch();
+
+	const [error, setError] = useState("");
+
+	const mutation = useMutation({
+		mutationFn: registerUser,
+		onError: (err) => setError(err.message),
+	});
 
 	const validation = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
@@ -60,32 +61,17 @@ const Register = () => {
 		}),
 		onSubmit: (values) => {
 			// dispatch(registerUser(values));
+			console.log("form: ", values);
 		},
 	});
 
-	const selectLayoutState = (state) => state.Account;
-	const registerdatatype = createSelector(selectLayoutState, (account) => ({
-		success: account.success,
-		error: account.error,
-	}));
-	// Inside your component
-	const { error, success } = useSelector(registerdatatype);
-
 	useEffect(() => {
-		// dispatch(apiError(""));
-	}, [dispatch]);
-
-	useEffect(() => {
-		if (success) {
+		if (mutation.isSuccess) {
 			setTimeout(() => history("/login"), 3000);
 		}
+	}, [mutation.isSuccess]);
 
-		setTimeout(() => {
-			dispatch(resetRegisterFlag());
-		}, 3000);
-	}, [dispatch, success, error, history]);
-
-	document.title = "Basic SignUp | Velzon - React Admin & Dashboard Template";
+	document.title = "Register | Itrust Investments";
 
 	return (
 		<React.Fragment>
@@ -97,11 +83,11 @@ const Register = () => {
 								<div className="text-center mt-sm-5 mb-4 text-white-50">
 									<div>
 										<Link to="/" className="d-inline-block auth-logo">
-											<img src={logoLight} alt="" height="20" />
+											<img src={logo} alt="" height="20" />
 										</Link>
 									</div>
 									<p className="mt-3 fs-15 fw-medium">
-										Premium Admin & Dashboard Template
+										Smart Wealth Management
 									</p>
 								</div>
 							</Col>
@@ -114,7 +100,7 @@ const Register = () => {
 										<div className="text-center mt-2">
 											<h5 className="text-primary">Create New Account</h5>
 											<p className="text-muted">
-												Get your free velzon account now
+												Get your free itrust account now
 											</p>
 										</div>
 										<div className="p-2 mt-4">
@@ -127,7 +113,7 @@ const Register = () => {
 												className="needs-validation"
 												action="#"
 											>
-												{success && success ? (
+												{mutation.isSuccess && mutation.isSuccess ? (
 													<>
 														{toast("Your Redirect To Login Page...", {
 															position: "top-right",
@@ -145,10 +131,7 @@ const Register = () => {
 
 												{error && error ? (
 													<Alert color="danger">
-														<div>
-															Email has been Register Before, Please Use Another
-															Email Address...{" "}
-														</div>
+														<div>{error}</div>
 													</Alert>
 												) : null}
 
@@ -263,7 +246,7 @@ const Register = () => {
 
 												<div className="mb-4">
 													<p className="mb-0 fs-12 text-muted fst-italic">
-														By registering you agree to the Velzon
+														By registering you agree to the Itrust
 														<Link
 															to="#"
 															className="text-primary text-decoration-underline fst-normal fw-medium"

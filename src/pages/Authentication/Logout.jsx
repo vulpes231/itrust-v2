@@ -1,32 +1,48 @@
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
-import { Navigate } from "react-router-dom";
-
-// import { logoutUser } from "../../slices/thunks";
-
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
+import React, { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import withRouter from "../../Components/Common/withRouter";
-import { createSelector } from "reselect";
+import { logoutUser } from "../../services/auth/logout";
+import { Toast, ToastBody, ToastHeader } from "reactstrap";
 
 const Logout = (props) => {
-	const dispatch = useDispatch();
-
-	const logoutData = createSelector(
-		(state) => state.Login,
-		(isUserLogout) => isUserLogout.isUserLogout
-	);
-	const isUserLogout = useSelector(logoutData);
+	const [error, setError] = useState("");
+	const mutation = useMutation({
+		mutationFn: logoutUser,
+		onError: (err) => setError(err.message),
+	});
 
 	useEffect(() => {
-		// dispatch(logoutUser());
-	}, [dispatch]);
+		if (mutation.isSuccess) {
+			const timeout = setTimeout(() => {
+				mutation.reset();
+				sessionStorage.clear();
+				window.location.href = "/login";
+			}, 3000);
+		}
+	}, [mutation.isSuccess]);
 
-	if (isUserLogout) {
-		return <Navigate to="/login" />;
+	useEffect(() => {
+		mutation.mutate();
+	}, []);
+
+	if (error) {
+		return (
+			<Toast isOpen={true}>
+				<ToastHeader
+					icon="danger"
+					toggle={() => {
+						setError("");
+						mutation.reset();
+					}}
+				>
+					Error
+				</ToastHeader>
+				<ToastBody>{error}</ToastBody>
+			</Toast>
+		);
 	}
-
+	document.title = "Logout | Itrust Investments";
 	return <></>;
 };
 

@@ -22,54 +22,29 @@ import { useFormik } from "formik";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import avatar from "../../assets/images/users/avatar-1.jpg";
+avatar1;
 // actions
 // import { editProfile, resetProfileFlag } from "../../slices/thunks";
 import { createSelector } from "reselect";
+import { avatar1 } from "../../assets";
+import { getLoggedinUser } from "../../helpers/apiHelper";
+import { useMutation } from "@tanstack/react-query";
 
 const UserProfile = () => {
-	const dispatch = useDispatch();
+	const user = getLoggedinUser();
+
+	const mutation = useMutation();
 
 	const [email, setemail] = useState("admin@gmail.com");
 	const [idx, setidx] = useState("1");
-
-	const [userName, setUserName] = useState("Admin");
-
-	const selectLayoutState = (state) => state.Profile;
-	const userprofileData = createSelector(selectLayoutState, (state) => ({
-		user: state.user,
-		success: state.success,
-		error: state.error,
-	}));
-	// Inside your component
-	const { user, success, error } = useSelector(userprofileData);
-
-	useEffect(() => {
-		if (sessionStorage.getItem("authUser")) {
-			const obj = JSON.parse(sessionStorage.getItem("authUser"));
-
-			if (!isEmpty(user)) {
-				obj.data.first_name = user.first_name;
-				sessionStorage.removeItem("authUser");
-				sessionStorage.setItem("authUser", JSON.stringify(obj));
-			}
-
-			setUserName(obj.data.first_name);
-			setemail(obj.data.email);
-			setidx(obj.data._id || "1");
-
-			setTimeout(() => {
-				// dispatch(resetProfileFlag());
-			}, 3000);
-		}
-	}, [dispatch, user]);
+	const [error, setError] = useState("");
 
 	const validation = useFormik({
 		// enableReinitialize : use this flag when initial values needs to be changed
 		enableReinitialize: true,
 
 		initialValues: {
-			first_name: userName || "Admin",
+			first_name: user?.credentials?.username || "Admin",
 			idx: idx || "",
 		},
 		validationSchema: Yup.object({
@@ -80,7 +55,13 @@ const UserProfile = () => {
 		},
 	});
 
-	document.title = "Profile | Velzon - React Admin & Dashboard Template";
+	useEffect(() => {
+		if (user) {
+			console.log(user);
+		}
+	}, [user]);
+
+	document.title = "Profile | Itrust Investments";
 	return (
 		<React.Fragment>
 			<div className="page-content">
@@ -88,8 +69,10 @@ const UserProfile = () => {
 					<Row>
 						<Col lg="12">
 							{error && error ? <Alert color="danger">{error}</Alert> : null}
-							{success ? (
-								<Alert color="success">Username Updated To {userName}</Alert>
+							{mutation.isSuccess ? (
+								<Alert color="success">
+									Username Updated To {user?.credentials?.username}
+								</Alert>
 							) : null}
 
 							<Card>
@@ -97,16 +80,21 @@ const UserProfile = () => {
 									<div className="d-flex">
 										<div className="mx-3">
 											<img
-												src={avatar}
+												src={avatar1}
 												alt=""
 												className="avatar-md rounded-circle img-thumbnail"
 											/>
 										</div>
 										<div className="flex-grow-1 align-self-center">
 											<div className="text-muted">
-												<h5>{userName || "Admin"}</h5>
-												<p className="mb-1">Email Id : {email}</p>
-												<p className="mb-0">Id No : #{idx}</p>
+												<h5>{user?.credentials?.username || "Admin"}</h5>
+												<p className="mb-1">
+													Email Id : {user?.credentials?.email}
+												</p>
+												<p className="mb-0">
+													Account Status :
+													{user?.identityVerification?.kycStatus}
+												</p>
 											</div>
 										</div>
 									</div>
