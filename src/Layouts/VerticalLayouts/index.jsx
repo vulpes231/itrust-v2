@@ -7,7 +7,7 @@ import { Collapse } from "reactstrap";
 import navdata from "../LayoutMenuData";
 //i18n
 import { withTranslation } from "react-i18next";
-import withRouter from "../../Components/Common/withRouter";
+import withRouter from "../../components/Common/withRouter";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 

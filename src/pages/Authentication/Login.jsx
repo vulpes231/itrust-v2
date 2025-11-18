@@ -16,7 +16,7 @@ import {
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import withRouter from "../../Components/Common/withRouter";
+import withRouter from "../../components/Common/withRouter";
 
 // Formik validation
 import * as Yup from "yup";

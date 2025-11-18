@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 //redux
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import withRouter from "../Components/Common/withRouter";
+import withRouter from "../components/Common/withRouter";
 
 const NonAuthLayout = ({ children }) => {
 	const nonauthData = createSelector(
