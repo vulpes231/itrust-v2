@@ -2,26 +2,23 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 //Dashboard
-import DashboardEcommerce from "../pages/DashboardEcommerce";
+import DashboardCrypto from "../pages/DashboardCrypto";
 
-import Basic404 from "../pages/AuthenticationInner/Errors/Basic404";
-import Cover404 from "../pages/AuthenticationInner/Errors/Cover404";
-import Alt404 from "../pages/AuthenticationInner/Errors/Alt404";
-import Error500 from "../pages/AuthenticationInner/Errors/Error500";
+// import Basic404 from "../pages/AuthenticationInner/Errors/Basic404";
 
 //login
 import Login from "../pages/Authentication/Login";
 import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
-import Offlinepage from "../pages/AuthenticationInner/Errors/Offlinepage";
+// import Offlinepage from "../pages/AuthenticationInner/Errors/Offlinepage";
 
 // User Profile
 import UserProfile from "../pages/Authentication/UserProfile";
 
 const authProtectedRoutes = [
-	{ path: "/dashboard", component: <DashboardEcommerce /> },
-	{ path: "/index", component: <DashboardEcommerce /> },
+	{ path: "/dashboard", component: <DashboardCrypto /> },
+	{ path: "/index", component: <DashboardCrypto /> },
 
 	//User Profile
 	{ path: "/profile", component: <UserProfile /> },
@@ -43,11 +40,9 @@ const publicRoutes = [
 	{ path: "/forgot-password", component: <ForgetPasswordPage /> },
 	{ path: "/register", component: <Register /> },
 
-	{ path: "/auth-404-basic", component: <Basic404 /> },
-	{ path: "/auth-404-cover", component: <Cover404 /> },
-	{ path: "/auth-404-alt", component: <Alt404 /> },
-	{ path: "/auth-500", component: <Error500 /> },
-	{ path: "/auth-offline", component: <Offlinepage /> },
+	// { path: "/auth-404-basic", component: <Basic404 /> },
+
+	// { path: "/auth-offline", component: <Offlinepage /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

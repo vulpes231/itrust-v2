@@ -234,8 +234,8 @@ const Login = (props) => {
 														disabled={
 															error ? null : mutation.isPending ? true : false
 														}
-														color="success"
-														className="btn btn-success w-100"
+														color="primary"
+														className="btn btn-primary w-100"
 														type="submit"
 													>
 														{mutation.isPending ? (
