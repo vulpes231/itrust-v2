@@ -10,6 +10,7 @@ import {
   Logout,
   Contact,
   Personal,
+  VerifyEmail,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -35,6 +36,7 @@ const publicRoutes = [
   { path: "/register", component: <Register /> },
   { path: "/contact", component: <Contact /> },
   { path: "/personal", component: <Personal /> },
+  { path: "/verifyemail", component: <VerifyEmail /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

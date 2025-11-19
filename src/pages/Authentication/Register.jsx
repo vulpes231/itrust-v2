@@ -15,12 +15,7 @@ import {
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { registerUser } from "../../services/auth/register";
 import { logo } from "../../assets";
 
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
@@ -28,46 +23,35 @@ import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 const Register = () => {
   const history = useNavigate();
 
-  const [error, setError] = useState("");
-
-  const mutation = useMutation({
-    mutationFn: registerUser,
-    onError: (err) => setError(err.message),
-  });
+  const savedCreds = JSON.parse(sessionStorage.getItem("credentials"));
 
   const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      email: "",
-      first_name: "",
-      password: "",
-      confirm_password: "",
+      email: savedCreds?.email || "",
+      firstname: savedCreds?.firstname || "",
+      lastname: savedCreds?.lastname || "",
+      username: savedCreds?.username || "",
+      password: savedCreds?.password || "",
+      confirm_password: savedCreds?.confirm_password || "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
-      first_name: Yup.string().required("Please Enter Your Username"),
+      username: Yup.string().required("Please Enter Your Username"),
+      firstname: Yup.string().required("Please Enter Your FirstName"),
+      lastname: Yup.string().required("Please Enter Your LastName"),
       password: Yup.string().required("Please Enter Your Password"),
-      confirm_password: Yup.string().when("password", {
-        is: (val) => (val && val.length > 0 ? true : false),
-        then: Yup.string().oneOf(
-          [Yup.ref("password")],
-          "Confirm Password Isn't Match"
-        ),
-      }),
+      confirm_password: Yup.string()
+        .required("Please Confirm Your Password")
+        .oneOf([Yup.ref("password")], "Confirm Password Doesn't Match"),
     }),
     onSubmit: (values) => {
-      // dispatch(registerUser(values));
-      console.log("form: ", values);
+      // console.log("form: ", values);
+      sessionStorage.setItem("credentials", JSON.stringify(values));
+      history("/contact");
     },
   });
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      setTimeout(() => history("/login"), 3000);
-    }
-  }, [mutation.isSuccess]);
 
   document.title = "Register | Itrust Investments";
 
@@ -111,28 +95,60 @@ const Register = () => {
                         className="needs-validation"
                         action="#"
                       >
-                        {mutation.isSuccess && mutation.isSuccess ? (
-                          <>
-                            {toast("Your Redirect To Login Page...", {
-                              position: "top-right",
-                              hideProgressBar: false,
-                              progress: undefined,
-                              toastId: "",
-                            })}
-                            <ToastContainer autoClose={2000} limit={1} />
-                            <Alert color="success">
-                              Register User Successfully and Your Redirect To
-                              Login Page...
-                            </Alert>
-                          </>
-                        ) : null}
-
-                        {error && error ? (
-                          <Alert color="danger">
-                            <div>{error}</div>
-                          </Alert>
-                        ) : null}
-
+                        <div className="mb-3">
+                          <Label htmlFor="firstname" className="form-label">
+                            First Name <span className="text-danger">*</span>
+                          </Label>
+                          <Input
+                            id="firstname"
+                            name="firstname"
+                            className="form-control"
+                            placeholder="Enter First Name"
+                            type="text"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.firstname || ""}
+                            invalid={
+                              validation.touched.firstname &&
+                              validation.errors.firstname
+                                ? true
+                                : false
+                            }
+                          />
+                          {validation.touched.firstname &&
+                          validation.errors.firstname ? (
+                            <FormFeedback type="invalid">
+                              <div>{validation.errors.firstname}</div>
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="lastname" className="form-label">
+                            Last Name <span className="text-danger">*</span>
+                          </Label>
+                          <Input
+                            id="lastname"
+                            name="lastname"
+                            className="form-control"
+                            placeholder="Enter Last Name"
+                            type="text"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.lastname || ""}
+                            invalid={
+                              validation.touched.lastname &&
+                              validation.errors.lastname
+                                ? true
+                                : false
+                            }
+                          />
+                          {validation.touched.lastname &&
+                          validation.errors.lastname ? (
+                            <FormFeedback type="invalid">
+                              <div>{validation.errors.lastname}</div>
+                            </FormFeedback>
+                          ) : null}
+                        </div>
                         <div className="mb-3">
                           <Label htmlFor="useremail" className="form-label">
                             Email <span className="text-danger">*</span>
@@ -141,7 +157,7 @@ const Register = () => {
                             id="email"
                             name="email"
                             className="form-control"
-                            placeholder="Enter email address"
+                            placeholder="Enter Email Address"
                             type="email"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
@@ -165,23 +181,23 @@ const Register = () => {
                             Username <span className="text-danger">*</span>
                           </Label>
                           <Input
-                            name="first_name"
+                            name="username"
                             type="text"
-                            placeholder="Enter username"
+                            placeholder="Enter Username"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={validation.values.first_name || ""}
+                            value={validation.values.username || ""}
                             invalid={
-                              validation.touched.first_name &&
-                              validation.errors.first_name
+                              validation.touched.username &&
+                              validation.errors.username
                                 ? true
                                 : false
                             }
                           />
-                          {validation.touched.first_name &&
-                          validation.errors.first_name ? (
+                          {validation.touched.username &&
+                          validation.errors.username ? (
                             <FormFeedback type="invalid">
-                              <div>{validation.errors.first_name}</div>
+                              <div>{validation.errors.username}</div>
                             </FormFeedback>
                           ) : null}
                         </div>
@@ -259,7 +275,7 @@ const Register = () => {
                             className="btn btn-primary w-100"
                             type="submit"
                           >
-                            Sign Up
+                            Next
                           </button>
                         </div>
 

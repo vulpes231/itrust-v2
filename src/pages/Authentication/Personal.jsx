@@ -10,6 +10,8 @@ import {
   Label,
   Form,
   FormFeedback,
+  Button,
+  Spinner,
 } from "reactstrap";
 
 // Formik Validation
@@ -31,11 +33,6 @@ const Personal = () => {
 
   const [error, setError] = useState("");
 
-  const mutation = useMutation({
-    mutationFn: registerUser,
-    onError: (err) => setError(err.message),
-  });
-
   const { data: currencies, isLoading: getCurrenciesLoading } = useQuery({
     queryFn: getCurrencies,
     queryKey: ["currencies"],
@@ -43,6 +40,11 @@ const Personal = () => {
   const { data: nations, isLoading: getNationsLoading } = useQuery({
     queryFn: getNations,
     queryKey: ["nations"],
+  });
+
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onError: (err) => setError(err.message),
   });
 
   const validation = useFormik({
@@ -63,15 +65,24 @@ const Personal = () => {
       currencyId: Yup.string().required("Please Select Your Currency"),
     }),
     onSubmit: (values) => {
-      console.log("form: ", values);
+      const userForm = JSON.parse(sessionStorage.getItem("credentials"));
+      const contactForm = JSON.parse(sessionStorage.getItem("contact"));
+
+      const formData = { ...userForm, ...contactForm, ...values };
+      // console.log("form: ", formData);
+      mutation.mutate(formData);
     },
   });
 
-  // useEffect(() => {
-  //   if (mutation.isSuccess) {
-  //     setTimeout(() => history("/login"), 3000);
-  //   }
-  // }, [mutation.isSuccess]);
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      console.log(mutation);
+      sessionStorage.setItem("token", mutation.token);
+      sessionStorage.removeItem("credentials");
+      sessionStorage.removeItem("contact");
+      setTimeout(() => history("/verifyemail"), 3000);
+    }
+  }, [mutation.isSuccess]);
 
   document.title = "Personal Information | Itrust Investments";
 
@@ -365,11 +376,28 @@ const Personal = () => {
 
                         <div className="mt-4">
                           <button
+                            className="btn btn-dark w-100 mb-1"
+                            type="button"
+                            onClick={() => history("/contact")}
+                          >
+                            Prev
+                          </button>
+                          <Button
+                            disabled={
+                              error ? null : mutation.isPending ? true : false
+                            }
+                            color="primary"
                             className="btn btn-primary w-100"
                             type="submit"
                           >
+                            {mutation.isPending ? (
+                              <Spinner size="sm" className="me-2">
+                                {" "}
+                                Registering user...
+                              </Spinner>
+                            ) : null}
                             Sign Up
-                          </button>
+                          </Button>
                         </div>
 
                         <div className="mt-4 text-center">

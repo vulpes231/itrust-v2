@@ -5,6 +5,7 @@ import Logout from "./Authentication/Logout";
 import Personal from "./Authentication/Personal";
 import Register from "./Authentication/Register";
 import UserProfile from "./Authentication/UserProfile";
+import VerifyEmail from "./Authentication/VerifyEmail";
 import DashboardCrypto from "./DashboardCrypto";
 
 export {
@@ -16,4 +17,5 @@ export {
   ForgetPassword,
   DashboardCrypto,
   Logout,
+  VerifyEmail,
 };

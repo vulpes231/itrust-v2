@@ -23,7 +23,8 @@ import { getCountries, getStatesByCountry } from "../../services/location/geo";
 
 const Contact = () => {
   const history = useNavigate();
-  const [countryId, setCountryId] = useState("");
+
+  const savedContact = JSON.parse(sessionStorage.getItem("contact"));
 
   const { data: countries, isLoading: getCountriesLoading } = useQuery({
     queryFn: getCountries,
@@ -34,12 +35,12 @@ const Contact = () => {
     enableReinitialize: true,
 
     initialValues: {
-      countryId: "",
-      phone: "",
-      street: "",
-      stateId: "",
-      city: "",
-      zipcode: "",
+      countryId: savedContact?.countryId || "",
+      phone: savedContact?.phone || "",
+      street: savedContact?.street || "",
+      stateId: savedContact?.stateId || "",
+      city: savedContact?.city || "",
+      zipCode: savedContact?.zipCode || "",
     },
     validationSchema: Yup.object({
       country: Yup.string().required("Please Select Your Country"),
@@ -47,10 +48,10 @@ const Contact = () => {
       street: Yup.string().required("Please Enter Your Street"),
       stateId: Yup.string().required("Please Select Your State"),
       city: Yup.string().required("Please Select Your City"),
-      zipcode: Yup.string().required("Please Enter Your Zipcode"),
+      zipCode: Yup.string().required("Please Enter Your Zipcode"),
     }),
     onSubmit: (values) => {
-      console.log("form: ", values);
+      console.log("sunmit");
     },
   });
 
@@ -59,17 +60,6 @@ const Contact = () => {
     queryKey: ["states", validation.values.countryId],
     enabled: !!validation.values.countryId,
   });
-
-  const onCountryChange = (id) => {
-    setCountryId(id);
-    // dispatch(getPortfolioChartsData(pType));
-  };
-
-  // useEffect(() => {
-  //   if (mutation.isSuccess) {
-  //     setTimeout(() => history("/login"), 3000);
-  //   }
-  // }, [mutation.isSuccess]);
 
   document.title = "Contact Information | Itrust Investments";
 
@@ -106,7 +96,12 @@ const Contact = () => {
                         onSubmit={(e) => {
                           e.preventDefault();
                           validation.handleSubmit();
-                          console.log(validation.values);
+                          // console.log(validation.values);
+                          sessionStorage.setItem(
+                            "contact",
+                            JSON.stringify(validation.values)
+                          );
+                          history("/personal");
                           return false;
                         }}
                         className="needs-validation"
@@ -283,27 +278,27 @@ const Contact = () => {
                         </div>
                         <div className="mb-2">
                           <Label htmlFor="zipcode" className="form-label">
-                            Zipcode
+                            Zip
                             <span className="text-danger">*</span>
                           </Label>
                           <Input
-                            name="zipcode"
+                            name="zipCode"
                             type="text"
                             placeholder="Enter zipcode"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={validation.values.zipcode || ""}
+                            value={validation.values.zipCode || ""}
                             invalid={
-                              validation.touched.zipcode &&
-                              validation.errors.zipcode
+                              validation.touched.zipCode &&
+                              validation.errors.zipCode
                                 ? true
                                 : false
                             }
                           />
-                          {validation.touched.zipcode &&
-                          validation.errors.zipcode ? (
+                          {validation.touched.zipCode &&
+                          validation.errors.zipCode ? (
                             <FormFeedback type="invalid">
-                              <div>{validation.errors.zipcode}</div>
+                              <div>{validation.errors.zipCode}</div>
                             </FormFeedback>
                           ) : null}
                         </div>
@@ -322,10 +317,21 @@ const Contact = () => {
 
                         <div className="mt-4">
                           <button
+                            className="btn btn-dark w-100 mb-1"
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              history("/register");
+                            }}
+                          >
+                            Prev
+                          </button>
+                          <button
                             className="btn btn-primary w-100"
                             type="submit"
                           >
-                            Sign Up
+                            Next
                           </button>
                         </div>
 
