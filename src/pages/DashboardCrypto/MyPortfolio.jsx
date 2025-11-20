@@ -10,6 +10,8 @@ import { PortfolioCharts } from "./DashboardCryptoCharts";
 import { btc, dash, eth, ltc } from "../../assets";
 import { useQuery } from "@tanstack/react-query";
 import { getUserWallets } from "../../services/user/wallet";
+import { capitalize } from "lodash";
+import { formatCurrency } from "../../constants";
 
 const MyPortfolio = () => {
   const [selectedWallet, setSelectedWallet] = useState("");
@@ -21,12 +23,7 @@ const MyPortfolio = () => {
 
   const onWalletChange = (wallet) => {
     setSelectedWallet(wallet);
-    // dispatch(getPortfolioChartsData(pType));
   };
-
-  // useEffect(() => {
-  // 	dispatch(getPortfolioChartsData("btc"));
-  // }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -93,16 +90,30 @@ const MyPortfolio = () => {
                           </span>
                         </div>
                         <div className="flex-grow-1 ms-2">
-                          <h6 className="mb-1">{wallet.name}</h6>
+                          <h6 className="mb-1">{capitalize(wallet.name)}</h6>
                           <p className="fs-13 mb-0 text-muted">
-                            <i className="mdi mdi-circle fs-10 align-middle text-primary me-1"></i>
-                            BTC
+                            <i
+                              className={`mdi mdi-circle fs-10 align-middle  ${
+                                wallet.name === "cash"
+                                  ? "text-warning"
+                                  : wallet.name === "brokerage"
+                                  ? "text-primary"
+                                  : "text-success"
+                              }  me-1`}
+                            ></i>
+                            {wallet.name === "cash"
+                              ? "cash"
+                              : wallet.name === "brokerage"
+                              ? "brokerage"
+                              : "auto"}
                           </p>
                         </div>
                         <div className="flex-shrink-0 text-end">
-                          <h6 className="mb-1">{wallet.totalBalance}</h6>
+                          <h6 className="mb-1">
+                            {formatCurrency(wallet.totalBalance)}
+                          </h6>
                           <p className="text-success fs-13 mb-0">
-                            ${wallet.availableBalance}
+                            {formatCurrency(wallet.availableBalance)}
                           </p>
                         </div>
                       </div>

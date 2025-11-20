@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row, Button } from "reactstrap";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 import { logo } from "../../assets";
+import { getAccessToken } from "../../constants";
+
+import { useMutation } from "@tanstack/react-query";
 
 const VerifyEmail = () => {
-  document.title = "Email Verification | Itrust Investments";
+  const token = getAccessToken();
+
+  const mutation = useMutation({});
 
   const getInputElement = (index) => {
     return document.getElementById("digit" + index + "-input");
@@ -22,6 +27,14 @@ const VerifyEmail = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      console.log(token, "access");
+    }
+  }, [token]);
+
+  document.title = "Email Verification | Itrust Investments";
 
   return (
     <React.Fragment>
