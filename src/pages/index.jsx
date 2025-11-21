@@ -7,6 +7,8 @@ import Register from "./Authentication/Register";
 import UserProfile from "./Authentication/UserProfile";
 import VerifyEmail from "./Authentication/VerifyEmail";
 import DashboardCrypto from "./DashboardCrypto";
+import Market from "./Market";
+import Savings from "./Savings";
 
 export {
   Contact,
@@ -18,4 +20,6 @@ export {
   DashboardCrypto,
   Logout,
   VerifyEmail,
+  Market,
+  Savings,
 };

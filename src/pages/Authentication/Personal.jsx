@@ -80,7 +80,7 @@ const Personal = () => {
       sessionStorage.setItem("token", mutation.token);
       sessionStorage.removeItem("credentials");
       sessionStorage.removeItem("contact");
-      setTimeout(() => history("/verifyemail"), 3000);
+      setTimeout(() => history("/dashboard"), 3000);
     }
   }, [mutation.isSuccess]);
 

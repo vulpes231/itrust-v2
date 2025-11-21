@@ -7,7 +7,7 @@ import {
 } from "reactstrap";
 
 import { PortfolioCharts } from "./DashboardCryptoCharts";
-import { btc, dash, eth, ltc } from "../../assets";
+import { auto, broke, btc, cash, dash, eth, ltc } from "../../assets";
 import { useQuery } from "@tanstack/react-query";
 import { getUserWallets } from "../../services/user/wallet";
 import { capitalize } from "lodash";
@@ -50,7 +50,7 @@ const MyPortfolio = () => {
                         <DropdownItem
                           key={wallet._id}
                           onClick={() => {
-                            onWalletChange(wallet);
+                            onWalletChange(wallet.name);
                           }}
                           className={
                             selectedWallet === wallet._id ? "active" : ""
@@ -86,7 +86,17 @@ const MyPortfolio = () => {
                       <div className="d-flex">
                         <div className="flex-shrink-0 avatar-xs">
                           <span className="avatar-title bg-light p-1 rounded-circle">
-                            <img src={btc} className="img-fluid" alt="" />
+                            <img
+                              src={
+                                wallet.name === "cash"
+                                  ? cash
+                                  : wallet.name === "brokerage"
+                                  ? broke
+                                  : auto
+                              }
+                              className="img-fluid"
+                              alt=""
+                            />
                           </span>
                         </div>
                         <div className="flex-grow-1 ms-2">

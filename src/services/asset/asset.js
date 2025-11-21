@@ -2,11 +2,16 @@ import { APIClient } from "../../helpers/apiHelper";
 
 const api = new APIClient();
 
-async function getAssets() {
+async function getAssets(queryData) {
+  const { limit, page, sortBy, type } = queryData;
   try {
-    const response = await api.get("/asset");
+    const response = await api.get(
+      `/asset/?limit=${limit}&sortBy=${sortBy}&page=${page}&type=${type}`
+    );
+
     return response.data;
   } catch (error) {
+    console.log("Frontend - Error:", error);
     const errMsg = error.response?.data?.message;
     throw new Error(errMsg);
   }

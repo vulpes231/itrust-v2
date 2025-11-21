@@ -5,12 +5,6 @@ import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 import { formatCurrency } from "../../constants";
 
 const PortfolioCharts = ({ dataColors, series }) => {
-  useEffect(() => {
-    if (series) {
-      console.log(series);
-    }
-  }, [series]);
-
   const getChartData = () => {
     if (!series || !series.length) return [];
 
@@ -220,12 +214,36 @@ const WidgetsCharts = ({ seriesData, chartsColor }) => {
     },
     colors: areachartlitecoinColors,
   };
+
+  const convertToSeriesData = (assetsArray) => {
+    if (!Array.isArray(assetsArray)) {
+      assetsArray = [assetsArray];
+    }
+
+    return assetsArray.map((asset) => {
+      const priceData = asset.priceData;
+
+      const mainData = [
+        priceData?.open,
+        priceData?.dayLow,
+        priceData?.current,
+        priceData?.dayHigh,
+        priceData?.previousClose,
+      ].filter((value) => typeof value === "number" && !isNaN(value));
+
+      return {
+        name: asset.name || asset.symbol || "Asset",
+        data: mainData,
+      };
+    });
+  };
+
   return (
     <React.Fragment>
       <ReactApexChart
         dir="ltr"
         options={options}
-        series={[...seriesData]}
+        series={convertToSeriesData(seriesData)}
         type="area"
         height="46"
         className="apex-charts"

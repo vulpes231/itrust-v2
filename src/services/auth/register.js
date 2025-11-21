@@ -5,11 +5,10 @@ const api = new APIClient();
 async function registerUser(formData) {
   try {
     const response = await api.create("/signup", formData);
-    console.log(response);
-    return response.data;
+    console.log(response.data.token);
+    return { data: response.data.data, token: response.data.token };
   } catch (error) {
     const errMsg = error?.message;
-    // console.log(errMsg);
     throw new Error(errMsg);
   }
 }

@@ -12,38 +12,38 @@ import Widgets from "./Widgets";
 import Widgets1 from "./Widgets1";
 
 const DashboardCrypto = () => {
-	document.title = "Dashboard | Itrust Investments";
+  document.title = "Dashboard | Itrust Investments";
 
-	return (
-		<React.Fragment>
-			<div className="page-content">
-				<Container fluid>
-					<BreadCrumb title="Crypto" pageTitle="Dashboards" />
-					<Row>
-						<MyPortfolio />
-						<Col className="col-xxl-9 order-xxl-0 order-first">
-							<Row>
-								<Widgets />
-							</Row>
-							<MarketGraph />
-						</Col>
-					</Row>
-					<Row>
-						<Widgets1 />
-					</Row>
-					<Row>
-						<MyCurrencies />
-						<Trading />
-					</Row>
-					<Row>
-						<RecentActivity />
-						<TopPerformers />
-						<NewsFeed />
-					</Row>
-				</Container>
-			</div>
-		</React.Fragment>
-	);
+  return (
+    <React.Fragment>
+      <div className="page-content">
+        <Container fluid>
+          <BreadCrumb title="Dashboard" pageTitle="Home" />
+          <Row>
+            <MyPortfolio />
+            <Col className="col-xxl-9 order-xxl-0 order-first">
+              <Row>
+                <Widgets />
+              </Row>
+              <MarketGraph />
+            </Col>
+          </Row>
+          <Row>
+            <Widgets1 />
+          </Row>
+          <Row>
+            <MyCurrencies />
+            <Trading />
+          </Row>
+          <Row>
+            <RecentActivity />
+            <TopPerformers />
+            <NewsFeed />
+          </Row>
+        </Container>
+      </div>
+    </React.Fragment>
+  );
 };
 
 export default DashboardCrypto;
