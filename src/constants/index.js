@@ -16,4 +16,23 @@ function formatCurrency(amount, currency = "USD", locale = "en-US") {
   }).format(amount);
 }
 
-export { getAccessToken, liveUrl, devUrl, capitalizeWords, formatCurrency };
+const formatMarketCap = (marketCap) => {
+  if (marketCap >= 1e12) {
+    return (marketCap / 1e12).toFixed(1) + " trillion";
+  } else if (marketCap >= 1e9) {
+    return (marketCap / 1e9).toFixed(1) + " billion";
+  } else if (marketCap >= 1e6) {
+    return (marketCap / 1e6).toFixed(1) + " million";
+  } else {
+    return marketCap.toFixed(1);
+  }
+};
+
+export {
+  getAccessToken,
+  liveUrl,
+  devUrl,
+  capitalizeWords,
+  formatCurrency,
+  formatMarketCap,
+};

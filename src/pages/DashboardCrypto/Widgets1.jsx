@@ -14,9 +14,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
-// import required modules
 import { Autoplay, Mousewheel } from "swiper/modules";
-import { cryptoSlider } from "../../common/data";
 import { WidgetsCharts } from "./DashboardCryptoCharts";
 import { useQuery } from "@tanstack/react-query";
 import { getAssets } from "../../services/asset/asset";
@@ -25,20 +23,15 @@ import { formatCurrency } from "../../constants";
 const Widgets1 = () => {
   const queryData = {
     limit: 10,
-    sortBy: "priceData.volume",
+    sortBy: "marketCap",
     type: "crypto",
   };
+
   const { data: assets } = useQuery({
-    queryKey: ["assets"],
+    queryKey: ["popular"],
     queryFn: () => getAssets(queryData),
   });
 
-  useEffect(() => {
-    if (assets) {
-      console.log(assets.length);
-      console.log(assets);
-    }
-  }, [assets]);
   return (
     <React.Fragment>
       <Col lg={12}>

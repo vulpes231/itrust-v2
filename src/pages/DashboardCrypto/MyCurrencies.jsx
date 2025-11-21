@@ -15,10 +15,21 @@ import { getAssets } from "../../services/asset/asset";
 import { formatCurrency } from "../../constants";
 
 const MyCurrencies = () => {
+  const queryData = {
+    sortBy: "priceData.volume",
+    type: "crypto",
+  };
+
   const { data: assets, isLoading: getAssetsLoading } = useQuery({
-    queryFn: getAssets,
+    queryFn: () => getAssets(queryData),
     queryKey: ["assets"],
   });
+
+  // useEffect(() => {
+  //   if (assets) {
+  //     console.log(assets);
+  //   }
+  // }, [assets]);
 
   return (
     <React.Fragment>

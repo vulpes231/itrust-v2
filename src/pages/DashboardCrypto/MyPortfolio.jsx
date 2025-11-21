@@ -14,13 +14,13 @@ import { capitalize } from "lodash";
 import { formatCurrency } from "../../constants";
 
 const MyPortfolio = () => {
-  const [selectedWallet, setSelectedWallet] = useState("");
-
   const { data: wallets, loading: isWalletLoading } = useQuery({
     queryFn: getUserWallets,
     queryKey: ["wallet"],
   });
-
+  const [selectedWallet, setSelectedWallet] = useState(
+    wallets && wallets.length > 0 ? wallets[0].name : "Default"
+  );
   const onWalletChange = (wallet) => {
     setSelectedWallet(wallet);
   };

@@ -22,6 +22,8 @@ axios.interceptors.response.use(
         break;
       case 401:
         message = "Invalid credentials";
+        sessionStorage.clear();
+        window.location.href = "/login";
         break;
       case 403:
         message = error.response.data;
