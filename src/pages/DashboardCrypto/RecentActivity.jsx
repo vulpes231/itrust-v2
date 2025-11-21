@@ -26,12 +26,7 @@ const RecentActivity = () => {
     queryFn: () => getTransactions(),
   });
 
-  useEffect(() => {
-    if (trnxs) {
-      console.log(trnxs);
-      console.log(trnxs.length);
-    }
-  }, [trnxs]);
+  const filteredtrnxs = trnxs && trnxs.length && trnxs.slice(0, 6);
   return (
     <React.Fragment>
       <Col xxl={4} lg={5}>
@@ -64,9 +59,9 @@ const RecentActivity = () => {
           <CardBody className="p-0">
             <SimpleBar style={{ height: "390px" }}>
               <div className="p-3">
-                {trnxs &&
-                  trnxs.length > 0 &&
-                  trnxs.map((trx) => {
+                {filteredtrnxs &&
+                  filteredtrnxs.length > 0 &&
+                  filteredtrnxs.map((trx) => {
                     return (
                       <div
                         key={trx._id}

@@ -19,6 +19,12 @@ const MarketGraph = () => {
   });
 
   // useEffect(() => {
+  //   if (walletAnalytics) {
+  //     console.log(walletAnalytics);
+  //   }
+  // }, [walletAnalytics]);
+
+  // useEffect(() => {
   //     setchartData(marketData);
   // }, [marketData]);
 
@@ -120,7 +126,7 @@ const MarketGraph = () => {
                           <h6 className="mb-2 text-muted">Profit</h6>
                           <h5 className="text-success mb-0">
                             {" "}
-                            +{formatCurrency(walletAnalytics?.totalProfit)}
+                            +{formatCurrency(walletAnalytics?.totalProfit || 0)}
                           </h5>
                         </div>
                         <div className="pe-3">

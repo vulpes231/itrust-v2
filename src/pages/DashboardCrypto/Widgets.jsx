@@ -60,69 +60,75 @@ const Widgets = () => {
 
   const cryptoWidgets = convertToCryptoWidgets(walletAnalytics);
 
-  // Show loader while data is loading
+  // useEffect(() => {
+  //   if (cryptoWidgets) {
+  //     console.log(cryptoWidgets);
+  //   }
+  // }, [cryptoWidgets]);
+
   if (getAnalyticsLoading) {
     return <Loader />;
   }
 
-  // Don't render anything if no data is available
   if (!cryptoWidgets || cryptoWidgets.length === 0) {
     return null;
   }
 
   return (
     <React.Fragment>
-      {cryptoWidgets.map((item, key) => (
-        <Col lg={4} md={6} key={key}>
-          <Card>
-            <CardBody>
-              <div className="d-flex align-items-center">
-                <div className="avatar-sm flex-shrink-0">
-                  <span className="avatar-title bg-light text-primary rounded-circle fs-3">
-                    <i className={getIcon(item.id)}></i>
-                  </span>
+      {cryptoWidgets &&
+        cryptoWidgets.length > 0 &&
+        cryptoWidgets.map((item, key) => (
+          <Col lg={4} md={6} key={key}>
+            <Card>
+              <CardBody>
+                <div className="d-flex align-items-center">
+                  <div className="avatar-sm flex-shrink-0">
+                    <span className="avatar-title bg-light text-primary rounded-circle fs-3">
+                      <i className={getIcon(item.id)}></i>
+                    </span>
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <p className="text-uppercase fw-bold fs-13 text-muted mb-1">
+                      {item.label}
+                    </p>
+                    <h4 className=" mb-0">
+                      <CountUp
+                        start={0}
+                        end={item.counter}
+                        decimals={item.decimal}
+                        separator={item.separator}
+                        prefix={item.prefix}
+                        duration={3}
+                      />
+                    </h4>
+                  </div>
+                  <div className="flex-shrink-0 align-self-end">
+                    <span
+                      className={`badge ${
+                        item.percentage >= 0 ? "bg-success" : "bg-danger"
+                      }-subtle ${
+                        item.percentage >= 0 ? "text-success" : "text-danger"
+                      }`}
+                    >
+                      <i
+                        className={
+                          "align-middle me-1 " +
+                          `${
+                            item.percentage >= 0
+                              ? "ri-arrow-up-s-fill"
+                              : "ri-arrow-down-s-fill"
+                          }`
+                        }
+                      ></i>
+                      {item.percentage} %<span></span>
+                    </span>
+                  </div>
                 </div>
-                <div className="flex-grow-1 ms-3">
-                  <p className="text-uppercase fw-bold fs-13 text-muted mb-1">
-                    {item.label}
-                  </p>
-                  <h4 className=" mb-0">
-                    <CountUp
-                      start={0}
-                      end={item.counter}
-                      decimals={item.decimal}
-                      separator={item.separator}
-                      prefix={item.prefix}
-                      duration={3}
-                    />
-                  </h4>
-                </div>
-                <div className="flex-shrink-0 align-self-end">
-                  <span
-                    className={`badge ${
-                      item.percentage >= 0 ? "bg-success" : "bg-danger"
-                    }-subtle ${
-                      item.percentage >= 0 ? "text-success" : "text-danger"
-                    }`}
-                  >
-                    <i
-                      className={
-                        "align-middle me-1 " +
-                        `${
-                          item.percentage >= 0
-                            ? "ri-arrow-up-s-fill"
-                            : "ri-arrow-down-s-fill"
-                        }`
-                      }
-                    ></i>
-                    {item.percentage?.toFixed(2)} %<span></span>
-                  </span>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-      ))}
+              </CardBody>
+            </Card>
+          </Col>
+        ))}
     </React.Fragment>
   );
 };
