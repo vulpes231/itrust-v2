@@ -76,15 +76,15 @@ const Personal = () => {
 
   useEffect(() => {
     if (mutation.isSuccess) {
-      console.log(mutation);
-      sessionStorage.setItem("token", mutation.token);
+      sessionStorage.setItem("token", mutation.data.token);
+      sessionStorage.setItem("user", JSON.stringify(mutation.data.user));
       sessionStorage.removeItem("credentials");
       sessionStorage.removeItem("contact");
       setTimeout(() => history("/dashboard"), 3000);
     }
   }, [mutation.isSuccess]);
 
-  document.title = "Personal Information | Itrust Investments";
+  document.title = "Register | Personal Information";
 
   return (
     <React.Fragment>

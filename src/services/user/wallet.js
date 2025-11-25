@@ -5,6 +5,7 @@ const api = new APIClient();
 async function getUserWallets() {
   try {
     const response = await api.get("/wallet");
+
     return response.data;
   } catch (error) {
     const errMsg = error.response?.data?.message;

@@ -11,22 +11,56 @@ import {
   TabPane,
 } from "reactstrap";
 import classnames from "classnames";
-import { getWalletAnalytics } from "../../services/user/wallet";
+import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
+import { searchAsset } from "../../services/asset/asset";
 import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "../../constants";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Trading = () => {
-  const { data: walletAnalytics } = useQuery({
-    queryFn: getWalletAnalytics,
-    queryKey: ["walletAnalytics"],
+  const [activeTab, setActiveTab] = useState("buy");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [form, setForm] = useState({
+    assetId: "",
+    walletId: "",
+    amount: "",
+    type: "",
   });
 
-  const [activeTab, setActiveTab] = useState("1");
+  const validation = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      assetId: form.assetId || "",
+      walletId: form.walletId || "",
+      amount: form.amount || "",
+      type: form.type || "",
+    },
+    validationSchema: Yup.object({}),
+  });
+
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
   };
+
+  const { data: walletAnalytics } = useQuery({
+    queryFn: getWalletAnalytics,
+    queryKey: ["walletAnalytics"],
+  });
+
+  const { data: wallets } = useQuery({
+    queryFn: getUserWallets,
+    queryKey: ["wallets"],
+  });
+
+  const { data: assetResults } = useQuery({
+    queryFn: searchAsset,
+    queryKey: ["wallets"],
+  });
+
   return (
     <React.Fragment>
       <Col xl={4}>
@@ -41,9 +75,9 @@ const Trading = () => {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "1" })}
+                    className={classnames({ active: activeTab === "buy" })}
                     onClick={() => {
-                      toggleTab("1");
+                      toggleTab("buy");
                     }}
                   >
                     Buy
@@ -52,9 +86,9 @@ const Trading = () => {
                 <NavItem>
                   <NavLink
                     href="#"
-                    className={classnames({ active: activeTab === "2" })}
+                    className={classnames({ active: activeTab === "sell" })}
                     onClick={() => {
-                      toggleTab("2");
+                      toggleTab("sell");
                     }}
                   >
                     Sell
@@ -65,13 +99,13 @@ const Trading = () => {
           </CardHeader>
           <div className="card-body p-0">
             <TabContent activeTab={activeTab} className="p-0">
-              <TabPane tabId="1">
+              <TabPane tabId="buy">
                 <div className="p-3 bg-warning-subtle">
                   <div className="float-end ms-2">
                     <h6 className="text-warning mb-0">
                       USD Balance :{" "}
                       <span className="text-body">
-                        {formatCurrency(walletAnalytics?.totalBalance)}
+                        {formatCurrency(walletAnalytics?.totalBalance || 0)}
                       </span>
                     </h6>
                   </div>
@@ -81,22 +115,28 @@ const Trading = () => {
                   <Row>
                     <Col xs-={6}>
                       <div className="mb-3">
-                        <label>Currency :</label>
-                        <select className="form-select">
-                          <option>BTC</option>
-                          <option>ETH</option>
-                          <option>LTC</option>
-                        </select>
+                        <label>Asset :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Search Asset"
+                        />
                       </div>
                     </Col>
                     <Col xs-={6}>
                       <div className="mb-3">
                         <label>Payment Method :</label>
                         <select className="form-select">
-                          <option>Wallet Balance</option>
-                          <option>Credit / Debit Card</option>
-                          <option>PayPal</option>
-                          <option>Payoneer</option>
+                          <option>Select Wallet</option>
+                          {wallets &&
+                            wallets.length > 0 &&
+                            wallets.map((wallet) => {
+                              return (
+                                <option key={wallet._id} value={wallet._id}>
+                                  {wallet.name}
+                                </option>
+                              );
+                            })}
                         </select>
                       </div>
                     </Col>
@@ -170,7 +210,7 @@ const Trading = () => {
                 </div>
               </TabPane>
 
-              <TabPane tabId="2">
+              <TabPane tabId="sell">
                 <div className="p-3 bg-warning-subtle">
                   <div className="float-end ms-2">
                     <h6 className="text-warning mb-0">

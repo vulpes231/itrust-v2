@@ -75,7 +75,7 @@ const MyCurrencies = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {(assets || []).map((asset, key) => (
+                  {((assets && assets.slice(0, 7)) || []).map((asset, key) => (
                     <tr key={key}>
                       <td>
                         <div className="d-flex align-items-center">

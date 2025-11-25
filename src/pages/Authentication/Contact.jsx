@@ -61,7 +61,7 @@ const Contact = () => {
     enabled: !!validation.values.countryId,
   });
 
-  document.title = "Contact Information | Itrust Investments";
+  document.title = "Register | Contact Information";
 
   return (
     <React.Fragment>

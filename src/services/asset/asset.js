@@ -40,4 +40,4 @@ async function searchAsset(query) {
   }
 }
 
-export { getAssetInfo, getAssets };
+export { getAssetInfo, getAssets, searchAsset };
