@@ -9,7 +9,7 @@ async function getAssets(queryData) {
       `/asset/?limit=${limit}&sortBy=${sortBy}&page=${page}&type=${type}`
     );
 
-    return response.data;
+    return { data: response.data, pagination: response.pagination };
   } catch (error) {
     console.log("Frontend - Error:", error);
     const errMsg = error.response?.data?.message;
