@@ -1,35 +1,25 @@
 import React from "react";
-import { Col, Container, Row } from "reactstrap";
-import BreadCrumb from "../../components/Common/BreadCrumb";
-import Watchlist from "./Watchlist";
-import PortfolioStatistics from "./PortfolioStatistics";
-import MarketStatus from "./MarketStatus";
+import { Container, Row } from "reactstrap";
+import AllTransactions from "./AllTransactions";
 import Widgets from "./Widgets";
-import RecentTransaction from "./RecentTransaction";
+import BreadCrumb from "../../components/Common/BreadCrumb";
 
-const MyWallet = () => {
-  document.title = "My Wallet | Itrust Investments";
+const Wallet = () => {
+  document.title = "Wallet | Itrust Investments";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb title="My Wallet" pageTitle="Wallet" />
+          <BreadCrumb title="Wallet" pageTitle="History" />
           <Row>
-            <Col xxl={9}>
-              <PortfolioStatistics dataColors='["--vz-info"]' />
-              <Watchlist />
-              <MarketStatus />
-            </Col>
-            <Col xxl={3}>
-              <Widgets />
-              <RecentTransaction />
-            </Col>
+            <Widgets />
           </Row>
+          <AllTransactions />
         </Container>
       </div>
     </React.Fragment>
   );
 };
 
-export default MyWallet;
+export default Wallet;

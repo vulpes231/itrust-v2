@@ -7,6 +7,7 @@ const Navdata = () => {
   const [isDashboard, setIsDashboard] = useState(false);
   const [isMarket, setIsMarket] = useState(false);
   const [isSavings, setIsSavings] = useState(false);
+  const [isPortFolio, setIsPortfolio] = useState(false);
   const [isWallet, setIsWallet] = useState(false);
 
   //Calender
@@ -39,6 +40,12 @@ const Navdata = () => {
     }
     if (iscurrentState !== "Savings") {
       setIsSavings(false);
+    }
+    if (iscurrentState !== "Portfolio") {
+      setIsPortfolio(false);
+    }
+    if (iscurrentState !== "Wallet") {
+      setIsWallet(false);
     }
 
     if (iscurrentState === "Widgets") {
@@ -74,9 +81,30 @@ const Navdata = () => {
       //   ],
     },
     {
+      id: "portfolio",
+      label: "Portfolio",
+      icon: "ri-briefcase-line",
+      link: "/portfolio",
+      stateVariables: isPortFolio,
+      click: function (e) {
+        e.preventDefault();
+        setIsPortfolio(!isPortFolio);
+        setIscurrentState("Portfolio");
+        updateIconSidebar(e);
+      },
+      //   subItems: [
+      //     {
+      //       id: "crypto",
+      //       label: "Crypto",
+      //       link: "#",
+      //       parentId: "dashboard",
+      //     },
+      //   ],
+    },
+    {
       id: "wallet",
       label: "Wallet",
-      icon: "ri-dashboard-2-line",
+      icon: "ri-wallet-2-line",
       link: "/wallet",
       stateVariables: isWallet,
       click: function (e) {
@@ -97,7 +125,7 @@ const Navdata = () => {
     {
       id: "market",
       label: "Market",
-      icon: "ri-apps-2-line",
+      icon: "ri-funds-line",
       link: "/trade",
       click: function (e) {
         e.preventDefault();
@@ -138,7 +166,7 @@ const Navdata = () => {
     {
       id: "savings",
       label: "Savings",
-      icon: "ri-briefcase-2-line",
+      icon: "ri-hand-coin-line",
       link: "/savings",
       click: function (e) {
         e.preventDefault();

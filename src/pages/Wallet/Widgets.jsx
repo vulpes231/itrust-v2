@@ -1,87 +1,252 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Card, CardBody } from "reactstrap";
-import { getWalletAnalytics } from "../../services/user/wallet";
-import { formatCurrency } from "../../constants";
+import CountUp from "react-countup";
+import { Link } from "react-router-dom";
+import { Card, CardBody, Col } from "reactstrap";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Autoplay, Mousewheel } from "swiper/modules";
 
 const Widgets = () => {
-  const { data: walleyAnalytics, isLoading: analyticsLoading } = useQuery({
-    queryFn: getWalletAnalytics,
-    queryKey: ["walletAnalytics"],
-  });
-
-  //   console.log(walleyAnalytics);
   return (
     <React.Fragment>
-      <Card>
-        <CardBody className="bg-warning-subtle">
-          <div className="d-flex">
-            <div className="flex-grow-1">
-              <h5 className="fs-14 mb-3">My Portfolio</h5>
-              <h2>
-                {formatCurrency(walleyAnalytics?.totalBalance || 0)}
-                {/* $61,91,967<small className="text-muted fs-15">.29</small> */}
-              </h2>
-              <p className="text-muted mb-0">
-                {/* $25,10,974{" "} */}
-                <small className="badge bg-success-subtle text-success">
-                  <i className="ri-arrow-right-up-line fs-13 align-bottom"></i>
-                  {walleyAnalytics?.dailyProfitPercent || 0}%
-                </small>
-              </p>
+      <Col xxl={3} md={6}>
+        <Card className="card-animate">
+          <CardBody>
+            <div className="d-flex mb-3">
+              <div className="flex-grow-1">
+                <lord-icon
+                  src="https://cdn.lordicon.com/fhtaantg.json"
+                  trigger="loop"
+                  colors="primary:#405189,secondary:#0ab39c"
+                  style={{ width: "55px", height: "55px" }}
+                ></lord-icon>
+              </div>
+              <div className="flex-shrink-0">
+                <Link
+                  to="#"
+                  className="badge bg-warning-subtle text-warning badge-border me-1"
+                >
+                  BTC
+                </Link>
+                <Link
+                  to="#"
+                  className="badge bg-info-subtle text-info badge-border me-1"
+                >
+                  ETH
+                </Link>
+                <Link
+                  to="#"
+                  className="badge bg-primary-subtle text-primary badge-border me-1"
+                >
+                  USDT
+                </Link>
+              </div>
             </div>
-            <div className="flex-shrink-0">
-              <i className="mdi mdi-wallet-outline text-primary h1"></i>
+            <h3 className="mb-2">
+              <span className="counter-value" data-target="74858">
+                <CountUp
+                  start={0}
+                  end={74858}
+                  separator=","
+                  prefix="$"
+                  duration={3}
+                />
+              </span>
+              <small className="text-muted fs-14">.68k</small>
+            </h3>
+            <h6 className="text-muted mb-0">Available Balance (USD)</h6>
+          </CardBody>
+        </Card>
+      </Col>
+      <Col xxl={3} md={6}>
+        <Card className="card-animate">
+          <CardBody>
+            <div className="d-flex mb-3">
+              <div className="flex-grow-1">
+                <lord-icon
+                  src="https://cdn.lordicon.com/qhviklyi.json"
+                  trigger="loop"
+                  colors="primary:#405189,secondary:#0ab39c"
+                  style={{ width: "55px", height: "55px" }}
+                ></lord-icon>
+              </div>
+              <div className="flex-shrink-0">
+                <Link
+                  to="#"
+                  className="badge bg-warning-subtle text-warning badge-border me-1"
+                >
+                  BTC
+                </Link>
+                <Link
+                  to="#"
+                  className="badge bg-info-subtle text-info badge-border me-1"
+                >
+                  ETH
+                </Link>
+                <Link
+                  to="#"
+                  className="badge bg-primary-subtle text-primary badge-border me-1"
+                >
+                  USDT
+                </Link>
+              </div>
             </div>
-          </div>
-        </CardBody>
-      </Card>
-      <Card>
-        <CardBody>
-          <div className="d-flex">
-            <div className="flex-grow-1">
-              <h5 className="fs-14 mb-3">Today's Profit</h5>
-              <h2>
-                {formatCurrency(walleyAnalytics?.dailyProfit || 0)}
-                {/* $2,74,365<small className="text-muted fs-15">.84</small> */}
-              </h2>
-              <p className="text-muted mb-0">
-                {/* $9,10,564{" "} */}
-                <small className="badge bg-success-subtle text-success">
-                  <i className="ri-arrow-right-up-line fs-13 align-bottom"></i>
-                  {walleyAnalytics?.dailyProfitPercent || 0}%
-                </small>
-              </p>
+            <h3 className="mb-2">
+              <span className="counter-value" data-target="74361">
+                <CountUp
+                  start={0}
+                  end={74361}
+                  separator=","
+                  prefix="$"
+                  duration={3}
+                />
+              </span>
+              <small className="text-muted fs-14">.34k</small>
+            </h3>
+            <h6 className="text-muted mb-0">Deposit (Total)</h6>
+          </CardBody>
+        </Card>
+      </Col>
+      <Col xxl={3} md={6}>
+        <Card className="card-animate">
+          <CardBody>
+            <div className="d-flex mb-3">
+              <div className="flex-grow-1">
+                <lord-icon
+                  src="https://cdn.lordicon.com/yeallgsa.json"
+                  trigger="loop"
+                  colors="primary:#405189,secondary:#0ab39c"
+                  style={{ width: "55px", height: "55px" }}
+                ></lord-icon>
+              </div>
+              <div className="flex-shrink-0">
+                <Link
+                  to="#"
+                  className="badge bg-warning-subtle text-warning badge-border me-1"
+                >
+                  BTC
+                </Link>
+                <Link
+                  to="#"
+                  className="badge bg-info-subtle text-info badge-border me-1"
+                >
+                  ETH
+                </Link>
+                <Link
+                  to="#"
+                  className="badge bg-primary-subtle text-primary badge-border me-1"
+                >
+                  USDT
+                </Link>
+              </div>
             </div>
-            <div className="flex-shrink-0">
-              <i className="ri-hand-coin-line text-primary h1"></i>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
-      <Card>
-        <CardBody>
-          <div className="d-flex">
-            <div className="flex-grow-1">
-              <h5 className="fs-14 mb-3">Overall Profit</h5>
-              <h2>
-                {formatCurrency(walleyAnalytics?.totalProfit)}
-                {/* $32,67,120<small className="text-muted fs-15">.42</small> */}
-              </h2>
-              <p className="text-muted mb-0">
-                {/* $18,22,730{" "} */}
-                <small className="badge bg-success-subtle text-success">
-                  <i className="ri-arrow-right-up-line fs-13 align-bottom"></i>
-                  {walleyAnalytics?.totalProfitPercent || 0}%
-                </small>
-              </p>
-            </div>
-            <div className="flex-shrink-0">
-              <i className="ri-line-chart-line text-primary h1"></i>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+            <h3 className="mb-2">
+              <span className="counter-value" data-target="97685">
+                <CountUp
+                  start={0}
+                  end={97685}
+                  separator=","
+                  prefix="$"
+                  duration={3}
+                />
+              </span>
+              <small className="text-muted fs-14">.22k</small>
+            </h3>
+            <h6 className="text-muted mb-0">Withdraw (Total)</h6>
+          </CardBody>
+        </Card>
+      </Col>
+      <Col xxl={3} md={6}>
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={24}
+          mousewheel={true}
+          loop={true}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay, Mousewheel]}
+          className="default-swiper rounded"
+        >
+          <SwiperSlide>
+            <Card className="card-animate overflow-hidden">
+              <div className="card-body bg-warning-subtle">
+                <div className="d-flex mb-3">
+                  <div className="flex-grow-1">
+                    <lord-icon
+                      src="https://cdn.lordicon.com/vaeagfzc.json"
+                      trigger="loop"
+                      colors="primary:#405189,secondary:#0ab39c"
+                      style={{ width: "55px", height: "55px" }}
+                    ></lord-icon>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <Link to="#" className="fw-medium">
+                      Bitcoin (BTC)
+                    </Link>
+                  </div>
+                </div>
+                <h3 className="mb-2">
+                  $245<small className="text-muted fs-14">.65k</small>
+                </h3>
+                <h6 className="text-muted mb-0">All Transactions (Total)</h6>
+              </div>
+            </Card>
+          </SwiperSlide>
+          <SwiperSlide>
+            <Card className="card-animate overflow-hidden">
+              <div className="card-body bg-warning-subtle">
+                <div className="d-flex mb-3">
+                  <div className="flex-grow-1">
+                    <lord-icon
+                      src="https://cdn.lordicon.com/vaeagfzc.json"
+                      trigger="loop"
+                      colors="primary:#405189,secondary:#0ab39c"
+                      style={{ width: "55px", height: "55px" }}
+                    ></lord-icon>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <Link to="#" className="fw-medium">
+                      Ethereum (ETH)
+                    </Link>
+                  </div>
+                </div>
+                <h3 className="mb-2">
+                  $24<small className="text-muted fs-14">.74k</small>
+                </h3>
+                <h6 className="text-muted mb-0">All Transactions (Total)</h6>
+              </div>
+            </Card>
+          </SwiperSlide>
+          <SwiperSlide>
+            <Card className="card-animate overflow-hidden">
+              <div className="card-body bg-warning-subtle">
+                <div className="d-flex mb-3">
+                  <div className="flex-grow-1">
+                    <lord-icon
+                      src="https://cdn.lordicon.com/vaeagfzc.json"
+                      trigger="loop"
+                      colors="primary:#405189,secondary:#0ab39c"
+                      style={{ width: "55px", height: "55px" }}
+                    ></lord-icon>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <Link to="#" className="fw-medium">
+                      Tether (USDT)
+                    </Link>
+                  </div>
+                </div>
+                <h3 className="mb-2">
+                  $124<small className="text-muted fs-14">.36k</small>
+                </h3>
+                <h6 className="text-muted mb-0">All Transactions (Total)</h6>
+              </div>
+            </Card>
+          </SwiperSlide>
+        </Swiper>
+      </Col>
     </React.Fragment>
   );
 };

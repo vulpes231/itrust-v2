@@ -13,7 +13,8 @@ import {
   VerifyEmail,
   Market,
   Savings,
-  MyWallet,
+  Portfolio,
+  Wallet,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -31,7 +32,8 @@ const authProtectedRoutes = [
   { path: "*", component: <Navigate to="/dashboard" /> },
   { path: "/trade", component: <Market /> },
   { path: "/savings", component: <Savings /> },
-  { path: "/wallet", component: <MyWallet /> },
+  { path: "/portfolio", component: <Portfolio /> },
+  { path: "/wallet", component: <Wallet /> },
 ];
 
 const publicRoutes = [
