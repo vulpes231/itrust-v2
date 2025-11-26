@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
-import { market } from "../../common/data";
 import TableContainer from "../../components/Common/TableContainer";
 import { Price, Pairs, HighPrice, LowPrice, MarketVolume } from "./MarketCol";
 import {
@@ -10,7 +9,6 @@ import {
   getAccessToken,
 } from "../../constants";
 import { useQuery } from "@tanstack/react-query";
-import { getUserTrades } from "../../services/user/trade";
 import { getAssets } from "../../services/asset/asset";
 
 const Market = () => {

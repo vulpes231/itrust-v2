@@ -60,66 +60,68 @@ const Widgets1 = () => {
           modules={[Autoplay, Mousewheel]}
           className="cryptoSlider"
         >
-          {(assets || []).map((item, key) => (
-            <SwiperSlide key={key}>
-              <Card>
-                <CardBody>
-                  <div className="float-end">
-                    <UncontrolledDropdown direction="start">
-                      <DropdownToggle
-                        className="text-reset"
-                        tag="a"
-                        role="button"
-                      >
-                        <span className="text-muted fs-18">
-                          <i className="mdi mdi-dots-horizontal"></i>
-                        </span>
-                      </DropdownToggle>
-                      <DropdownMenu className="dropdown-menu dropdown-menu-end">
-                        <DropdownItem href="#"> Details </DropdownItem>
-                        <DropdownItem href="#"> Cancel </DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={item.imageUrl}
-                      className="bg-light rounded-circle p-1 avatar-xs img-fluid"
-                      alt=""
-                    />
-                    <h6 className="ms-2 mb-0 fs-15">{item.name}</h6>
-                  </div>
-                  <Row className="align-items-end g-0">
-                    <Col xs={6}>
-                      <h5 className="mb-1 mt-4">
-                        {formatCurrency(item.priceData.current)}
-                      </h5>
-                      <p
-                        className={`fw-semibold mb-0 ${
-                          item.priceData.changePercent > 0
-                            ? "text-success"
-                            : "text-danger"
-                        }`}
-                      >
-                        {item.priceData.changePercent.toFixed(2)}%
-                        <span className="text-muted ms-2 fs-13 text-uppercase">
-                          {item.symbol}
-                        </span>
-                      </p>
-                    </Col>
-                    <Col xs={6}>
-                      <div className="apex-charts crypto-widget" dir="ltr">
-                        <WidgetsCharts
-                          seriesData={assets}
-                          // chartsColor={item.chartsColor}
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </SwiperSlide>
-          ))}
+          {assets &&
+            assets.data &&
+            assets.data.map((item, key) => (
+              <SwiperSlide key={key}>
+                <Card>
+                  <CardBody>
+                    <div className="float-end">
+                      <UncontrolledDropdown direction="start">
+                        <DropdownToggle
+                          className="text-reset"
+                          tag="a"
+                          role="button"
+                        >
+                          <span className="text-muted fs-18">
+                            <i className="mdi mdi-dots-horizontal"></i>
+                          </span>
+                        </DropdownToggle>
+                        <DropdownMenu className="dropdown-menu dropdown-menu-end">
+                          <DropdownItem href="#"> Details </DropdownItem>
+                          <DropdownItem href="#"> Cancel </DropdownItem>
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </div>
+                    <div className="d-flex align-items-center">
+                      <img
+                        src={item.imageUrl}
+                        className="bg-light rounded-circle p-1 avatar-xs img-fluid"
+                        alt=""
+                      />
+                      <h6 className="ms-2 mb-0 fs-15">{item.name}</h6>
+                    </div>
+                    <Row className="align-items-end g-0">
+                      <Col xs={6}>
+                        <h5 className="mb-1 mt-4">
+                          {formatCurrency(item.priceData.current)}
+                        </h5>
+                        <p
+                          className={`fw-semibold mb-0 ${
+                            item.priceData.changePercent > 0
+                              ? "text-success"
+                              : "text-danger"
+                          }`}
+                        >
+                          {item.priceData.changePercent.toFixed(2)}%
+                          <span className="text-muted ms-2 fs-13 text-uppercase">
+                            {item.symbol}
+                          </span>
+                        </p>
+                      </Col>
+                      <Col xs={6}>
+                        <div className="apex-charts crypto-widget" dir="ltr">
+                          <WidgetsCharts
+                            seriesData={assets}
+                            // chartsColor={item.chartsColor}
+                          />
+                        </div>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </SwiperSlide>
+            ))}
         </Swiper>
       </Col>
     </React.Fragment>

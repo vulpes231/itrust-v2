@@ -17,6 +17,9 @@ import {
   Row,
   TabContent,
   TabPane,
+  Toast,
+  ToastHeader,
+  ToastBody,
 } from "reactstrap";
 import classnames from "classnames";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -26,6 +29,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { searchAsset } from "../../services/asset/asset";
 import { formatCurrency } from "../../constants";
+import ErrorToast from "../../components/Common/ErrorToast";
+import SuccessToast from "../../components/Common/SuccessToast";
 
 const BuySellCoin = () => {
   const [activeTab, setActiveTab] = useState("buy");
@@ -64,7 +69,7 @@ const BuySellCoin = () => {
 
     onSubmit: (values) => {
       console.log(values);
-      mutation.mutate(values);
+      buyMutation.mutate(values);
     },
   });
 
@@ -558,6 +563,25 @@ const BuySellCoin = () => {
           </CardBody>
         </Card>
       </Col>
+      {error && (
+        <ErrorToast
+          errorMsg={error}
+          isOpen={true}
+          onClose={() => {
+            buyMutation.reset();
+            setError("");
+          }}
+        />
+      )}
+      {buyMutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Position Opened."}
+          isOpen={true}
+          onClose={() => {
+            buyMutation.reset();
+          }}
+        />
+      )}
     </React.Fragment>
   );
 };

@@ -156,18 +156,15 @@ const TableContainer = ({
     customPageSize && setPageSize(customPageSize);
   }, [customPageSize, setPageSize]);
 
-  // Handle server-side pagination
   const handleServerPageChange = (pageIndex) => {
     if (onPageChange && pagination) {
-      onPageChange(pageIndex + 1); // Convert to 1-based for server
+      onPageChange(pageIndex + 1);
     } else {
-      // Client-side pagination
       setPageIndex(pageIndex);
     }
   };
 
   const handleServerPrevious = () => {
-    console.log("prev clivked", pagination);
     if (onPageChange && pagination) {
       onPageChange(pagination.currentPage - 1);
     } else {
@@ -195,14 +192,13 @@ const TableContainer = ({
 
   // Get current page info
   const currentPageIndex = pagination
-    ? pagination.currentPage - 1 // Convert to 0-based for display
+    ? pagination.currentPage - 1
     : getState().pagination.pageIndex;
 
   const totalItems = pagination?.totalItems || data.length;
   const pageSize = pagination?.pageSize || getState().pagination.pageSize;
   const totalPages = pagination?.totalPages || getPageOptions().length;
 
-  // Generate page options for server-side pagination
   const pageOptions = pagination
     ? Array.from({ length: pagination.totalPages }, (_, i) => i)
     : getPageOptions();

@@ -10,10 +10,6 @@ const Navdata = () => {
   const [isPortFolio, setIsPortfolio] = useState(false);
   const [isWallet, setIsWallet] = useState(false);
 
-  //Calender
-  const [isTrade, setIsTrade] = useState(false);
-  const [isHistory, setIsHistory] = useState(false);
-
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
 
   function updateIconSidebar(e) {
@@ -71,14 +67,6 @@ const Navdata = () => {
         setIscurrentState("Dashboard");
         updateIconSidebar(e);
       },
-      //   subItems: [
-      //     {
-      //       id: "crypto",
-      //       label: "Crypto",
-      //       link: "#",
-      //       parentId: "dashboard",
-      //     },
-      //   ],
     },
     {
       id: "portfolio",
@@ -92,14 +80,6 @@ const Navdata = () => {
         setIscurrentState("Portfolio");
         updateIconSidebar(e);
       },
-      //   subItems: [
-      //     {
-      //       id: "crypto",
-      //       label: "Crypto",
-      //       link: "#",
-      //       parentId: "dashboard",
-      //     },
-      //   ],
     },
     {
       id: "wallet",
@@ -113,14 +93,6 @@ const Navdata = () => {
         setIscurrentState("Wallet");
         updateIconSidebar(e);
       },
-      //   subItems: [
-      //     {
-      //       id: "crypto",
-      //       label: "Crypto",
-      //       link: "#",
-      //       parentId: "dashboard",
-      //     },
-      //   ],
     },
     {
       id: "market",
@@ -134,34 +106,6 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       stateVariables: isMarket,
-      //   subItems: [
-      //     {
-      //       id: "trade",
-      //       label: "Trade",
-      //       link: "/trade",
-      //       parentId: "market",
-      //       isChildItem: true,
-      //       click: function (e) {
-      //         e.preventDefault();
-      //         setIsTrade(!isTrade);
-      //       },
-      //       stateVariables: isTrade,
-      //       //   childItems: [
-      //       //     {
-      //       //       id: 1,
-      //       //       label: "Main Calender",
-      //       //       link: "#",
-      //       //       parentId: "market",
-      //       //     },
-      //       //     {
-      //       //       id: 2,
-      //       //       label: "Month Grid",
-      //       //       link: "#",
-      //       //       parentId: "market",
-      //       //     },
-      //       //   ],
-      //     },
-      //   ],
     },
     {
       id: "savings",
@@ -175,34 +119,6 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       stateVariables: isSavings,
-      //   subItems: [
-      //     {
-      //       id: "history",
-      //       label: "History",
-      //       link: "#",
-      //       parentId: "savings",
-      //       isChildItem: true,
-      //       click: function (e) {
-      //         e.preventDefault();
-      //         setIsHistory(!isHistory);
-      //       },
-      //       stateVariables: isHistory,
-      //       childItems: [
-      //         {
-      //           id: 1,
-      //           label: "Main Calender",
-      //           link: "#",
-      //           parentId: "savings",
-      //         },
-      //         {
-      //           id: 2,
-      //           label: "Month Grid",
-      //           link: "#",
-      //           parentId: "savings",
-      //         },
-      //       ],
-      //     },
-      //   ],
     },
     {
       label: "Pages",
