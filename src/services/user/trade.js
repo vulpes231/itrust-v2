@@ -12,4 +12,14 @@ async function openPosition(formData) {
   }
 }
 
-export { openPosition };
+async function getUserTrades() {
+  try {
+    const response = await api.get("/trade");
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.message?.data;
+    throw new Error(errMsg);
+  }
+}
+
+export { openPosition, getUserTrades };

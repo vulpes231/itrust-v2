@@ -7,5 +7,8 @@ import btc from "./images/svg/crypto-icons/btc.svg";
 import eth from "./images/svg/crypto-icons/eth.svg";
 import ltc from "./images/svg/crypto-icons/ltc.svg";
 import dash from "./images/svg/crypto-icons/dash.svg";
+import fil from "./images/svg/crypto-icons/fil.svg";
+import xmr from "./images/svg/crypto-icons/xmr.svg";
+import dot from "./images/svg/crypto-icons/dot.svg";
 
-export { logo, avatar1, btc, eth, ltc, dash, cash, broke, auto };
+export { logo, avatar1, btc, eth, ltc, dash, cash, broke, auto, fil, xmr, dot };

@@ -24,6 +24,7 @@
     "axios-mock-adapter": "^2.1.0",
     "bootstrap": "^5.3.8",
     "cleave.js": "^1.6.0",
+    "date-fns": "^4.1.0",
     "eslint": "^9.39.1",
     "feather-icons-react": "^1.0.0",
     "firebase": "^12.5.0",

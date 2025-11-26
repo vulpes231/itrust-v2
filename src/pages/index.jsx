@@ -9,6 +9,7 @@ import VerifyEmail from "./Authentication/VerifyEmail";
 import DashboardCrypto from "./DashboardCrypto";
 import Market from "./Market";
 import Savings from "./Savings";
+import MyWallet from "./Wallet";
 
 export {
   Contact,
@@ -22,4 +23,5 @@ export {
   VerifyEmail,
   Market,
   Savings,
+  MyWallet,
 };

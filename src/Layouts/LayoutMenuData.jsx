@@ -7,6 +7,7 @@ const Navdata = () => {
   const [isDashboard, setIsDashboard] = useState(false);
   const [isMarket, setIsMarket] = useState(false);
   const [isSavings, setIsSavings] = useState(false);
+  const [isWallet, setIsWallet] = useState(false);
 
   //Calender
   const [isTrade, setIsTrade] = useState(false);
@@ -53,7 +54,7 @@ const Navdata = () => {
     },
     {
       id: "dashboard",
-      label: "Dashboards",
+      label: "Dashboard",
       icon: "ri-dashboard-2-line",
       link: "/dashboard",
       stateVariables: isDashboard,
@@ -61,6 +62,27 @@ const Navdata = () => {
         e.preventDefault();
         setIsDashboard(!isDashboard);
         setIscurrentState("Dashboard");
+        updateIconSidebar(e);
+      },
+      //   subItems: [
+      //     {
+      //       id: "crypto",
+      //       label: "Crypto",
+      //       link: "#",
+      //       parentId: "dashboard",
+      //     },
+      //   ],
+    },
+    {
+      id: "wallet",
+      label: "Wallet",
+      icon: "ri-dashboard-2-line",
+      link: "/wallet",
+      stateVariables: isWallet,
+      click: function (e) {
+        e.preventDefault();
+        setIsWallet(!isWallet);
+        setIscurrentState("Wallet");
         updateIconSidebar(e);
       },
       //   subItems: [
