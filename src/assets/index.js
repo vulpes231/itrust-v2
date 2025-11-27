@@ -10,5 +10,20 @@ import dash from "./images/svg/crypto-icons/dash.svg";
 import fil from "./images/svg/crypto-icons/fil.svg";
 import xmr from "./images/svg/crypto-icons/xmr.svg";
 import dot from "./images/svg/crypto-icons/dot.svg";
+import verification from "./images/verification-img.png";
 
-export { logo, avatar1, btc, eth, ltc, dash, cash, broke, auto, fil, xmr, dot };
+export {
+  logo,
+  avatar1,
+  btc,
+  eth,
+  ltc,
+  dash,
+  cash,
+  broke,
+  auto,
+  fil,
+  xmr,
+  dot,
+  verification,
+};

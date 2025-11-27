@@ -15,6 +15,7 @@ import {
   Savings,
   Portfolio,
   Wallet,
+  KYCVerification,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -34,6 +35,7 @@ const authProtectedRoutes = [
   { path: "/savings", component: <Savings /> },
   { path: "/portfolio", component: <Portfolio /> },
   { path: "/wallet", component: <Wallet /> },
+  { path: "/verifyaccount", component: <KYCVerification /> },
 ];
 
 const publicRoutes = [

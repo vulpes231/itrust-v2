@@ -1,9 +1,53 @@
 import React from "react";
 import CountUp from "react-countup";
 import { Card, CardBody, Col } from "reactstrap";
-import { buysellWidgets } from "../../common/data";
+// import { buysellWidgets } from "../../common/data";
+import { useQuery } from "@tanstack/react-query";
+import { getTradeAnalytics } from "../../services/user/trade";
+import { formatCurrency } from "../../constants";
 
 const Widgets = () => {
+  const { data: tradeAnalytics, isLoading: tradeAnalyticsLoading } = useQuery({
+    queryKey: ["tradeAnalytics"],
+    queryFn: getTradeAnalytics,
+  });
+
+  const buysellWidgets = [
+    {
+      id: 1,
+      title: "Total Buy",
+      counter: formatCurrency(tradeAnalytics?.totalBuys) || 0,
+      // decimal: "10",
+      icon: "ri-shopping-bag-line",
+      iconClass: "danger",
+    },
+    {
+      id: 2,
+      title: "Total Sell",
+      counter: formatCurrency(tradeAnalytics?.totalSells) || 0,
+      // decimal: "00",
+      icon: "ri-funds-line",
+      iconClass: "info",
+    },
+    {
+      id: 3,
+      title: "Today's Buy",
+      counter: formatCurrency(tradeAnalytics?.totalBuysToday) || 0,
+      // decimal: "85",
+      icon: "ri-arrow-left-down-fill",
+      iconClass: "warning",
+    },
+    {
+      id: 4,
+      title: "Today's Sell",
+      counter: formatCurrency(tradeAnalytics?.totalSellsToday) || 0,
+      // decimal: "35" totalSellsToday,
+      icon: "ri-arrow-right-up-fill",
+      iconClass: "success",
+    },
+  ];
+
+  // console.log(tradeAnalytics);
   return (
     <React.Fragment>
       {buysellWidgets.map((item, key) => (
@@ -18,7 +62,7 @@ const Widgets = () => {
                     <span className="counter-value">
                       <CountUp start={0} end={item.counter} duration={3} />
                     </span>
-                    <small className="text-muted fs-14">.{item.decimal}k</small>
+                    {/* <small className="text-muted fs-14">.{item.decimal}k</small> */}
                   </h2>
                 </div>
                 <div className="flex-shrink-0 avatar-sm">

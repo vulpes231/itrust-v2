@@ -7,6 +7,7 @@ import Register from "./Authentication/Register";
 import UserProfile from "./Authentication/UserProfile";
 import VerifyEmail from "./Authentication/VerifyEmail";
 import DashboardCrypto from "./DashboardCrypto";
+import KYCVerification from "./Kyc";
 import Market from "./Market";
 import Portfolio from "./Portfolio";
 import Savings from "./Savings";
@@ -26,4 +27,5 @@ export {
   Savings,
   Portfolio,
   Wallet,
+  KYCVerification,
 };

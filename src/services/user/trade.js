@@ -22,4 +22,14 @@ async function getUserTrades() {
   }
 }
 
-export { openPosition, getUserTrades };
+async function getTradeAnalytics() {
+  try {
+    const response = await api.get("/trade/analytics");
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.message?.data;
+    throw new Error(errMsg);
+  }
+}
+
+export { openPosition, getUserTrades, getTradeAnalytics };
