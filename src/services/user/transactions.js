@@ -22,4 +22,14 @@ async function getTransactionAnalytics() {
   }
 }
 
-export { getTransactions, getTransactionAnalytics };
+async function depositFunds(formData) {
+  try {
+    const response = await api.create("/transaction/deposit", formData);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.data?.message;
+    throw new Error(errMsg);
+  }
+}
+
+export { getTransactions, getTransactionAnalytics, depositFunds };

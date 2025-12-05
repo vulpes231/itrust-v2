@@ -40,7 +40,7 @@ const Navdata = () => {
     if (iscurrentState !== "Portfolio") {
       setIsPortfolio(false);
     }
-    if (iscurrentState !== "Wallet") {
+    if (iscurrentState !== "Cash") {
       setIsWallet(false);
     }
 
@@ -82,15 +82,15 @@ const Navdata = () => {
       },
     },
     {
-      id: "wallet",
-      label: "Wallet",
+      id: "cash",
+      label: "Cash",
       icon: "ri-wallet-2-line",
-      link: "/wallet",
+      link: "/cash",
       stateVariables: isWallet,
       click: function (e) {
         e.preventDefault();
         setIsWallet(!isWallet);
-        setIscurrentState("Wallet");
+        setIscurrentState("Cash");
         updateIconSidebar(e);
       },
     },

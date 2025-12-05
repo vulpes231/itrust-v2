@@ -34,7 +34,7 @@ const authProtectedRoutes = [
   { path: "/trade", component: <Market /> },
   { path: "/savings", component: <Savings /> },
   { path: "/portfolio", component: <Portfolio /> },
-  { path: "/wallet", component: <Wallet /> },
+  { path: "/cash", component: <Wallet /> },
   { path: "/verifyaccount", component: <KYCVerification /> },
 ];
 

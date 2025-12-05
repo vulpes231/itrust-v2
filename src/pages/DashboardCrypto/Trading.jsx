@@ -308,7 +308,7 @@ const Trading = () => {
                     <Col xs={6}>
                       <div className="mb-3">
                         <Label htmlFor="country" className="form-label">
-                          Wallet <span className="text-danger">*</span>
+                          Account <span className="text-danger">*</span>
                         </Label>
                         <Input
                           id="walletId"
@@ -325,7 +325,7 @@ const Trading = () => {
                               : false
                           }
                         >
-                          <option value="">Select Wallet</option>
+                          <option value="">Select Account</option>
                           {availableWallets &&
                             availableWallets.length > 0 &&
                             availableWallets.map((wallet) => {

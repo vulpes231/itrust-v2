@@ -1,6 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
+} from "reactstrap";
 import TableContainer from "../../components/Common/TableContainer";
 import {
   FromCol,
@@ -14,6 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getTransactions } from "../../services/user/transactions";
 import { getAccessToken } from "../../constants";
 import { auto, broke, btc, cash, eth, ltc } from "../../assets";
+import Deposit from "../Deposit";
 
 const AllTransactions = () => {
   const token = getAccessToken();
@@ -25,6 +35,7 @@ const AllTransactions = () => {
   });
 
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [action, setAction] = useState("");
 
   useEffect(() => {
     if (transactions) {
@@ -107,10 +118,9 @@ const AllTransactions = () => {
     return images[currency?.toLowerCase()] || "/images/currencies/default.png";
   }
 
-  const flowType = (type) => {
-    // Handle deposit/withdraw modal opening
-    console.log(`Opening ${type} modal`);
-    // Add your modal logic here
+  const selectAction = (type) => {
+    setAction(type);
+    // console.log(`Opening ${type} modal`);
   };
 
   const columns = useMemo(
@@ -221,6 +231,10 @@ const AllTransactions = () => {
     []
   );
 
+  useEffect(() => {
+    if (action) console.log(action);
+  }, [action]);
+
   return (
     <React.Fragment>
       <Row className="align-items-center mb-4 g-3">
@@ -245,22 +259,30 @@ const AllTransactions = () => {
         </Col>
         <div className="col-sm-auto ms-auto">
           <div className="d-flex gap-2">
-            <Link
-              to="#"
-              data-bs-toggle="modal"
+            <button
+              type="button"
+              // data-bs-toggle="modal"
               className="btn btn-info"
-              onClick={() => flowType("Deposit")}
+              onClick={() => selectAction("deposit")}
             >
               Deposit
-            </Link>
-            <Link
-              to="#"
-              data-bs-toggle="modal"
+            </button>
+            <button
+              type="button"
+              // data-bs-toggle="modal"
               className="btn btn-danger"
-              onClick={() => flowType("Withdraw")}
+              onClick={() => selectAction("withdraw")}
             >
               Withdraw
-            </Link>
+            </button>
+            <button
+              type="button"
+              // data-bs-toggle="modal"
+              className="btn btn-success"
+              onClick={() => selectAction("transfer")}
+            >
+              Transfer
+            </button>
           </div>
         </div>
       </Row>
@@ -305,6 +327,48 @@ const AllTransactions = () => {
           />
         </CardBody>
       </Card>
+      <Modal
+        isOpen={action === "deposit"}
+        centered={true}
+        size="lg"
+        toggle={() => setAction("")}
+      >
+        <ModalHeader
+          toggle={() => setAction("")}
+          className="p-3 text-uppercase fw-bold"
+        >
+          Deposit
+        </ModalHeader>
+        <Deposit />
+      </Modal>
+      <Modal
+        isOpen={action === "withdraw"}
+        centered={true}
+        size="lg"
+        toggle={() => setAction("")}
+      >
+        <ModalHeader
+          toggle={() => setAction("")}
+          className="p-3 text-uppercase fw-bold"
+        >
+          Withdraw
+        </ModalHeader>
+        <ModalBody>{/* Withdraw form/content */}</ModalBody>
+      </Modal>
+      <Modal
+        isOpen={action === "transfer"}
+        centered={true}
+        size="lg"
+        toggle={() => setAction("")}
+      >
+        <ModalHeader
+          toggle={() => setAction("")}
+          className="p-3 text-uppercase fw-bold"
+        >
+          Transfer
+        </ModalHeader>
+        <ModalBody>{/* Withdraw form/content */}</ModalBody>
+      </Modal>
     </React.Fragment>
   );
 };

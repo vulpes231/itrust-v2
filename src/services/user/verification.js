@@ -32,4 +32,14 @@ async function resendMailCode() {
   }
 }
 
-export { verifyEmail, twofactorAuth };
+async function submitVericationRequest(formData) {
+  try {
+    const response = await api.create("/kyc", formData);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.data?.message;
+    throw new Error(errMsg);
+  }
+}
+
+export { verifyEmail, twofactorAuth, submitVericationRequest };

@@ -1,15 +1,16 @@
+import { capitalize, upperCase } from "lodash";
 import React from "react";
 
 const FromCol = (cell) => {
-  return <React.Fragment>{cell.getValue()}</React.Fragment>;
+  return <React.Fragment>{upperCase(cell.getValue())}</React.Fragment>;
 };
 
 const ToCol = (cell) => {
-  return <React.Fragment>{cell.getValue()}</React.Fragment>;
+  return <React.Fragment>{capitalize(cell.getValue())}</React.Fragment>;
 };
 
 const DetailsCol = (cell) => {
-  return <React.Fragment>{cell.getValue()}</React.Fragment>;
+  return <React.Fragment>{capitalize(cell.getValue())}</React.Fragment>;
 };
 
 const TransactionID = (cell) => {
@@ -17,7 +18,7 @@ const TransactionID = (cell) => {
 };
 
 const TypeCol = (cell) => {
-  return <React.Fragment>{cell.getValue()}</React.Fragment>;
+  return <React.Fragment>{capitalize(cell.getValue())}</React.Fragment>;
 };
 
 const Status = (cell) => {
@@ -26,19 +27,20 @@ const Status = (cell) => {
       {cell.getValue() === "pending" ? (
         <span className="badge bg-warning-subtle text-warning fs-11">
           {" "}
-          <i className="ri-time-line align-bottom"></i> {cell.getValue()}
+          <i className="ri-time-line align-bottom"></i>{" "}
+          {capitalize(cell.getValue())}
         </span>
       ) : cell.getValue() === "completed" ? (
         <span className="badge bg-success-subtle text-success fs-11">
           {" "}
           <i className="ri-checkbox-circle-line align-bottom"></i>{" "}
-          {cell.getValue()}
+          {capitalize("processed")}
         </span>
       ) : cell.getValue() === "failed" ? (
         <span className="badge bg-danger-subtle text-danger fs-11">
           {" "}
           <i className="ri-close-circle-line align-bottom"></i>{" "}
-          {cell.getValue()}
+          {capitalize(cell.getValue())}
         </span>
       ) : null}
     </React.Fragment>

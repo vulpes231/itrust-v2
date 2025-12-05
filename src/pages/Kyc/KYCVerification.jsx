@@ -21,6 +21,8 @@ import Select from "react-select";
 import Flatpickr from "react-flatpickr";
 import Dropzone from "react-dropzone";
 import { verification } from "../../assets";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const KYCVerification = () => {
   const [isKycVerification, setIsKycVerification] = useState(false);
@@ -28,6 +30,35 @@ const KYCVerification = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [passedSteps, setPassedSteps] = useState([1]);
   const [selectedFiles, setselectedFiles] = useState([]);
+  const [selectCountry, setselectCountry] = useState(null);
+
+  const [form, setForm] = useState({
+    fullname: "",
+    dob: "",
+    idType: "",
+    idNumber: "",
+  });
+
+  const validation = useFormik({
+    enableReinitialize: true,
+
+    initialValues: {
+      fullname: form.fullname || "",
+      dob: form.dob || "",
+      idType: form.idType || "",
+      idNumber: form.idNumber || "",
+    },
+    validationSchema: Yup.object({
+      fullname: Yup.string().required("Please Enter Your Full Name"),
+      dob: Yup.string().required("Please Enter Your Date of Birth"),
+      idType: Yup.string().required("Please Select Your ID Type"),
+      idNumber: Yup.string().required("Please Enter Your ID Number"),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+      // mutation.mutate(values);
+    },
+  });
 
   function toggleTab(tab) {
     if (activeTab !== tab) {
@@ -39,8 +70,6 @@ const KYCVerification = () => {
       }
     }
   }
-
-  const [selectCountry, setselectCountry] = useState(null);
 
   function handleselectCountry(selectCountry) {
     setselectCountry(selectCountry);

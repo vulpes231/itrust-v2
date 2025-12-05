@@ -11,7 +11,7 @@ const Wallet = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb title="Wallet" pageTitle="History" />
+          <BreadCrumb title="Cash" pageTitle="History" />
           <Row>
             <Widgets />
           </Row>
