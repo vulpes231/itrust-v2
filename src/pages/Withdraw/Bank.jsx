@@ -25,7 +25,7 @@ const Bank = () => {
       method: "bank",
     },
     validationSchema: Yup.object({
-      amount: Yup.string().required("Enter deposit amount"),
+      amount: Yup.string().required("Enter withdrawal amount"),
     }),
     onSubmit: (values) => {
       console.log(values);
@@ -156,10 +156,10 @@ const Bank = () => {
             }}
             disabled={mutation.isPending}
             type="submit"
-            className="btn btn-primary btn-label right ms-auto"
+            className="btn btn-danger btn-label right ms-auto"
           >
             <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{" "}
-            Deposit via Bank
+            Withdraw via Bank
           </button>
         </div>
       </Col>
@@ -174,7 +174,7 @@ const Bank = () => {
       )}
       {mutation.isSuccess && (
         <SuccessToast
-          successMsg={"Deposit request submitted."}
+          successMsg={"Withdrawal request submitted."}
           onClose={() => {
             mutation.reset();
             setError("");

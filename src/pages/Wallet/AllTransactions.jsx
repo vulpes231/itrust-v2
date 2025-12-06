@@ -24,6 +24,8 @@ import { getTransactions } from "../../services/user/transactions";
 import { getAccessToken } from "../../constants";
 import { auto, broke, btc, cash, eth, ltc } from "../../assets";
 import Deposit from "../Deposit";
+import Withdraw from "../Withdraw";
+import Transfer from "../Transfer";
 
 const AllTransactions = () => {
   const token = getAccessToken();
@@ -353,7 +355,7 @@ const AllTransactions = () => {
         >
           Withdraw
         </ModalHeader>
-        <ModalBody>{/* Withdraw form/content */}</ModalBody>
+        <Withdraw />
       </Modal>
       <Modal
         isOpen={action === "transfer"}
@@ -367,7 +369,7 @@ const AllTransactions = () => {
         >
           Transfer
         </ModalHeader>
-        <ModalBody>{/* Withdraw form/content */}</ModalBody>
+        <Transfer />
       </Modal>
     </React.Fragment>
   );

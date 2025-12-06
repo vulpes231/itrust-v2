@@ -3,7 +3,11 @@ import { Toast, ToastHeader, ToastBody } from "reactstrap";
 
 const SuccessToast = ({ successMsg, isOpen = true, onClose }) => {
   return (
-    <Toast isOpen={isOpen} className="bg-success text-white">
+    <Toast
+      isOpen={isOpen}
+      className="bg-success text-white"
+      style={{ position: "fixed", top: "50px", right: "10px" }}
+    >
       <ToastHeader
         icon="success"
         toggle={onClose}

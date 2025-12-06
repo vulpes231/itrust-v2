@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
 import { getUserWallets } from "../../services/user/wallet";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { depositFunds } from "../../services/user/transactions";
+import { withdrawFund } from "../../services/user/transactions";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorToast from "../../components/Common/ErrorToast";
@@ -18,6 +18,7 @@ const Crypto = () => {
     method: "",
     network: "",
     account: "",
+    address: "",
   });
 
   const { data: wallets } = useQuery({
@@ -26,8 +27,11 @@ const Crypto = () => {
   });
 
   const cryptoMutation = useMutation({
-    mutationFn: () => depositFunds(cryptoValidation.values),
-    onError: (err) => setError(err.message),
+    mutationFn: () => withdrawFund(cryptoValidation.values),
+    onError: (err) => {
+      // console.log(err);
+      setError(err.message);
+    },
   });
 
   const cryptoValidation = useFormik({
@@ -37,16 +41,17 @@ const Crypto = () => {
       account: form.account || "",
       network: form.network || "",
       amount: form.amount || "",
+      address: form.address || "",
     },
     validationSchema: Yup.object({
-      account: Yup.string().required("Select deposit account"),
+      account: Yup.string().required("Select withdrawal account"),
       method: Yup.string().required("Select crypto method"),
       network: Yup.string().required("Select crypto network"),
-      amount: Yup.string().required("Enter deposit amount"),
+      amount: Yup.string().required("Enter withdrawal amount"),
+      address: Yup.string().required("Enter withdrawal address"),
     }),
     onSubmit: (values) => {
-      console.log("Submit cliked");
-      console.log(values);
+      // console.log(values);
       cryptoMutation.mutate();
     },
     validateOnMount: true,
@@ -92,7 +97,7 @@ const Crypto = () => {
     <Row className="g-3">
       <Col lg={6}>
         <div>
-          <Label for="country-select" className="form-label">
+          <Label for="account" className="form-label">
             Account
           </Label>
           <Input
@@ -209,8 +214,22 @@ const Crypto = () => {
             className="form-control"
             id="address"
             placeholder="Deposit Address"
-            readOnly
+            onChange={cryptoValidation.handleChange}
+            onBlur={cryptoValidation.handleBlur}
+            value={cryptoValidation.values.address || ""}
+            invalid={
+              cryptoValidation.touched.address &&
+              cryptoValidation.errors.address
+                ? true
+                : false
+            }
           />
+          {cryptoValidation.touched.address &&
+          cryptoValidation.errors.address ? (
+            <FormFeedback type="invalid">
+              {cryptoValidation.errors.address}
+            </FormFeedback>
+          ) : null}
         </div>
       </Col>
       <Col lg={12}>
@@ -228,7 +247,7 @@ const Crypto = () => {
                 ? "is-invalid"
                 : ""
             }`}
-            placeholder="Enter deposit amount"
+            placeholder="Enter withdrawal amount"
             name="amount"
             autoComplete="off"
           />
@@ -250,10 +269,10 @@ const Crypto = () => {
             }}
             type="submit"
             disabled={cryptoMutation.isPending}
-            className="btn btn-primary btn-label right ms-auto"
+            className="btn btn-danger btn-label right ms-auto"
           >
             <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{" "}
-            Deposit via Crypto
+            Withdraw via Crypto
           </button>
         </div>
       </Col>
@@ -268,7 +287,7 @@ const Crypto = () => {
       )}
       {cryptoMutation.isSuccess && (
         <SuccessToast
-          successMsg={"Deposit request submitted."}
+          successMsg={"Withdrawal request submitted."}
           onClose={() => {
             cryptoMutation.reset();
             setError("");

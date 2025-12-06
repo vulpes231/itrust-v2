@@ -32,4 +32,32 @@ async function depositFunds(formData) {
   }
 }
 
-export { getTransactions, getTransactionAnalytics, depositFunds };
+async function withdrawFund(formData) {
+  try {
+    const response = await api.create("/transaction/withdraw", formData);
+    return response.data;
+  } catch (error) {
+    // console.log(error);
+    const errMsg = error || error.message;
+    throw new Error(errMsg);
+  }
+}
+
+async function transferFund(formData) {
+  try {
+    const response = await api.create("/transaction/transfer", formData);
+    return response.data;
+  } catch (error) {
+    // console.log(error);
+    const errMsg = error.message;
+    throw new Error(errMsg);
+  }
+}
+
+export {
+  getTransactions,
+  getTransactionAnalytics,
+  depositFunds,
+  withdrawFund,
+  transferFund,
+};

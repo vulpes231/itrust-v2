@@ -18,7 +18,7 @@ axios.interceptors.response.use(
     let message;
     switch (error.status) {
       case 500:
-        message = "Internal Server Error";
+        message = error.response.data;
         break;
       case 401:
         message = "Invalid credentials";

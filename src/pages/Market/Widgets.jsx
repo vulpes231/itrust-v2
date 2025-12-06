@@ -12,36 +12,36 @@ const Widgets = () => {
     queryFn: getTradeAnalytics,
   });
 
-  const buysellWidgets = [
+  const buysellWidgets = tradeAnalytics && [
     {
       id: 1,
       title: "Total Buy",
-      counter: formatCurrency(tradeAnalytics?.totalBuys) || 0,
-      // decimal: "10",
+      counter: tradeAnalytics.totalBuys.toFixed(2).split(".")[0],
+      decimal: tradeAnalytics.totalBuys.toFixed(2).split(".")[1],
       icon: "ri-shopping-bag-line",
       iconClass: "danger",
     },
     {
       id: 2,
       title: "Total Sell",
-      counter: formatCurrency(tradeAnalytics?.totalSells) || 0,
-      // decimal: "00",
+      counter: tradeAnalytics.totalSells.toFixed(2).split(".")[0] || 0,
+      decimal: tradeAnalytics.totalSells.toFixed(2).split(".")[1],
       icon: "ri-funds-line",
       iconClass: "info",
     },
     {
       id: 3,
       title: "Today's Buy",
-      counter: formatCurrency(tradeAnalytics?.totalBuysToday) || 0,
-      // decimal: "85",
+      counter: tradeAnalytics.totalBuysToday.toFixed(2).split(".")[0] || 0,
+      decimal: tradeAnalytics.totalBuysToday.toFixed(2).split(".")[1],
       icon: "ri-arrow-left-down-fill",
       iconClass: "warning",
     },
     {
       id: 4,
       title: "Today's Sell",
-      counter: formatCurrency(tradeAnalytics?.totalSellsToday) || 0,
-      // decimal: "35" totalSellsToday,
+      counter: tradeAnalytics.totalSellsToday.toFixed(2).split(".")[0] || 0,
+      decimal: tradeAnalytics.totalSellsToday.toFixed(2).split(".")[1],
       icon: "ri-arrow-right-up-fill",
       iconClass: "success",
     },
@@ -62,7 +62,7 @@ const Widgets = () => {
                     <span className="counter-value">
                       <CountUp start={0} end={item.counter} duration={3} />
                     </span>
-                    {/* <small className="text-muted fs-14">.{item.decimal}k</small> */}
+                    <small className="text-muted fs-14">.{item.decimal}k</small>
                   </h2>
                 </div>
                 <div className="flex-shrink-0 avatar-sm">

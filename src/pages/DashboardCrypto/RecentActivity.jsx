@@ -18,6 +18,7 @@ import SimpleBar from "simplebar-react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactions } from "../../services/user/transactions";
+import { capitalize, upperCase } from "lodash";
 
 const RecentActivity = () => {
   const queryData = { limit: 7 };
@@ -90,16 +91,16 @@ const RecentActivity = () => {
                         <div className="flex-grow-1 ms-3">
                           <h6 className="fs-15 mb-1">
                             {trx.type === "deposit"
-                              ? `Deposit ${trx?.method?.mode}`
+                              ? `Deposit ${upperCase(trx?.method?.mode)}`
                               : trx.type === "transfer"
-                              ? `Transfer ${trx?.method?.mode}`
+                              ? `Transfer ${upperCase(trx?.method?.mode)}`
                               : trx.type === "withdraw"
-                              ? `Withdraw ${trx?.method?.mode}`
+                              ? `Withdraw ${upperCase(trx?.method?.mode)}`
                               : null}
                           </h6>
                           <p className="text-muted fs-13 mb-0">
                             <i className="mdi mdi-circle-medium text-success fs-15 align-middle"></i>{" "}
-                            {trx?.account}
+                            {capitalize(trx?.account)}
                           </p>
                         </div>
                         <div className="flex-shrink-0 text-end">

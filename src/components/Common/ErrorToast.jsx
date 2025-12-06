@@ -3,7 +3,11 @@ import { Toast, ToastHeader, ToastBody } from "reactstrap";
 
 const ErrorToast = ({ errorMsg, isOpen = true, onClose }) => {
   return (
-    <Toast isOpen={isOpen} className="bg-danger text-white">
+    <Toast
+      isOpen={isOpen}
+      className="bg-danger text-white"
+      style={{ position: "fixed", top: "50px", right: "10px" }}
+    >
       <ToastHeader
         icon="danger"
         toggle={onClose}

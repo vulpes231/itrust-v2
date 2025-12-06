@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CountUp from "react-countup";
 import { Link } from "react-router-dom";
 import { Card, CardBody, Col } from "reactstrap";
@@ -6,8 +6,29 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Mousewheel } from "swiper/modules";
+import { useQuery } from "@tanstack/react-query";
+import { getTransactionAnalytics } from "../../services/user/transactions";
+import { getAccessToken } from "../../constants";
+import { getWalletAnalytics } from "../../services/user/wallet";
 
 const Widgets = () => {
+  const token = getAccessToken();
+  const { data: analytics } = useQuery({
+    queryFn: getTransactionAnalytics,
+    queryKey: ["trnxAnalytics"],
+    enabled: !!token,
+  });
+
+  const { data: walletAnalytics } = useQuery({
+    queryFn: getWalletAnalytics,
+    queryKey: ["walletAnalytics"],
+    enabled: !!token,
+  });
+
+  // useEffect(() => {
+  //   if (walletAnalytics) console.log(walletAnalytics);
+  // }, [walletAnalytics]);
+
   return (
     <React.Fragment>
       <Col xxl={3} md={6}>
@@ -47,13 +68,19 @@ const Widgets = () => {
               <span className="counter-value" data-target="74858">
                 <CountUp
                   start={0}
-                  end={74858}
+                  end={
+                    walletAnalytics?.availableBalnce
+                      ?.toFixed(2)
+                      .split(".")[0] || 0
+                  }
                   separator=","
                   prefix="$"
                   duration={3}
                 />
               </span>
-              <small className="text-muted fs-14">.68k</small>
+              <small className="text-muted fs-14">
+                .{walletAnalytics?.availableBalnce?.toFixed(2).split(".")[1]}k
+              </small>
             </h3>
             <h6 className="text-muted mb-0">Available Balance (USD)</h6>
           </CardBody>
@@ -96,13 +123,15 @@ const Widgets = () => {
               <span className="counter-value" data-target="74361">
                 <CountUp
                   start={0}
-                  end={74361}
+                  end={analytics?.totalDeposit?.toFixed(2).split(".")[0] || 0}
                   separator=","
                   prefix="$"
                   duration={3}
                 />
               </span>
-              <small className="text-muted fs-14">.34k</small>
+              <small className="text-muted fs-14">
+                .{analytics?.totalDeposit?.toFixed(2).split(".")[1]} k
+              </small>
             </h3>
             <h6 className="text-muted mb-0">Deposit (Total)</h6>
           </CardBody>
@@ -145,13 +174,17 @@ const Widgets = () => {
               <span className="counter-value" data-target="97685">
                 <CountUp
                   start={0}
-                  end={97685}
+                  end={
+                    analytics?.totalWithdrawal?.toFixed(2).split(".")[0] || 0
+                  }
                   separator=","
                   prefix="$"
                   duration={3}
                 />
               </span>
-              <small className="text-muted fs-14">.22k</small>
+              <small className="text-muted fs-14">
+                .{analytics?.totalWithdrawal?.toFixed(2).split(".")[1]}k
+              </small>
             </h3>
             <h6 className="text-muted mb-0">Withdraw (Total)</h6>
           </CardBody>
