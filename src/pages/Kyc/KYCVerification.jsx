@@ -14,49 +14,79 @@ import {
   TabPane,
   Label,
   Input,
+  FormFeedback,
+  Alert,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
-import Select from "react-select";
-import Flatpickr from "react-flatpickr";
 import Dropzone from "react-dropzone";
 import { verification } from "../../assets";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { submitVericationRequest } from "../../services/user/verification";
+import { getUserInfo } from "../../services/user/user";
+import { getAccessToken } from "../../constants";
+import ErrorToast from "../../components/Common/ErrorToast";
 
 const KYCVerification = () => {
+  const token = getAccessToken();
+  const { data: user } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!token,
+  });
+  const [error, setError] = useState("");
   const [isKycVerification, setIsKycVerification] = useState(false);
-  const toggleKycVerification = () => setIsKycVerification(!isKycVerification);
+  const toggleKycVerification = () => {
+    setIsKycVerification(!isKycVerification);
+    if (isKycVerification) {
+      setSelectedFiles([]);
+      validation.resetForm();
+      setActiveTab(1);
+      setPassedSteps([1]);
+    }
+  };
+
   const [activeTab, setActiveTab] = useState(1);
   const [passedSteps, setPassedSteps] = useState([1]);
-  const [selectedFiles, setselectedFiles] = useState([]);
-  const [selectCountry, setselectCountry] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [fileError, setFileError] = useState("");
 
-  const [form, setForm] = useState({
-    fullname: "",
-    dob: "",
-    idType: "",
-    idNumber: "",
+  const mutation = useMutation({
+    mutationFn: (data) => submitVericationRequest(data, selectedFiles),
+    onError: (err) => {
+      setError(err.message);
+      setActiveTab(2);
+    },
+    onSuccess: () => {
+      toggleTab(3);
+    },
   });
 
   const validation = useFormik({
     enableReinitialize: true,
-
     initialValues: {
-      fullname: form.fullname || "",
-      dob: form.dob || "",
-      idType: form.idType || "",
-      idNumber: form.idNumber || "",
+      firstname: "",
+      lastname: "",
+      idType: "",
+      idNumber: "",
     },
     validationSchema: Yup.object({
-      fullname: Yup.string().required("Please Enter Your Full Name"),
-      dob: Yup.string().required("Please Enter Your Date of Birth"),
+      firstname: Yup.string().required("Please Enter Your First Name"),
+      lastname: Yup.string().required("Please Enter Your Last Name"),
       idType: Yup.string().required("Please Select Your ID Type"),
       idNumber: Yup.string().required("Please Enter Your ID Number"),
     }),
     onSubmit: (values) => {
-      console.log(values);
-      // mutation.mutate(values);
+      if (selectedFiles.length !== 2) {
+        setFileError("Please upload both front and back images of your ID");
+        setActiveTab(2);
+        return;
+      }
+
+      setFileError("");
+      mutation.mutate(values);
     },
   });
 
@@ -71,12 +101,6 @@ const KYCVerification = () => {
     }
   }
 
-  function handleselectCountry(selectCountry) {
-    setselectCountry(selectCountry);
-  }
-  /**
-   * Formats the size
-   */
   function formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -88,38 +112,28 @@ const KYCVerification = () => {
   }
 
   function handleAcceptedFiles(files) {
-    files.map((file) =>
+    const limitedFiles = files.slice(0, 2);
+
+    limitedFiles.map((file) =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
         formattedSize: formatBytes(file.size),
       })
     );
-    setselectedFiles(files);
+
+    setSelectedFiles(limitedFiles);
+    setFileError("");
   }
 
-  const country = [
-    {
-      options: [
-        { label: "Select country", value: "Select country" },
-        { label: "Argentina", value: "Argentina" },
-        { label: "Belgium", value: "Belgium" },
-        { label: "Brazil", value: "Brazil" },
-        { label: "Colombia", value: "Colombia" },
-        { label: "Denmark", value: "Denmark" },
-        { label: "France", value: "France" },
-        { label: "Germany", value: "Germany" },
-        { label: "Mexico", value: "Mexico" },
-        { label: "Russia", value: "Russia" },
-        { label: "Spain", value: "Spain" },
-        { label: "Syria", value: "Syria" },
-        { label: "United Kingdom", value: "United Kingdom" },
-        {
-          label: "United States of America",
-          value: "United States of America",
-        },
-      ],
-    },
-  ];
+  React.useEffect(() => {
+    return () => {
+      selectedFiles.forEach((file) => {
+        if (file.preview) {
+          URL.revokeObjectURL(file.preview);
+        }
+      });
+    };
+  }, [selectedFiles]);
 
   return (
     <React.Fragment>
@@ -129,24 +143,36 @@ const KYCVerification = () => {
             <CardBody>
               <div className="text-center">
                 <Row className="justify-content-center">
-                  <Col lg={9}>
-                    <h4 className="mt-4 fw-bold">KYC Verification</h4>
-                    <p className="text-muted mt-3">
-                      When you get your KYC verification process done, you have
-                      given the crypto exchange in this case, information.{" "}
-                    </p>
-                    <div className="mt-4">
-                      <button
-                        type="button"
-                        onClick={toggleKycVerification}
-                        className="btn btn-primary"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                      >
-                        Click here for Verification
-                      </button>
-                    </div>
-                  </Col>
+                  {user?.identityVerification?.kycStatus === "pending" ? (
+                    <Col>
+                      <p className="text-warning mt-2">
+                        {" "}
+                        Verification request submitted and awaiting review.
+                      </p>
+                    </Col>
+                  ) : user?.identityVerification?.kycStatus === "completed" ? (
+                    <Col>
+                      <p className="text-success mt-2">Account Verified.</p>
+                    </Col>
+                  ) : (
+                    <Col lg={9}>
+                      <h4 className="mt-4 fw-bold">KYC Verification</h4>
+                      <p className="text-muted mt-3">
+                        When you get your KYC verification process done, you
+                        have given the crypto exchange in this case,
+                        information.{" "}
+                      </p>
+                      <div className="mt-4">
+                        <button
+                          type="button"
+                          onClick={toggleKycVerification}
+                          className="btn btn-primary"
+                        >
+                          Click here for Verification
+                        </button>
+                      </div>
+                    </Col>
+                  )}
                 </Row>
 
                 <Row className="justify-content-center mt-5 mb-2">
@@ -159,6 +185,20 @@ const KYCVerification = () => {
           </Card>
         </Col>
       </Row>
+
+      {/* Error Alert
+      {error && (
+        <Alert
+          color="danger"
+          isOpen={!!error}
+          toggle={() => setError("")}
+          className="position-fixed top-0 end-0 m-3"
+          style={{ zIndex: 9999 }}
+        >
+          {error}
+        </Alert>
+      )} */}
+
       <Modal
         isOpen={isKycVerification}
         toggle={toggleKycVerification}
@@ -171,7 +211,7 @@ const KYCVerification = () => {
         >
           Verify your Account
         </ModalHeader>
-        <form action="#" className="checkout-tab">
+        <form className="checkout-tab">
           <ModalBody className="p-0">
             <div className="step-arrow-nav">
               <Nav
@@ -184,7 +224,7 @@ const KYCVerification = () => {
                     className={classnames(
                       {
                         active: activeTab === 1,
-                        done: activeTab <= 4 && activeTab >= 0,
+                        done: activeTab <= 3 && activeTab >= 0,
                       },
                       "p-3"
                     )}
@@ -201,29 +241,12 @@ const KYCVerification = () => {
                     className={classnames(
                       {
                         active: activeTab === 2,
-                        done: activeTab <= 4 && activeTab > 1,
+                        done: activeTab <= 3 && activeTab > 1,
                       },
                       "p-3"
                     )}
                     onClick={() => {
                       toggleTab(2);
-                    }}
-                  >
-                    Bank Details
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    href="#"
-                    className={classnames(
-                      {
-                        active: activeTab === 3,
-                        done: activeTab <= 4 && activeTab > 2,
-                      },
-                      "p-3"
-                    )}
-                    onClick={() => {
-                      toggleTab(3);
                     }}
                   >
                     Document Verification
@@ -234,13 +257,15 @@ const KYCVerification = () => {
                     href="#"
                     className={classnames(
                       {
-                        active: activeTab === 4,
-                        done: activeTab <= 4 && activeTab > 3,
+                        active: activeTab === 3,
+                        done: activeTab <= 3 && activeTab > 2,
                       },
                       "p-3"
                     )}
                     onClick={() => {
-                      toggleTab(4);
+                      if (mutation.isSuccess) {
+                        toggleTab(3);
+                      }
                     }}
                   >
                     Verified
@@ -261,137 +286,128 @@ const KYCVerification = () => {
                       <Input
                         type="text"
                         className="form-control"
-                        id="firstName"
+                        id="firstname"
                         placeholder="Enter your firstname"
+                        onBlur={validation.handleBlur}
+                        onChange={validation.handleChange}
+                        value={validation.values.firstname}
+                        invalid={
+                          validation.touched.firstname &&
+                          validation.errors.firstname
+                            ? true
+                            : false
+                        }
+                        name="firstname"
                       />
+                      {validation.touched.firstname &&
+                      validation.errors.firstname ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.firstname}
+                        </FormFeedback>
+                      ) : null}
                     </div>
                   </Col>
                   <Col lg={6}>
                     <div>
-                      <Label for="lastName" className="form-label">
+                      <Label for="lastname" className="form-label">
                         Last Name
                       </Label>
                       <Input
                         type="text"
                         className="form-control"
-                        id="lastName"
+                        id="lastname"
                         placeholder="Enter your lastname"
+                        onBlur={validation.handleBlur}
+                        onChange={validation.handleChange}
+                        value={validation.values.lastname}
+                        invalid={
+                          validation.touched.lastname &&
+                          validation.errors.lastname
+                            ? true
+                            : false
+                        }
+                        name="lastname"
                       />
+                      {validation.touched.lastname &&
+                      validation.errors.lastname ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.lastname}
+                        </FormFeedback>
+                      ) : null}
                     </div>
                   </Col>
+
                   <Col lg={6}>
                     <div>
-                      <Label for="phoneNumber" className="form-label">
-                        Phone
+                      <Label for="ID Type" className="form-label">
+                        ID Type
                       </Label>
                       <Input
-                        type="text"
+                        type="select"
                         className="form-control"
-                        id="phoneNumber"
-                        placeholder="Enter your phone number"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div>
-                      <Label for="dateofBirth" className="form-label">
-                        Date of Birth
-                      </Label>
-                      <Flatpickr
-                        className="form-control"
-                        options={{
-                          dateFormat: "d M, Y",
-                        }}
-                        placeholder="Enter your date of birth"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={4}>
-                    <div>
-                      <Label for="emailID" className="form-label">
-                        Email ID
-                      </Label>
-                      <Input
-                        type="email"
-                        className="form-control"
-                        id="emailID"
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={4}>
-                    <div>
-                      <Label for="password" className="form-label">
-                        Password
-                      </Label>
-                      <Input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        placeholder="Enter your password"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={4}>
-                    <div>
-                      <Label for="confirmPassword" className="form-label">
-                        Confirm Password
-                      </Label>
-                      <Input
-                        type="password"
-                        className="form-control"
-                        id="confirmPassword"
-                        placeholder="Enter your confirm password"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div>
-                      <Label for="vatNo" className="form-label">
-                        VAT/TIN No.
-                      </Label>
-                      <Input
-                        type="text"
-                        className="form-control"
-                        id="vatNo"
-                        placeholder="Enter your VAT/TIN no"
-                      />
+                        id="idType"
+                        onBlur={validation.handleBlur}
+                        onChange={validation.handleChange}
+                        value={validation.values.idType}
+                        invalid={
+                          validation.touched.idType && validation.errors.idType
+                            ? true
+                            : false
+                        }
+                        name="idType"
+                      >
+                        <option value="">Select ID Type</option>
+                        <option value="passport">Passport</option>
+                        <option value="drivers license">Drivers License</option>
+                        <option value="state id">State ID</option>
+                        <option value="national id">National ID</option>
+                      </Input>
+                      {validation.touched.idType && validation.errors.idType ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.idType}
+                        </FormFeedback>
+                      ) : null}
                     </div>
                   </Col>
                   <Col lg={6}>
                     <div>
                       <Label for="serviceTax" className="form-label">
-                        Service Tax No.
+                        ID Number
                       </Label>
                       <Input
                         type="text"
                         className="form-control"
-                        id="serviceTax"
-                        placeholder="Enter your service tax no"
+                        id="idNumber"
+                        placeholder="Enter your ID Number"
+                        onBlur={validation.handleBlur}
+                        onChange={validation.handleChange}
+                        value={validation.values.idNumber}
+                        invalid={
+                          validation.touched.idNumber &&
+                          validation.errors.idNumber
+                            ? true
+                            : false
+                        }
+                        name="idNumber"
                       />
+                      {validation.touched.idNumber &&
+                      validation.errors.idNumber ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.idNumber}
+                        </FormFeedback>
+                      ) : null}
                     </div>
                   </Col>
-                  <Col lg={12}>
-                    <div>
-                      <Label for="country-select" className="form-label">
-                        Country
-                      </Label>
-                      <Select
-                        className="mb-0"
-                        value={selectCountry}
-                        onChange={() => {
-                          handleselectCountry();
-                        }}
-                        options={country}
-                        id="country-select"
-                      ></Select>
-                    </div>
-                  </Col>
+
                   <Col lg={12}>
                     <div className="d-flex align-items-start gap-3 mt-3">
                       <button
                         onClick={() => {
-                          toggleTab(activeTab + 1);
+                          if (validation.isValid) {
+                            toggleTab(activeTab + 1);
+                          } else {
+                            validation.validateForm();
+                          }
                         }}
                         type="button"
                         className="btn btn-primary btn-label right ms-auto nexttab"
@@ -405,156 +421,27 @@ const KYCVerification = () => {
               </TabPane>
 
               <TabPane tabId={2}>
-                <Row>
-                  <Col lg={6}>
-                    <div className="mb-3">
-                      <Label for="banknameInput" className="form-label">
-                        Bank Name
-                      </Label>
-                      <Input
-                        type="text"
-                        className="form-control"
-                        id="banknameInput"
-                        placeholder="Enter your bank name"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div className="mb-3">
-                      <Label for="branchInput" className="form-label">
-                        Branch
-                      </Label>
-                      <Input
-                        type="text"
-                        className="form-control"
-                        id="branchInput"
-                        placeholder="Branch"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={12}>
-                    <div className="mb-3">
-                      <Label for="accountnameInput" className="form-label">
-                        Account Holder Name
-                      </Label>
-                      <Input
-                        type="text"
-                        className="form-control"
-                        id="accountnameInput"
-                        placeholder="Enter account holder name"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div className="mb-3">
-                      <Label for="accountnumberInput" className="form-label">
-                        Account Number
-                      </Label>
-                      <Input
-                        type="number"
-                        className="form-control"
-                        id="accountnumberInput"
-                        placeholder="Enter account number"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={6}>
-                    <div className="mb-3">
-                      <Label for="ifscInput" className="form-label">
-                        IFSC
-                      </Label>
-                      <Input
-                        type="number"
-                        className="form-control"
-                        id="ifscInput"
-                        placeholder="IFSC"
-                      />
-                    </div>
-                  </Col>
-                  <Col lg={12}>
-                    <div className="hstack align-items-start gap-3 mt-4">
-                      <button
-                        onClick={() => {
-                          toggleTab(activeTab - 1);
-                        }}
-                        type="button"
-                        className="btn btn-light btn-label previestab"
-                        data-previous="pills-bill-info-tab"
-                      >
-                        <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
-                        Back to Personal Info
-                      </button>
-                      <button
-                        onClick={() => {
-                          toggleTab(activeTab + 1);
-                        }}
-                        type="button"
-                        className="btn btn-primary btn-label right ms-auto nexttab"
-                        data-nexttab="pills-payment-tab"
-                      >
-                        <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>
-                        Next Step
-                      </button>
-                    </div>
-                  </Col>
-                </Row>
-              </TabPane>
+                {fileError && (
+                  <Alert color="danger" className="mb-3">
+                    {fileError}
+                  </Alert>
+                )}
 
-              <TabPane tabId={3}>
-                <h5 className="mb-3">Choose Document Type</h5>
-
-                <div className="d-flex gap-2">
-                  <div>
-                    <Input
-                      type="radio"
-                      className="btn-check"
-                      id="passport"
-                      defaultChecked
-                      name="choose-document"
-                    />
-                    <Label className="btn btn-outline-info" for="passport">
-                      Passport
-                    </Label>
-                  </div>
-                  <div>
-                    <Input
-                      type="radio"
-                      className="btn-check"
-                      id="aadhar-card"
-                      name="choose-document"
-                    />
-                    <Label className="btn btn-outline-info" for="aadhar-card">
-                      Aadhar Card
-                    </Label>
-                  </div>
-                  <div>
-                    <Input
-                      type="radio"
-                      className="btn-check"
-                      id="pan-card"
-                      name="choose-document"
-                    />
-                    <Label className="btn btn-outline-info" for="pan-card">
-                      Pan Card
-                    </Label>
-                  </div>
-                  <div>
-                    <Input
-                      type="radio"
-                      className="btn-check"
-                      id="other"
-                      name="choose-document"
-                    />
-                    <Label className="btn btn-outline-info" for="other">
-                      Other
-                    </Label>
-                  </div>
+                <div className="mb-3">
+                  <Label className="form-label">
+                    Upload ID Images (Front & Back)
+                  </Label>
+                  <p className="text-muted small mb-2">
+                    Please upload exactly 2 images: front and back of your ID
+                  </p>
                 </div>
 
                 <Dropzone
-                  onDrop={(acceptedFiles) => {
-                    handleAcceptedFiles(acceptedFiles);
+                  onDrop={handleAcceptedFiles}
+                  accept={{
+                    "image/*": [".jpeg", ".jpg", ".png", ".webp"],
                   }}
+                  maxFiles={2}
                 >
                   {({ getRootProps, getInputProps }) => (
                     <div className="dropzone dz-clickable">
@@ -566,12 +453,23 @@ const KYCVerification = () => {
                           <i className="display-4 text-muted ri-upload-cloud-2-fill" />
                         </div>
                         <h4>Drop files here or click to upload.</h4>
+                        <p className="text-muted">
+                          Upload exactly 2 images (Front and Back of your ID)
+                        </p>
                       </div>
                     </div>
                   )}
                 </Dropzone>
+
+                <div className="mt-3">
+                  <p className="text-muted small">
+                    Selected files: {selectedFiles.length}/2
+                  </p>
+                </div>
+
                 <div className="list-unstyled mb-0" id="file-previews">
                   {selectedFiles.map((f, i) => {
+                    const label = i === 0 ? "Front ID" : "Back ID";
                     return (
                       <Card
                         className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
@@ -589,12 +487,14 @@ const KYCVerification = () => {
                               />
                             </Col>
                             <Col>
-                              <Link
-                                to="#"
-                                className="text-muted font-weight-bold"
-                              >
-                                {f.name}
-                              </Link>
+                              <div>
+                                <span className="badge bg-info me-2">
+                                  {label}
+                                </span>
+                                <span className="text-muted font-weight-bold">
+                                  {f.name}
+                                </span>
+                              </div>
                               <p className="mb-0">
                                 <strong>{f.formattedSize}</strong>
                               </p>
@@ -613,26 +513,35 @@ const KYCVerification = () => {
                     }}
                     type="button"
                     className="btn btn-light btn-label previestab"
-                    data-previous="pills-bill-address-tab"
                   >
                     <i className="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
-                    Back to Bank Details
+                    Back to Personal Details
                   </button>
                   <button
-                    onClick={() => {
-                      toggleTab(activeTab + 1);
+                    onClick={(e) => {
+                      e.preventDefault();
+                      validation.submitForm();
                     }}
+                    disabled={mutation.isPending}
                     type="button"
                     className="btn btn-primary btn-label right ms-auto nexttab"
-                    data-nexttab="pills-finish-tab"
                   >
-                    <i className="ri-save-line label-icon align-middle fs-16 ms-2"></i>
-                    Submit
+                    {mutation.isPending ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2"></span>
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        <i className="ri-save-line label-icon align-middle fs-16 ms-2"></i>
+                        Submit
+                      </>
+                    )}
                   </button>
                 </div>
               </TabPane>
 
-              <TabPane tabId={4}>
+              <TabPane tabId={3}>
                 <Row className="text-center justify-content-center py-4">
                   <Col lg={12}>
                     <div className="mb-4">
@@ -643,27 +552,30 @@ const KYCVerification = () => {
                         style={{ width: "120px", height: "120px" }}
                       ></lord-icon>
                     </div>
-                    <h4>Verification Completed</h4>
+                    <h4>Verification Submitted</h4>
                     <p className="text-muted mb-4">
-                      To stay verified, don't remove the meta tag form your
-                      site's home page. To avoid losing verification, you may
-                      want to add multiple methods form the{" "}
-                      <span className="fw-medium">Crypto KYC Application.</span>
+                      Your verification is being reviewed, The process takes 2 -
+                      4 hours upon which your verification status will be
+                      updated. You can check the progress on your dashboard.
+                      <span className="fw-medium">KYC Application.</span>
                     </p>
 
                     <div className="hstack justify-content-center gap-2">
                       <button
-                        onClick={toggleKycVerification}
+                        onClick={() => {
+                          toggleKycVerification();
+                          window.location.reload();
+                        }}
                         type="button"
                         className="btn btn-ghost-success"
-                        data-bs-dismiss="modal"
                       >
                         Done{" "}
                         <i className="ri-thumb-up-fill align-bottom me-1"></i>
                       </button>
                       <button
                         onClick={() => {
-                          toggleTab(activeTab + 1);
+                          toggleKycVerification();
+                          window.location.reload();
                         }}
                         type="button"
                         className="btn btn-primary"
@@ -679,6 +591,16 @@ const KYCVerification = () => {
           </div>
         </form>
       </Modal>
+      {error && (
+        <ErrorToast
+          errorMsg={error}
+          isOpen={true}
+          onClose={() => {
+            mutation.reset();
+            setError("");
+          }}
+        />
+      )}
     </React.Fragment>
   );
 };

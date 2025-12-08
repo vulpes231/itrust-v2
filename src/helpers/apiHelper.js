@@ -4,8 +4,6 @@ import { devUrl, getAccessToken, liveUrl } from "../constants";
 // default
 axios.defaults.baseURL = liveUrl;
 
-axios.defaults.headers.post["Content-Type"] = "application/json";
-
 const token = getAccessToken();
 if (token) axios.defaults.headers.common["Authorization"] = "Bearer " + token;
 
@@ -16,7 +14,8 @@ axios.interceptors.response.use(
   },
   function (error) {
     let message;
-    switch (error.status) {
+
+    switch (error.response?.status) {
       case 500:
         message = error.response.data;
         break;
@@ -34,7 +33,7 @@ axios.interceptors.response.use(
         message = error.response.data;
         break;
       default:
-        message = error.response?.data?.message || error;
+        message = error.response?.data?.message || error.message || error;
     }
     return Promise.reject(message);
   }
@@ -52,61 +51,83 @@ class APIClient {
   /**
    * Fetches data from given url
    */
-
-  //  get = (url, params) => {
-  //   return axios.get(url, params);
-  // };
-  get = (url, params) => {
-    let response;
-
-    let paramKeys = [];
+  get = (url, params, config = {}) => {
+    let queryString = "";
 
     if (params) {
-      Object.keys(params).map((key) => {
-        paramKeys.push(key + "=" + params[key]);
-        return paramKeys;
+      const searchParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, value);
+        }
       });
-
-      const queryString =
-        paramKeys && paramKeys.length ? paramKeys.join("&") : "";
-      response = axios.get(`${url}?${queryString}`, params);
-    } else {
-      response = axios.get(`${url}`, params);
+      queryString = searchParams.toString();
     }
 
-    return response;
-  };
-  /**
-   * post given data to url
-   */
-  create = (url, data) => {
-    return axios.post(url, data);
-  };
-  /**
-   * Updates data
-   */
-  update = (url, data) => {
-    return axios.patch(url, data);
+    const finalUrl = queryString ? `${url}?${queryString}` : url;
+    return axios.get(finalUrl, config);
   };
 
-  put = (url, data) => {
-    return axios.put(url, data);
+  /**
+   * POST request for JSON data
+   */
+  create = (url, data, config = {}) => {
+    return axios.post(url, data, {
+      headers: {
+        "Content-Type": "application/json",
+        ...config.headers,
+      },
+      ...config,
+    });
   };
+
+  /**
+   * POST request for file upload (multipart/form-data)
+   */
+  upload = (url, data, config = {}) => {
+    const formData = data instanceof FormData ? data : new FormData();
+    if (!(data instanceof FormData)) {
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(key, value);
+        }
+      });
+    }
+
+    return axios.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        ...config.headers,
+      },
+      ...config,
+    });
+  };
+
+  /**
+   * Updates data with PATCH
+   */
+  update = (url, data, config = {}) => {
+    return axios.patch(url, data, config);
+  };
+
+  /**
+   * Updates data with PUT
+   */
+  put = (url, data, config = {}) => {
+    return axios.put(url, data, config);
+  };
+
   /**
    * Delete
    */
-  delete = (url, config) => {
-    return axios.delete(url, { ...config });
+  delete = (url, config = {}) => {
+    return axios.delete(url, config);
   };
 }
 
 const getLoggedinUser = () => {
   const user = sessionStorage.getItem("user");
-  if (!user) {
-    return null;
-  } else {
-    return JSON.parse(user);
-  }
+  return user ? JSON.parse(user) : null;
 };
 
 export { APIClient, setAuthorization, getLoggedinUser };

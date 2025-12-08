@@ -32,14 +32,23 @@ async function resendMailCode() {
   }
 }
 
-async function submitVericationRequest(formData) {
+const submitVericationRequest = async (formData, files) => {
   try {
-    const response = await api.create("/kyc", formData);
-    return response.data;
+    const formDataToSend = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      formDataToSend.append(key, formData[key]);
+    });
+
+    files.forEach((file, index) => {
+      formDataToSend.append("idImages", file);
+    });
+
+    const response = await api.upload("/kyc", formDataToSend);
+    return response;
   } catch (error) {
-    const errMsg = error.response?.data?.message;
-    throw new Error(errMsg);
+    throw new Error(error.message || "Failed to submit verification");
   }
-}
+};
 
 export { verifyEmail, twofactorAuth, submitVericationRequest };

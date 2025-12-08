@@ -12,11 +12,20 @@ import Widgets from "./Widgets";
 import Widgets1 from "./Widgets1";
 import { getLoggedinUser } from "../../helpers/apiHelper";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getUserInfo } from "../../services/user/user";
+import { getAccessToken } from "../../constants";
 
 const DashboardCrypto = () => {
   document.title = "Dashboard | Itrust Investments";
 
-  const user = getLoggedinUser();
+  const token = getAccessToken();
+
+  const { data: user } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!token,
+  });
   const [visible, setVisible] = useState(true);
 
   const onDismiss = () => setVisible(false);
@@ -47,7 +56,7 @@ const DashboardCrypto = () => {
               </Link>
             </Alert>
             <Alert
-              color="danger"
+              color="warning"
               isOpen={user?.identityVerification?.kycStatus === "pending"}
               // toggle={onDismiss}
               style={{ display: "flex", gap: "2px" }}

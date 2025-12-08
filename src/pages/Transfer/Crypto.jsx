@@ -137,11 +137,21 @@ const Crypto = () => {
           ) : null}
         </div>
       </Col>
-      <Col lg={12}>
-        <button type="button" onClick={() => setSwapped(!swapped)}>
-          swap
+      <div className="mt-3 text-center">
+        <button
+          type="button"
+          onClick={() => setSwapped(!swapped)}
+          className="btn-soft-secondary"
+          style={{
+            outline: "none",
+            border: "none",
+            color: "#505050",
+            padding: "2px 10px",
+          }}
+        >
+          <i class="ri-exchange-line fs-22"></i>
         </button>
-      </Col>
+      </div>
 
       <Col lg={12}>
         <div>
