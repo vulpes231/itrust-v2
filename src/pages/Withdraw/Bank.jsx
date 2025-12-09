@@ -7,8 +7,9 @@ import * as Yup from "yup";
 import { depositFunds } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
+import { formatCurrency } from "../../constants";
 
-const Bank = () => {
+const Bank = ({ settings }) => {
   const [error, setError] = useState("");
 
   const mutation = useMutation({
@@ -121,7 +122,7 @@ const Bank = () => {
         </div>
       </Col>
       <Col lg={12}>
-        <div>
+        <div className="mb-3">
           <Label for="amount" className="form-label">
             Amount
           </Label>
@@ -144,6 +145,25 @@ const Bank = () => {
               {validation.errors.amount}
             </FormFeedback>
           ) : null}
+        </div>
+      </Col>
+      <Col>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2px",
+            color: "#505050",
+          }}
+        >
+          <small>
+            Minimum Withdrawal Limit:{" "}
+            {settings ? formatCurrency(settings.withdrawalLimits.bank.min) : 0}
+          </small>
+          <small>
+            Maximum Withdrawal Limit:{" "}
+            {settings ? formatCurrency(settings.withdrawalLimits.bank.max) : 0}
+          </small>
         </div>
       </Col>
       <Col lg={12}>

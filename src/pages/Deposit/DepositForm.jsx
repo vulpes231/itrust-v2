@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ModalBody,
   Nav,
@@ -11,6 +11,9 @@ import classnames from "classnames";
 
 import Bank from "./Bank";
 import Crypto from "./Crypto";
+import { useQuery } from "@tanstack/react-query";
+import { getSettings } from "../../services/user/settings";
+import { getAccessToken } from "../../constants";
 
 const DepositForm = () => {
   const [activeTab, setActiveTab] = useState("crypto");
@@ -18,6 +21,14 @@ const DepositForm = () => {
   const toggleTab = (type) => {
     setActiveTab(type);
   };
+
+  const token = getAccessToken();
+
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: getSettings,
+    enabled: !!token,
+  });
 
   return (
     <form action="">
@@ -62,11 +73,11 @@ const DepositForm = () => {
       <div className="modal-body">
         <TabContent activeTab={activeTab}>
           <TabPane tabId={"crypto"}>
-            <Crypto />
+            <Crypto settings={settings} />
           </TabPane>
 
           <TabPane tabId={"bank"}>
-            <Bank />
+            <Bank settings={settings} />
           </TabPane>
         </TabContent>
       </div>

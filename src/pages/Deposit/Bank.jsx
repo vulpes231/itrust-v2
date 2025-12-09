@@ -7,8 +7,9 @@ import * as Yup from "yup";
 import { depositFunds } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
+import { formatCurrency } from "../../constants";
 
-const Bank = () => {
+const Bank = ({ settings }) => {
   const [error, setError] = useState("");
 
   const mutation = useMutation({
@@ -64,20 +65,22 @@ const Bank = () => {
             type="text"
             className="form-control"
             id="banknameInput"
-            placeholder="Enter your bank name"
+            placeholder={settings?.bankDetails?.bankName || ""}
+            readOnly
           />
         </div>
       </Col>
       <Col lg={6}>
         <div className="mb-3">
           <Label for="branchInput" className="form-label">
-            Branch
+            Address
           </Label>
           <Input
             type="text"
             className="form-control"
             id="branchInput"
-            placeholder="Branch"
+            placeholder={settings?.bankDetails?.address || ""}
+            readOnly
           />
         </div>
       </Col>
@@ -90,7 +93,8 @@ const Bank = () => {
             type="text"
             className="form-control"
             id="accountnameInput"
-            placeholder="Enter account holder name"
+            placeholder={settings?.bankDetails?.accountName || ""}
+            readOnly
           />
         </div>
       </Col>
@@ -103,7 +107,7 @@ const Bank = () => {
             type="number"
             className="form-control"
             id="accountnumberInput"
-            placeholder="Enter account number"
+            placeholder={settings?.bankDetails?.accountNumber || ""}
           />
         </div>
       </Col>
@@ -116,12 +120,13 @@ const Bank = () => {
             type="number"
             className="form-control"
             id="ifscInput"
-            placeholder="IFSC"
+            placeholder={settings?.bankDetails?.reference || ""}
+            readOnly
           />
         </div>
       </Col>
       <Col lg={12}>
-        <div>
+        <div className="mb-3">
           <Label for="amount" className="form-label">
             Amount
           </Label>
@@ -144,6 +149,25 @@ const Bank = () => {
               {validation.errors.amount}
             </FormFeedback>
           ) : null}
+        </div>
+      </Col>
+      <Col>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2px",
+            color: "#505050",
+          }}
+        >
+          <small>
+            Minimum Deposit Limit:{" "}
+            {settings ? formatCurrency(settings.depositLimits.bank.min) : 0}
+          </small>
+          <small>
+            Maximum deposit Limit:{" "}
+            {settings ? formatCurrency(settings.depositLimits.bank.max) : 0}
+          </small>
         </div>
       </Col>
       <Col lg={12}>

@@ -11,6 +11,9 @@ import classnames from "classnames";
 
 import Bank from "./Bank";
 import Crypto from "./Crypto";
+import { getAccessToken } from "../../constants";
+import { getSettings } from "../../services/user/settings";
+import { useQuery } from "@tanstack/react-query";
 
 const WithdrawForm = () => {
   const [activeTab, setActiveTab] = useState("crypto");
@@ -18,6 +21,16 @@ const WithdrawForm = () => {
   const toggleTab = (type) => {
     setActiveTab(type);
   };
+
+  const token = getAccessToken();
+
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: getSettings,
+    enabled: !!token,
+  });
+
+  // console.log(settings);
 
   return (
     <form action="">
@@ -62,11 +75,11 @@ const WithdrawForm = () => {
       <div className="modal-body">
         <TabContent activeTab={activeTab}>
           <TabPane tabId={"crypto"}>
-            <Crypto />
+            <Crypto settings={settings} />
           </TabPane>
 
           <TabPane tabId={"bank"}>
-            <Bank />
+            <Bank settings={settings} />
           </TabPane>
         </TabContent>
       </div>

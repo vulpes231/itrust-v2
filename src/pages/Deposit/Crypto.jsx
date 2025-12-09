@@ -8,8 +8,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
+import { formatCurrency } from "../../constants";
 
-const Crypto = () => {
+const Crypto = ({ settings }) => {
   const [error, setError] = useState("");
   const [depositAcct, setDepositAccount] = useState("");
 
@@ -87,6 +88,23 @@ const Crypto = () => {
       return () => clearTimeout(timeout);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (settings) console.log(settings);
+  }, [settings]);
+
+  const getAddress = (name, network) => {
+    const addressMap = {
+      btc: { BTC: settings.cryptoWallets["btc"] },
+      eth: { ERC20: settings.cryptoWallets["eth"] },
+      usdt: {
+        ERC20: settings.cryptoWallets["usdtErc"],
+        TRC20: settings.cryptoWallets["usdtTrc"],
+      },
+    };
+
+    return addressMap[name]?.[network] || null;
+  };
 
   return (
     <Row className="g-3">
@@ -208,7 +226,10 @@ const Crypto = () => {
             type="text"
             className="form-control"
             id="address"
-            placeholder="Deposit Address"
+            placeholder={getAddress(
+              cryptoValidation.values.method,
+              cryptoValidation.values.network
+            )}
             readOnly
           />
         </div>
@@ -237,6 +258,25 @@ const Crypto = () => {
               {cryptoValidation.errors.amount}
             </FormFeedback>
           ) : null}
+        </div>
+      </Col>
+      <Col>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2px",
+            color: "#505050",
+          }}
+        >
+          <small>
+            Minimum Deposit Limit:{" "}
+            {settings ? formatCurrency(settings.depositLimits.crypto.min) : 0}
+          </small>
+          <small>
+            Maximum deposit Limit:{" "}
+            {settings ? formatCurrency(settings.depositLimits.crypto.max) : 0}
+          </small>
         </div>
       </Col>
 

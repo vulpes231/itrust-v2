@@ -8,8 +8,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
+import { formatCurrency } from "../../constants";
 
-const Crypto = () => {
+const Crypto = ({ settings }) => {
   const [error, setError] = useState("");
   const [depositAcct, setDepositAccount] = useState("");
 
@@ -256,6 +257,30 @@ const Crypto = () => {
               {cryptoValidation.errors.amount}
             </FormFeedback>
           ) : null}
+        </div>
+      </Col>
+
+      <Col>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2px",
+            color: "#505050",
+          }}
+        >
+          <small>
+            Minimum Withdrawal Limit:{" "}
+            {settings
+              ? formatCurrency(settings.withdrawalLimits.crypto.min)
+              : 0}
+          </small>
+          <small>
+            Maximum Withdrawal Limit:{" "}
+            {settings
+              ? formatCurrency(settings.withdrawalLimits.crypto.max)
+              : 0}
+          </small>
         </div>
       </Col>
 
