@@ -55,11 +55,13 @@ const Trading = () => {
       walletId: form.walletId || "",
       amount: form.amount || "",
       orderType: activeTab || "",
+      assetType: "",
     },
     validationSchema: Yup.object({
       assetId: Yup.string().required("Please Select Asset"),
       walletId: Yup.string().required("Please Select Wallet"),
       amount: Yup.string().required("Please Enter Amount"),
+      assetType: Yup.string().required("Please Select Asset Type"),
     }),
 
     onSubmit: (values) => {
@@ -220,7 +222,83 @@ const Trading = () => {
                 </div>
                 <div className="p-3">
                   <Row>
-                    <Col xs={6}>
+                    <Col xs={12}>
+                      <div className="mb-3">
+                        <Label htmlFor="country" className="form-label">
+                          Account <span className="text-danger">*</span>
+                        </Label>
+                        <Input
+                          id="walletId"
+                          name="walletId"
+                          className="form-control"
+                          type="select"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.walletId || ""}
+                          invalid={
+                            validation.touched.walletId &&
+                            validation.errors.walletId
+                              ? true
+                              : false
+                          }
+                        >
+                          <option value="">Select Account</option>
+                          {availableWallets &&
+                            availableWallets.length > 0 &&
+                            availableWallets.map((wallet) => {
+                              return (
+                                <option key={wallet._id} value={wallet._id}>
+                                  {wallet.name}
+                                </option>
+                              );
+                            })}
+                        </Input>
+                        {validation.touched.walletId &&
+                        validation.errors.walletId ? (
+                          <FormFeedback type="invalid">
+                            {validation.errors.walletId}
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                    <Col xs={12}>
+                      <div className="mb-3">
+                        <Label htmlFor="country" className="form-label">
+                          Asset Type <span className="text-danger">*</span>
+                        </Label>
+                        <Input
+                          id="assetType"
+                          name="assetType"
+                          className="form-control"
+                          type="select"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.assetType || ""}
+                          invalid={
+                            validation.touched.assetType &&
+                            validation.errors.assetType
+                              ? true
+                              : false
+                          }
+                        >
+                          <option value="">Select Asset Type</option>
+                          {["crypto", "stock"].map((asset, index) => {
+                            return (
+                              <option key={index} value={asset}>
+                                {asset}
+                              </option>
+                            );
+                          })}
+                        </Input>
+                        {validation.touched.assetType &&
+                        validation.errors.assetType ? (
+                          <FormFeedback type="invalid">
+                            {validation.errors.assetType}
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+                    </Col>
+                    <Col xs={12}>
                       <div className="mb-3">
                         <Label htmlFor="assetId" className="form-label">
                           Asset <span className="text-danger">*</span>
@@ -305,102 +383,36 @@ const Trading = () => {
                         />
                       </div>
                     </Col>
-                    <Col xs={6}>
-                      <div className="mb-3">
-                        <Label htmlFor="country" className="form-label">
-                          Account <span className="text-danger">*</span>
-                        </Label>
-                        <Input
-                          id="walletId"
-                          name="walletId"
-                          className="form-control"
-                          type="select"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.walletId || ""}
-                          invalid={
-                            validation.touched.walletId &&
-                            validation.errors.walletId
-                              ? true
-                              : false
-                          }
-                        >
-                          <option value="">Select Account</option>
-                          {availableWallets &&
-                            availableWallets.length > 0 &&
-                            availableWallets.map((wallet) => {
-                              return (
-                                <option key={wallet._id} value={wallet._id}>
-                                  {wallet.name}
-                                </option>
-                              );
-                            })}
-                        </Input>
-                        {validation.touched.walletId &&
-                        validation.errors.walletId ? (
-                          <FormFeedback type="invalid">
-                            {validation.errors.walletId}
-                          </FormFeedback>
-                        ) : null}
-                      </div>
-                    </Col>
                   </Row>
                   <div>
                     <div className="input-group mb-3">
-                      <Label htmlFor="amount" className="input-group-text">
+                      <Label htmlFor="amount" className="form-label">
                         Amount <span className="text-danger">*</span>
                       </Label>
-                      <Input
-                        name="amount"
-                        type="text"
-                        placeholder="Enter Amount"
-                        onChange={validation.handleChange}
-                        onBlur={validation.handleBlur}
-                        value={validation.values.amount || ""}
-                        invalid={
-                          validation.touched.amount && validation.errors.amount
-                            ? true
-                            : false
-                        }
-                      />
+                      <div className="input-group mb-3">
+                        <label className="input-group-text">Price</label>
+                        <Input
+                          name="amount"
+                          type="text"
+                          placeholder="Enter Amount"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.amount || ""}
+                          invalid={
+                            validation.touched.amount &&
+                            validation.errors.amount
+                              ? true
+                              : false
+                          }
+                        />
+                        <label className="input-group-text">$</label>
+                      </div>
 
                       {validation.touched.amount && validation.errors.amount ? (
                         <FormFeedback type="invalid">
                           {validation.errors.amount}
                         </FormFeedback>
                       ) : null}
-                    </div>
-
-                    <div className="input-group mb-3">
-                      <label className="input-group-text">Price</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder={"0.00"}
-                        value={form?.selectedAsset?.priceData?.current || ""}
-                        readOnly
-                      />
-                      <label className="input-group-text">$</label>
-                    </div>
-
-                    <div className="input-group mb-0">
-                      <label className="input-group-text">Total</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="0.00"
-                        value={
-                          form.selectedAsset?.priceData.current &&
-                          validation.values.amount
-                            ? (
-                                parseFloat(validation.values.amount).toFixed(
-                                  2
-                                ) / form.selectedAsset.priceData.current
-                              ).toFixed(6)
-                            : ""
-                        }
-                        readOnly
-                      />
                     </div>
                   </div>
                   <div className="mt-3 pt-2">
@@ -415,18 +427,8 @@ const Trading = () => {
                         <h6 className="mb-0">$1.08</h6>
                       </div>
                     </div>
-                    <div className="d-flex mb-2">
-                      <div className="flex-grow-1">
-                        <p className="mb-0">
-                          Minimum Received
-                          <span className="text-muted ms-1 fs-13">(2%)</span>
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <h6 className="mb-0">$7.85</h6>
-                      </div>
-                    </div>
-                    <div className="d-flex">
+
+                    {/* <div className="d-flex">
                       <div className="flex-grow-1">
                         <p className="mb-0">Estimated Rate</p>
                       </div>
@@ -441,7 +443,7 @@ const Trading = () => {
                             : "Select an asset"}
                         </h6>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="mt-3 pt-2">
                     <button

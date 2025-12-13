@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "../../services/user/user";
 import { getAccessToken } from "../../constants";
+import Statistics from "./Statistics";
 
 const DashboardCrypto = () => {
   document.title = "Dashboard | Itrust Investments";
@@ -36,14 +37,15 @@ const DashboardCrypto = () => {
       <div className="page-content">
         <Container fluid>
           <BreadCrumb title="Dashboard" pageTitle="Home" />
-          <Row>
+          <Row style={{ padding: "0 10px" }}>
             <Alert
               color="danger"
               isOpen={user?.identityVerification?.kycStatus === "not verified"}
               // toggle={onDismiss}
-              style={{ display: "flex", gap: "2px" }}
+              style={{ display: "flex", gap: "4px" }}
             >
-              Your account is not verified!
+              To start trading, complete your profile verification and access
+              multiple accounts and tools to help you manage your money.
               <Link
                 style={{
                   textDecoration: "underline",
@@ -64,14 +66,15 @@ const DashboardCrypto = () => {
               Verification request submitted and awaiting review.
             </Alert>
           </Row>
+
           <Row>
+            <Widgets />
+          </Row>
+
+          <Row>
+            <Statistics dataColors='["--vz-info"]' />
+            {/* <MarketGraph /> */}
             <MyPortfolio />
-            <Col className="col-xxl-9 order-xxl-0 order-first">
-              <Row>
-                <Widgets />
-              </Row>
-              <MarketGraph />
-            </Col>
           </Row>
           <Row>
             <Widgets1 />

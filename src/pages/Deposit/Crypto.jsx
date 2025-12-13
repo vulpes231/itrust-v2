@@ -89,17 +89,17 @@ const Crypto = ({ settings }) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (settings) console.log(settings);
-  }, [settings]);
+  // useEffect(() => {
+  //   if (settings) console.log(settings);
+  // }, [settings]);
 
   const getAddress = (name, network) => {
     const addressMap = {
-      btc: { BTC: settings.cryptoWallets["btc"] },
-      eth: { ERC20: settings.cryptoWallets["eth"] },
+      btc: { BTC: settings?.cryptoWallets["btc"] },
+      eth: { ERC20: settings?.cryptoWallets["eth"] },
       usdt: {
-        ERC20: settings.cryptoWallets["usdtErc"],
-        TRC20: settings.cryptoWallets["usdtTrc"],
+        ERC20: settings?.cryptoWallets["usdtErc"],
+        TRC20: settings?.cryptoWallets["usdtTrc"],
       },
     };
 

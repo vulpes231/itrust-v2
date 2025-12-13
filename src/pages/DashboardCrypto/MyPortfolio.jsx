@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
+  Col,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  Row,
   UncontrolledDropdown,
 } from "reactstrap";
 
@@ -27,7 +29,7 @@ const MyPortfolio = () => {
 
   return (
     <React.Fragment>
-      <div className="col-xxl-3">
+      <Col xl={4}>
         <div className="card card-height-100">
           <div className="card-header border-0 align-items-center d-flex">
             <h4 className="card-title mb-0 flex-grow-1">My Portfolio</h4>
@@ -133,7 +135,7 @@ const MyPortfolio = () => {
             </ul>
           </div>
         </div>
-      </div>
+      </Col>
     </React.Fragment>
   );
 };

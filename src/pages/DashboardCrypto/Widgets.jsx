@@ -30,7 +30,7 @@ const Widgets = () => {
     return [
       {
         id: 1,
-        label: "Total invested",
+        label: "Total Net Worth",
         counter: financialData?.totalInvested || 0,
         percentage: financialData?.totalProfitPercent || 0,
         decimal: "2",
@@ -39,8 +39,8 @@ const Widgets = () => {
       },
       {
         id: 2,
-        label: "Total change",
-        counter: financialData?.totalProfit || 0,
+        label: "Total Investments",
+        counter: financialData?.totalInvested || 0,
         percentage: financialData?.totalProfitPercent || 0,
         decimal: "2",
         prefix: "$",
@@ -48,7 +48,7 @@ const Widgets = () => {
       },
       {
         id: 3,
-        label: "Daily change",
+        label: "Total Savings",
         counter: financialData?.dailyProfit || 0,
         percentage: financialData?.dailyProfitPercent || 0,
         decimal: "2",
@@ -61,10 +61,10 @@ const Widgets = () => {
   const cryptoWidgets = convertToCryptoWidgets(walletAnalytics);
 
   // useEffect(() => {
-  //   if (cryptoWidgets) {
-  //     console.log(cryptoWidgets);
+  //   if (walletAnalytics) {
+  //     console.log(walletAnalytics);
   //   }
-  // }, [cryptoWidgets]);
+  // }, [walletAnalytics]);
 
   if (getAnalyticsLoading) {
     return <Loader />;
@@ -89,7 +89,10 @@ const Widgets = () => {
                     </span>
                   </div>
                   <div className="flex-grow-1 ms-3">
-                    <p className="text-uppercase fw-bold fs-13 text-muted mb-1">
+                    <p
+                      className="text-uppercase fw-bold fs-13 text-muted mb-1"
+                      style={{ whiteSpace: "nowrap" }}
+                    >
                       {item.label}
                     </p>
                     <h4 className=" mb-0">

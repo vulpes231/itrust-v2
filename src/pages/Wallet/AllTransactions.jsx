@@ -233,9 +233,9 @@ const AllTransactions = () => {
     []
   );
 
-  useEffect(() => {
-    if (action) console.log(action);
-  }, [action]);
+  // useEffect(() => {
+  //   if (action) console.log(action);
+  // }, [action]);
 
   return (
     <React.Fragment>

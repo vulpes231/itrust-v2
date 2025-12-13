@@ -127,7 +127,7 @@ class APIClient {
 
 const getLoggedinUser = () => {
   const user = sessionStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
+  return user;
 };
 
 export { APIClient, setAuthorization, getLoggedinUser };
