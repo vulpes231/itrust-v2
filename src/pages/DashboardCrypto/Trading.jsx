@@ -34,6 +34,7 @@ const Trading = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const timeoutRef = useRef(null);
+  const [tradeType, setTradeType] = useState("market");
 
   const [form, setForm] = useState({
     assetId: "",
@@ -41,6 +42,10 @@ const Trading = () => {
     amount: "",
     orderType: "",
     selectedAsset: null,
+    entry: "",
+    stoploss: "",
+    takeprofit: "",
+    leverage: "",
   });
 
   const mutation = useMutation({
@@ -56,12 +61,21 @@ const Trading = () => {
       amount: form.amount || "",
       orderType: activeTab || "",
       assetType: "",
+      entry: "",
+      stoploss: "",
+      takeprofit: "",
+      leverage: "",
+      executionType: tradeType,
     },
     validationSchema: Yup.object({
       assetId: Yup.string().required("Please Select Asset"),
       walletId: Yup.string().required("Please Select Wallet"),
       amount: Yup.string().required("Please Enter Amount"),
       assetType: Yup.string().required("Please Select Asset Type"),
+      // leverage: Yup.string().required("Please Select Leverage"),
+      // entry: Yup.string().required("Please Enter Entry Point"),
+      // stoploss: Yup.string().required("Please Enter Stop Loss"),
+      // takeprofit: Yup.string().required("Please Enter Take Profit"),
     }),
 
     onSubmit: (values) => {
@@ -98,7 +112,6 @@ const Trading = () => {
     setSearchQuery(asset.name);
     setIsDropdownOpen(false);
 
-    // Update formik values
     validation.setFieldValue("assetId", asset._id);
   };
 
@@ -168,6 +181,18 @@ const Trading = () => {
   const availableWallets =
     wallets && wallets.filter((w) => w.name !== "automated investing");
 
+  const allowedTypes = [
+    { id: "market", label: "Market Order" },
+    { id: "limit", label: "Limit Order" },
+    { id: "stoploss", label: "Stop Loss Order" },
+    { id: "takeprofit", label: "Take Profit Order" },
+    { id: "leverage", label: "Leverage Order" },
+  ];
+
+  function handleTypeChange(e) {
+    setTradeType(e.target.value);
+  }
+
   return (
     <React.Fragment>
       <Col xl={4}>
@@ -207,18 +232,34 @@ const Trading = () => {
           <div className="card-body p-0">
             <TabContent activeTab={activeTab} className="p-0">
               <TabPane tabId="buy">
-                <div className="p-3 bg-warning-subtle">
-                  <div className="float-end ms-2">
-                    <h6 className="text-warning mb-0">
-                      USD Balance :{" "}
-                      <span className="text-body">
-                        {formatCurrency(walletAnalytics?.totalBalance || 0)}
-                      </span>
-                    </h6>
-                  </div>
-                  <h6 className="mb-0 text-danger">
-                    Buy {form?.selectedAsset?.name || "Coin"}
-                  </h6>
+                <div className="p-3 bg-primary-subtle">
+                  <Col xl={5}>
+                    <Input
+                      style={{
+                        textTransform: "capitalize",
+                        border: "none",
+                        backgroundColor: "transparent",
+                        // color: "purple",
+                        outline: "none",
+                      }}
+                      name="tradeType"
+                      value={tradeType}
+                      onChange={handleTypeChange}
+                      type="select"
+                    >
+                      {allowedTypes.map((type) => {
+                        return (
+                          <option
+                            style={{ textTransform: "capitalize" }}
+                            key={type.id}
+                            value={type.id}
+                          >
+                            {type.label}
+                          </option>
+                        );
+                      })}
+                    </Input>
+                  </Col>
                 </div>
                 <div className="p-3">
                   <Row>
@@ -384,7 +425,8 @@ const Trading = () => {
                       </div>
                     </Col>
                   </Row>
-                  <div>
+
+                  <Row>
                     <div className="input-group mb-3">
                       <Label htmlFor="amount" className="form-label">
                         Amount <span className="text-danger">*</span>
@@ -414,7 +456,92 @@ const Trading = () => {
                         </FormFeedback>
                       ) : null}
                     </div>
-                  </div>
+                  </Row>
+                  <Row
+                    style={{ display: tradeType === "limit" ? "flex" : "none" }}
+                  >
+                    <div className="input-group mb-3">
+                      <label className="input-group-text">Entry Point</label>
+                      <Input
+                        name="entry"
+                        type="text"
+                        placeholder="0.00"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.entry || ""}
+                      />
+                    </div>
+                  </Row>
+                  <Row
+                    style={{
+                      display: tradeType === "stoploss" ? "flex" : "none",
+                    }}
+                  >
+                    <Col xl={12}>
+                      <div className="input-group mb-3">
+                        <label className="input-group-text">Leverage</label>
+                        <Input
+                          name="leverage"
+                          type="select"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.leverage || ""}
+                        >
+                          <option value="10X">10X</option>
+                        </Input>
+                      </div>
+                    </Col>
+                    <Col xl={12}>
+                      <div className="input-group mb-3">
+                        <label className="input-group-text">Stop Loss</label>
+                        <Input
+                          name="stoploss"
+                          type="text"
+                          placeholder="0.00"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.stoploss || ""}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row
+                    style={{
+                      display: tradeType === "takeprofit" ? "flex" : "none",
+                    }}
+                  >
+                    <div className="input-group mb-3">
+                      <label className="input-group-text">Take Profit</label>
+                      <Input
+                        name="takeprofit"
+                        type="text"
+                        placeholder="0.00"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.takeprofit || ""}
+                      />
+                    </div>
+                  </Row>
+                  <Row
+                    style={{
+                      display: tradeType === "leverage" ? "flex" : "none",
+                    }}
+                  >
+                    <Col xl={12}>
+                      <div className="input-group mb-3">
+                        <label className="input-group-text">Leverage</label>
+                        <Input
+                          name="leverage"
+                          type="select"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.leverage || ""}
+                        >
+                          <option value="10X">10X</option>
+                        </Input>
+                      </div>
+                    </Col>
+                  </Row>
                   <div className="mt-3 pt-2">
                     <div className="d-flex mb-2">
                       <div className="flex-grow-1">
@@ -427,23 +554,6 @@ const Trading = () => {
                         <h6 className="mb-0">$1.08</h6>
                       </div>
                     </div>
-
-                    {/* <div className="d-flex">
-                      <div className="flex-grow-1">
-                        <p className="mb-0">Estimated Rate</p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <h6 className="mb-0">
-                          {form.selectedAsset
-                            ? `1 ${
-                                form.selectedAsset.symbol
-                              } ~ ${formatCurrency(
-                                form.selectedAsset.priceData.current
-                              )}`
-                            : "Select an asset"}
-                        </h6>
-                      </div>
-                    </div> */}
                   </div>
                   <div className="mt-3 pt-2">
                     <button

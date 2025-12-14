@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Col, Container, Row, Alert } from "reactstrap";
+import { Container, Row, Alert } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
-import MarketGraph from "./MarketGraph";
 import MyCurrencies from "./MyCurrencies";
 import MyPortfolio from "./MyPortfolio";
 import NewsFeed from "./NewsFeed";
@@ -10,7 +9,6 @@ import TopPerformers from "./TopPerformers";
 import Trading from "./Trading";
 import Widgets from "./Widgets";
 import Widgets1 from "./Widgets1";
-import { getLoggedinUser } from "../../helpers/apiHelper";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "../../services/user/user";
@@ -73,7 +71,6 @@ const DashboardCrypto = () => {
 
           <Row>
             <Statistics dataColors='["--vz-info"]' />
-            {/* <MarketGraph /> */}
             <MyPortfolio />
           </Row>
           <Row>
