@@ -3,18 +3,33 @@ import ReactApexChart from "react-apexcharts";
 
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 import { formatCurrency } from "../../constants";
-
-const PortfolioCharts = ({ dataColors, series }) => {
+import { capitalize } from "lodash";
+const PortfolioCharts = ({
+  dataColors,
+  series,
+  selectedWallet,
+  chartData,
+  chartLabels,
+}) => {
   const getChartData = () => {
-    if (!series || !series.length) return [];
-
-    return series.map((wallet) => wallet.totalBalance);
+    if (!chartData || chartData.length === 0) return [100];
+    return chartData;
   };
 
   const getChartLabels = () => {
-    if (!series || !series.length) return [];
+    if (!chartLabels || chartLabels.length === 0) return ["No Data"];
+    return chartLabels;
+  };
 
-    return series.map((wallet) => wallet.name);
+  const getTotalBalance = () => {
+    if (!series || series.length === 0) return 0;
+
+    if (selectedWallet === "All") {
+      return series.reduce((sum, wallet) => sum + wallet.totalBalance, 0);
+    } else {
+      // For single wallet, show its total balance
+      return series.length > 0 ? series[0].totalBalance : 0;
+    }
   };
 
   var donutchartportfolioColors = getChartColorsArray(dataColors);
@@ -25,7 +40,6 @@ const PortfolioCharts = ({ dataColors, series }) => {
       type: "donut",
       height: 224,
     },
-
     plotOptions: {
       pie: {
         size: 100,
@@ -47,21 +61,23 @@ const PortfolioCharts = ({ dataColors, series }) => {
               fontWeight: 500,
               offsetY: 5,
               formatter: function (val) {
-                return "$" + val;
+                if (selectedWallet === "All") {
+                  return "$" + val;
+                }
+                return formatCurrency(getTotalBalance());
               },
             },
             total: {
               show: true,
               fontSize: "13px",
-              label: "Total value",
+              label:
+                selectedWallet === "All"
+                  ? "Total value"
+                  : capitalize(selectedWallet),
               color: "#9599ad",
               fontWeight: 500,
               formatter: function (w) {
-                const totalBalance = series.reduce(
-                  (sum, wallet) => sum + wallet.totalBalance,
-                  0
-                );
-                return formatCurrency(totalBalance);
+                return formatCurrency(getTotalBalance());
               },
             },
           },
@@ -74,25 +90,19 @@ const PortfolioCharts = ({ dataColors, series }) => {
     legend: {
       show: false,
     },
-    yaxis: {
-      labels: {
-        formatter: function (value) {
-          return formatCurrency(value);
-        },
-      },
-    },
     stroke: {
       lineCap: "round",
       width: 2,
     },
     colors: donutchartportfolioColors,
   };
+
   return (
     <React.Fragment>
       <ReactApexChart
         dir="ltr"
         options={options}
-        series={getChartData()} // Pass array of numbers, not objects
+        series={getChartData()}
         type="donut"
         height="224"
         className="apex-charts"
@@ -197,11 +207,9 @@ const WidgetsCharts = ({ seriesData }) => {
           current
       );
 
-      // This line decides green or red — make it bulletproof
-      const isUp = current >= previousClose * 1.00001; // tiny tolerance for floating point
+      const isUp = current >= previousClose * 1.00001;
       const color = isUp ? "#67b173" : "#f17171";
 
-      // Build data points — always include at least start/end for visible line
       const data = [
         p.open || previousClose,
         p.dayLow || previousClose,
@@ -210,7 +218,6 @@ const WidgetsCharts = ({ seriesData }) => {
         previousClose,
       ].filter((v) => typeof v === "number" && !isNaN(v) && v > 0);
 
-      // Fallback: at least show a flat or tiny movement line
       if (data.length < 2) {
         data.push(current);
       }
@@ -218,7 +225,7 @@ const WidgetsCharts = ({ seriesData }) => {
       return {
         name: asset.name || asset.symbol || "Asset",
         data: data,
-        color: color, // This forces green/red correctly
+        color: color,
       };
     });
   };
@@ -254,13 +261,10 @@ const WidgetsCharts = ({ seriesData }) => {
         stops: [0, 90, 100],
       },
     },
-    // Remove global colors[] — let each series define its own color
-    // colors: areachartlitecoinColors,  ← Remove this line!
   };
 
   return (
     <React.Fragment>
-      {/* {console.log("DEBUG SERIES:", convertToSeriesData(seriesData))} */}
       <ReactApexChart
         dir="ltr"
         options={options}

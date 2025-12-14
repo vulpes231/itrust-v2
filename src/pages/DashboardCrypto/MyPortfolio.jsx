@@ -20,11 +20,48 @@ const MyPortfolio = () => {
     queryFn: getUserWallets,
     queryKey: ["wallet"],
   });
-  const [selectedWallet, setSelectedWallet] = useState(
-    wallets && wallets.length > 0 ? wallets[0].name : "Default"
-  );
+
+  // Add "All" as default selection
+  const [selectedWallet, setSelectedWallet] = useState("All");
+
   const onWalletChange = (wallet) => {
     setSelectedWallet(wallet);
+  };
+
+  // Filter wallets based on selection
+  const getFilteredWallets = () => {
+    if (!wallets || wallets.length === 0) return [];
+
+    if (selectedWallet === "All") {
+      return wallets;
+    }
+
+    return wallets.filter((wallet) => wallet.name === selectedWallet);
+  };
+
+  // Get chart data based on selection
+  const getChartData = () => {
+    const filteredWallets = getFilteredWallets();
+    if (!filteredWallets || filteredWallets.length === 0) return [];
+
+    if (selectedWallet === "All") {
+      return filteredWallets.map((wallet) => wallet.totalBalance);
+    } else {
+      // For single wallet, show 100% of that wallet
+      return [100];
+    }
+  };
+
+  // Get chart labels based on selection
+  const getChartLabels = () => {
+    const filteredWallets = getFilteredWallets();
+    if (!filteredWallets || filteredWallets.length === 0) return [];
+
+    if (selectedWallet === "All") {
+      return filteredWallets.map((wallet) => capitalize(wallet.name));
+    } else {
+      return [capitalize(selectedWallet)];
+    }
   };
 
   return (
@@ -45,20 +82,25 @@ const MyPortfolio = () => {
                   </span>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu dropdown-menu-end">
+                  {/* Add "All" option */}
+                  <DropdownItem
+                    onClick={() => onWalletChange("All")}
+                    className={selectedWallet === "All" ? "active" : ""}
+                  >
+                    All
+                  </DropdownItem>
                   {wallets &&
                     wallets.length > 0 &&
                     wallets.map((wallet) => {
                       return (
                         <DropdownItem
                           key={wallet._id}
-                          onClick={() => {
-                            onWalletChange(wallet.name);
-                          }}
+                          onClick={() => onWalletChange(wallet.name)}
                           className={
-                            selectedWallet === wallet._id ? "active" : ""
+                            selectedWallet === wallet.name ? "active" : ""
                           }
                         >
-                          {wallet.name}
+                          {capitalize(wallet.name)}
                         </DropdownItem>
                       );
                     })}
@@ -69,20 +111,34 @@ const MyPortfolio = () => {
           <div className="card-body">
             <div id="portfolio_donut_charts" className="apex-charts" dir="ltr">
               <PortfolioCharts
-                series={wallets}
+                series={getFilteredWallets()}
+                selectedWallet={selectedWallet}
+                chartData={getChartData()}
+                chartLabels={getChartLabels()}
                 dataColors='["--vz-primary", "--vz-info", "--vz-warning", "--vz-success"]'
               />
             </div>
 
-            <ul className="list-group list-group-flush border-dashed mb-0 mt-3 pt-2">
+            {/* Scrollable list container */}
+            <div
+              className="list-group-flush mb-2 mt-3 pt-2"
+              style={{
+                maxHeight: wallets && wallets.length > 3 ? "200px" : "auto",
+                overflowY: wallets && wallets.length > 3 ? "scroll" : "visible",
+                paddingRight: wallets && wallets.length > 3 ? "5px" : "0",
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+              }}
+            >
               {wallets &&
                 wallets.length > 0 &&
-                wallets.map((wallet, index) => {
+                getFilteredWallets().map((wallet, index) => {
                   return (
-                    <li
+                    <div
                       key={wallet._id}
                       className={`list-group-item px-0 ${
-                        index === wallets.length - 1 ? "pb-0" : ""
+                        index === getFilteredWallets().length - 1 ? "pb-0" : ""
                       }`}
                     >
                       <div className="d-flex">
@@ -129,10 +185,10 @@ const MyPortfolio = () => {
                           </p>
                         </div>
                       </div>
-                    </li>
+                    </div>
                   );
                 })}
-            </ul>
+            </div>
           </div>
         </div>
       </Col>
