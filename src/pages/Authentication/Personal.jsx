@@ -13,24 +13,19 @@ import {
   Button,
   Spinner,
 } from "reactstrap";
-
-// Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { registerUser } from "../../services/auth/register";
+import { completeRegister } from "../../services/auth/register";
 import { logo } from "../../assets";
-
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 import { getCurrencies, getNations } from "../../services/location/geo";
 
 const Personal = () => {
   const history = useNavigate();
-
   const [error, setError] = useState("");
 
   const { data: currencies, isLoading: getCurrenciesLoading } = useQuery({
@@ -43,7 +38,7 @@ const Personal = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: registerUser,
+    mutationFn: completeRegister,
     onError: (err) => setError(err.message),
   });
 
@@ -65,24 +60,33 @@ const Personal = () => {
       currencyId: Yup.string().required("Please Select Your Currency"),
     }),
     onSubmit: (values) => {
-      const userForm = JSON.parse(sessionStorage.getItem("credentials"));
       const contactForm = JSON.parse(sessionStorage.getItem("contact"));
-
-      const formData = { ...userForm, ...contactForm, ...values };
-      // console.log("form: ", formData);
+      const formData = { ...contactForm, ...values };
       mutation.mutate(formData);
     },
   });
 
   useEffect(() => {
     if (mutation.isSuccess) {
-      sessionStorage.setItem("token", mutation.data.token);
-      sessionStorage.setItem("user", JSON.stringify(mutation.data.user));
-      sessionStorage.removeItem("credentials");
-      sessionStorage.removeItem("contact");
-      setTimeout(() => history("/dashboard"), 3000);
+      const timeout = setTimeout(() => {
+        sessionStorage.setItem("user", JSON.stringify(mutation.data.user));
+        sessionStorage.removeItem("contact");
+        mutation.reset();
+        window.location.href = "/dashboard";
+        return () => clearTimeout(timeout);
+      }, 3000);
     }
   }, [mutation.isSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      const timeout = setTimeout(() => {
+        mutation.reset();
+        setError("");
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [error]);
 
   document.title = "Register | Personal Information";
 
@@ -134,8 +138,7 @@ const Personal = () => {
                             })}
                             <ToastContainer autoClose={2000} limit={1} />
                             <Alert color="success">
-                              Register User Successfully and Your Redirect To
-                              Login Page...
+                              Profile Updated Redirecting to Dashboard...
                             </Alert>
                           </>
                         ) : null}
@@ -393,10 +396,10 @@ const Personal = () => {
                             {mutation.isPending ? (
                               <Spinner size="sm" className="me-2">
                                 {" "}
-                                Registering user...
+                                Updating...
                               </Spinner>
                             ) : null}
-                            Sign Up
+                            Complete Profile
                           </Button>
                         </div>
 

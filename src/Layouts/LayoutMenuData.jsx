@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLoggedinUser } from "../helpers/apiHelper";
+import { useQuery } from "@tanstack/react-query";
+import { getUserInfo } from "../services/user/user";
+import { getAccessToken } from "../constants";
 
 const Navdata = () => {
+  const token = getAccessToken();
+
+  const { data: user } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!token,
+  });
+
   const history = useNavigate();
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
@@ -125,6 +137,14 @@ const Navdata = () => {
       isHeader: true,
     },
   ];
-  return <React.Fragment>{menuItems}</React.Fragment>;
+
+  // useEffect(() => {
+  //   if (user) console.log(user);
+  // });
+  return (
+    <React.Fragment>
+      {user && user?.accountStatus?.isProfileComplete ? menuItems : []}
+    </React.Fragment>
+  );
 };
 export default Navdata;

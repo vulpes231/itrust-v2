@@ -30,6 +30,8 @@ const authProtectedRoutes = [
     exact: true,
     component: <Navigate to="/dashboard" />,
   },
+  { path: "/contact", component: <Contact /> },
+  { path: "/personal", component: <Personal /> },
   { path: "*", component: <Navigate to="/dashboard" /> },
   { path: "/trade", component: <Market /> },
   { path: "/savings", component: <Savings /> },
@@ -44,8 +46,6 @@ const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPassword /> },
   { path: "/register", component: <Register /> },
-  { path: "/contact", component: <Contact /> },
-  { path: "/personal", component: <Personal /> },
   { path: "/verifyemail", component: <VerifyEmail /> },
 ];
 

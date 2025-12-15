@@ -51,7 +51,7 @@ const Contact = () => {
       zipCode: Yup.string().required("Please Enter Your Zipcode"),
     }),
     onSubmit: (values) => {
-      console.log("sunmit");
+      //
     },
   });
 
@@ -88,7 +88,9 @@ const Contact = () => {
                 <Card className="mt-4">
                   <CardBody className="p-4">
                     <div className="text-center mt-2">
-                      <h5 className="text-primary">Create New Account</h5>
+                      <h5 className="text-primary">
+                        Complete Account Information
+                      </h5>
                       <p className="text-muted">Contact Information</p>
                     </div>
                     <div className="p-2 mt-4">
@@ -96,7 +98,7 @@ const Contact = () => {
                         onSubmit={(e) => {
                           e.preventDefault();
                           validation.handleSubmit();
-                          // console.log(validation.values);
+
                           sessionStorage.setItem(
                             "contact",
                             JSON.stringify(validation.values)
@@ -316,17 +318,6 @@ const Contact = () => {
                         </div>
 
                         <div className="mt-4">
-                          <button
-                            className="btn btn-dark w-100 mb-1"
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              history("/register");
-                            }}
-                          >
-                            Prev
-                          </button>
                           <button
                             className="btn btn-primary w-100"
                             type="submit"

@@ -19,22 +19,33 @@ import { Link, useNavigate } from "react-router-dom";
 import { logo } from "../../assets";
 
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "../../services/auth/register";
+import SuccessToast from "../../components/Common/SuccessToast";
+import ErrorToast from "../../components/Common/ErrorToast";
 
 const Register = () => {
   const history = useNavigate();
+  const [error, setError] = useState("");
 
-  const savedCreds = JSON.parse(sessionStorage.getItem("credentials"));
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onError: (err) => {
+      // console.log(err);
+      setError(err.message);
+    },
+  });
 
   const validation = useFormik({
     enableReinitialize: true,
 
     initialValues: {
-      email: savedCreds?.email || "",
-      firstname: savedCreds?.firstname || "",
-      lastname: savedCreds?.lastname || "",
-      username: savedCreds?.username || "",
-      password: savedCreds?.password || "",
-      confirm_password: savedCreds?.confirm_password || "",
+      email: "",
+      firstname: "",
+      lastname: "",
+      username: "",
+      password: "",
+      confirm_password: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
@@ -47,11 +58,30 @@ const Register = () => {
         .oneOf([Yup.ref("password")], "Confirm Password Doesn't Match"),
     }),
     onSubmit: (values) => {
-      // console.log("form: ", values);
-      sessionStorage.setItem("credentials", JSON.stringify(values));
-      history("/contact");
+      mutation.mutate(values);
     },
   });
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      const timeout = setTimeout(() => {
+        console.log(mutation);
+        sessionStorage.setItem("token", mutation.token);
+        history("/contact");
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [mutation.isSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      const timeout = setTimeout(() => {
+        mutation.reset();
+        setError("");
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [error]);
 
   document.title = "Register | Itrust Investments";
 
@@ -274,8 +304,11 @@ const Register = () => {
                           <button
                             className="btn btn-primary w-100"
                             type="submit"
+                            disabled={mutation.isPending}
                           >
-                            Next
+                            {mutation.isPending
+                              ? "Creating Account..."
+                              : "Signup"}
                           </button>
                         </div>
 
@@ -334,6 +367,23 @@ const Register = () => {
           </Container>
         </div>
       </ParticlesAuth>
+      {mutation.isSuccess && (
+        <SuccessToast
+          isOpen={mutation.isSuccess}
+          onClose={() => mutation.reset()}
+          successMsg={"Account Created Successfully."}
+        />
+      )}
+      {error && (
+        <ErrorToast
+          isOpen={error}
+          onClose={() => {
+            mutation.reset();
+            setError("");
+          }}
+          errorMsg={error}
+        />
+      )}
     </React.Fragment>
   );
 };

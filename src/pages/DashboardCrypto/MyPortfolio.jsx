@@ -64,6 +64,10 @@ const MyPortfolio = () => {
     }
   };
 
+  useEffect(() => {
+    if (wallets) console.log(wallets);
+  }, [wallets]);
+
   return (
     <React.Fragment>
       <Col xl={4}>
