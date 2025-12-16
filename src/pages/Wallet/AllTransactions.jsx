@@ -22,7 +22,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { getTransactions } from "../../services/user/transactions";
 import { getAccessToken } from "../../constants";
-import { auto, broke, btc, cash, eth, ltc } from "../../assets";
+import { auto, broke, btc, cash, eth, ltc, usdt } from "../../assets";
 import Deposit from "../Deposit";
 import Withdraw from "../Withdraw";
 import Transfer from "../Transfer";
@@ -110,7 +110,7 @@ const AllTransactions = () => {
   function getCurrencyImage(currency) {
     const images = {
       cash: cash,
-      usdt: eth,
+      usdt: usdt,
       btc: btc,
       eth: eth,
       bank: ltc,
@@ -140,7 +140,7 @@ const AllTransactions = () => {
         ),
       },
       {
-        header: "Timestamp",
+        header: "Date",
         accessorKey: "time",
         enableColumnFilter: false,
         cell: (cell) => (
@@ -151,13 +151,13 @@ const AllTransactions = () => {
         ),
       },
       {
-        header: "Currency",
+        header: "Method",
         accessorKey: "currency",
         enableColumnFilter: false,
         cell: (cell) => (
           <div className="d-flex align-items-center">
             <img
-              src={cell.row.original.image}
+              src={getCurrencyImage(cell.getValue())}
               alt={cell.getValue()}
               className="avatar-xxs me-2"
               onError={(e) => {
@@ -168,16 +168,16 @@ const AllTransactions = () => {
           </div>
         ),
       },
+      // {
+      //   header: "From",
+      //   accessorKey: "from",
+      //   enableColumnFilter: false,
+      //   cell: (cell) => {
+      //     return <FromCol {...cell} />;
+      //   },
+      // },
       {
-        header: "From",
-        accessorKey: "from",
-        enableColumnFilter: false,
-        cell: (cell) => {
-          return <FromCol {...cell} />;
-        },
-      },
-      {
-        header: "To",
+        header: "Account",
         accessorKey: "to",
         enableColumnFilter: false,
         cell: (cell) => {
@@ -200,14 +200,14 @@ const AllTransactions = () => {
           return <TransactionID {...cell} />;
         },
       },
-      {
-        header: "Type",
-        accessorKey: "type",
-        enableColumnFilter: false,
-        cell: (cell) => {
-          return <TypeCol {...cell} />;
-        },
-      },
+      // {
+      //   header: "Type",
+      //   accessorKey: "type",
+      //   enableColumnFilter: false,
+      //   cell: (cell) => {
+      //     return <TypeCol {...cell} />;
+      //   },
+      // },
       {
         header: "Amount",
         accessorKey: "amount",

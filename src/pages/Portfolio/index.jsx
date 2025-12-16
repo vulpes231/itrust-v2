@@ -7,6 +7,7 @@ import MarketStatus from "./MarketStatus";
 import Widgets from "./Widgets";
 import RecentTransaction from "./RecentTransaction";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
+import TopPerformers from "../DashboardCrypto/TopPerformers";
 
 const Portfolio = () => {
   document.title = "Portfolio | Itrust Investments";
@@ -25,6 +26,7 @@ const Portfolio = () => {
             <Col xxl={3}>
               <Widgets />
               <RecentTransaction />
+              <TopPerformers />
             </Col>
           </Row>
         </Container>

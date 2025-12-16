@@ -313,7 +313,7 @@ const MarketGraph = ({ dataColors }) => {
   };
   return (
     <React.Fragment>
-      <Col xxl={9}>
+      <Col xl={8}>
         <Card className="card-height-100">
           <CardHeader className="border-0 align-items-center d-flex">
             <h4 className="card-title mb-0 flex-grow-1">Market Graph</h4>

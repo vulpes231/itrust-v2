@@ -49,14 +49,14 @@ const MarketStatus = () => {
 
   const columns = useMemo(
     () => [
-      {
-        header: "Date",
-        accessorKey: "createdAt",
-        enableColumnFilter: false,
-        cell: (cell) => {
-          return <Date {...cell} />;
-        },
-      },
+      // {
+      //   header: "Date",
+      //   accessorKey: "createdAt",
+      //   enableColumnFilter: false,
+      //   cell: (cell) => {
+      //     return <Date {...cell} />;
+      //   },
+      // },
       {
         header: "Name",
         accessorKey: "coinName",
@@ -94,7 +94,7 @@ const MarketStatus = () => {
         },
       },
       {
-        header: "Amount",
+        header: "Cost",
         accessorKey: "avgPrice",
         enableColumnFilter: false,
         cell: (cell) => {
@@ -102,7 +102,7 @@ const MarketStatus = () => {
         },
       },
       {
-        header: "Order Value",
+        header: "Current Value",
         accessorKey: "value",
         enableColumnFilter: false,
         cell: (cell) => {
@@ -154,9 +154,9 @@ const MarketStatus = () => {
     []
   );
 
-  useEffect(() => {
-    if (trades) console.log(trades);
-  }, [trades]);
+  // useEffect(() => {
+  //   if (trades) console.log(trades);
+  // }, [trades]);
 
   return (
     <React.Fragment>

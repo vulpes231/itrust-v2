@@ -10,6 +10,7 @@ import dash from "./images/svg/crypto-icons/dash.svg";
 import fil from "./images/svg/crypto-icons/fil.svg";
 import xmr from "./images/svg/crypto-icons/xmr.svg";
 import dot from "./images/svg/crypto-icons/dot.svg";
+import usdt from "./images/svg/crypto-icons/usdt.svg";
 import verification from "./images/verification-img.png";
 
 export {
@@ -26,4 +27,5 @@ export {
   xmr,
   dot,
   verification,
+  usdt,
 };

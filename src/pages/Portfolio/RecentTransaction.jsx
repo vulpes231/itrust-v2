@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import { Link } from "react-router-dom";
-import { btc, ltc, xmr, fil, dot } from "../../assets";
 import { useQuery } from "@tanstack/react-query";
 import { getUserTrades } from "../../services/user/trade";
 import { formatCurrency, getAccessToken } from "../../constants";

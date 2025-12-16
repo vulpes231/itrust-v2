@@ -38,6 +38,7 @@ const Trading = () => {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const timeoutRef = useRef(null);
   const [tradeType, setTradeType] = useState("market");
+  const [selectedAcct, setSelectedAcct] = useState("");
   const [selectedAsset, setSelectedAsset] = useState("");
 
   const [form, setForm] = useState({
@@ -117,9 +118,9 @@ const Trading = () => {
       assetId: asset._id,
       selectedAsset: asset,
     }));
+    setSelectedAsset(asset);
     setSearchQuery(asset.name);
     setIsDropdownOpen(false);
-    setSelectedAsset(asset);
 
     validation.setFieldValue("assetId", asset._id);
   };
@@ -201,6 +202,14 @@ const Trading = () => {
   function handleTypeChange(e) {
     setTradeType(e.target.value);
   }
+
+  const walletId = validation.values.walletId;
+  useEffect(() => {
+    if (walletId) {
+      const wallet = wallets.find((wallet) => wallet._id === walletId);
+      setSelectedAcct(wallet);
+    }
+  }, [walletId]);
 
   return (
     <React.Fragment>
@@ -303,6 +312,12 @@ const Trading = () => {
                               );
                             })}
                         </Input>
+                        {selectedAcct && (
+                          <div className="mt-2">
+                            Buy Power:{" "}
+                            {formatCurrency(selectedAcct.availableBalance)}
+                          </div>
+                        )}
                         {validation.touched.walletId &&
                         validation.errors.walletId ? (
                           <FormFeedback type="invalid">

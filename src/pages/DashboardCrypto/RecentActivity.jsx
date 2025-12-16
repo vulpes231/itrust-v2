@@ -19,6 +19,8 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactions } from "../../services/user/transactions";
 import { capitalize, upperCase } from "lodash";
+import { formatCurrency } from "../../constants";
+import { format } from "date-fns";
 
 const RecentActivity = () => {
   const queryData = { limit: 7 };
@@ -65,42 +67,58 @@ const RecentActivity = () => {
                     return (
                       <div
                         key={trx._id}
-                        className="d-flex align-items-center mb-1"
+                        className="d-flex align-items-start mb-3"
                       >
                         <div className="avatar-xs flex-shrink-0">
-                          <span className="avatar-title bg-light rounded-circle">
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "30px",
+                              height: "30px",
+                              borderRadius: "50%",
+                            }}
+                            className="bg-light"
+                          >
                             {trx.type === "deposit" ? (
-                              <FeatherIcon
-                                icon="arrow-down-circle"
-                                className="icon-dual-success icon-sm"
-                              />
+                              <i class="ri-arrow-left-down-fill icon-dual-success icon-sm"></i>
                             ) : trx.type === "transfer" ? (
                               <FeatherIcon
                                 icon="send"
                                 className="icon-dual-warning icon-sm"
                               />
                             ) : trx.type === "withdraw" ? (
-                              <FeatherIcon
-                                icon="arrow-up-circle"
-                                className="icon-dual-danger icon-sm"
-                              />
+                              <i class="ri-arrow-right-up-fill icon-dual-danger icon-sm"></i>
                             ) : null}
                           </span>
                         </div>
                         <div className="flex-grow-1 ms-3">
                           <h6 className="fs-15 mb-1">
                             {trx.type === "deposit"
-                              ? `Deposit ${upperCase(trx?.method?.mode)}`
+                              ? `Deposit`
                               : trx.type === "transfer"
-                              ? `Transfer ${upperCase(trx?.method?.mode)}`
+                              ? `Transfer`
                               : trx.type === "withdraw"
-                              ? `Withdraw ${upperCase(trx?.method?.mode)}`
+                              ? `Withdraw`
                               : null}
                           </h6>
-                          <p className="text-muted fs-13 mb-0">
-                            <i className="mdi mdi-circle-medium text-success fs-15 align-middle"></i>{" "}
+                          <p className=" fs-13 mb-0">
+                            {trx.method.mode === "btc"
+                              ? "Bitcoin"
+                              : trx.method.mode === "usdt"
+                              ? "USDT"
+                              : trx.method.mode === "eth"
+                              ? "Ethereum"
+                              : capitalize(trx?.method?.mode)}
+                            <i className="mdi mdi-circle-medium fs-15 align-middle text-muted"></i>{" "}
                             {capitalize(trx?.account)}
                           </p>
+                          <span className="text-muted">
+                            {trx.createdAt
+                              ? format(trx.createdAt, "MMM dd, yyyy")
+                              : null}
+                          </span>
                         </div>
                         <div className="flex-shrink-0 text-end">
                           <h6 className="mb-1 text-success"></h6>
@@ -115,7 +133,14 @@ const RecentActivity = () => {
                                 : null
                             }`}
                           >
-                            {trx?.amount} USD
+                            {trx.type === "deposit"
+                              ? `+`
+                              : trx.type === "withdraw"
+                              ? `-`
+                              : null}
+                            {trx?.amount
+                              ? formatCurrency(trx.amount)
+                              : formatCurrency(0)}
                           </p>
                         </div>
                       </div>

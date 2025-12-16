@@ -14,7 +14,7 @@ const DetailsCol = (cell) => {
 };
 
 const TransactionID = (cell) => {
-  return <React.Fragment>{cell.getValue().slice(0, 10)}</React.Fragment>;
+  return <React.Fragment>{cell.getValue().slice(0, 16)}</React.Fragment>;
 };
 
 const TypeCol = (cell) => {
