@@ -69,7 +69,7 @@ const Widgets = () => {
                 <CountUp
                   start={0}
                   end={
-                    walletAnalytics?.availableBalnce
+                    walletAnalytics?.availableBalance
                       ?.toFixed(2)
                       .split(".")[0] || 0
                   }

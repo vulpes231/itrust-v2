@@ -1,23 +1,27 @@
-import { useEffect, useState } from "react";
-import { getLoggedinUser } from "../helpers/apiHelper";
+import { useQuery } from "@tanstack/react-query";
 import { getAccessToken } from "../constants";
+import { getUserInfo } from "../services/user/user";
 
 const useProfile = () => {
-	const userProfileSession = getLoggedinUser();
-	var token = getAccessToken();
-	const [loading, setLoading] = useState(userProfileSession ? false : true);
-	const [userProfile, setUserProfile] = useState(
-		userProfileSession ? userProfileSession : null
-	);
+  const token = getAccessToken();
 
-	useEffect(() => {
-		const userProfileSession = getLoggedinUser();
-		var token = userProfileSession && userProfileSession["token"];
-		setUserProfile(userProfileSession ? userProfileSession : null);
-		setLoading(token ? false : true);
-	}, []);
+  const {
+    data: userProfile,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!token,
+    retry: 1,
+  });
 
-	return { userProfile, loading, token };
+  return {
+    userProfile,
+    loading: isLoading,
+    token: token,
+  };
 };
 
 export { useProfile };

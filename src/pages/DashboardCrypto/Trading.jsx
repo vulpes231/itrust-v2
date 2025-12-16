@@ -26,6 +26,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { openPosition } from "../../services/user/trade";
 import Loader from "../../components/Common/Loader";
+import ErrorToast from "../../components/Common/ErrorToast";
+import SuccessToast from "../../components/Common/SuccessToast";
+import { capitalize } from "lodash";
 
 const Trading = () => {
   const [activeTab, setActiveTab] = useState("buy");
@@ -35,6 +38,7 @@ const Trading = () => {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const timeoutRef = useRef(null);
   const [tradeType, setTradeType] = useState("market");
+  const [selectedAsset, setSelectedAsset] = useState("");
 
   const [form, setForm] = useState({
     assetId: "",
@@ -64,7 +68,7 @@ const Trading = () => {
       entry: "",
       stoploss: "",
       takeprofit: "",
-      leverage: "",
+      leverage: tradeType === "leverage" || tradeType === "stoploss" ? "5" : "",
       executionType: tradeType,
     },
     validationSchema: Yup.object({
@@ -72,7 +76,11 @@ const Trading = () => {
       walletId: Yup.string().required("Please Select Wallet"),
       amount: Yup.string().required("Please Enter Amount"),
       assetType: Yup.string().required("Please Select Asset Type"),
-      // leverage: Yup.string().required("Please Select Leverage"),
+      leverage: Yup.string().when("executionType", {
+        is: (value) => value === "leverage" || value === "stoploss",
+        then: (schema) => schema.required("Please select leverage"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
       // entry: Yup.string().required("Please Enter Entry Point"),
       // stoploss: Yup.string().required("Please Enter Stop Loss"),
       // takeprofit: Yup.string().required("Please Enter Take Profit"),
@@ -111,6 +119,7 @@ const Trading = () => {
     }));
     setSearchQuery(asset.name);
     setIsDropdownOpen(false);
+    setSelectedAsset(asset);
 
     validation.setFieldValue("assetId", asset._id);
   };
@@ -485,10 +494,21 @@ const Trading = () => {
                           type="select"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
-                          value={validation.values.leverage || ""}
+                          value={validation.values.leverage}
                         >
-                          <option value="10X">10X</option>
+                          <option value="">Select Leverage</option>
+                          <option value="5">5x</option>
+                          <option value="10">10x</option>
+                          <option value="20">20X</option>
+                          <option value="30">30X</option>
+                          <option value="50">50X</option>
                         </Input>
+                        {validation.touched.leverage &&
+                        validation.errors.leverage ? (
+                          <div className="invalid-feedback d-block">
+                            {validation.errors.leverage}
+                          </div>
+                        ) : null}
                       </div>
                     </Col>
                     <Col xl={12}>
@@ -535,10 +555,21 @@ const Trading = () => {
                           type="select"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
-                          value={validation.values.leverage || ""}
+                          value={validation.values.leverage}
                         >
-                          <option value="10X">10X</option>
+                          <option value="">Select Leverage</option>
+                          <option value="5">5x</option>
+                          <option value="10">10x</option>
+                          <option value="20">20X</option>
+                          <option value="30">30X</option>
+                          <option value="50">50X</option>
                         </Input>
+                        {validation.touched.leverage &&
+                        validation.errors.leverage ? (
+                          <div className="invalid-feedback d-block">
+                            {validation.errors.leverage}
+                          </div>
+                        ) : null}
                       </div>
                     </Col>
                   </Row>
@@ -692,6 +723,27 @@ const Trading = () => {
         </Card>
       </Col>
       {/* {mutation.isPending && <Loader />} */}
+      {error && (
+        <ErrorToast
+          isOpen={error}
+          onClose={() => {
+            setError("");
+            mutation.reset();
+          }}
+          errorMsg={error}
+        />
+      )}
+      {mutation.isSuccess && (
+        <SuccessToast
+          isOpen={mutation.isSuccess}
+          onClose={() => {
+            mutation.reset();
+          }}
+          successMsg={`${capitalize(validation.values.orderType)} position ${
+            validation.values.orderType === "buy" ? "Opened" : "Closed"
+          }`}
+        />
+      )}
     </React.Fragment>
   );
 };

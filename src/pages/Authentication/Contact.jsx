@@ -88,9 +88,7 @@ const Contact = () => {
                 <Card className="mt-4">
                   <CardBody className="p-4">
                     <div className="text-center mt-2">
-                      <h5 className="text-primary">
-                        Complete Account Information
-                      </h5>
+                      <h5 className="text-primary">Complete Account</h5>
                       <p className="text-muted">Contact Information</p>
                     </div>
                     <div className="p-2 mt-4">

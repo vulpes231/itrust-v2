@@ -39,20 +39,17 @@ const MyPortfolio = () => {
     return wallets.filter((wallet) => wallet.name === selectedWallet);
   };
 
-  // Get chart data based on selection
   const getChartData = () => {
     const filteredWallets = getFilteredWallets();
-    if (!filteredWallets || filteredWallets.length === 0) return [];
+    if (!filteredWallets || filteredWallets.length === 0) return [100];
 
     if (selectedWallet === "All") {
       return filteredWallets.map((wallet) => wallet.totalBalance);
     } else {
-      // For single wallet, show 100% of that wallet
       return [100];
     }
   };
 
-  // Get chart labels based on selection
   const getChartLabels = () => {
     const filteredWallets = getFilteredWallets();
     if (!filteredWallets || filteredWallets.length === 0) return [];
@@ -64,9 +61,9 @@ const MyPortfolio = () => {
     }
   };
 
-  useEffect(() => {
-    if (wallets) console.log(wallets);
-  }, [wallets]);
+  // useEffect(() => {
+  //   if (wallets) console.log(wallets);
+  // }, [wallets]);
 
   return (
     <React.Fragment>
@@ -167,10 +164,10 @@ const MyPortfolio = () => {
                             <i
                               className={`mdi mdi-circle fs-10 align-middle  ${
                                 wallet.name === "cash"
-                                  ? "text-warning"
-                                  : wallet.name === "brokerage"
                                   ? "text-primary"
-                                  : "text-success"
+                                  : wallet.name === "brokerage"
+                                  ? "text-warning"
+                                  : "text-info"
                               }  me-1`}
                             ></i>
                             {wallet.name === "cash"

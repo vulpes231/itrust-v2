@@ -4,6 +4,7 @@ import ReactApexChart from "react-apexcharts";
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 import { formatCurrency } from "../../constants";
 import { capitalize } from "lodash";
+
 const PortfolioCharts = ({
   dataColors,
   series,
@@ -12,12 +13,25 @@ const PortfolioCharts = ({
   chartLabels,
 }) => {
   const getChartData = () => {
+    // When there's no data or all values are zero, return [100] to show full circle
     if (!chartData || chartData.length === 0) return [100];
+
+    // Check if all balances are zero
+    const totalBalance = getTotalBalance();
+    if (totalBalance === 0) return [100];
+
     return chartData;
   };
 
   const getChartLabels = () => {
     if (!chartLabels || chartLabels.length === 0) return ["No Data"];
+
+    // When balance is zero but we have wallets, show wallet names
+    const totalBalance = getTotalBalance();
+    if (totalBalance === 0 && chartLabels.length > 0) {
+      return chartLabels;
+    }
+
     return chartLabels;
   };
 
@@ -27,12 +41,17 @@ const PortfolioCharts = ({
     if (selectedWallet === "All") {
       return series.reduce((sum, wallet) => sum + wallet.totalBalance, 0);
     } else {
-      // For single wallet, show its total balance
       return series.length > 0 ? series[0].totalBalance : 0;
     }
   };
 
   var donutchartportfolioColors = getChartColorsArray(dataColors);
+
+  // Ensure we have at least one color for the chart
+  const chartColors =
+    donutchartportfolioColors.length > 0
+      ? donutchartportfolioColors
+      : ["#727cf5"]; // Fallback color
 
   var options = {
     labels: getChartLabels(),
@@ -61,6 +80,10 @@ const PortfolioCharts = ({
               fontWeight: 500,
               offsetY: 5,
               formatter: function (val) {
+                const totalBalance = getTotalBalance();
+                if (totalBalance === 0) {
+                  return "$0.00";
+                }
                 if (selectedWallet === "All") {
                   return "$" + val;
                 }
@@ -94,7 +117,7 @@ const PortfolioCharts = ({
       lineCap: "round",
       width: 2,
     },
-    colors: donutchartportfolioColors,
+    colors: chartColors,
   };
 
   return (

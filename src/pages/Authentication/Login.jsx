@@ -77,8 +77,8 @@ const Login = (props) => {
       sessionStorage.setItem("user", JSON.stringify(mutation.data.user));
       const user = mutation.data.user;
       if (user && user.accountStatus) {
-        if (!user.accountStatus.emailVerified) {
-          window.location.href = "/contact";
+        if (user.accountStatus.emailVerified) {
+          // window.location.href = "/verifyemail";
         } else if (!user.accountStatus.isProfileComplete) {
           window.location.href = "/contact";
         } else if (user.accountStatus.banned) {

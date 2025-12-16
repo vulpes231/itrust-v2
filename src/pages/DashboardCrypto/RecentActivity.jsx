@@ -60,8 +60,7 @@ const RecentActivity = () => {
           <CardBody className="p-0">
             <SimpleBar style={{ height: "390px" }}>
               <div className="p-3">
-                {filteredtrnxs &&
-                  filteredtrnxs.length > 0 &&
+                {filteredtrnxs && filteredtrnxs.length > 0 ? (
                   filteredtrnxs.map((trx) => {
                     return (
                       <div
@@ -121,7 +120,10 @@ const RecentActivity = () => {
                         </div>
                       </div>
                     );
-                  })}
+                  })
+                ) : (
+                  <div>You have no transaction.</div>
+                )}
 
                 <div className="mt-3 text-center">
                   <Link to="#" className="text-muted text-decoration-underline">

@@ -4,7 +4,14 @@ import TableContainer from "../../components/Common/TableContainer";
 import { marketStatus } from "../../common/data";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Quantity, AvgPrice, CurrentValue, Returns } from "./MarketStatusCol";
+import {
+  Quantity,
+  AvgPrice,
+  CurrentValue,
+  Returns,
+  OrderType,
+  Date,
+} from "./MarketStatusCol";
 import { getUserTrades } from "../../services/user/trade";
 import { formatCurrency, getAccessToken } from "../../constants";
 
@@ -43,6 +50,14 @@ const MarketStatus = () => {
   const columns = useMemo(
     () => [
       {
+        header: "Date",
+        accessorKey: "createdAt",
+        enableColumnFilter: false,
+        cell: (cell) => {
+          return <Date {...cell} />;
+        },
+      },
+      {
         header: "Name",
         accessorKey: "coinName",
         enableColumnFilter: false,
@@ -63,6 +78,14 @@ const MarketStatus = () => {
         ),
       },
       {
+        header: "Type",
+        accessorKey: "orderType",
+        enableColumnFilter: false,
+        cell: (cell) => {
+          return <OrderType {...cell} />;
+        },
+      },
+      {
         header: "Quantity",
         accessorKey: "quantity",
         enableColumnFilter: false,
@@ -79,7 +102,7 @@ const MarketStatus = () => {
         },
       },
       {
-        header: "Current Value",
+        header: "Order Value",
         accessorKey: "value",
         enableColumnFilter: false,
         cell: (cell) => {
@@ -87,8 +110,8 @@ const MarketStatus = () => {
         },
       },
       {
-        header: "Total Return",
-        accessorKey: "returns",
+        header: "Price",
+        accessorKey: "execution.price",
         enableColumnFilter: false,
         cell: (cell) => {
           return <Returns {...cell} />;
@@ -105,7 +128,7 @@ const MarketStatus = () => {
             }
           >
             <i className={cell.row.original.icon + " align-middle me-1"}></i>
-            {cell.getValue()}%
+            {parseFloat(cell.getValue()).toFixed(2)}%
           </h6>
         ),
       },
@@ -130,6 +153,10 @@ const MarketStatus = () => {
     ],
     []
   );
+
+  useEffect(() => {
+    if (trades) console.log(trades);
+  }, [trades]);
 
   return (
     <React.Fragment>

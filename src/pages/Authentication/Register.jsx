@@ -64,10 +64,12 @@ const Register = () => {
 
   useEffect(() => {
     if (mutation.isSuccess) {
+      sessionStorage.setItem("token", mutation.data.token);
       const timeout = setTimeout(() => {
-        console.log(mutation);
-        sessionStorage.setItem("token", mutation.token);
-        history("/contact");
+        // console.log(mutation);
+        const tok = sessionStorage.getItem("token");
+        console.log(tok);
+        window.location.href = "/contact";
       }, 3000);
       return () => clearTimeout(timeout);
     }
@@ -370,7 +372,10 @@ const Register = () => {
       {mutation.isSuccess && (
         <SuccessToast
           isOpen={mutation.isSuccess}
-          onClose={() => mutation.reset()}
+          onClose={() => {
+            // history("/contact");
+            mutation.reset();
+          }}
           successMsg={"Account Created Successfully."}
         />
       )}

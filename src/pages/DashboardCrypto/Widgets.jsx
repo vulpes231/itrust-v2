@@ -31,7 +31,7 @@ const Widgets = () => {
       {
         id: 1,
         label: "Total Net Worth",
-        counter: financialData?.totalInvested || 0,
+        counter: financialData?.totalBalance || 0,
         percentage: financialData?.totalProfitPercent || 0,
         decimal: "2",
         prefix: "$",
