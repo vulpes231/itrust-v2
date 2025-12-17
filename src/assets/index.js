@@ -13,6 +13,8 @@ import dot from "./images/svg/crypto-icons/dot.svg";
 import usdt from "./images/svg/crypto-icons/usdt.svg";
 import verification from "./images/verification-img.png";
 
+import dep from "./dep.png";
+
 export {
   logo,
   avatar1,
@@ -28,4 +30,5 @@ export {
   dot,
   verification,
   usdt,
+  dep,
 };

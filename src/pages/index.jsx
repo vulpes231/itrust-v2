@@ -7,14 +7,20 @@ import Register from "./Authentication/Register";
 import UserProfile from "./Authentication/UserProfile";
 import VerifyEmail from "./Authentication/VerifyEmail";
 import DashboardCrypto from "./DashboardCrypto";
+import Deposit from "./Deposit";
 import KYCVerification from "./Kyc";
 import Market from "./Market";
 import Portfolio from "./Portfolio";
 import Savings from "./Savings";
+import Transfer from "./Transfer";
 import Wallet from "./Wallet";
+import Withdraw from "./Withdraw";
 
 export {
   Contact,
+  Deposit,
+  Withdraw,
+  Transfer,
   Personal,
   Register,
   Login,

@@ -16,6 +16,9 @@ import {
   Portfolio,
   Wallet,
   KYCVerification,
+  Deposit,
+  Withdraw,
+  Transfer,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -39,6 +42,9 @@ const authProtectedRoutes = [
   { path: "/portfolio", component: <Portfolio /> },
   { path: "/cash", component: <Wallet /> },
   { path: "/verifyaccount", component: <KYCVerification /> },
+  { path: "/deposit", component: <Deposit /> },
+  { path: "/withdraw", component: <Withdraw /> },
+  { path: "/transfer", component: <Transfer /> },
 ];
 
 const publicRoutes = [

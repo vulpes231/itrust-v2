@@ -83,7 +83,7 @@ const ProfileDropdown = () => {
             <span className="align-middle">
               Balance :{" "}
               <b>
-                {walletAnalytics.availableBalance
+                {walletAnalytics && walletAnalytics.availableBalance
                   ? formatCurrency(walletAnalytics.availableBalance)
                   : formatCurrency(0)}
               </b>

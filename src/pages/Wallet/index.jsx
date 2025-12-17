@@ -5,14 +5,14 @@ import Widgets from "./Widgets";
 import BreadCrumb from "../../components/Common/BreadCrumb";
 
 const Wallet = () => {
-  document.title = "Wallet | Itrust Investments";
+  document.title = "Cash Account | Itrust Investments";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb title="Cash" pageTitle="History" />
-          <Row>
+          <BreadCrumb title="Cash" pageTitle="Account" />
+          <Row className="p-2">
             <Widgets />
           </Row>
           <AllTransactions />

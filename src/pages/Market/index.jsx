@@ -7,7 +7,7 @@ import BuySellCoin from "./BuySellCoin";
 import Market from "./Market";
 
 const BuySell = () => {
-  document.title = "Buy & Sell | Velzon - React Admin & Dashboard Template";
+  document.title = "Buy & Sell | Itrust Investments";
 
   return (
     <React.Fragment>

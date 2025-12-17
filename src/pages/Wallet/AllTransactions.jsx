@@ -261,7 +261,7 @@ const AllTransactions = () => {
         </Col>
         <div className="col-sm-auto ms-auto">
           <div className="d-flex gap-2">
-            <button
+            {/* <button
               type="button"
               // data-bs-toggle="modal"
               className="btn btn-info"
@@ -284,7 +284,7 @@ const AllTransactions = () => {
               onClick={() => selectAction("transfer")}
             >
               Transfer
-            </button>
+            </button> */}
           </div>
         </div>
       </Row>

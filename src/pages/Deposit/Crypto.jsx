@@ -9,65 +9,69 @@ import * as Yup from "yup";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { formatCurrency } from "../../constants";
+import { CenterSpan, CustomSpan, FlexRow } from "./DepositUtils";
+import { FaDollarSign } from "react-icons/fa";
+import { btc, dep, eth, usdt } from "../../assets";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 const Crypto = ({ settings }) => {
   const [error, setError] = useState("");
-  const [depositAcct, setDepositAccount] = useState("");
+  const [selectedMode, setSelectedMode] = useState("");
 
-  const [form, setForm] = useState({
-    amount: "",
-    method: "",
-    network: "",
-    account: "",
-  });
-
-  const { data: wallets } = useQuery({
-    queryFn: getUserWallets,
-    queryKey: ["wallets"],
-  });
+  const handleMode = (asset) => {
+    setSelectedMode(asset);
+  };
 
   const cryptoMutation = useMutation({
     mutationFn: () => depositFunds(cryptoValidation.values),
     onError: (err) => setError(err.message),
   });
 
+  const data = JSON.parse(sessionStorage.getItem("deposit"));
+
   const cryptoValidation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      method: form.method || "",
-      account: form.account || "",
-      network: form.network || "",
-      amount: form.amount || "",
+      method: selectedMode?.symbol || "",
+      account: "cash",
+      network: selectedMode?.network || "",
+      amount: data.amount || "",
     },
     validationSchema: Yup.object({
-      account: Yup.string().required("Select deposit account"),
       method: Yup.string().required("Select crypto method"),
       network: Yup.string().required("Select crypto network"),
       amount: Yup.string().required("Enter deposit amount"),
     }),
     onSubmit: (values) => {
-      console.log("Submit cliked");
+      console.log("Submit clicked");
       console.log(values);
-      cryptoMutation.mutate();
+      // cryptoMutation.mutate();
     },
     validateOnMount: true,
   });
+
   const methods = [
-    { id: "btc", label: "Bitcoin (BTC)", network: ["BTC"] },
-    { id: "eth", label: "Ethereum (ETH)", network: ["ERC20"] },
-    { id: "usdt", label: "Tether (USDT)", network: ["ERC20", "TRC20"] },
+    { id: "btc", label: "Bitcoin", network: "BTC", img: btc, symbol: "BTC" },
+    { id: "eth", label: "Ethereum", network: "ERC20", img: eth, symbol: "ETH" },
+    {
+      id: "usdtErc",
+      label: "Tether",
+      network: "ERC20",
+      img: usdt,
+      symbol: "USDT",
+    },
+    {
+      id: "usdtTrc",
+      label: "Tether",
+      network: "TRC20",
+      img: usdt,
+      symbol: "USDT",
+    },
   ];
 
   const getNetworks = (method) => {
     return methods.find((mt) => mt.id === method).network;
   };
-
-  useEffect(() => {
-    if (wallets) {
-      const wallet = wallets.find((wallet) => wallet.name === "cash");
-      setDepositAccount(wallet);
-    }
-  }, [wallets]);
 
   useEffect(() => {
     if (cryptoMutation.isSuccess) {
@@ -107,118 +111,131 @@ const Crypto = ({ settings }) => {
   };
 
   return (
-    <Row className="g-3">
-      <Col lg={6}>
-        <div>
-          <Label for="country-select" className="form-label">
-            Account
-          </Label>
-          <Input
-            id="account"
-            name="account"
-            className="form-control"
-            type="select"
-            onChange={cryptoValidation.handleChange}
-            onBlur={cryptoValidation.handleBlur}
-            value={cryptoValidation.values.account || ""}
-            invalid={
-              cryptoValidation.touched.account &&
-              cryptoValidation.errors.account
-                ? true
-                : false
-            }
+    <Row className="g-3 p-4">
+      <div className="pb-3">
+        <FlexRow>
+          <span
+            className="bg-primary d-flex align-items-center justify-content-center"
+            style={{
+              fontSize: "25px",
+              fontWeight: 600,
+              color: "#fff",
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+            }}
           >
-            <option value="">Select Account</option>
-            {depositAcct && (
-              <option value={depositAcct.name}>
-                {capitalize(depositAcct.name)} Account
-              </option>
-            )}
-          </Input>
-          {cryptoValidation.touched.account &&
-          cryptoValidation.errors.account ? (
-            <FormFeedback type="invalid">
-              {cryptoValidation.errors.account}
-            </FormFeedback>
-          ) : null}
-        </div>
-      </Col>
-      <Col lg={6}>
-        <div>
-          <Label for="coin" className="form-label">
-            Method
-          </Label>
-          <Input
-            id="method"
-            name="method"
-            className="form-control"
-            type="select"
-            onChange={cryptoValidation.handleChange}
-            onBlur={cryptoValidation.handleBlur}
-            value={cryptoValidation.values.method || ""}
-            invalid={
-              cryptoValidation.touched.method && cryptoValidation.errors.method
-                ? true
-                : false
-            }
+            <FaDollarSign />
+          </span>
+          <CustomSpan>
+            <span
+              style={{
+                fontSize: "15px",
+                fontWeight: 600,
+                color: "#495057",
+                lineHeight: 2,
+              }}
+            >
+              Cryptocurrency Deposit
+            </span>
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#878A99",
+                // lineHeight: 2,
+              }}
+            >
+              Choose your preferred cryptocurrency
+            </span>
+          </CustomSpan>
+        </FlexRow>
+      </div>
+      <Col lg={12}>
+        <div className="px-2">
+          <Label
+            className="pb-1"
+            style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
           >
-            <option value="">Select Method</option>
-            {methods.map((mt) => {
+            Select Cryptocurrencies
+          </Label>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "16px",
+            }}
+            className="pb-3"
+          >
+            {methods.map((mtd) => {
               return (
-                <option key={mt.id} value={mt.id}>
-                  {mt.label}
-                </option>
+                <div
+                  style={{
+                    borderRadius: "5px",
+                    border:
+                      selectedMode.id === mtd.id
+                        ? "1px solid #5126be"
+                        : "1px solid #dedede",
+                    cursor: "pointer",
+                  }}
+                  key={mtd.id}
+                  className={`d-flex align-items-center gap-3 py-1 px-2 ${
+                    selectedMode.id === mtd.id ? "bg-primary-subtle" : ""
+                  }`}
+                  onClick={() => handleMode(mtd)}
+                >
+                  <img src={mtd.img} alt="" width={25} />
+                  <span className="d-flex flex-column">
+                    <span>{mtd.label}</span>
+                    <span>{mtd.network}</span>
+                  </span>
+                </div>
               );
             })}
-          </Input>
-          {cryptoValidation.touched.method && cryptoValidation.errors.method ? (
-            <FormFeedback type="invalid">
-              {cryptoValidation.errors.method}
-            </FormFeedback>
-          ) : null}
+          </div>
         </div>
       </Col>
-      {cryptoValidation.values.method && (
-        <Col lg={12}>
-          <div>
-            <Label for="network" className="form-label">
-              Network
-            </Label>
-            <Input
-              id="network"
-              name="network"
-              className="form-control"
-              type="select"
-              onChange={cryptoValidation.handleChange}
-              onBlur={cryptoValidation.handleBlur}
-              value={cryptoValidation.values.network || ""}
-              invalid={
-                cryptoValidation.touched.network &&
-                cryptoValidation.errors.network
-                  ? true
-                  : false
-              }
-            >
-              <option value="">Select Network</option>
-              {getNetworks(cryptoValidation.values.method).map((mt, index) => {
-                return (
-                  <option key={index} value={mt}>
-                    {mt}
-                  </option>
-                );
-              })}
-            </Input>
-            {cryptoValidation.touched.network &&
-            cryptoValidation.errors.network ? (
-              <FormFeedback type="invalid">
-                {cryptoValidation.errors.network}
-              </FormFeedback>
-            ) : null}
-          </div>
-        </Col>
-      )}
       <Col lg={12}>
-        <div>
+        <div className="d-flex align-items-center bg-primary-subtle rounded mx-2 gap-3 mb-3 py-2 px-4">
+          <div>
+            <IoAlertCircleOutline className="text-primary" />
+          </div>
+          <div
+            style={{ fontWeight: 300, fontSize: "14px" }}
+            className="d-flex flex-column text-primary"
+          >
+            <span>
+              Send exactly <b>{data?.amount}</b> <b>{selectedMode?.symbol}</b>{" "}
+              to the address below{" "}
+            </span>
+            <span>
+              Processing time: 1-30 minutes after network confirmation
+            </span>
+          </div>
+        </div>
+      </Col>
+      <Col lg={12}>
+        <div className="px-2">
+          <span className="d-flex align-items-center justify-content-between">
+            <Label
+              style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
+            >
+              Deposit Address
+            </Label>
+            <img src={selectedMode?.img} alt="coin" width={20} />
+          </span>
+
+          <div className="d-flex flex-column">
+            <hr style={{ color: "#dedede" }} />
+            <div className="d-flex align-items-center justify-content-center">
+              <img src={dep} alt="" width={"120px"} height={"120px"} />
+            </div>
+          </div>
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <div className="mb-3 px-2">
           <Label for="address" className="form-label">
             Address
           </Label>
@@ -234,55 +251,101 @@ const Crypto = ({ settings }) => {
           />
         </div>
       </Col>
+
       <Col lg={12}>
-        <div>
-          <Label for="amount" className="form-label">
-            Amount
-          </Label>
-          <Input
-            type="text"
-            value={cryptoValidation.values.amount}
-            onChange={cryptoValidation.handleChange}
-            onBlur={cryptoValidation.handleBlur}
-            className={`form-control ${
-              cryptoValidation.touched.amount && cryptoValidation.errors.amount
-                ? "is-invalid"
-                : ""
-            }`}
-            placeholder="Enter deposit amount"
-            name="amount"
-            autoComplete="off"
-          />
-          {cryptoValidation.touched.amount && cryptoValidation.errors.amount ? (
-            <FormFeedback type="invalid">
-              {cryptoValidation.errors.amount}
-            </FormFeedback>
-          ) : null}
-        </div>
-      </Col>
-      <Col>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2px",
-            color: "#505050",
-          }}
-        >
-          <small>
-            Minimum Deposit Limit:{" "}
-            {settings ? formatCurrency(settings.depositLimits.crypto.min) : 0}
-          </small>
-          <small>
-            Maximum deposit Limit:{" "}
-            {settings ? formatCurrency(settings.depositLimits.crypto.max) : 0}
-          </small>
+        <div className="px-2">
+          <span className="d-flex align-items-center justify-content-between">
+            <Label
+              style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
+            >
+              Deposit Summary
+            </Label>
+            {/* <img src="" alt="coin" /> */}
+          </span>
+
+          <hr style={{ color: "#dedede" }} />
+
+          <div className="d-flex flex-column gap-2 px-3">
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                Amount to Send
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(data?.amount)}
+              </span>
+            </span>
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                {selectedMode?.symbol} Value
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                0.0015647 {selectedMode?.symbol}
+              </span>
+            </span>
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                Network Fee
+              </span>
+              <span
+                className="text-success"
+                style={{ fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(0)}
+              </span>
+            </span>
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 500 }}
+              >
+                You will receive
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(data?.amount)}
+              </span>
+            </span>
+          </div>
+          <hr style={{ color: "#dedede" }} />
         </div>
       </Col>
 
       <Col lg={12}>
-        <div className="d-flex align-items-start gap-3 mt-3">
+        <div className="d-flex align-items-start bg-warning-subtle rounded py-1 px-3 gap-3 mb-3 mx-2">
+          <span>
+            <IoAlertCircleOutline className="text-warning" />
+          </span>
+          <span
+            style={{ fontWeight: 300, fontSize: "14px" }}
+            className="d-flex flex-column text-warning"
+          >
+            <span style={{ fontWeight: 500 }}>Important</span>
+            <ul>
+              <li>Only send {selectedMode?.symbol} to this address</li>
+              <li>
+                Sending any other cryptocurrency will result in permanent loss
+              </li>
+              <li>Minimum deposit $50</li>
+              <li>Deposit are credited after network confirmation</li>
+            </ul>
+          </span>
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <CenterSpan>
           <button
+            style={{ width: "100%" }}
             onClick={(e) => {
               e.preventDefault();
               cryptoValidation.submitForm();
@@ -290,12 +353,18 @@ const Crypto = ({ settings }) => {
             }}
             type="submit"
             disabled={cryptoMutation.isPending}
-            className="btn btn-primary btn-label right ms-auto"
+            className="btn btn-primary"
           >
-            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{" "}
-            Deposit via Crypto
+            I have made payment
           </button>
-        </div>
+          <small
+            className="pb-3"
+            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
+          >
+            After sending {selectedMode?.symbol}, click the button above. Your
+            deposit will be credited after network confirmation.
+          </small>
+        </CenterSpan>
       </Col>
       {error && (
         <ErrorToast

@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { Link } from "react-router-dom";
-import { Card, CardBody, Col } from "reactstrap";
+import { Card, CardBody, Col, Row } from "reactstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Mousewheel } from "swiper/modules";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactionAnalytics } from "../../services/user/transactions";
-import { getAccessToken } from "../../constants";
+import { formatCurrency, getAccessToken } from "../../constants";
 import { getWalletAnalytics } from "../../services/user/wallet";
+import { cash } from "../../assets";
+
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Widgets = () => {
   const token = getAccessToken();
@@ -24,262 +27,197 @@ const Widgets = () => {
     queryKey: ["walletAnalytics"],
     enabled: !!token,
   });
+  const { data: trxAnalytics } = useQuery({
+    queryFn: getTransactionAnalytics,
+    queryKey: ["trxAnalytics"],
+    enabled: !!token,
+  });
 
-  // useEffect(() => {
-  //   if (walletAnalytics) console.log(walletAnalytics);
-  // }, [walletAnalytics]);
+  const [wholePart, setWholePart] = useState(0);
+  const [decimalPart, setDecimalPart] = useState("00");
+  const [showBalance, setShowBalance] = useState(true);
+
+  useEffect(() => {
+    if (walletAnalytics) {
+      const formatted = walletAnalytics.availableBalance.toFixed(2);
+      const [whole, decimal] = formatted.split(".");
+      setWholePart(parseInt(whole));
+      setDecimalPart(decimal);
+    }
+  }, [walletAnalytics]);
 
   return (
     <React.Fragment>
-      <Col xxl={3} md={6}>
-        <Card className="card-animate">
-          <CardBody>
-            <div className="d-flex mb-3">
-              <div className="flex-grow-1">
-                <lord-icon
-                  src="https://cdn.lordicon.com/fhtaantg.json"
-                  trigger="loop"
-                  colors="primary:#405189,secondary:#0ab39c"
-                  style={{ width: "55px", height: "55px" }}
-                ></lord-icon>
-              </div>
-              <div className="flex-shrink-0">
-                <Link
-                  to="#"
-                  className="badge bg-warning-subtle text-warning badge-border me-1"
-                >
-                  BTC
-                </Link>
-                <Link
-                  to="#"
-                  className="badge bg-info-subtle text-info badge-border me-1"
-                >
-                  ETH
-                </Link>
-                <Link
-                  to="#"
-                  className="badge bg-primary-subtle text-primary badge-border me-1"
-                >
-                  USDT
-                </Link>
-              </div>
-            </div>
-            <h3 className="mb-2">
-              <span className="counter-value" data-target="74858">
-                <CountUp
-                  start={0}
-                  end={
-                    walletAnalytics?.availableBalance
-                      ?.toFixed(2)
-                      .split(".")[0] || 0
-                  }
-                  separator=","
-                  prefix="$"
-                  duration={3}
-                />
-              </span>
-              <small className="text-muted fs-14">
-                .{walletAnalytics?.availableBalnce?.toFixed(2).split(".")[1]}k
-              </small>
-            </h3>
-            <h6 className="text-muted mb-0">Available Balance (USD)</h6>
-          </CardBody>
-        </Card>
-      </Col>
-      <Col xxl={3} md={6}>
-        <Card className="card-animate">
-          <CardBody>
-            <div className="d-flex mb-3">
-              <div className="flex-grow-1">
-                <lord-icon
-                  src="https://cdn.lordicon.com/qhviklyi.json"
-                  trigger="loop"
-                  colors="primary:#405189,secondary:#0ab39c"
-                  style={{ width: "55px", height: "55px" }}
-                ></lord-icon>
-              </div>
-              <div className="flex-shrink-0">
-                <Link
-                  to="#"
-                  className="badge bg-warning-subtle text-warning badge-border me-1"
-                >
-                  BTC
-                </Link>
-                <Link
-                  to="#"
-                  className="badge bg-info-subtle text-info badge-border me-1"
-                >
-                  ETH
-                </Link>
-                <Link
-                  to="#"
-                  className="badge bg-primary-subtle text-primary badge-border me-1"
-                >
-                  USDT
-                </Link>
-              </div>
-            </div>
-            <h3 className="mb-2">
-              <span className="counter-value" data-target="74361">
-                <CountUp
-                  start={0}
-                  end={analytics?.totalDeposit?.toFixed(2).split(".")[0] || 0}
-                  separator=","
-                  prefix="$"
-                  duration={3}
-                />
-              </span>
-              <small className="text-muted fs-14">
-                .{analytics?.totalDeposit?.toFixed(2).split(".")[1]} k
-              </small>
-            </h3>
-            <h6 className="text-muted mb-0">Deposit (Total)</h6>
-          </CardBody>
-        </Card>
-      </Col>
-      <Col xxl={3} md={6}>
-        <Card className="card-animate">
-          <CardBody>
-            <div className="d-flex mb-3">
-              <div className="flex-grow-1">
-                <lord-icon
-                  src="https://cdn.lordicon.com/yeallgsa.json"
-                  trigger="loop"
-                  colors="primary:#405189,secondary:#0ab39c"
-                  style={{ width: "55px", height: "55px" }}
-                ></lord-icon>
-              </div>
-              <div className="flex-shrink-0">
-                <Link
-                  to="#"
-                  className="badge bg-warning-subtle text-warning badge-border me-1"
-                >
-                  BTC
-                </Link>
-                <Link
-                  to="#"
-                  className="badge bg-info-subtle text-info badge-border me-1"
-                >
-                  ETH
-                </Link>
-                <Link
-                  to="#"
-                  className="badge bg-primary-subtle text-primary badge-border me-1"
-                >
-                  USDT
-                </Link>
-              </div>
-            </div>
-            <h3 className="mb-2">
-              <span className="counter-value" data-target="97685">
-                <CountUp
-                  start={0}
-                  end={
-                    analytics?.totalWithdrawal?.toFixed(2).split(".")[0] || 0
-                  }
-                  separator=","
-                  prefix="$"
-                  duration={3}
-                />
-              </span>
-              <small className="text-muted fs-14">
-                .{analytics?.totalWithdrawal?.toFixed(2).split(".")[1]}k
-              </small>
-            </h3>
-            <h6 className="text-muted mb-0">Withdraw (Total)</h6>
-          </CardBody>
-        </Card>
-      </Col>
-      <Col xxl={3} md={6}>
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={24}
-          mousewheel={true}
-          loop={true}
-          autoplay={{
-            delay: 2000,
-            disableOnInteraction: false,
+      <Card
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "end",
+          padding: "20px 18px",
+        }}
+        className="mb-3"
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+            gap: "12px",
+            width: "70%",
           }}
-          modules={[Autoplay, Mousewheel]}
-          className="default-swiper rounded"
         >
-          <SwiperSlide>
-            <Card className="card-animate overflow-hidden">
-              <div className="card-body bg-warning-subtle">
-                <div className="d-flex mb-3">
-                  <div className="flex-grow-1">
-                    <lord-icon
-                      src="https://cdn.lordicon.com/vaeagfzc.json"
-                      trigger="loop"
-                      colors="primary:#405189,secondary:#0ab39c"
-                      style={{ width: "55px", height: "55px" }}
-                    ></lord-icon>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <Link to="#" className="fw-medium">
-                      Bitcoin (BTC)
-                    </Link>
-                  </div>
-                </div>
-                <h3 className="mb-2">
-                  $245<small className="text-muted fs-14">.65k</small>
-                </h3>
-                <h6 className="text-muted mb-0">All Transactions (Total)</h6>
-              </div>
-            </Card>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Card className="card-animate overflow-hidden">
-              <div className="card-body bg-warning-subtle">
-                <div className="d-flex mb-3">
-                  <div className="flex-grow-1">
-                    <lord-icon
-                      src="https://cdn.lordicon.com/vaeagfzc.json"
-                      trigger="loop"
-                      colors="primary:#405189,secondary:#0ab39c"
-                      style={{ width: "55px", height: "55px" }}
-                    ></lord-icon>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <Link to="#" className="fw-medium">
-                      Ethereum (ETH)
-                    </Link>
-                  </div>
-                </div>
-                <h3 className="mb-2">
-                  $24<small className="text-muted fs-14">.74k</small>
-                </h3>
-                <h6 className="text-muted mb-0">All Transactions (Total)</h6>
-              </div>
-            </Card>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Card className="card-animate overflow-hidden">
-              <div className="card-body bg-warning-subtle">
-                <div className="d-flex mb-3">
-                  <div className="flex-grow-1">
-                    <lord-icon
-                      src="https://cdn.lordicon.com/vaeagfzc.json"
-                      trigger="loop"
-                      colors="primary:#405189,secondary:#0ab39c"
-                      style={{ width: "55px", height: "55px" }}
-                    ></lord-icon>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <Link to="#" className="fw-medium">
-                      Tether (USDT)
-                    </Link>
-                  </div>
-                </div>
-                <h3 className="mb-2">
-                  $124<small className="text-muted fs-14">.36k</small>
-                </h3>
-                <h6 className="text-muted mb-0">All Transactions (Total)</h6>
-              </div>
-            </Card>
-          </SwiperSlide>
-        </Swiper>
-      </Col>
+          <span className="text-muted" style={{ fontSize: "12px" }}>
+            Updated 16/12/2025 at 12:31 AM
+          </span>
+          <i className="ri-briefcase-line" style={{ fontSize: "45px" }}></i>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+            }}
+          >
+            <div
+              style={{
+                display: showBalance ? "flex" : "none",
+                alignItems: "baseline",
+              }}
+            >
+              <span
+                style={{ fontSize: "24px", fontWeight: 600, color: "#495057" }}
+              >
+                ${" "}
+                <CountUp start={0} end={wholePart} duration={2} separator="," />
+              </span>
+              <span
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  color: "#6c757d",
+                  marginLeft: "2px",
+                  alignSelf: "flex-end",
+                  marginBottom: "4px",
+                }}
+              >
+                .{decimalPart}k
+              </span>
+            </div>
+            <div
+              style={{
+                display: !showBalance ? "flex" : "none",
+                alignItems: "baseline",
+              }}
+            >
+              <span
+                style={{ fontSize: "24px", fontWeight: 600, color: "#495057" }}
+              >
+                $ ******
+              </span>
+              <span
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  color: "#6c757d",
+                  marginLeft: "2px",
+                  alignSelf: "flex-end",
+                  marginBottom: "4px",
+                }}
+              >
+                .**k
+              </span>
+            </div>
+            <span
+              onClick={() => setShowBalance(!showBalance)}
+              className="px-2 mx-2"
+              style={{
+                backgroundColor: "whitesmoke",
+                padding: "2px",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              {showBalance ? <FaEye /> : <FaEyeSlash />}
+            </span>
+          </div>
+
+          <span className="text-muted" style={{ fontSize: "14px" }}>
+            Cash Balance
+          </span>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+            backgroundColor: "whitesmoke",
+            width: "100%",
+            padding: " 8px",
+            borderRadius: "5px",
+            fontSize: "14px",
+          }}
+        >
+          <span
+            className="text-muted"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <span>
+              <img src={cash} alt="" /> Total Deposited:
+            </span>
+            <span>
+              <i class="ri-corner-right-down-line text-success"></i>{" "}
+              {trxAnalytics
+                ? formatCurrency(trxAnalytics.totalDeposit)
+                : formatCurrency(0)}
+            </span>
+          </span>
+          <span
+            className="text-muted"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <span>
+              <img src={cash} alt="" /> Total Withdrawals:
+            </span>
+            <span>
+              <i class="ri-corner-right-up-line text-danger"></i>{" "}
+              {trxAnalytics
+                ? formatCurrency(trxAnalytics.totalWithdrawal)
+                : formatCurrency(0)}
+            </span>
+          </span>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            // alignItems: "start",
+            justifyContent: "end",
+            gap: "12px",
+            width: "100%",
+          }}
+        >
+          <Link className="btn btn-primary" to={"/deposit"}>
+            Deposit
+          </Link>
+          <Link className="btn btn-success" to={"/transfer"}>
+            Transfer
+          </Link>
+          <Link className="btn btn-danger" to={"/withdraw"}>
+            Withdraw
+          </Link>
+        </div>
+      </Card>
     </React.Fragment>
   );
 };
