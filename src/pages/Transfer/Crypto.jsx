@@ -10,17 +10,33 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
+import { CenterSpan, CustomSpan, FlexRow } from "../Deposit/DepositUtils";
+import { BsFillSendFill } from "react-icons/bs";
+import {
+  formatCurrency,
+  getWalletBg,
+  getWalletColor,
+  getWalletIcon,
+} from "../../constants";
+import { GoDotFill } from "react-icons/go";
+import Loader from "../../components/Common/Loader";
+
+const buttons = [
+  "100",
+  "1000",
+  "2000",
+  "5000",
+  "10000",
+  "20000",
+  "50000",
+  "100000",
+];
 
 const Crypto = () => {
   const [error, setError] = useState("");
-  const [swapped, setSwapped] = useState(false);
-  const [defaultAcct, setDefaultAcct] = useState("");
-
-  const [form, setForm] = useState({
-    amount: "",
-    fromWallet: "",
-    toWallet: "",
-  });
+  const [selectedAccount, setSelectedAccount] = useState("");
+  const [toAccount, setToAccount] = useState("");
+  const [amt, setAmt] = useState("");
 
   const { data: wallets } = useQuery({
     queryFn: getUserWallets,
@@ -38,39 +54,19 @@ const Crypto = () => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      fromWallet: form.fromWallet || "",
-      toWallet: form.toWallet || "",
-      amount: form.amount || "",
+      fromWallet: selectedAccount._id || "",
+      toWallet: toAccount._id || "",
+      amount: amt || "",
     },
     validationSchema: Yup.object({
-      fromWallet: Yup.string().required("Select from account"),
-      toWallet: Yup.string().required("Select to account"),
       amount: Yup.string().required("Enter withdrawal amount"),
     }),
     onSubmit: (values) => {
       console.log("values", values);
-
-      // const formData = {
-      //   fromWallet: !swapped
-      //     ? validation.values.fromWallet
-      //     : validation.values.toWallet,
-      //   toWallet: !swapped
-      //     ? validation.values.toWallet
-      //     : validation.values.fromWallet,
-      //   amount: validation.values.amount,
-      // };
-      // console.log("form", values);
       mutation.mutate(values);
     },
     validateOnMount: true,
   });
-
-  useEffect(() => {
-    if (wallets) {
-      const wallet = wallets.find((wallet) => wallet.name === "cash");
-      setDefaultAcct(wallet);
-    }
-  }, [wallets]);
 
   useEffect(() => {
     if (mutation.isSuccess) {
@@ -93,152 +89,279 @@ const Crypto = () => {
   }, [error]);
 
   return (
-    <Row className="g-3">
+    <Row className="g-3 p-4">
+      <div className="pb-3">
+        <FlexRow>
+          <span
+            className="bg-primary d-flex align-items-center justify-content-center"
+            style={{
+              fontSize: "25px",
+              fontWeight: 600,
+              color: "#fff",
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+            }}
+          >
+            <BsFillSendFill />
+          </span>
+          <CustomSpan>
+            <span
+              style={{
+                fontSize: "15px",
+                fontWeight: 600,
+                color: "#495057",
+                lineHeight: 2,
+              }}
+            >
+              Transfer Between Accounts
+            </span>
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#878A99",
+                // lineHeight: 2,
+              }}
+            >
+              Move funds between your investment accounts
+            </span>
+          </CustomSpan>
+        </FlexRow>
+      </div>
       <Col lg={12}>
         <div>
           <Label for="account" className="form-label">
-            From Account
+            Account From
           </Label>
-          <Input
-            id="account"
-            name="fromWallet"
-            className="form-control"
-            type="select"
-            onChange={validation.handleChange}
-            onBlur={validation.handleBlur}
-            value={validation.values.fromWallet || ""}
-            invalid={
-              validation.touched.fromWallet && validation.errors.fromWallet
-                ? true
-                : false
-            }
-          >
-            <option value="">Select From Wallet</option>
-            {!swapped ? (
-              <option value={defaultAcct._id}>
-                {capitalize(defaultAcct.name)} Account
-              </option>
-            ) : (
-              wallets &&
+          <div className="d-flex flex-column gap-2">
+            {wallets &&
               wallets.length > 0 &&
-              wallets
-                .filter((wallet) => wallet.name !== "cash")
-                .map((wallet) => (
-                  <option key={wallet._id} value={wallet._id}>
-                    {capitalize(wallet.name)} Account
-                  </option>
-                ))
-            )}
-          </Input>
-          {validation.touched.fromWallet && validation.errors.fromWallet ? (
-            <FormFeedback type="invalid">
-              {validation.errors.fromWallet}
-            </FormFeedback>
-          ) : null}
+              wallets.map((wallet) => {
+                return (
+                  <div
+                    className={`d-flex align-items-center gap-2 justify-content-between px-4 py-2 rounded  ${
+                      selectedAccount._id === wallet._id
+                        ? "bg-primary-subtle"
+                        : ""
+                    }`}
+                    style={{
+                      border:
+                        selectedAccount._id === wallet._id
+                          ? "1px solid #5156be"
+                          : "1px solid #dedede",
+                    }}
+                    key={wallet._id}
+                    onClick={() => setSelectedAccount(wallet)}
+                  >
+                    <div className={`d-flex align-items-center gap-3`}>
+                      <figure
+                        style={{
+                          backgroundColor: getWalletBg(wallet.name),
+                          // color: getWalletColor(wallet.name),
+                        }}
+                        className="p-1 d-flex align-items-center justify-content-center rounded"
+                      >
+                        <img
+                          src={getWalletIcon(wallet.name)}
+                          alt=""
+                          width={20}
+                        />
+                      </figure>
+                      <div className="d-flex flex-column gap-1">
+                        <span
+                          style={{
+                            color: "#495057",
+                            fontWeight: 600,
+                            fontSize: "14px",
+                          }}
+                        >
+                          {capitalize(wallet.name)}
+                        </span>
+
+                        <span
+                          style={{
+                            color: "#212529",
+                            fontWeight: 300,
+                            fontSize: "14px",
+                          }}
+                        >
+                          Balance: {formatCurrency(wallet.availableBalance)}
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        border:
+                          selectedAccount._id === wallet._id
+                            ? "3px solid #5156be"
+                            : "3px solid #505050",
+                        borderRadius: "50%",
+                        width: "16px",
+                        height: "16px",
+                      }}
+                      className="d-flex align-items-center justify-content-center"
+                    >
+                      <GoDotFill
+                        style={{
+                          display:
+                            selectedAccount._id === wallet._id
+                              ? "flex"
+                              : "none",
+                          color:
+                            selectedAccount._id === wallet._id
+                              ? "#5156be"
+                              : "none",
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </Col>
-      <div className="mt-3 text-center">
-        <button
-          type="button"
-          onClick={() => setSwapped(!swapped)}
-          className="btn-soft-secondary"
-          style={{
-            outline: "none",
-            border: "none",
-            color: "#505050",
-            padding: "2px 10px",
-          }}
-        >
-          <i class="ri-exchange-line fs-22"></i>
-        </button>
-      </div>
+      <Col>
+        <div className="pb-4">
+          <Label>Transfer Amount</Label>
+          <Input
+            name="amount"
+            onChange={(e) => {
+              setAmt(e.target.value);
+            }}
+            value={amt}
+          />
+          <FlexRow>
+            {buttons.map((btn, idx) => {
+              return (
+                <button
+                  style={{
+                    fontSize: "10.5px",
+                    color: "#878A99",
+                    width: "90px",
+                  }}
+                  key={idx}
+                  type="button"
+                  className="btn bg-light mt-2"
+                  onClick={() => {
+                    setAmt(btn);
+                  }}
+                >
+                  ${btn}
+                </button>
+              );
+            })}
+          </FlexRow>
+        </div>
+      </Col>
 
       <Col lg={12}>
         <div>
           <Label for="address" className="form-label">
             To Account
           </Label>
-          <Input
-            id="account"
-            name="toWallet"
-            className="form-control"
-            type="select"
-            onChange={validation.handleChange}
-            onBlur={validation.handleBlur}
-            value={validation.values.toWallet || ""}
-            invalid={
-              validation.touched.toWallet && validation.errors.toWallet
-                ? true
-                : false
-            }
-          >
-            <option value="">Select To Wallet</option>
-            {swapped ? (
-              <option value={defaultAcct._id}>
-                {capitalize(defaultAcct.name)} Account
-              </option>
-            ) : (
-              wallets &&
+          <div className="d-flex flex-column gap-2">
+            {wallets &&
               wallets.length > 0 &&
-              wallets
-                .filter((wallet) => wallet.name !== "cash")
-                .map((wallet) => (
-                  <option key={wallet._id} value={wallet._id}>
-                    {capitalize(wallet.name)} Account
-                  </option>
-                ))
-            )}
-          </Input>
-          {validation.touched.toWallet && validation.errors.toWallet ? (
-            <FormFeedback type="invalid">
-              {validation.errors.toWallet}
-            </FormFeedback>
-          ) : null}
-        </div>
-      </Col>
-      <Col lg={12}>
-        <div>
-          <Label for="amount" className="form-label">
-            Amount
-          </Label>
-          <Input
-            type="text"
-            value={validation.values.amount}
-            onChange={validation.handleChange}
-            onBlur={validation.handleBlur}
-            className={`form-control ${
-              validation.touched.amount && validation.errors.amount
-                ? "is-invalid"
-                : ""
-            }`}
-            placeholder="Enter amount"
-            name="amount"
-            autoComplete="off"
-          />
-          {validation.touched.amount && validation.errors.amount ? (
-            <FormFeedback type="invalid">
-              {validation.errors.amount}
-            </FormFeedback>
-          ) : null}
+              wallets.map((wallet) => {
+                return (
+                  <div
+                    className={`d-flex align-items-center gap-2 justify-content-between px-4 py-2 rounded  ${
+                      toAccount._id === wallet._id ? "bg-primary-subtle" : ""
+                    }`}
+                    style={{
+                      border:
+                        toAccount._id === wallet._id
+                          ? "1px solid #5156be"
+                          : "1px solid #dedede",
+                    }}
+                    key={wallet._id}
+                    onClick={() => setToAccount(wallet)}
+                  >
+                    <div className={`d-flex align-items-center gap-3`}>
+                      <figure
+                        style={{
+                          backgroundColor: getWalletBg(wallet.name),
+                          // color: getWalletColor(wallet.name),
+                        }}
+                        className="p-1 d-flex align-items-center justify-content-center rounded"
+                      >
+                        <img
+                          src={getWalletIcon(wallet.name)}
+                          alt=""
+                          width={20}
+                        />
+                      </figure>
+                      <div className="d-flex flex-column gap-1">
+                        <span
+                          style={{
+                            color: "#495057",
+                            fontWeight: 600,
+                            fontSize: "14px",
+                          }}
+                        >
+                          {capitalize(wallet.name)}
+                        </span>
+
+                        <span
+                          style={{
+                            color: "#212529",
+                            fontWeight: 300,
+                            fontSize: "14px",
+                          }}
+                        >
+                          Balance: {formatCurrency(wallet.availableBalance)}
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        border:
+                          toAccount._id === wallet._id
+                            ? "3px solid #5156be"
+                            : "3px solid #505050",
+                        borderRadius: "50%",
+                        width: "16px",
+                        height: "16px",
+                      }}
+                      className="d-flex align-items-center justify-content-center"
+                    >
+                      <GoDotFill
+                        style={{
+                          display:
+                            toAccount._id === wallet._id ? "flex" : "none",
+                          color:
+                            toAccount._id === wallet._id ? "#5156be" : "none",
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </Col>
 
-      <Col lg={12}>
-        <div className="d-flex align-items-start gap-3 mt-3">
+      <Col>
+        <CenterSpan className="pt-4 px-2">
           <button
+            type="button"
             onClick={(e) => {
               e.preventDefault();
               validation.submitForm();
-              return false;
             }}
-            type="submit"
-            disabled={mutation.isPending}
-            className="btn btn-success btn-label right ms-auto"
+            style={{ width: "100%" }}
+            className="btn btn-primary"
           >
-            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{" "}
-            Transfer
+            Confirm Transfer
           </button>
-        </div>
+          <small
+            className="pb-3"
+            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
+          >
+            Transfer between accounts are instant and free of charge.
+          </small>
+        </CenterSpan>
       </Col>
       {error && (
         <ErrorToast
@@ -258,6 +381,7 @@ const Crypto = () => {
           }}
         />
       )}
+      {mutation.isPending && <Loader />}
     </Row>
   );
 };

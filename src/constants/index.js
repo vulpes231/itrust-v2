@@ -1,3 +1,5 @@
+import { auto, broke, cash } from "../assets";
+
 function getAccessToken() {
   return sessionStorage.getItem("token") || null;
 }
@@ -28,6 +30,44 @@ const formatMarketCap = (marketCap) => {
   }
 };
 
+const getWalletColor = (name) => {
+  switch (name) {
+    case "brokerage":
+      return "#5126BE";
+    case "automated investing":
+      return "#F1CF24";
+    case "cash":
+      return "#29BADB";
+    default:
+      return null;
+  }
+};
+const getWalletBg = (name) => {
+  switch (name) {
+    case "brokerage":
+      return "#E8EBFD";
+    case "automated investing":
+      return "#FFF7E4";
+    case "cash":
+      return "#DFF5FA";
+    default:
+      return null;
+  }
+};
+
+const getWalletIcon = (name) => {
+  switch (name) {
+    case "brokerage":
+      return broke;
+    case "automated investing":
+      return auto;
+    case "cash":
+      return cash;
+    default:
+      return null;
+  }
+};
+
 export {
   getAccessToken,
   liveUrl,
@@ -35,4 +75,7 @@ export {
   capitalizeWords,
   formatCurrency,
   formatMarketCap,
+  getWalletColor,
+  getWalletIcon,
+  getWalletBg,
 };
