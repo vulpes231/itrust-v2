@@ -1,8 +1,6 @@
-import { capitalize } from "lodash";
 import React, { useEffect, useState } from "react";
-import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
-import { getUserWallets } from "../../services/user/wallet";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { Col, Input, Label, Row } from "reactstrap";
+import { useMutation } from "@tanstack/react-query";
 import { depositFunds } from "../../services/user/transactions";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -13,6 +11,7 @@ import { CenterSpan, CustomSpan, FlexRow } from "./DepositUtils";
 import { FaDollarSign } from "react-icons/fa";
 import { btc, dep, eth, usdt } from "../../assets";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import Loader from "../../components/Common/Loader";
 
 const Crypto = ({ settings }) => {
   const [error, setError] = useState("");
@@ -45,7 +44,7 @@ const Crypto = ({ settings }) => {
     onSubmit: (values) => {
       console.log("Submit clicked");
       console.log(values);
-      // cryptoMutation.mutate();
+      cryptoMutation.mutate();
     },
     validateOnMount: true,
   });
@@ -69,10 +68,6 @@ const Crypto = ({ settings }) => {
     },
   ];
 
-  const getNetworks = (method) => {
-    return methods.find((mt) => mt.id === method).network;
-  };
-
   useEffect(() => {
     if (cryptoMutation.isSuccess) {
       const timeout = setTimeout(() => {
@@ -93,17 +88,13 @@ const Crypto = ({ settings }) => {
     }
   }, [error]);
 
-  // useEffect(() => {
-  //   if (settings) console.log(settings);
-  // }, [settings]);
-
   const getAddress = (name, network) => {
     const addressMap = {
-      btc: { BTC: settings?.cryptoWallets["btc"] },
-      eth: { ERC20: settings?.cryptoWallets["eth"] },
+      btc: { BTC: settings?.cryptoWallets?.["btc"] },
+      eth: { ERC20: settings?.cryptoWallets?.["eth"] },
       usdt: {
-        ERC20: settings?.cryptoWallets["usdtErc"],
-        TRC20: settings?.cryptoWallets["usdtTrc"],
+        ERC20: settings?.cryptoWallets?.["usdtErc"],
+        TRC20: settings?.cryptoWallets?.["usdtTrc"],
       },
     };
 
@@ -155,7 +146,7 @@ const Crypto = ({ settings }) => {
         <div className="px-2">
           <Label
             className="pb-1"
-            style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
+            style={{ fontSize: "16px", color: "#495057", fontWeight: 600 }}
           >
             Select Cryptocurrencies
           </Label>
@@ -184,10 +175,26 @@ const Crypto = ({ settings }) => {
                   }`}
                   onClick={() => handleMode(mtd)}
                 >
-                  <img src={mtd.img} alt="" width={25} />
+                  <img src={mtd.img} alt="" width={30} />
                   <span className="d-flex flex-column">
-                    <span>{mtd.label}</span>
-                    <span>{mtd.network}</span>
+                    <span
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        color: "#495057",
+                      }}
+                    >
+                      {mtd.label}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: 300,
+                        color: "#212529",
+                      }}
+                    >
+                      {mtd.network}
+                    </span>
                   </span>
                 </div>
               );
@@ -205,8 +212,8 @@ const Crypto = ({ settings }) => {
             className="d-flex flex-column text-primary"
           >
             <span>
-              Send exactly <b>{data?.amount}</b> <b>{selectedMode?.symbol}</b>{" "}
-              to the address below{" "}
+              Send exactly <b>{formatCurrency(data?.amount)}</b>{" "}
+              <b>{selectedMode?.symbol}</b> to the address below{" "}
             </span>
             <span>
               Processing time: 1-30 minutes after network confirmation
@@ -222,7 +229,7 @@ const Crypto = ({ settings }) => {
             >
               Deposit Address
             </Label>
-            <img src={selectedMode?.img} alt="coin" width={20} />
+            <img src={selectedMode?.img} alt="" width={30} />
           </span>
 
           <div className="d-flex flex-column">
@@ -244,7 +251,7 @@ const Crypto = ({ settings }) => {
             className="form-control"
             id="address"
             placeholder={getAddress(
-              cryptoValidation.values.method,
+              cryptoValidation.values.method.toLowerCase(),
               cryptoValidation.values.network
             )}
             readOnly
@@ -384,6 +391,7 @@ const Crypto = ({ settings }) => {
           }}
         />
       )}
+      {cryptoMutation.isPending && <Loader />}
     </Row>
   );
 };

@@ -6,7 +6,7 @@ const ErrorToast = ({ errorMsg, isOpen = true, onClose }) => {
     <Toast
       isOpen={isOpen}
       className="bg-danger text-white"
-      style={{ position: "fixed", top: "50px", right: "10px", zIndex: "1000" }}
+      style={{ position: "fixed", top: "100px", right: "10px", zIndex: "1000" }}
     >
       <ToastHeader
         icon="danger"

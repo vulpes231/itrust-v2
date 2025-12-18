@@ -12,6 +12,12 @@ const TrxCrumb = ({ title, handleMove }) => {
             <button
               onClick={handleMove}
               className="mb-sm-0 btn d-flex align-items-center gap-2"
+              style={{
+                fontSize: "15px",
+                fontWeight: 600,
+                color: "#495057",
+                textTransform: "uppercase",
+              }}
             >
               <FaArrowLeft /> {title}
             </button>

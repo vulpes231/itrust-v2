@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Input, Label, Row } from "reactstrap";
 import { PiCoin } from "react-icons/pi";
 import { RiBankLine } from "react-icons/ri";
 import { GoDotFill } from "react-icons/go";
 import { FaDollarSign } from "react-icons/fa";
 import { CenterSpan, CustomSpan, FlexRow } from "./DepositUtils";
+import ErrorToast from "../../components/Common/ErrorToast";
 
 const buttons = [
   "100",
@@ -40,10 +41,25 @@ const Form = ({ handleView }) => {
 
   function handleConfirm(e) {
     e.preventDefault();
+
+    if (!amount) {
+      setError("Amount required!");
+      return;
+    }
+
     const data = { method: selectedMethod, amount: amount };
     sessionStorage.setItem("deposit", JSON.stringify(data));
     handleView(data.method);
   }
+
+  useEffect(() => {
+    if (error) {
+      const timeout = setTimeout(() => {
+        setError("");
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [error]);
 
   return (
     <React.Fragment>
@@ -215,6 +231,13 @@ const Form = ({ handleView }) => {
           </CenterSpan>
         </Col>
       </div>
+      {error && (
+        <ErrorToast
+          isOpen={error}
+          onClose={() => setError("")}
+          errorMsg={error}
+        />
+      )}
     </React.Fragment>
   );
 };

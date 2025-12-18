@@ -8,6 +8,10 @@ import { depositFunds } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { formatCurrency } from "../../constants";
+import { CenterSpan, CustomSpan, FlexRow } from "./DepositUtils";
+import Loader from "../../components/Common/Loader";
+import { BsBank } from "react-icons/bs";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 const Bank = ({ settings }) => {
   const [error, setError] = useState("");
@@ -17,16 +21,18 @@ const Bank = ({ settings }) => {
     onError: (err) => setError(err.message),
   });
 
+  const data = JSON.parse(sessionStorage.getItem("deposit"));
+
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      amount: "",
+      amount: data?.amount || "",
       account: "cash",
       network: "bank",
       method: "bank",
     },
     validationSchema: Yup.object({
-      amount: Yup.string().required("Enter deposit amount"),
+      // amount: Yup.string().required("Enter deposit amount"),
     }),
     onSubmit: (values) => {
       console.log(values);
@@ -53,139 +59,236 @@ const Bank = ({ settings }) => {
       return () => clearTimeout(timeout);
     }
   }, [error]);
+  // console.log(settings);
 
   return (
-    <Row>
-      <Col lg={6}>
-        <div className="mb-3">
+    <Row className="g-3 p-4">
+      <div className="pb-3">
+        <FlexRow>
+          <span
+            className="bg-primary d-flex align-items-center justify-content-center"
+            style={{
+              fontSize: "25px",
+              fontWeight: 600,
+              color: "#fff",
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+            }}
+          >
+            <BsBank />
+          </span>
+          <CustomSpan>
+            <span
+              style={{
+                fontSize: "15px",
+                fontWeight: 600,
+                color: "#495057",
+                lineHeight: 2,
+              }}
+            >
+              Wire Transfer Details
+            </span>
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#878A99",
+                // lineHeight: 2,
+              }}
+            >
+              Send exactly <b>{formatCurrency(data?.amount)}</b> to the account
+              below
+            </span>
+          </CustomSpan>
+        </FlexRow>
+      </div>
+
+      <Col lg={12}>
+        <div className="d-flex align-items-center bg-primary-subtle rounded mx-2 gap-3 mb-3 py-2 px-4">
+          <div>
+            <IoAlertCircleOutline className="text-primary" />
+          </div>
+          <div
+            style={{ fontWeight: 300, fontSize: "14px" }}
+            className="d-flex flex-column text-primary"
+          >
+            <span>
+              Please ensure you include the reference number in your wire
+              transfer. This helps us identify your deposit quickly.
+            </span>
+            <span>Processing time: 1 - 5 business days</span>
+          </div>
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <div className="mb-3 px-2">
           <Label for="banknameInput" className="form-label">
             Bank Name
           </Label>
           <Input
             type="text"
             className="form-control"
-            id="banknameInput"
-            placeholder={settings?.bankDetails?.bankName || ""}
             readOnly
-          />
-        </div>
-      </Col>
-      <Col lg={6}>
-        <div className="mb-3">
-          <Label for="branchInput" className="form-label">
-            Address
-          </Label>
-          <Input
-            type="text"
-            className="form-control"
-            id="branchInput"
-            placeholder={settings?.bankDetails?.address || ""}
-            readOnly
+            value={settings?.bankDetails?.bankName}
           />
         </div>
       </Col>
       <Col lg={12}>
-        <div className="mb-3">
-          <Label for="accountnameInput" className="form-label">
-            Account Holder Name
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Account Name
           </Label>
           <Input
             type="text"
             className="form-control"
-            id="accountnameInput"
-            placeholder={settings?.bankDetails?.accountName || ""}
             readOnly
+            value={settings?.bankDetails?.accountName}
           />
         </div>
       </Col>
-      <Col lg={6}>
-        <div className="mb-3">
-          <Label for="accountnumberInput" className="form-label">
+      <Col lg={12}>
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
             Account Number
           </Label>
           <Input
-            type="number"
+            type="text"
             className="form-control"
-            id="accountnumberInput"
-            placeholder={settings?.bankDetails?.accountNumber || ""}
-          />
-        </div>
-      </Col>
-      <Col lg={6}>
-        <div className="mb-3">
-          <Label for="ifscInput" className="form-label">
-            IFSC
-          </Label>
-          <Input
-            type="number"
-            className="form-control"
-            id="ifscInput"
-            placeholder={settings?.bankDetails?.reference || ""}
             readOnly
+            value={settings?.bankDetails?.accountNumber}
           />
         </div>
       </Col>
       <Col lg={12}>
-        <div className="mb-3">
-          <Label for="amount" className="form-label">
-            Amount
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Routing Number
           </Label>
           <Input
             type="text"
-            value={validation.values.amount}
-            onChange={validation.handleChange}
-            onBlur={validation.handleBlur}
-            className={`form-control ${
-              validation.touched.amount && validation.errors.amount
-                ? "is-invalid"
-                : ""
-            }`}
-            placeholder="Enter deposit amount"
-            name="amount"
-            autoComplete="off"
+            className="form-control"
+            readOnly
+            value={settings?.bankDetails?.routing}
           />
-          {validation.touched.amount && validation.errors.amount ? (
-            <FormFeedback type="invalid">
-              {validation.errors.amount}
-            </FormFeedback>
-          ) : null}
-        </div>
-      </Col>
-      <Col>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2px",
-            color: "#505050",
-          }}
-        >
-          <small>
-            Minimum Deposit Limit:{" "}
-            {settings ? formatCurrency(settings.depositLimits.bank.min) : 0}
-          </small>
-          <small>
-            Maximum deposit Limit:{" "}
-            {settings ? formatCurrency(settings.depositLimits.bank.max) : 0}
-          </small>
         </div>
       </Col>
       <Col lg={12}>
-        <div className="d-flex align-items-start gap-3 mt-3">
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Swift Code / BIC Code
+          </Label>
+          <Input type="text" className="form-control" id="banknameInput" />
+        </div>
+      </Col>
+      <Col lg={12}>
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Bank Address
+          </Label>
+          <Input
+            type="text"
+            className="form-control"
+            readOnly
+            value={settings?.bankDetails?.address}
+          />
+        </div>
+      </Col>
+      <Col lg={12}>
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Reference (Required)
+          </Label>
+          <Input
+            type="text"
+            className="form-control"
+            readOnly
+            value={settings?.bankDetails?.reference}
+          />
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <div className="px-2">
+          <span className="d-flex align-items-center justify-content-between">
+            <Label
+              style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
+            >
+              Deposit Summary
+            </Label>
+            {/* <img src="" alt="coin" /> */}
+          </span>
+
+          <hr style={{ color: "#dedede" }} />
+
+          <div className="d-flex flex-column gap-2 px-3">
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                Amount to Send
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(data?.amount)}
+              </span>
+            </span>
+
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                Processing Fee
+              </span>
+              <span
+                className="text-success"
+                style={{ fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(0)}
+              </span>
+            </span>
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 500 }}
+              >
+                You will receive
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(data?.amount)}
+              </span>
+            </span>
+          </div>
+          <hr style={{ color: "#dedede" }} />
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <CenterSpan>
           <button
+            style={{ width: "100%" }}
             onClick={(e) => {
               e.preventDefault();
               validation.submitForm();
               return false;
             }}
-            disabled={mutation.isPending}
             type="submit"
-            className="btn btn-primary btn-label right ms-auto"
+            disabled={mutation.isPending}
+            className="btn btn-primary"
           >
-            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{" "}
-            Deposit via Bank
+            I have made payment
           </button>
-        </div>
+          <small
+            className="pb-3"
+            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
+          >
+            After sending the wire transfer, click the button above to notify
+            us. We'll credit your account once we receive the funds.
+          </small>
+        </CenterSpan>
       </Col>
       {error && (
         <ErrorToast
@@ -205,6 +308,7 @@ const Bank = ({ settings }) => {
           }}
         />
       )}
+      {mutation.isPending && <Loader />}
     </Row>
   );
 };

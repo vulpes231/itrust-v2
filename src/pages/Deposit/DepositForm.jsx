@@ -8,13 +8,24 @@ import Form from "./Form";
 import Crypto from "./Crypto";
 import Bank from "./Bank";
 import TrxCrumb from "../../components/Common/TrxCrumb";
+import { useQuery } from "@tanstack/react-query";
+import { getSettings } from "../../services/user/settings";
+import { getAccessToken } from "../../constants";
 
 const DepositForm = () => {
+  const token = getAccessToken();
   const [activeView, setActiveView] = useState("default");
 
   function handleView(view) {
     setActiveView(view);
   }
+
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: getSettings,
+    enabled: !!token,
+  });
+
   return (
     <React.Fragment>
       <TrxCrumb title="Deposit" handleMove={() => setActiveView("default")} />
@@ -22,11 +33,11 @@ const DepositForm = () => {
         <Col lg={9}>
           <Card>
             {activeView === "default" ? (
-              <Form handleView={handleView} />
+              <Form handleView={handleView} settings={settings} />
             ) : activeView === "crypto" ? (
-              <Crypto />
+              <Crypto settings={settings} />
             ) : activeView === "bank" ? (
-              <Bank />
+              <Bank settings={settings} />
             ) : null}
           </Card>
         </Col>
