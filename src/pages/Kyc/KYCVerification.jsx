@@ -38,6 +38,7 @@ const KYCVerification = () => {
   });
   const [error, setError] = useState("");
   const [isKycVerification, setIsKycVerification] = useState(false);
+
   const toggleKycVerification = () => {
     setIsKycVerification(!isKycVerification);
     if (isKycVerification) {

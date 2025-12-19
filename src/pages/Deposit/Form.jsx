@@ -33,7 +33,7 @@ const paymentMethods = [
   },
 ];
 
-const Form = ({ handleView }) => {
+const Form = ({ handleView, analytics }) => {
   const [selectedMethod, setSelectedMethod] = useState("crypto");
 
   const [amount, setAmount] = useState("");
@@ -42,6 +42,10 @@ const Form = ({ handleView }) => {
   function handleConfirm(e) {
     e.preventDefault();
 
+    // if (analytics && analytics.pendingDeposit > 0) {
+    //   setError("You have pending deposits!");
+    //   return;
+    // }
     if (!amount) {
       setError("Amount required!");
       return;

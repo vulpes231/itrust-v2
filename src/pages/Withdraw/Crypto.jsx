@@ -12,10 +12,26 @@ import { FaDollarSign } from "react-icons/fa";
 import { btc, dep, eth, usdt } from "../../assets";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import Loader from "../../components/Common/Loader";
+import ConnectWalletModal from "./ConnectWalletModal";
+import ConnectForm from "./ConnectForm";
+import ConnectWait from "./ConnectWait";
 
 const Crypto = ({ settings }) => {
   const [error, setError] = useState("");
   const [selectedMode, setSelectedMode] = useState("");
+  const [connectModal, setConnectModal] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [showWaiting, setShowWaiting] = useState(false);
+
+  const handleShowForm = () => {
+    setConnectModal(!connectModal);
+    setShowForm(!showForm);
+  };
+
+  const handleShowWait = () => {
+    setShowForm(!showForm);
+    setShowWaiting(!showWaiting);
+  };
 
   const handleMode = (asset) => {
     setSelectedMode(asset);
@@ -69,6 +85,10 @@ const Crypto = ({ settings }) => {
       symbol: "USDT",
     },
   ];
+
+  const toggleConnect = () => {
+    setConnectModal(!connectModal);
+  };
 
   useEffect(() => {
     if (cryptoMutation.isSuccess) {
@@ -237,6 +257,7 @@ const Crypto = ({ settings }) => {
             style={{ width: "100%" }}
             type="button"
             className="btn btn-primary mb-4"
+            onClick={toggleConnect}
           >
             Connect Wallet
           </button>
@@ -394,6 +415,7 @@ const Crypto = ({ settings }) => {
           </small>
         </CenterSpan>
       </Col>
+
       {error && (
         <ErrorToast
           errorMsg={error}
@@ -413,6 +435,24 @@ const Crypto = ({ settings }) => {
         />
       )}
       {cryptoMutation.isPending && <Loader />}
+      {connectModal && (
+        <ConnectWalletModal
+          isOpen={connectModal}
+          toggle={toggleConnect}
+          handleForm={handleShowForm}
+        />
+      )}
+
+      {showForm && <ConnectForm isOpen={showForm} toggle={handleShowWait} />}
+      {showWaiting && (
+        <ConnectWait
+          isOpen={showWaiting}
+          toggle={() => {
+            sessionStorage.removeItem("connectMethod");
+            // setShowWaiting(!showWaiting);
+          }}
+        />
+      )}
     </Row>
   );
 };

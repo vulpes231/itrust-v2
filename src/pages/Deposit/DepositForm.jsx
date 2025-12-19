@@ -39,7 +39,11 @@ const DepositForm = () => {
         <Col lg={9}>
           <Card>
             {activeView === "default" ? (
-              <Form handleView={handleView} settings={settings} />
+              <Form
+                handleView={handleView}
+                settings={settings}
+                analytics={analytics}
+              />
             ) : activeView === "crypto" ? (
               <Crypto settings={settings} />
             ) : activeView === "bank" ? (

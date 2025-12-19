@@ -12,11 +12,22 @@ import xmr from "./images/svg/crypto-icons/xmr.svg";
 import dot from "./images/svg/crypto-icons/dot.svg";
 import usdt from "./images/svg/crypto-icons/usdt.svg";
 import verification from "./images/verification-img.png";
-
 import dep from "./dep.png";
+import coinbase from "./cbase.webp";
+import ledger from "./led.jpg";
+import binance from "./bin.png";
+import metamask from "./meta.png";
+import trust from "./twall.png";
+import walletconn from "./wcon.png";
 
 export {
   logo,
+  coinbase,
+  ledger,
+  binance,
+  metamask,
+  trust,
+  walletconn,
   avatar1,
   btc,
   eth,
