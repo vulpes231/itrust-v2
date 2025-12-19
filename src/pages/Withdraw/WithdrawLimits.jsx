@@ -17,7 +17,7 @@ const CustomRow = ({ children }) => {
   );
 };
 
-const TransferLimits = () => {
+const WithdrawalLimits = () => {
   return (
     <div>
       <Label
@@ -29,7 +29,7 @@ const TransferLimits = () => {
           // backgroundColor: "red",
         }}
       >
-        Transfer Limits
+        Withdrawal Limits
       </Label>
       <hr
         // className="p-0"
@@ -45,7 +45,9 @@ const TransferLimits = () => {
         }}
       >
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>Minimum Transfer</b>
+          <b style={{ color: "#878A99", fontWeight: 300 }}>
+            Minimum Withdrawal
+          </b>
           <small style={{ color: "#495057", fontWeight: 500 }}>
             {formatCurrency(50)}
           </small>
@@ -67,4 +69,4 @@ const TransferLimits = () => {
   );
 };
 
-export default TransferLimits;
+export default WithdrawalLimits;

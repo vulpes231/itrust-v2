@@ -28,7 +28,7 @@ const BalanceCard = () => {
 
   return (
     <div
-      className="py-3 px-4"
+      className="py-3 px-3"
       style={{ display: "flex", flexDirection: "column", gap: "2px" }}
     >
       <i className="ri-briefcase-line" style={{ fontSize: "29px" }}></i>

@@ -63,6 +63,10 @@ const Crypto = () => {
     }),
     onSubmit: (values) => {
       console.log("values", values);
+      if (selectedAccount._id === toAccount._id) {
+        setError("Invalid account selected!");
+        return;
+      }
       mutation.mutate(values);
     },
     validateOnMount: true,

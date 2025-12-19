@@ -8,6 +8,10 @@ import { depositFunds } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { formatCurrency } from "../../constants";
+import { CenterSpan, CustomSpan, FlexRow } from "../Deposit/DepositUtils";
+import Loader from "../../components/Common/Loader";
+import { BsBank } from "react-icons/bs";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 const Bank = ({ settings }) => {
   const [error, setError] = useState("");
@@ -17,20 +21,33 @@ const Bank = ({ settings }) => {
     onError: (err) => setError(err.message),
   });
 
+  const data = JSON.parse(sessionStorage.getItem("withdraw"));
+
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      amount: "",
-      account: "cash",
+      amount: data?.amount || "",
       network: "bank",
       method: "bank",
+      bankName: "",
+      accountName: "",
+      accountNumber: "",
+      swiftCode: "",
+      routingNumber: "",
+      bankAddress: "",
+      reference: "",
     },
     validationSchema: Yup.object({
-      amount: Yup.string().required("Enter withdrawal amount"),
+      amount: Yup.string().required("Enter deposit amount"),
+      bankName: Yup.string().required("Enter bank name"),
+      accountName: Yup.string().required("Enter account name"),
+      accountNumber: Yup.string().required("Enter account number"),
+      bankAddress: Yup.string().required("Enter bank address"),
+      routingNumber: Yup.string().required("Enter routing number"),
     }),
     onSubmit: (values) => {
       console.log(values);
-      mutation.mutate();
+      // mutation.mutate();
     },
   });
 
@@ -53,135 +70,323 @@ const Bank = ({ settings }) => {
       return () => clearTimeout(timeout);
     }
   }, [error]);
+  // console.log(settings);
 
   return (
-    <Row>
-      <Col lg={6}>
-        <div className="mb-3">
+    <Row className="g-3 p-4">
+      <div className="pb-3">
+        <FlexRow>
+          <span
+            className="bg-primary d-flex align-items-center justify-content-center"
+            style={{
+              fontSize: "25px",
+              fontWeight: 600,
+              color: "#fff",
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+            }}
+          >
+            <BsBank />
+          </span>
+          <CustomSpan>
+            <span
+              style={{
+                fontSize: "15px",
+                fontWeight: 600,
+                color: "#495057",
+                lineHeight: 2,
+              }}
+            >
+              Bank Transfer Withdrawal
+            </span>
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#878A99",
+                // lineHeight: 2,
+              }}
+            >
+              Enter your bank account details
+            </span>
+          </CustomSpan>
+        </FlexRow>
+      </div>
+
+      <Col lg={12}>
+        <div className="d-flex align-items-center justify-content-center bg-warning-subtle rounded mx-2 gap-3 p-2">
+          <div className="d-flex align-items-center">
+            <IoAlertCircleOutline className="text-warning" />
+          </div>
+          <div className="d-flex align-items-center">
+            <ul
+              style={{ fontWeight: 300, fontSize: "14px" }}
+              className="text-warning mb-0"
+            >
+              <li>
+                Please ensure your bank details are correct. Incorrect
+                information may result in delays or failed transfers.
+              </li>
+              <li>Processing time: 2 - 5 business days</li>
+            </ul>
+          </div>
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <div className="mb-3 px-2">
           <Label for="banknameInput" className="form-label">
             Bank Name
           </Label>
           <Input
             type="text"
             className="form-control"
-            id="banknameInput"
-            placeholder="Enter your bank name"
-          />
-        </div>
-      </Col>
-      <Col lg={6}>
-        <div className="mb-3">
-          <Label for="branchInput" className="form-label">
-            Branch
-          </Label>
-          <Input
-            type="text"
-            className="form-control"
-            id="branchInput"
-            placeholder="Branch"
-          />
-        </div>
-      </Col>
-      <Col lg={12}>
-        <div className="mb-3">
-          <Label for="accountnameInput" className="form-label">
-            Account Holder Name
-          </Label>
-          <Input
-            type="text"
-            className="form-control"
-            id="accountnameInput"
-            placeholder="Enter account holder name"
-          />
-        </div>
-      </Col>
-      <Col lg={6}>
-        <div className="mb-3">
-          <Label for="accountnumberInput" className="form-label">
-            Account Number
-          </Label>
-          <Input
-            type="number"
-            className="form-control"
-            id="accountnumberInput"
-            placeholder="Enter account number"
-          />
-        </div>
-      </Col>
-      <Col lg={6}>
-        <div className="mb-3">
-          <Label for="ifscInput" className="form-label">
-            IFSC
-          </Label>
-          <Input
-            type="number"
-            className="form-control"
-            id="ifscInput"
-            placeholder="IFSC"
-          />
-        </div>
-      </Col>
-      <Col lg={12}>
-        <div className="mb-3">
-          <Label for="amount" className="form-label">
-            Amount
-          </Label>
-          <Input
-            type="text"
-            value={validation.values.amount}
+            name="bankName"
+            value={validation.values.bankName}
             onChange={validation.handleChange}
             onBlur={validation.handleBlur}
-            className={`form-control ${
-              validation.touched.amount && validation.errors.amount
-                ? "is-invalid"
-                : ""
-            }`}
-            placeholder="Enter deposit amount"
-            name="amount"
-            autoComplete="off"
+            invalid={
+              validation.touched.bankName && validation.errors.bankName
+                ? true
+                : false
+            }
           />
-          {validation.touched.amount && validation.errors.amount ? (
-            <FormFeedback type="invalid">
-              {validation.errors.amount}
+          {validation.touched.bankName && validation.errors.bankName ? (
+            <FormFeedback type={"invalid"}>
+              {validation.errors.bankName}
             </FormFeedback>
           ) : null}
         </div>
       </Col>
-      <Col>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2px",
-            color: "#505050",
-          }}
-        >
-          <small>
-            Minimum Withdrawal Limit:{" "}
-            {settings ? formatCurrency(settings.withdrawalLimits.bank.min) : 0}
-          </small>
-          <small>
-            Maximum Withdrawal Limit:{" "}
-            {settings ? formatCurrency(settings.withdrawalLimits.bank.max) : 0}
-          </small>
+      <Col lg={12}>
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Account Name
+          </Label>
+          <Input
+            type="text"
+            className="form-control"
+            name="accountName"
+            value={validation.values.accountName}
+            onBlur={validation.handleBlur}
+            onChange={validation.handleChange}
+            invalid={
+              validation.touched.accountName && validation.errors.accountName
+                ? true
+                : false
+            }
+          />
+          {validation.touched.accountName && validation.errors.accountName ? (
+            <FormFeedback type="invalid">
+              {validation.errors.accountName}
+            </FormFeedback>
+          ) : null}
         </div>
       </Col>
       <Col lg={12}>
-        <div className="d-flex align-items-start gap-3 mt-3">
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Account Number
+          </Label>
+          <Input
+            type="text"
+            className="form-control"
+            name="accountNumber"
+            value={validation.values.accountNumber}
+            onBlur={validation.handleBlur}
+            onChange={validation.handleChange}
+            invalid={
+              validation.touched.accountNumber &&
+              validation.errors.accountNumber
+                ? true
+                : false
+            }
+          />
+          {validation.touched.accountNumber &&
+          validation.errors.accountNumber ? (
+            <FormFeedback type="invalid">
+              {validation.errors.accountNumber}
+            </FormFeedback>
+          ) : null}
+        </div>
+      </Col>
+      <Col lg={12}>
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Routing Number
+          </Label>
+          <Input
+            type="text"
+            className="form-control"
+            name="routingNumber"
+            value={validation.values.routingNumber}
+            onBlur={validation.handleBlur}
+            onChange={validation.handleChange}
+            invalid={
+              validation.touched.routingNumber &&
+              validation.errors.routingNumber
+                ? true
+                : false
+            }
+          />
+          {validation.touched.routingNumber &&
+          validation.errors.routingNumber ? (
+            <FormFeedback type="invalid">
+              {validation.errors.routingNumber}
+            </FormFeedback>
+          ) : null}
+        </div>
+      </Col>
+      <Col lg={12}>
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Swift Code / BIC Code (Optional for International)
+          </Label>
+          <Input
+            type="text"
+            className="form-control"
+            name="swiftCode"
+            value={validation.values.swiftCode}
+            onBlur={validation.handleBlur}
+            onChange={validation.handleChange}
+            // invalid={
+            //   validation.touched.swiftCode &&
+            //   validation.errors.swiftCode
+            //     ? true
+            //     : false
+            // }
+          />
+        </div>
+      </Col>
+      <Col lg={12}>
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Bank Address
+          </Label>
+          <Input
+            type="text"
+            className="form-control"
+            name="bankAddress"
+            value={validation.values.bankAddress}
+            onBlur={validation.handleBlur}
+            onChange={validation.handleChange}
+            invalid={
+              validation.touched.bankAddress && validation.errors.bankAddress
+                ? true
+                : false
+            }
+          />
+          {validation.touched.bankAddress && validation.errors.bankAddress ? (
+            <FormFeedback type="invalid">
+              {validation.errors.bankAddress}
+            </FormFeedback>
+          ) : null}
+        </div>
+      </Col>
+      <Col lg={12}>
+        <div className="mb-3 px-2">
+          <Label for="banknameInput" className="form-label">
+            Reference (Optional for International)
+          </Label>
+          <Input
+            type="text"
+            className="form-control"
+            name="reference"
+            value={validation.values.reference}
+            onBlur={validation.handleBlur}
+            onChange={validation.handleChange}
+            // invalid={
+            //   validation.touched.reference &&
+            //   validation.errors.reference
+            //     ? true
+            //     : false
+            // }
+          />
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <div className="px-2">
+          <span className="d-flex align-items-center justify-content-between">
+            <Label
+              style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
+            >
+              Withdrawal Summary
+            </Label>
+            {/* <img src="" alt="coin" /> */}
+          </span>
+
+          <hr style={{ color: "#dedede" }} />
+
+          <div className="d-flex flex-column gap-2 px-3">
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                Amount to Receive
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(data?.amount)}
+              </span>
+            </span>
+
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                Processing Fee
+              </span>
+              <span
+                className="text-success"
+                style={{ fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(0)}
+              </span>
+            </span>
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 500 }}
+              >
+                You will receive
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(data?.amount)}
+              </span>
+            </span>
+          </div>
+          <hr style={{ color: "#dedede" }} />
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <CenterSpan>
           <button
+            style={{ width: "100%" }}
             onClick={(e) => {
               e.preventDefault();
               validation.submitForm();
               return false;
             }}
-            disabled={mutation.isPending}
             type="submit"
-            className="btn btn-danger btn-label right ms-auto"
+            disabled={mutation.isPending}
+            className="btn btn-primary"
           >
-            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{" "}
-            Withdraw via Bank
+            Confirm Withdrawal
           </button>
-        </div>
+          <small
+            className="pb-3"
+            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
+          >
+            By confirming, you authorize us to transfer{" "}
+            <b>{formatCurrency(data?.amount)}</b> to your bank account. Funds
+            typically arrive in 2-5 business days.
+          </small>
+        </CenterSpan>
       </Col>
       {error && (
         <ErrorToast
@@ -194,13 +399,14 @@ const Bank = ({ settings }) => {
       )}
       {mutation.isSuccess && (
         <SuccessToast
-          successMsg={"Withdrawal request submitted."}
+          successMsg={"Deposit request submitted."}
           onClose={() => {
             mutation.reset();
             setError("");
           }}
         />
       )}
+      {mutation.isPending && <Loader />}
     </Row>
   );
 };

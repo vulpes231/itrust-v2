@@ -28,7 +28,7 @@ const TransferForm = () => {
 
   return (
     <React.Fragment>
-      <TrxCrumb title={"Transfer"} />
+      <TrxCrumb title={"Transfer"} handleMove={() => window.history.back()} />
       <Row>
         <Col lg={9}>
           <Card>
