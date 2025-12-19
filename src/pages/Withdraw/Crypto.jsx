@@ -1,78 +1,74 @@
-import { capitalize } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
-import { getUserWallets } from "../../services/user/wallet";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { withdrawFund } from "../../services/user/transactions";
+import { useMutation } from "@tanstack/react-query";
+import { depositFunds } from "../../services/user/transactions";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { formatCurrency } from "../../constants";
+import { CenterSpan, CustomSpan, FlexRow } from "../Deposit/DepositUtils";
+import { FaDollarSign } from "react-icons/fa";
+import { btc, dep, eth, usdt } from "../../assets";
+import { IoAlertCircleOutline } from "react-icons/io5";
+import Loader from "../../components/Common/Loader";
 
 const Crypto = ({ settings }) => {
   const [error, setError] = useState("");
-  const [depositAcct, setDepositAccount] = useState("");
+  const [selectedMode, setSelectedMode] = useState("");
 
-  const [form, setForm] = useState({
-    amount: "",
-    method: "",
-    network: "",
-    account: "",
-    address: "",
-  });
-
-  const { data: wallets } = useQuery({
-    queryFn: getUserWallets,
-    queryKey: ["wallets"],
-  });
+  const handleMode = (asset) => {
+    setSelectedMode(asset);
+  };
 
   const cryptoMutation = useMutation({
-    mutationFn: () => withdrawFund(cryptoValidation.values),
-    onError: (err) => {
-      // console.log(err);
-      setError(err.message);
-    },
+    mutationFn: () => depositFunds(cryptoValidation.values),
+    onError: (err) => setError(err.message),
   });
+
+  const data = JSON.parse(sessionStorage.getItem("withdraw"));
 
   const cryptoValidation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      method: form.method || "",
-      account: form.account || "",
-      network: form.network || "",
-      amount: form.amount || "",
-      address: form.address || "",
+      method: selectedMode?.symbol || "",
+      account: "cash",
+      network: selectedMode?.network || "",
+      amount: data.amount || "",
+      address: "",
     },
     validationSchema: Yup.object({
-      account: Yup.string().required("Select withdrawal account"),
-      method: Yup.string().required("Select crypto method"),
-      network: Yup.string().required("Select crypto network"),
-      amount: Yup.string().required("Enter withdrawal amount"),
-      address: Yup.string().required("Enter withdrawal address"),
+      address: Yup.string().required("Enter Address"),
     }),
     onSubmit: (values) => {
-      // console.log(values);
+      if (!values.method) {
+        setError("Select cryptocurrency!");
+        return;
+      }
+      console.log(values);
       cryptoMutation.mutate();
     },
     validateOnMount: true,
   });
+
   const methods = [
-    { id: "btc", label: "Bitcoin (BTC)", network: ["BTC"] },
-    { id: "eth", label: "Ethereum (ETH)", network: ["ERC20"] },
-    { id: "usdt", label: "Tether (USDT)", network: ["ERC20", "TRC20"] },
+    { id: "btc", label: "Bitcoin", network: "BTC", img: btc, symbol: "BTC" },
+    { id: "eth", label: "Ethereum", network: "ERC20", img: eth, symbol: "ETH" },
+    {
+      id: "usdtErc",
+      label: "Tether",
+      network: "ERC20",
+      img: usdt,
+      symbol: "USDT",
+    },
+    {
+      id: "usdtTrc",
+      label: "Tether",
+      network: "TRC20",
+      img: usdt,
+      symbol: "USDT",
+    },
   ];
-
-  const getNetworks = (method) => {
-    return methods.find((mt) => mt.id === method).network;
-  };
-
-  useEffect(() => {
-    if (wallets) {
-      const wallet = wallets.find((wallet) => wallet.name === "cash");
-      setDepositAccount(wallet);
-    }
-  }, [wallets]);
 
   useEffect(() => {
     if (cryptoMutation.isSuccess) {
@@ -95,129 +91,182 @@ const Crypto = ({ settings }) => {
   }, [error]);
 
   return (
-    <Row className="g-3">
-      <Col lg={6}>
-        <div>
-          <Label for="account" className="form-label">
-            Account
-          </Label>
-          <Input
-            id="account"
-            name="account"
-            className="form-control"
-            type="select"
-            onChange={cryptoValidation.handleChange}
-            onBlur={cryptoValidation.handleBlur}
-            value={cryptoValidation.values.account || ""}
-            invalid={
-              cryptoValidation.touched.account &&
-              cryptoValidation.errors.account
-                ? true
-                : false
-            }
+    <Row className="g-3 p-4">
+      <div className="pb-3">
+        <FlexRow>
+          <span
+            className="bg-primary d-flex align-items-center justify-content-center"
+            style={{
+              fontSize: "25px",
+              fontWeight: 600,
+              color: "#fff",
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+            }}
           >
-            <option value="">Select Account</option>
-            {depositAcct && (
-              <option value={depositAcct.name}>
-                {capitalize(depositAcct.name)} Account
-              </option>
-            )}
-          </Input>
-          {cryptoValidation.touched.account &&
-          cryptoValidation.errors.account ? (
-            <FormFeedback type="invalid">
-              {cryptoValidation.errors.account}
-            </FormFeedback>
-          ) : null}
+            <FaDollarSign />
+          </span>
+          <CustomSpan>
+            <span
+              style={{
+                fontSize: "15px",
+                fontWeight: 600,
+                color: "#495057",
+                lineHeight: 2,
+              }}
+            >
+              Cryptocurrency Withdrawal
+            </span>
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 300,
+                color: "#878A99",
+                // lineHeight: 2,
+              }}
+            >
+              Choose your cryptocurrency and enter wallet address
+            </span>
+          </CustomSpan>
+        </FlexRow>
+      </div>
+      <Col lg={12}>
+        <div className="d-flex align-items-start bg-danger-subtle rounded mx-2 gap-3 mb-3 py-3 px-4">
+          <div className="d-flex align-items-center">
+            <IoAlertCircleOutline className="text-danger" />
+          </div>
+          <div className="d-flex align-items-center">
+            <ul
+              style={{ fontWeight: 300, fontSize: "14px" }}
+              className="text-danger mb-0"
+            >
+              <span style={{ fontWeight: 600, fontSize: "14px" }}>
+                Important
+              </span>
+              <li>Double-check your wallet address before confirming</li>
+              <li>
+                Sending to wrong address will result in permanent loss of funds
+              </li>
+              <li>
+                Ensure you're using the correct network for the selected
+                cryptocurrency
+              </li>
+              <li>We cannot reverse or refund cryptocurrency transactions</li>
+            </ul>
+          </div>
         </div>
       </Col>
-      <Col lg={6}>
-        <div>
-          <Label for="coin" className="form-label">
-            Method
-          </Label>
-          <Input
-            id="method"
-            name="method"
-            className="form-control"
-            type="select"
-            onChange={cryptoValidation.handleChange}
-            onBlur={cryptoValidation.handleBlur}
-            value={cryptoValidation.values.method || ""}
-            invalid={
-              cryptoValidation.touched.method && cryptoValidation.errors.method
-                ? true
-                : false
-            }
+      <Col lg={12}>
+        <div className="px-2">
+          <Label
+            className="pb-1"
+            style={{ fontSize: "16px", color: "#495057", fontWeight: 600 }}
           >
-            <option value="">Select Method</option>
-            {methods.map((mt) => {
+            Select Cryptocurrency
+          </Label>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "16px",
+            }}
+            className="pb-3"
+          >
+            {methods.map((mtd) => {
               return (
-                <option key={mt.id} value={mt.id}>
-                  {mt.label}
-                </option>
+                <div
+                  style={{
+                    borderRadius: "5px",
+                    border:
+                      selectedMode.id === mtd.id
+                        ? "1px solid #5126be"
+                        : "1px solid #dedede",
+                    cursor: "pointer",
+                  }}
+                  key={mtd.id}
+                  className={`d-flex align-items-center gap-3 py-1 px-2 ${
+                    selectedMode.id === mtd.id ? "bg-primary-subtle" : ""
+                  }`}
+                  onClick={() => handleMode(mtd)}
+                >
+                  <img src={mtd.img} alt="" width={30} />
+                  <span className="d-flex flex-column">
+                    <span
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        color: "#495057",
+                      }}
+                    >
+                      {mtd.label}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: 300,
+                        color: "#212529",
+                      }}
+                    >
+                      {mtd.network}
+                    </span>
+                  </span>
+                </div>
               );
             })}
-          </Input>
-          {cryptoValidation.touched.method && cryptoValidation.errors.method ? (
-            <FormFeedback type="invalid">
-              {cryptoValidation.errors.method}
-            </FormFeedback>
-          ) : null}
+          </div>
         </div>
       </Col>
-      {cryptoValidation.values.method && (
-        <Col lg={12}>
-          <div>
-            <Label for="network" className="form-label">
-              Network
-            </Label>
-            <Input
-              id="network"
-              name="network"
-              className="form-control"
-              type="select"
-              onChange={cryptoValidation.handleChange}
-              onBlur={cryptoValidation.handleBlur}
-              value={cryptoValidation.values.network || ""}
-              invalid={
-                cryptoValidation.touched.network &&
-                cryptoValidation.errors.network
-                  ? true
-                  : false
-              }
-            >
-              <option value="">Select Network</option>
-              {getNetworks(cryptoValidation.values.method).map((mt, index) => {
-                return (
-                  <option key={index} value={mt}>
-                    {mt}
-                  </option>
-                );
-              })}
-            </Input>
-            {cryptoValidation.touched.network &&
-            cryptoValidation.errors.network ? (
-              <FormFeedback type="invalid">
-                {cryptoValidation.errors.network}
-              </FormFeedback>
-            ) : null}
-          </div>
-        </Col>
-      )}
+
       <Col lg={12}>
-        <div>
+        <div className="d-flex align-items-start bg-warning-subtle rounded mx-2 gap-3 mb-3 py-3 px-4">
+          <div className="d-flex align-items-center">
+            <IoAlertCircleOutline className="text-warning" />
+          </div>
+          <span
+            style={{ fontWeight: 300, fontSize: "14px" }}
+            className="text-warning"
+          >
+            Connect a DEFI wallet to process your crypto withdrawals
+          </span>
+        </div>
+      </Col>
+      <Col>
+        <div className="mx-2">
+          <button
+            style={{ width: "100%" }}
+            type="button"
+            className="btn btn-primary mb-4"
+          >
+            Connect Wallet
+          </button>
+          <span
+            style={{
+              fontSize: "14px",
+              color: "#878A99",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            or enter manually
+          </span>
+        </div>
+      </Col>
+
+      <Col lg={12}>
+        <div className="mb-3 px-2">
           <Label for="address" className="form-label">
-            Address
+            {selectedMode?.symbol} Wallet Address
           </Label>
           <Input
             type="text"
             className="form-control"
-            id="address"
-            placeholder="Deposit Address"
-            onChange={cryptoValidation.handleChange}
+            placeholder="Enter Address"
+            name="address"
+            value={cryptoValidation.values.address}
             onBlur={cryptoValidation.handleBlur}
-            value={cryptoValidation.values.address || ""}
+            onChange={cryptoValidation.handleChange}
             invalid={
               cryptoValidation.touched.address &&
               cryptoValidation.errors.address
@@ -233,60 +282,98 @@ const Crypto = ({ settings }) => {
           ) : null}
         </div>
       </Col>
+
       <Col lg={12}>
-        <div>
-          <Label for="amount" className="form-label">
-            Amount
-          </Label>
-          <Input
-            type="text"
-            value={cryptoValidation.values.amount}
-            onChange={cryptoValidation.handleChange}
-            onBlur={cryptoValidation.handleBlur}
-            className={`form-control ${
-              cryptoValidation.touched.amount && cryptoValidation.errors.amount
-                ? "is-invalid"
-                : ""
-            }`}
-            placeholder="Enter withdrawal amount"
-            name="amount"
-            autoComplete="off"
-          />
-          {cryptoValidation.touched.amount && cryptoValidation.errors.amount ? (
-            <FormFeedback type="invalid">
-              {cryptoValidation.errors.amount}
-            </FormFeedback>
-          ) : null}
+        <div className="px-2">
+          <span className="d-flex align-items-center justify-content-between">
+            <Label
+              style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
+            >
+              Withdrawal Summary
+            </Label>
+            {/* <img src="" alt="coin" /> */}
+          </span>
+
+          <hr style={{ color: "#dedede" }} />
+
+          <div className="d-flex flex-column gap-2 px-3">
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                Amount to receive
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(data?.amount)}
+              </span>
+            </span>
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                {selectedMode?.symbol} Value
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                0.0015647 {selectedMode?.symbol}
+              </span>
+            </span>
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+              >
+                Network Fee
+              </span>
+              <span
+                className="text-success"
+                style={{ fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(0)}
+              </span>
+            </span>
+            <span className="d-flex align-items-center justify-content-between">
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 500 }}
+              >
+                You will receive
+              </span>
+              <span
+                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
+              >
+                {formatCurrency(data?.amount)}
+              </span>
+            </span>
+          </div>
+          <hr style={{ color: "#dedede" }} />
         </div>
       </Col>
 
-      <Col>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2px",
-            color: "#505050",
-          }}
-        >
-          <small>
-            Minimum Withdrawal Limit:{" "}
-            {settings
-              ? formatCurrency(settings.withdrawalLimits.crypto.min)
-              : 0}
-          </small>
-          <small>
-            Maximum Withdrawal Limit:{" "}
-            {settings
-              ? formatCurrency(settings.withdrawalLimits.crypto.max)
-              : 0}
-          </small>
+      <Col lg={12}>
+        <div className="d-flex align-items-start bg-primary-subtle rounded py-1 px-3 gap-3 mb-3 mx-2">
+          <span>
+            <IoAlertCircleOutline className="text-primary" />
+          </span>
+          <span
+            style={{ fontWeight: 300, fontSize: "14px" }}
+            className="d-flex flex-column text-primary"
+          >
+            <span style={{ fontWeight: 500 }}>Processing details</span>
+            <ul>
+              <li>Minimum withdrawal: $50</li>
+              <li>Processing time: 1-60 minutes</li>
+              <li>Withdrawals are processed after manual security review</li>
+            </ul>
+          </span>
         </div>
       </Col>
 
       <Col lg={12}>
-        <div className="d-flex align-items-start gap-3 mt-3">
+        <CenterSpan>
           <button
+            style={{ width: "100%" }}
             onClick={(e) => {
               e.preventDefault();
               cryptoValidation.submitForm();
@@ -294,12 +381,18 @@ const Crypto = ({ settings }) => {
             }}
             type="submit"
             disabled={cryptoMutation.isPending}
-            className="btn btn-danger btn-label right ms-auto"
+            className="btn btn-primary"
           >
-            <i className="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{" "}
-            Withdraw via Crypto
+            Confirm Withdrawal
           </button>
-        </div>
+          <small
+            className="pb-3"
+            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
+          >
+            By confirming, you acknowledge that cryptocurrency transactions are
+            irreversible and authorize the withdrawal.
+          </small>
+        </CenterSpan>
       </Col>
       {error && (
         <ErrorToast
@@ -319,6 +412,7 @@ const Crypto = ({ settings }) => {
           }}
         />
       )}
+      {cryptoMutation.isPending && <Loader />}
     </Row>
   );
 };

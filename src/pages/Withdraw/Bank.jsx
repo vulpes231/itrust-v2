@@ -143,6 +143,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             name="bankName"
+            placeholder="Enter Bank Name"
             value={validation.values.bankName}
             onChange={validation.handleChange}
             onBlur={validation.handleBlur}
@@ -168,6 +169,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             name="accountName"
+            placeholder="Enter Account Name"
             value={validation.values.accountName}
             onBlur={validation.handleBlur}
             onChange={validation.handleChange}
@@ -193,6 +195,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             name="accountNumber"
+            placeholder="Enter Account Number"
             value={validation.values.accountNumber}
             onBlur={validation.handleBlur}
             onChange={validation.handleChange}
@@ -220,6 +223,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             name="routingNumber"
+            placeholder="Enter Routing Number"
             value={validation.values.routingNumber}
             onBlur={validation.handleBlur}
             onChange={validation.handleChange}
@@ -247,6 +251,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             name="swiftCode"
+            placeholder="FNBKUS33XXX"
             value={validation.values.swiftCode}
             onBlur={validation.handleBlur}
             onChange={validation.handleChange}
@@ -268,6 +273,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             name="bankAddress"
+            placeholder="Enter Bank Address"
             value={validation.values.bankAddress}
             onBlur={validation.handleBlur}
             onChange={validation.handleChange}
@@ -293,6 +299,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             name="reference"
+            placeholder="DEPE59948970"
             value={validation.values.reference}
             onBlur={validation.handleBlur}
             onChange={validation.handleChange}
@@ -399,7 +406,7 @@ const Bank = ({ settings }) => {
       )}
       {mutation.isSuccess && (
         <SuccessToast
-          successMsg={"Deposit request submitted."}
+          successMsg={"Withdrawal request submitted."}
           onClose={() => {
             mutation.reset();
             setError("");

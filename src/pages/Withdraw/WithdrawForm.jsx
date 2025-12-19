@@ -23,6 +23,7 @@ import WithdrawalLimits from "./WithdrawLimits";
 import PendingWithdrawal from "./PendingWithdrawal";
 import WithdrawStat from "./WithdrawStat";
 import WithForm from "./WithForm";
+import { getTransactionAnalytics } from "../../services/user/transactions";
 
 const WithdrawForm = () => {
   const token = getAccessToken();
@@ -35,6 +36,11 @@ const WithdrawForm = () => {
   const { data: settings } = useQuery({
     queryKey: ["settings"],
     queryFn: getSettings,
+    enabled: !!token,
+  });
+  const { data: analytics } = useQuery({
+    queryKey: ["trxAnalytics"],
+    queryFn: getTransactionAnalytics,
     enabled: !!token,
   });
 
@@ -61,10 +67,10 @@ const WithdrawForm = () => {
             <BalanceCard />
           </Card>
           <Card>
-            <PendingWithdrawal />
+            <PendingWithdrawal analytics={analytics} />
           </Card>
           <Card>
-            <WithdrawStat />
+            <WithdrawStat analytics={analytics} />
           </Card>
           <Card>
             <WithdrawalLimits />

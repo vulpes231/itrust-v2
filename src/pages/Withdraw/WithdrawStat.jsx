@@ -34,7 +34,7 @@ const CustomRow = ({ children }) => {
   );
 };
 
-const WithdrawStat = () => {
+const WithdrawStat = ({ analytics }) => {
   return (
     <div>
       <Label
@@ -76,7 +76,7 @@ const WithdrawStat = () => {
           </span>
           <CustomSpan>
             <Title>Total Payout</Title>
-            <Small>{formatCurrency(3000)}</Small>
+            <Small>{formatCurrency(analytics?.totalWithdrawal)}</Small>
           </CustomSpan>
         </CustomRow>
         <CustomRow>
@@ -94,7 +94,7 @@ const WithdrawStat = () => {
           </span>
           <CustomSpan>
             <Title>This Month</Title>
-            <Small>{formatCurrency(500)}</Small>
+            <Small>{formatCurrency(analytics?.monthlyWithdrawal)}</Small>
           </CustomSpan>
         </CustomRow>
       </div>

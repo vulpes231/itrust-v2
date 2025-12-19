@@ -11,6 +11,7 @@ import TrxCrumb from "../../components/Common/TrxCrumb";
 import { useQuery } from "@tanstack/react-query";
 import { getSettings } from "../../services/user/settings";
 import { getAccessToken } from "../../constants";
+import { getTransactionAnalytics } from "../../services/user/transactions";
 
 const DepositForm = () => {
   const token = getAccessToken();
@@ -23,6 +24,11 @@ const DepositForm = () => {
   const { data: settings } = useQuery({
     queryKey: ["settings"],
     queryFn: getSettings,
+    enabled: !!token,
+  });
+  const { data: analytics } = useQuery({
+    queryKey: ["trxAnalytics"],
+    queryFn: getTransactionAnalytics,
     enabled: !!token,
   });
 
@@ -46,10 +52,10 @@ const DepositForm = () => {
             <BalanceCard />
           </Card>
           <Card className="bg-warning-subtle">
-            <PendingDeposit />
+            <PendingDeposit analytics={analytics} />
           </Card>
           <Card>
-            <AccountStat />
+            <AccountStat analytics={analytics} />
           </Card>
           <Card>
             <DepositLimit />

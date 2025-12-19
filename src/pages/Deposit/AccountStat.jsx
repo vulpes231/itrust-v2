@@ -34,7 +34,7 @@ const CustomRow = ({ children }) => {
   );
 };
 
-const AccountStat = () => {
+const AccountStat = ({ analytics }) => {
   return (
     <div>
       <Label
@@ -76,7 +76,7 @@ const AccountStat = () => {
           </span>
           <CustomSpan>
             <Title>Total Deposited</Title>
-            <Small>{formatCurrency(3000)}</Small>
+            <Small>{formatCurrency(analytics?.totalDeposit)}</Small>
           </CustomSpan>
         </CustomRow>
         <CustomRow>
@@ -94,7 +94,7 @@ const AccountStat = () => {
           </span>
           <CustomSpan>
             <Title>This Month</Title>
-            <Small>{formatCurrency(500)}</Small>
+            <Small>{formatCurrency(analytics?.monthlyDeposit)}</Small>
           </CustomSpan>
         </CustomRow>
       </div>
