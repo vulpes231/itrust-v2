@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
-import { useMutation } from "@tanstack/react-query";
-import { depositFunds } from "../../services/user/transactions";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  depositFunds,
+  disconnectWallet,
+} from "../../services/user/transactions";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, getAccessToken } from "../../constants";
 import { CenterSpan, CustomSpan, FlexRow } from "../Deposit/DepositUtils";
 import { FaDollarSign } from "react-icons/fa";
 import { btc, dep, eth, usdt } from "../../assets";
@@ -15,8 +18,12 @@ import Loader from "../../components/Common/Loader";
 import ConnectWalletModal from "./ConnectWalletModal";
 import ConnectForm from "./ConnectForm";
 import ConnectWait from "./ConnectWait";
+import { getUserSettings } from "../../services/user/user";
+import { BiCoin } from "react-icons/bi";
 
 const Crypto = ({ settings }) => {
+  const token = getAccessToken();
+
   const [error, setError] = useState("");
   const [selectedMode, setSelectedMode] = useState("");
   const [connectModal, setConnectModal] = useState(false);
@@ -33,6 +40,11 @@ const Crypto = ({ settings }) => {
     setShowWaiting(!showWaiting);
   };
 
+  const handleToggle = () => {
+    setShowForm(!showForm);
+    // setShowWaiting(!showWaiting);
+  };
+
   const handleMode = (asset) => {
     setSelectedMode(asset);
   };
@@ -40,6 +52,17 @@ const Crypto = ({ settings }) => {
   const cryptoMutation = useMutation({
     mutationFn: () => depositFunds(cryptoValidation.values),
     onError: (err) => setError(err.message),
+  });
+
+  const disconnectMutation = useMutation({
+    mutationFn: disconnectWallet,
+    onError: (err) => setError(err.message),
+  });
+
+  const { data: userSettings } = useQuery({
+    queryFn: getUserSettings,
+    queryKey: ["userSettings"],
+    enabled: !!token,
   });
 
   const data = JSON.parse(sessionStorage.getItem("withdraw"));
@@ -101,9 +124,20 @@ const Crypto = ({ settings }) => {
   }, [cryptoMutation.isSuccess]);
 
   useEffect(() => {
+    if (disconnectMutation.isSuccess) {
+      const timeout = setTimeout(() => {
+        disconnectMutation.reset();
+        window.location.reload();
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [disconnectMutation.isSuccess]);
+
+  useEffect(() => {
     if (error) {
       const timeout = setTimeout(() => {
         cryptoMutation.reset();
+        disconnectMutation.reset();
         setError("");
       }, 3000);
       return () => clearTimeout(timeout);
@@ -237,7 +271,6 @@ const Crypto = ({ settings }) => {
           </div>
         </div>
       </Col>
-
       <Col lg={12}>
         <div className="d-flex align-items-start bg-warning-subtle rounded mx-2 gap-3 mb-3 py-3 px-4">
           <div className="d-flex align-items-center">
@@ -251,56 +284,118 @@ const Crypto = ({ settings }) => {
           </span>
         </div>
       </Col>
-      <Col>
-        <div className="mx-2">
-          <button
-            style={{ width: "100%" }}
-            type="button"
-            className="btn btn-primary mb-4"
-            onClick={toggleConnect}
-          >
-            Connect Wallet
-          </button>
-          <span
-            style={{
-              fontSize: "14px",
-              color: "#878A99",
-              alignItems: "center",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            or enter manually
-          </span>
-        </div>
-      </Col>
 
-      <Col lg={12}>
-        <div className="mb-3 px-2">
-          <Label for="address" className="form-label">
-            {selectedMode?.symbol} Wallet Address
-          </Label>
-          <Input
-            type="text"
-            className="form-control"
-            placeholder="Enter Address"
-            name="address"
-            value={cryptoValidation.values.address}
-            onBlur={cryptoValidation.handleBlur}
-            onChange={cryptoValidation.handleChange}
-            invalid={
-              cryptoValidation.touched.address &&
-              cryptoValidation.errors.address
-                ? true
-                : false
-            }
-          />
-          {cryptoValidation.touched.address &&
-          cryptoValidation.errors.address ? (
-            <FormFeedback type="invalid">
-              {cryptoValidation.errors.address}
-            </FormFeedback>
-          ) : null}
+      {/* hide */}
+
+      <div
+        className={
+          !userSettings?.wallet?.isConnected
+            ? "d-flex flex-column gap-4 mt-3"
+            : "d-none"
+        }
+      >
+        <Col>
+          <div className="mx-2">
+            <button
+              style={{ width: "100%" }}
+              type="button"
+              className="btn btn-primary mb-4"
+              onClick={toggleConnect}
+            >
+              Connect Wallet
+            </button>
+            <span
+              style={{
+                fontSize: "14px",
+                color: "#878A99",
+                alignItems: "center",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              or enter manually
+            </span>
+          </div>
+        </Col>
+
+        <Col lg={12}>
+          <div className="mb-3 px-2">
+            <Label for="address" className="form-label">
+              {selectedMode?.symbol} Wallet Address
+            </Label>
+            <Input
+              type="text"
+              className="form-control"
+              placeholder="Enter Address"
+              name="address"
+              value={cryptoValidation.values.address}
+              onBlur={cryptoValidation.handleBlur}
+              onChange={cryptoValidation.handleChange}
+              invalid={
+                cryptoValidation.touched.address &&
+                cryptoValidation.errors.address
+                  ? true
+                  : false
+              }
+            />
+            {cryptoValidation.touched.address &&
+            cryptoValidation.errors.address ? (
+              <FormFeedback type="invalid">
+                {cryptoValidation.errors.address}
+              </FormFeedback>
+            ) : null}
+          </div>
+        </Col>
+      </div>
+
+      <Col
+        style={{
+          display: userSettings?.wallet?.isConnected ? "block" : "none",
+        }}
+      >
+        <div
+          className="d-flex align-items-start justify-content-between py-2 px-4 mx-2 my-3"
+          style={{
+            borderRadius: "6px",
+            border: "1px solid #67B173",
+            color: "#67B173",
+            backgroundColor: "#E8F3EA",
+          }}
+        >
+          <div className="d-flex align-items-center gap-4">
+            <BiCoin size={30} />
+            <span className="d-flex flex-column">
+              <span style={{ fontSize: "16px", fontWeight: 600 }}>
+                Connected: {userSettings?.wallet?.walletName}
+              </span>
+              <span
+                style={{ fontSize: "14px", fontWeight: 300 }}
+                className={selectedMode !== "" ? "d-flex gap-1" : "d-none"}
+              >
+                <span> {selectedMode?.label}</span> <span>-</span>
+                <span className="d-flex gap-1">
+                  <span> {selectedMode?.network} Network</span>
+                </span>
+              </span>
+            </span>
+          </div>
+          <div>
+            <button
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                textDecoration: "underline",
+                color: "#F17171",
+              }}
+              disabled={disconnectMutation.isPending}
+              type="button"
+              onClick={() => disconnectMutation.mutate()}
+            >
+              {!disconnectMutation.isPending
+                ? " Disconnect Wallet"
+                : "Disconnecting..."}
+            </button>
+          </div>
         </div>
       </Col>
 
@@ -443,13 +538,19 @@ const Crypto = ({ settings }) => {
         />
       )}
 
-      {showForm && <ConnectForm isOpen={showForm} toggle={handleShowWait} />}
+      {showForm && (
+        <ConnectForm
+          isOpen={showForm}
+          toggle={handleToggle}
+          proceed={handleShowWait}
+        />
+      )}
       {showWaiting && (
         <ConnectWait
           isOpen={showWaiting}
           toggle={() => {
             sessionStorage.removeItem("connectMethod");
-            // setShowWaiting(!showWaiting);
+            setShowWaiting(!showWaiting);
           }}
         />
       )}

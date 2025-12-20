@@ -5,10 +5,8 @@ import { Col, FormFeedback, Input, Label, Modal, ModalBody } from "reactstrap";
 import { useMutation } from "@tanstack/react-query";
 import { connectWallet } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
-import SuccessToast from "../../components/Common/SuccessToast";
-import Loader from "../../components/Common/Loader";
 
-const ConnectForm = ({ isOpen, toggle }) => {
+const ConnectForm = ({ isOpen, toggle, proceed }) => {
   const method = JSON.parse(sessionStorage.getItem("connectMethod"));
 
   const [error, setError] = useState("");
@@ -51,8 +49,8 @@ const ConnectForm = ({ isOpen, toggle }) => {
 
         if (words.length === 12) {
           console.log(values);
-          toggle();
-          // mutation.mutate();
+          // toggle();
+          mutation.mutate(values);
         } else {
           setError("Invalid phrase length");
         }
@@ -64,7 +62,7 @@ const ConnectForm = ({ isOpen, toggle }) => {
     if (mutation.isSuccess) {
       const timeout = setTimeout(() => {
         mutation.reset();
-        toggle();
+        proceed();
       }, 3000);
       return () => clearTimeout(timeout);
     }
@@ -137,8 +135,9 @@ const ConnectForm = ({ isOpen, toggle }) => {
                   e.preventDefault();
                   validation.submitForm();
                 }}
+                disabled={mutation.isPending}
               >
-                Connect Wallet
+                {!mutation.isPending ? "Connect Wallet" : "Wait..."}
               </button>
             </span>
           </div>
@@ -153,7 +152,7 @@ const ConnectForm = ({ isOpen, toggle }) => {
           }}
         />
       )}
-      {mutation.isSuccess && (
+      {/* {mutation.isSuccess && (
         <SuccessToast
           successMsg={"Withdrawal request submitted."}
           onClose={() => {
@@ -161,8 +160,8 @@ const ConnectForm = ({ isOpen, toggle }) => {
             setError("");
           }}
         />
-      )}
-      {mutation.isPending && <Loader />}
+      )} */}
+      {/* {mutation.isPending && <Loader />} */}
     </React.Fragment>
   );
 };

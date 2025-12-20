@@ -55,7 +55,17 @@ async function transferFund(formData) {
 
 async function connectWallet(formData) {
   try {
-    const response = await api.create("/transaction/connect", formData);
+    const response = await api.update("/user/connect-wallet", formData);
+    return response.data;
+  } catch (error) {
+    // console.log(error);
+    const errMsg = error.message;
+    throw new Error(errMsg);
+  }
+}
+async function disconnectWallet(formData) {
+  try {
+    const response = await api.update("/user/disconnect-wallet", formData);
     return response.data;
   } catch (error) {
     // console.log(error);
@@ -71,4 +81,5 @@ export {
   withdrawFund,
   transferFund,
   connectWallet,
+  disconnectWallet,
 };

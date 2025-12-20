@@ -12,6 +12,16 @@ async function getUserInfo() {
   }
 }
 
+async function getUserSettings() {
+  try {
+    const response = await api.get("/user/settings");
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.data?.message;
+    throw new Error(errMsg);
+  }
+}
+
 async function updateUserInfo(formData) {
   try {
     const response = await api.put("/user", formData);
@@ -42,4 +52,10 @@ async function updateTwoFactor(formData) {
   }
 }
 
-export { getUserInfo, updateUserInfo, updatePassword, updateTwoFactor };
+export {
+  getUserInfo,
+  updateUserInfo,
+  updatePassword,
+  updateTwoFactor,
+  getUserSettings,
+};
