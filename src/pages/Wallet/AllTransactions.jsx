@@ -150,24 +150,24 @@ const AllTransactions = () => {
           </>
         ),
       },
-      {
-        header: "Method",
-        accessorKey: "currency",
-        enableColumnFilter: false,
-        cell: (cell) => (
-          <div className="d-flex align-items-center">
-            <img
-              src={getCurrencyImage(cell.getValue())}
-              alt={cell.getValue()}
-              className="avatar-xxs me-2"
-              onError={(e) => {
-                e.target.src = "/images/currencies/default.png";
-              }}
-            />
-            {cell.getValue().toUpperCase()}
-          </div>
-        ),
-      },
+      // {
+      //   header: "Method",
+      //   accessorKey: "currency",
+      //   enableColumnFilter: false,
+      //   cell: (cell) => (
+      //     <div className="d-flex align-items-center">
+      //       <img
+      //         src={getCurrencyImage(cell.getValue())}
+      //         alt={cell.getValue()}
+      //         className="avatar-xxs me-2"
+      //         onError={(e) => {
+      //           e.target.src = "/images/currencies/default.png";
+      //         }}
+      //       />
+      //       {cell.getValue().toUpperCase()}
+      //     </div>
+      //   ),
+      // },
       // {
       //   header: "From",
       //   accessorKey: "from",
@@ -176,20 +176,21 @@ const AllTransactions = () => {
       //     return <FromCol {...cell} />;
       //   },
       // },
-      {
-        header: "Account",
-        accessorKey: "to",
-        enableColumnFilter: false,
-        cell: (cell) => {
-          return <ToCol {...cell} />;
-        },
-      },
+
       {
         header: "Details",
         accessorKey: "details",
         enableColumnFilter: false,
         cell: (cell) => {
           return <DetailsCol {...cell} />;
+        },
+      },
+      {
+        header: "Account",
+        accessorKey: "to",
+        enableColumnFilter: false,
+        cell: (cell) => {
+          return <ToCol {...cell} />;
         },
       },
       {

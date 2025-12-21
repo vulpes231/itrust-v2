@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getTransactionAnalytics } from "../../services/user/transactions";
 import { formatCurrency, getAccessToken } from "../../constants";
 import { getWalletAnalytics } from "../../services/user/wallet";
-import { cash } from "../../assets";
+import { brief, cash } from "../../assets";
 
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -70,7 +70,7 @@ const Widgets = () => {
           <span className="text-muted" style={{ fontSize: "12px" }}>
             Updated 16/12/2025 at 12:31 AM
           </span>
-          <i className="ri-briefcase-line" style={{ fontSize: "45px" }}></i>
+          <img src={brief} alt="" width={40} />
 
           <div
             style={{

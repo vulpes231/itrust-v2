@@ -19,7 +19,7 @@ import binance from "./bin.png";
 import metamask from "./meta.png";
 import trust from "./twall.png";
 import walletconn from "./wcon.png";
-
+import brief from "./brief.gif";
 export {
   logo,
   coinbase,
@@ -40,6 +40,7 @@ export {
   xmr,
   dot,
   verification,
+  brief,
   usdt,
   dep,
 };

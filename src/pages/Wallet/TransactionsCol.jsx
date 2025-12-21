@@ -1,12 +1,41 @@
 import { capitalize, upperCase } from "lodash";
 import React from "react";
+import { auto, broke, cash } from "../../assets";
 
 const FromCol = (cell) => {
   return <React.Fragment>{upperCase(cell.getValue())}</React.Fragment>;
 };
-
+{
+  /* <i class="ri-24-hours-line"></i> */
+}
+{
+  /* <i class="ri-bar-chart-2-line"></i> */
+}
 const ToCol = (cell) => {
-  return <React.Fragment>{capitalize(cell.getValue())}</React.Fragment>;
+  const getIcon = (value) => {
+    switch (value) {
+      case "cash":
+        return broke;
+      case "automated investing":
+        return auto;
+      case "brokerage":
+        return cash;
+      default:
+        return null;
+    }
+  };
+
+  const cellValue = cell.getValue();
+  const icon = getIcon(cellValue);
+
+  return (
+    <React.Fragment>
+      <div className="d-flex align-items-center gap-2">
+        {icon && <img src={icon} alt="" width={20} />}
+        <span>{capitalize(cellValue)}</span>
+      </div>
+    </React.Fragment>
+  );
 };
 
 const DetailsCol = (cell) => {

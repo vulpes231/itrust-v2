@@ -121,7 +121,7 @@ const Navdata = () => {
     },
     {
       id: "savings",
-      label: "Savings",
+      label: "Savings & Retirements",
       icon: "ri-hand-coin-line",
       link: "/savings",
       click: function (e) {
