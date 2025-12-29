@@ -42,10 +42,10 @@ const Form = ({ handleView, analytics }) => {
   function handleConfirm(e) {
     e.preventDefault();
 
-    // if (analytics && analytics.pendingDeposit > 0) {
-    //   setError("You have pending deposits!");
-    //   return;
-    // }
+    if (analytics && analytics.pendingDeposit > 0) {
+      setError("You have pending deposits!");
+      return;
+    }
     if (!amount) {
       setError("Amount required!");
       return;

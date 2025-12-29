@@ -12,6 +12,7 @@ import KYCVerification from "./Kyc";
 import Market from "./Market";
 import Portfolio from "./Portfolio";
 import Savings from "./Savings";
+import OpenAccount from "./Savings/OpenAccount";
 import Transfer from "./Transfer";
 import Wallet from "./Wallet";
 import Withdraw from "./Withdraw";
@@ -34,4 +35,5 @@ export {
   Portfolio,
   Wallet,
   KYCVerification,
+  OpenAccount,
 };

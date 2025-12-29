@@ -4,8 +4,9 @@ import CountUp from "react-countup";
 import { BiCoin } from "react-icons/bi";
 import { GrTarget } from "react-icons/gr";
 import { brief } from "../../assets";
+import { Link } from "react-router-dom";
 
-const Accounts = () => {
+const Accounts = ({ analytics }) => {
   return (
     <React.Fragment>
       <Row>
@@ -19,7 +20,7 @@ const Accounts = () => {
               <span className="d-flex flex-column">
                 <span className="fs-15 fw-bold">Retirement Accounts</span>
                 <span className="fs-14 fw-regular" style={{ color: "#878A99" }}>
-                  0 Active
+                  {analytics?.retireAcctLength || 0} Active
                 </span>
               </span>
             </div>
@@ -39,7 +40,12 @@ const Accounts = () => {
                     }}
                   >
                     ${" "}
-                    <CountUp start={0} end={78500} duration={2} separator="," />
+                    <CountUp
+                      start={0}
+                      end={analytics?.retirementBalance || 0}
+                      duration={2}
+                      separator=","
+                    />
                   </span>
                   <span
                     style={{
@@ -71,7 +77,7 @@ const Accounts = () => {
                     className="fs-14 fw-semibold"
                     style={{ color: "#878A99" }}
                   >
-                    3500/7500
+                    $0 / $7500
                   </span>
                 </span>
                 <div
@@ -83,7 +89,7 @@ const Accounts = () => {
                 >
                   <div
                     style={{
-                      width: "30%",
+                      width: "1%",
                       height: "10px",
                       backgroundColor: "blue",
                       borderTopLeftRadius: "5px",
@@ -106,7 +112,7 @@ const Accounts = () => {
               <span className="d-flex flex-column">
                 <span className="fs-15 fw-bold">Savings Accounts</span>
                 <span className="fs-14 fw-regular" style={{ color: "#878A99" }}>
-                  0 Active
+                  {analytics?.savingAcctLength || 0} Active
                 </span>
               </span>
             </div>
@@ -126,7 +132,12 @@ const Accounts = () => {
                     }}
                   >
                     ${" "}
-                    <CountUp start={0} end={2600} duration={2} separator="," />
+                    <CountUp
+                      start={0}
+                      end={analytics?.savingBalance || 0}
+                      duration={2}
+                      separator=","
+                    />
                   </span>
                   <span
                     style={{
@@ -155,7 +166,7 @@ const Accounts = () => {
                     className="fs-14 fw-semibold"
                     style={{ color: "#878A99" }}
                   >
-                    1
+                    0
                   </span>
                 </span>
                 <div>
@@ -179,7 +190,9 @@ const Accounts = () => {
             </span>
           </div>
           <div>
-            <button className="btn btn-primary">Open an Account</button>
+            <Link to={"/open-account"} className="btn btn-primary">
+              Open an Account
+            </Link>
           </div>
         </div>
       </Col>

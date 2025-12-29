@@ -4,8 +4,9 @@ import { IoShieldOutline } from "react-icons/io5";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 import { formatCurrency } from "../../constants";
+import { Link } from "react-router-dom";
 
-const Retirements = () => {
+const Retirements = ({ analytics }) => {
   const [show, setShow] = useState(false);
 
   function handleShow() {
@@ -15,7 +16,7 @@ const Retirements = () => {
   return (
     <React.Fragment>
       <Col className="">
-        <Card className="py-2 px-4">
+        <Card className="py-3 px-4">
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-3">
               <span
@@ -34,7 +35,8 @@ const Retirements = () => {
                   Retirement Accounts
                 </span>
                 <span className="fw-regular fs-15" style={{ color: "#212529" }}>
-                  0 Accounts <GoDotFill /> {formatCurrency(0)}
+                  {analytics?.retireAcctLength || 0} Accounts <GoDotFill />{" "}
+                  {formatCurrency(analytics?.retirementBalance || 0)}
                 </span>
               </span>
             </div>
@@ -50,7 +52,9 @@ const Retirements = () => {
               <span className="fw-regular fs-14" style={{ color: "#878A99" }}>
                 Open a new account and start building your retirement portfolio
               </span>
-              <button className="btn btn-primary">Open an Account</button>
+              <Link to={"/open-account"} className="btn btn-primary">
+                Open an Account
+              </Link>
             </div>
           </div>
         </Card>

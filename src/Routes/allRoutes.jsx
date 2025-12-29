@@ -19,6 +19,7 @@ import {
   Deposit,
   Withdraw,
   Transfer,
+  OpenAccount,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -45,6 +46,7 @@ const authProtectedRoutes = [
   { path: "/deposit", component: <Deposit /> },
   { path: "/withdraw", component: <Withdraw /> },
   { path: "/transfer", component: <Transfer /> },
+  { path: "/open-account", component: <OpenAccount /> },
 ];
 
 const publicRoutes = [

@@ -4,8 +4,9 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 import { formatCurrency } from "../../constants";
 import { GiReceiveMoney } from "react-icons/gi";
+import { Link } from "react-router-dom";
 
-const SavingsAccounts = () => {
+const SavingsAccounts = ({ analytics }) => {
   const [show, setShow] = useState(false);
 
   function handleShow() {
@@ -14,7 +15,7 @@ const SavingsAccounts = () => {
   return (
     <React.Fragment>
       <Col className="">
-        <Card className="py-2 px-4">
+        <Card className="py-3 px-4">
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-3">
               <span
@@ -34,7 +35,8 @@ const SavingsAccounts = () => {
                   Savings Accounts
                 </span>
                 <span className="fw-regular fs-15" style={{ color: "#212529" }}>
-                  0 Accounts <GoDotFill /> {formatCurrency(0)}
+                  {analytics?.savingAcctLength || 0} Accounts <GoDotFill />{" "}
+                  {formatCurrency(analytics?.savingBalance || 0)}
                 </span>
               </span>
             </div>
@@ -42,6 +44,20 @@ const SavingsAccounts = () => {
               {show ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </div>
           </div>
+
+          {/* <div className="d-flex align-items-center justify-content-between">
+            <div className="d-flex align-items-center gap-3">
+              <span className="d-flex flex-column">
+                <span className="fw-bold fs-15" style={{ color: "#495057" }}>
+                  Contribute
+                </span>
+                <span>Add funds to your retirement account</span>
+              </span>
+            </div>
+            <div onClick={handleShow}>
+              {show ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            </div>
+          </div> */}
           <div style={{ display: show ? "block" : "none" }}>
             <div className="d-flex align-items-center justify-content-center flex-column gap-2 p-4">
               <span className="fw-bold fs-16" style={{ color: "#495057" }}>
@@ -50,7 +66,9 @@ const SavingsAccounts = () => {
               <span className="fw-regular fs-14" style={{ color: "#878A99" }}>
                 Open a new account and start building your retirement portfolio
               </span>
-              <button className="btn btn-primary">Open an Account</button>
+              <Link to={"/open-account"} className="btn btn-primary">
+                Open an Account
+              </Link>
             </div>
           </div>
         </Card>
