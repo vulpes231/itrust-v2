@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, getIconColor } from "../../constants";
 import { GoDotFill } from "react-icons/go";
 
 const SavingsList = ({ accts }) => {
@@ -20,16 +20,7 @@ const SavingsList = ({ accts }) => {
     }
   };
 
-  const getIconColor = (name) => {
-    switch (name) {
-      case "Traditional IRA":
-        return "#261CB6";
-      case "Health Savings":
-        return "#F17171";
-      default:
-        return null;
-    }
-  };
+  //  getIconColor
 
   return (
     <React.Fragment>
@@ -50,8 +41,16 @@ const SavingsList = ({ accts }) => {
                           {getIcon(acct.name)}
                         </span>
                         <span className="d-flex flex-column">
-                          <span>{acct.name}</span>
-                          <span className="d-flex align-items-center gap-2">
+                          <span
+                            className="fs-14 fw-semibold"
+                            style={{ color: "#495057" }}
+                          >
+                            {acct.name}
+                          </span>
+                          <span
+                            style={{ color: "#878A99" }}
+                            className="d-flex align-items-center gap-2"
+                          >
                             {" "}
                             <GoDotFill
                               style={{ color: getIconColor(acct.name) }}
@@ -60,7 +59,12 @@ const SavingsList = ({ accts }) => {
                           </span>
                         </span>
                       </span>
-                      <span>{formatCurrency(acct.analytics.balance)}</span>
+                      <span
+                        className="fs-14 fw-semibold"
+                        style={{ color: "#495057" }}
+                      >
+                        {formatCurrency(acct.analytics.balance)}
+                      </span>
                     </div>
                   );
                 })}

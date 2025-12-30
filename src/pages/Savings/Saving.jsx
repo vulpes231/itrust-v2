@@ -23,9 +23,9 @@ const Saving = () => {
     enabled: !!token,
   });
 
-  useEffect(() => {
-    if (user) console.log(user.savingsAccounts);
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) console.log(user.savingsAccounts);
+  // }, [user]);
 
   return (
     <React.Fragment>
@@ -34,8 +34,14 @@ const Saving = () => {
       </Col>
       <Row className="mt-4">
         <Col lg={9}>
-          <Retirements analytics={savingAnalytics} />
-          <SavingsAccounts analytics={savingAnalytics} />
+          <Retirements
+            analytics={savingAnalytics}
+            accts={user?.savingsAccounts}
+          />
+          <SavingsAccounts
+            analytics={savingAnalytics}
+            accts={user?.savingsAccounts}
+          />
         </Col>
         <Col lg={3}>
           <SavingsList accts={user?.savingsAccounts} />

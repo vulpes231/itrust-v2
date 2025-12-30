@@ -68,6 +68,32 @@ const getWalletIcon = (name) => {
   }
 };
 
+const getIconColor = (name) => {
+  switch (name) {
+    case "Traditional IRA":
+      return "#261CB6";
+    case "Health Savings":
+      return "#F17171";
+    case "High Yield Savings":
+      return "#3AB67A";
+    default:
+      return null;
+  }
+};
+
+const getIconBg = (name) => {
+  switch (name) {
+    case "Traditional IRA":
+      return "#E4EDFF";
+    case "Health Savings":
+      return "#FDEAEA";
+    case "High Yield Savings":
+      return "#E8F3EA";
+    default:
+      return null;
+  }
+};
+
 export {
   getAccessToken,
   liveUrl,
@@ -78,4 +104,6 @@ export {
   getWalletColor,
   getWalletIcon,
   getWalletBg,
+  getIconColor,
+  getIconBg,
 };
