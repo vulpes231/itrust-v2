@@ -9,7 +9,7 @@ const FromCol = (cell) => {
   /* <i class="ri-24-hours-line"></i> */
 }
 {
-  /* <i class="ri-bar-chart-2-line"></i> */
+  /*  */
 }
 const ToCol = (cell) => {
   const getIcon = (value) => {
@@ -19,7 +19,20 @@ const ToCol = (cell) => {
       case "automated investing":
         return auto;
       case "brokerage":
-        return cash;
+        return (
+          <i
+            style={{ color: "#C5CAD0" }}
+            className="ri-bar-chart-2-line fs-22"
+          ></i>
+        );
+      case "Traditional IRA":
+        return (
+          <i style={{ color: "#C5CAD0" }} className="ri-shield-line fs-22"></i>
+        );
+      case "Health Savings":
+        return (
+          <i style={{ color: "#C5CAD0" }} className="ri-service-line fs-22"></i>
+        );
       default:
         return null;
     }
@@ -31,8 +44,17 @@ const ToCol = (cell) => {
   return (
     <React.Fragment>
       <div className="d-flex align-items-center gap-2">
-        {icon && <img src={icon} alt="" width={20} />}
-        <span>{capitalize(cellValue)}</span>
+        {(icon && cellValue === "cash") ||
+        cellValue === "automated investing" ? (
+          <img src={icon} alt="" width={20} />
+        ) : (
+          <span>{icon}</span>
+        )}
+        <span>
+          {cellValue === "Traditional IRA" || cellValue === "Health Savings"
+            ? cellValue
+            : capitalize(cellValue)}
+        </span>
       </div>
     </React.Fragment>
   );

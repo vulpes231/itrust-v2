@@ -116,6 +116,8 @@ const AllTransactions = () => {
       bank: ltc,
       brokerage: broke,
       "automated investing": auto,
+      "Traditional ira": auto,
+      "Health savings": auto,
     };
     return images[currency?.toLowerCase()] || "/images/currencies/default.png";
   }
@@ -235,8 +237,8 @@ const AllTransactions = () => {
   );
 
   // useEffect(() => {
-  //   if (action) console.log(action);
-  // }, [action]);
+  //   if (transactions) console.log(transactions);
+  // }, [transactions]);
 
   return (
     <React.Fragment>

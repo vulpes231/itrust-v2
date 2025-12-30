@@ -62,6 +62,12 @@ const AddFunds = ({ accts, handleIcon }) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (saveAccts) {
+      setSelectedAcct(saveAccts[0]);
+    }
+  }, [saveAccts]);
+
   return (
     <div className="py-4 d-flex flex-column gap-4">
       <Col key={selectedAcct?._id} style={{ position: "relative" }}>
@@ -176,14 +182,14 @@ const AddFunds = ({ accts, handleIcon }) => {
             disabled={mutation.isPending}
             className="btn btn-success"
           >
-            {!mutation.isPending ? "Contribute to IRA" : "Wait..."}
+            {!mutation.isPending ? "Add Savings" : "Wait..."}
           </button>
           <span
-            className="fw-regular fs-14"
+            className="fw-regular fs-14 py-1"
             style={{ color: "#212529", textAlign: "center" }}
           >
-            Traditional IRA contributions may be tax-deductible. Consult your
-            tax advisor. Annual limit for 2025: $7,000 ($8,000 if age 50+).
+            Interest calculated daily, paid monthly. FDIC insured up to
+            $250,000.
           </span>
         </div>
       </Col>

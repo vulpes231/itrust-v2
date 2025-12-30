@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getSavingsAnalytics } from "../../services/user/savings";
 import { getAccessToken } from "../../constants";
 import { getUserInfo } from "../../services/user/user";
+import SideContribution from "./SideContribution";
+import SideFund from "./SideFund";
 
 const Saving = () => {
   const token = getAccessToken();
@@ -23,10 +25,21 @@ const Saving = () => {
     enabled: !!token,
   });
 
-  // useEffect(() => {
-  //   if (user) console.log(user.savingsAccounts);
-  // }, [user]);
+  const getIcon = (name) => {
+    switch (name) {
+      case "Traditional IRA":
+        return (
+          <i style={{ color: "#261CB6" }} className="ri-shield-line fs-22"></i>
+        );
+      case "Health Savings":
+        return (
+          <i style={{ color: "#F17171" }} className="ri-service-line fs-22"></i>
+        );
 
+      default:
+        return null;
+    }
+  };
   return (
     <React.Fragment>
       <Col className="mt-2">
@@ -45,6 +58,11 @@ const Saving = () => {
         </Col>
         <Col lg={3}>
           <SavingsList accts={user?.savingsAccounts} />
+          <SideContribution
+            accts={user?.savingsAccounts}
+            handleIcon={getIcon}
+          />
+          <SideFund accts={user?.savingsAccounts} handleIcon={getIcon} />
         </Col>
       </Row>
     </React.Fragment>

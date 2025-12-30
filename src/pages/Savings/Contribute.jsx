@@ -64,6 +64,12 @@ const Contribute = ({ accts, handleIcon }) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (retireAccts) {
+      setSelectedAcct(retireAccts[0]);
+    }
+  }, [retireAccts]);
+
   return (
     <div className="py-4 d-flex flex-column gap-4">
       <Col key={selectedAcct?._id} style={{ position: "relative" }}>
@@ -196,7 +202,7 @@ const Contribute = ({ accts, handleIcon }) => {
             {!mutation.isPending ? "Contribute to IRA" : "Wait..."}
           </button>
           <span
-            className="fw-regular fs-14"
+            className="fw-regular fs-14 py-1"
             style={{ color: "#212529", textAlign: "center" }}
           >
             Traditional IRA contributions may be tax-deductible. Consult your
