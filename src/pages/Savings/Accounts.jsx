@@ -3,7 +3,7 @@ import { Card, Col, Row } from "reactstrap";
 import CountUp from "react-countup";
 import { BiCoin } from "react-icons/bi";
 import { GrTarget } from "react-icons/gr";
-import { brief } from "../../assets";
+import { brief, savings } from "../../assets";
 import { Link } from "react-router-dom";
 
 const Accounts = ({ analytics }) => {
@@ -108,7 +108,7 @@ const Accounts = ({ analytics }) => {
             style={{ color: "#495057" }}
           >
             <div className="d-flex align-items-center gap-3">
-              <img src={brief} alt="" width={40} />
+              <img src={savings} alt="" width={50} />
               <span className="d-flex flex-column">
                 <span className="fs-15 fw-bold">Savings Accounts</span>
                 <span className="fs-14 fw-regular" style={{ color: "#878A99" }}>

@@ -75,57 +75,58 @@ const MyCurrencies = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {((assets && assets.data.slice(0, 7)) || []).map(
-                    (asset, key) => (
-                      <tr key={key}>
-                        <td>
-                          <div className="d-flex align-items-center">
-                            <div className="me-2">
-                              <img
-                                src={asset.imageUrl}
-                                alt=""
-                                className="avatar-xxs"
-                              />
-                            </div>
-                            <div>
-                              <h6 className="mb-0">{asset.name}</h6>
-                            </div>
+                  {(
+                    (assets &&
+                      assets.data?.length > 0 &&
+                      assets.data.slice(0, 7)) ||
+                    []
+                  ).map((asset, key) => (
+                    <tr key={key}>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <div className="me-2">
+                            <img
+                              src={asset.imageUrl}
+                              alt=""
+                              className="avatar-xxs"
+                            />
                           </div>
-                        </td>
-                        <td>{formatCurrency(asset.priceData.current)}</td>
-                        <td>
-                          <h6
-                            className={`mb-0 ${
+                          <div>
+                            <h6 className="mb-0">{asset.name}</h6>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{formatCurrency(asset.priceData.current)}</td>
+                      <td>
+                        <h6
+                          className={`mb-0 ${
+                            asset.priceData.changePercent > 0
+                              ? "text-success"
+                              : "text-danger"
+                          }`}
+                        >
+                          <i
+                            className={`align-middle me-1 ${
                               asset.priceData.changePercent > 0
-                                ? "text-success"
-                                : "text-danger"
+                                ? "mdi mdi-trending-up"
+                                : "mdi mdi-trending-down"
                             }`}
-                          >
-                            <i
-                              className={`align-middle me-1 ${
-                                asset.priceData.changePercent > 0
-                                  ? "mdi mdi-trending-up"
-                                  : "mdi mdi-trending-down"
-                              }`}
-                            ></i>
-                            {parseFloat(asset.priceData.changePercent).toFixed(
-                              2
-                            )}
-                          </h6>
-                        </td>
-                        <td>{formatCurrency(asset.priceData.dayHigh)}</td>
-                        <td>{formatCurrency(asset.priceData.dayLow)}</td>
-                        <td>
-                          <Link
-                            to="/apps-crypto-buy-sell"
-                            className="btn btn-sm btn-soft-secondary"
-                          >
-                            Trade
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  )}
+                          ></i>
+                          {parseFloat(asset.priceData.changePercent).toFixed(2)}
+                        </h6>
+                      </td>
+                      <td>{formatCurrency(asset.priceData.dayHigh)}</td>
+                      <td>{formatCurrency(asset.priceData.dayLow)}</td>
+                      <td>
+                        <Link
+                          to="/apps-crypto-buy-sell"
+                          className="btn btn-sm btn-soft-secondary"
+                        >
+                          Trade
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

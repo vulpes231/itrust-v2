@@ -21,6 +21,7 @@ const Navdata = () => {
   const [isSavings, setIsSavings] = useState(false);
   const [isPortFolio, setIsPortfolio] = useState(false);
   const [isWallet, setIsWallet] = useState(false);
+  const [isInvesting, setIsInvesting] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
 
@@ -48,6 +49,9 @@ const Navdata = () => {
     }
     if (iscurrentState !== "Savings") {
       setIsSavings(false);
+    }
+    if (iscurrentState !== "Investing") {
+      setIsInvesting(false);
     }
     if (iscurrentState !== "Portfolio") {
       setIsPortfolio(false);
@@ -131,6 +135,19 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       stateVariables: isSavings,
+    },
+    {
+      id: "investing",
+      label: "Automated Investing",
+      icon: "ri-folder-shield-2-line",
+      link: "/automated-investing",
+      click: function (e) {
+        e.preventDefault();
+        setIsInvesting(!isInvesting);
+        setIscurrentState("Investing");
+        updateIconSidebar(e);
+      },
+      stateVariables: isInvesting,
     },
     {
       label: "Pages",

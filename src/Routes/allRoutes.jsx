@@ -20,6 +20,7 @@ import {
   Withdraw,
   Transfer,
   OpenAccount,
+  Investing,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -47,6 +48,7 @@ const authProtectedRoutes = [
   { path: "/withdraw", component: <Withdraw /> },
   { path: "/transfer", component: <Transfer /> },
   { path: "/open-account", component: <OpenAccount /> },
+  { path: "/automated-investing", component: <Investing /> },
 ];
 
 const publicRoutes = [

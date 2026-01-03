@@ -20,6 +20,7 @@ import metamask from "./meta.png";
 import trust from "./twall.png";
 import walletconn from "./wcon.png";
 import brief from "./brief.gif";
+import savings from "./savings.gif";
 
 export {
   logo,
@@ -44,4 +45,5 @@ export {
   brief,
   usdt,
   dep,
+  savings,
 };
