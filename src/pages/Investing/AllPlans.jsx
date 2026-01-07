@@ -1,30 +1,68 @@
 import { capitalize } from "lodash";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Row } from "reactstrap";
 import { cash } from "../../assets";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, liveUrl } from "../../constants";
+import { useMutation } from "@tanstack/react-query";
+import { activatePlan } from "../../services/user/invest";
+import ErrorToast from "../../components/Common/ErrorToast";
+import SuccessToast from "../../components/Common/SuccessToast";
 
 const AllPlans = ({ plans, style }) => {
+  const [error, setError] = useState("");
+
+  const mutation = useMutation({
+    mutationFn: activatePlan,
+    onError: (err) => setError(err.message),
+  });
+
+  const handleActivation = (e, plan) => {
+    e.preventDefault();
+    const data = { planId: plan._id };
+
+    console.log(data);
+    mutation.mutate(data);
+  };
+
+  useEffect(() => {
+    if (error) {
+      const tmt = setTimeout(() => {
+        setError("");
+      }, 3000);
+      return () => clearTimeout(tmt);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      const tmt = setTimeout(() => {
+        mutation.reset();
+        window.location.reload();
+      }, 3000);
+      return () => clearTimeout(tmt);
+    }
+  }, [mutation.isSuccess]);
+
   return (
     <React.Fragment>
       <Row className="g-4 py-3">
         {plans.map((plan) => {
           return (
-            <Col lg={4}>
+            <Col key={plan._id} lg={4}>
               <Card className="d-flex flex-column gap-3 py-3">
                 <div className="d-flex align-items-center gap-3 px-4 py-2">
                   <span className="bg-light">
-                    <img src={cash} alt="" width={40} />
+                    <img src={`${liveUrl}${plan?.img}`} alt="" width={40} />
                   </span>
                   <span className="d-flex flex-column">
                     <span
                       style={{ color: style.dark }}
                       className="fs-16 fw-bold"
                     >
-                      {plan.label}
+                      {plan?.name}
                     </span>
                     <span style={{ color: style.light }} className={style.slim}>
-                      {plan.info}
+                      {plan?.title}
                     </span>
                   </span>
                 </div>
@@ -37,7 +75,7 @@ const AllPlans = ({ plans, style }) => {
                       style={{ color: style.dark }}
                       className={style.medium}
                     >
-                      {formatCurrency(plan.min)}
+                      {formatCurrency(plan?.minInvestment)}
                     </span>
                   </Col>
                   <Col xs={6} className="d-flex flex-column px-4">
@@ -48,7 +86,7 @@ const AllPlans = ({ plans, style }) => {
                       className={style.medium}
                       style={{ color: style.dark }}
                     >
-                      {formatCurrency(plan.winRate)}
+                      {plan?.performance?.winRate}%
                     </span>
                   </Col>
                 </Row>
@@ -61,7 +99,7 @@ const AllPlans = ({ plans, style }) => {
                       className={style.medium}
                       style={{ color: style.dark }}
                     >
-                      {plan.dailyReturn}%
+                      {plan?.performance?.dailyReturnPercent}%
                     </span>
                   </Col>
                   <Col xs={6} className="d-flex flex-column px-4">
@@ -72,7 +110,8 @@ const AllPlans = ({ plans, style }) => {
                       className={style.medium}
                       style={{ color: style.dark }}
                     >
-                      {plan.duration}
+                      {`${plan?.expiresIn?.milestone} ${plan?.expiresIn?.duration}`}
+                      (s)
                     </span>
                   </Col>
                 </Row>
@@ -85,7 +124,7 @@ const AllPlans = ({ plans, style }) => {
                       className={style.medium}
                       style={{ color: style.dark }}
                     >
-                      {plan.aum}M
+                      {plan?.performance?.aum}M
                     </span>
                   </Col>
                   <Col xs={6} className="d-flex flex-column px-4">
@@ -94,27 +133,27 @@ const AllPlans = ({ plans, style }) => {
                     </span>
                     <span
                       className={`d-flex align-items-center p-1 rounded justify-content-center fs-10 fw-semibold  ${
-                        plan.risk === "conservative"
+                        plan?.planType === "conservative"
                           ? "bg-primary-subtle"
-                          : plan.risk === "aggressive"
+                          : plan?.planType === "aggressive"
                           ? "bg-danger-subtle"
-                          : plan.risk === "moderate"
+                          : plan?.planType === "moderate"
                           ? "bg-warning-subtle"
                           : null
                       }`}
                       style={{
                         color:
-                          plan.risk === "conservative"
+                          plan?.planType === "conservative"
                             ? "#5162be"
-                            : plan.risk === "aggressive"
+                            : plan?.planType === "aggressive"
                             ? "#F17171"
-                            : plan.risk === "moderate"
+                            : plan?.planType === "moderate"
                             ? "#FFC84B"
                             : null,
                         width: "98px",
                       }}
                     >
-                      {capitalize(plan.risk)}{" "}
+                      {capitalize(plan?.planType)}{" "}
                       <i className="ri-arrow-right-up-line fs-10"></i>
                     </span>
                   </Col>
@@ -126,14 +165,21 @@ const AllPlans = ({ plans, style }) => {
                       className={style.large}
                       style={{ color: style.green, fontSize: "32px" }}
                     >
-                      {plan.expectedReturn}%
+                      {plan?.performance?.expectedReturnPercent}%
                     </span>
                     <span style={{ color: style.light }} className={style.slim}>
                       Expected returns
                     </span>
                   </Col>
                   <Col xs={6} className="d-flex flex-column px-4">
-                    <button className="btn btn-primary">Start plan</button>
+                    <button
+                      type="button"
+                      onClick={(e) => handleActivation(e, plan)}
+                      className="btn btn-primary"
+                      disabled={mutation.isPending}
+                    >
+                      {mutation.isPending ? "Wait..." : "Start plan"}
+                    </button>
                   </Col>
                 </Row>
               </Card>
@@ -141,6 +187,20 @@ const AllPlans = ({ plans, style }) => {
           );
         })}
       </Row>
+      {error && (
+        <ErrorToast
+          errorMsg={error}
+          isOpen={error}
+          onClose={() => setError("")}
+        />
+      )}
+      {mutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Plan Activated."}
+          isOpen={mutation.isSuccess}
+          onClose={() => mutation.reset()}
+        />
+      )}
     </React.Fragment>
   );
 };

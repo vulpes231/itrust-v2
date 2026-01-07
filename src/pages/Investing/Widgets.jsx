@@ -1,8 +1,16 @@
 import React from "react";
 import { Card, CardBody, Col, Row } from "reactstrap";
 import CountUp from "react-countup";
+import { useQuery } from "@tanstack/react-query";
+import { getUserInfo } from "../../services/user/user";
 
 const Widgets = () => {
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUserInfo,
+  });
+
+  const userPlans = user && user.activePlans;
   const getIcon = (id) => {
     switch (id) {
       case 1:
@@ -83,7 +91,7 @@ const Widgets = () => {
       {
         id: 3,
         label: "Active Plans",
-        counter: 13,
+        counter: userPlans?.length || 0,
       },
       {
         id: 4,

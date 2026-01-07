@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Row, TabContent, TabPane } from "reactstrap";
-import { cash } from "../../assets";
-import { formatCurrency } from "../../constants";
-import { capitalize } from "lodash";
 import AllPlans from "./AllPlans";
 import ActivePlans from "./ActivePlans";
 import ClosedPlans from "./ClosedPlans";
-
+import { useQuery } from "@tanstack/react-query";
+import { getAutoPlans } from "../../services/user/invest";
+import { getUserInfo } from "../../services/user/user";
 const tabs = [
   {
     id: "plans",
@@ -19,51 +18,6 @@ const tabs = [
   {
     id: "closed",
     label: "Closed Plans",
-  },
-];
-
-const plans = [
-  {
-    id: "plans",
-    label: "Dividend Yield Gun",
-    info: "Dividend Stocks and ETF's with Active Returns",
-    min: 15000,
-    winRate: "100",
-    dailyReturn: "1.45",
-    duration: "6 Months",
-    aum: 172.3,
-    risk: "conservative",
-    img: "",
-    expectedReturn: "48.08",
-    status: "active",
-  },
-  {
-    id: "title",
-    label: "Dividend Yield Gun",
-    info: "Dividend Stocks and ETF's with Active Returns",
-    min: 15000,
-    winRate: "100",
-    dailyReturn: "1.45",
-    duration: "6 Months",
-    aum: 172.3,
-    risk: "moderate",
-    img: "",
-    expectedReturn: "48.08",
-    status: "closed",
-  },
-  {
-    id: "total",
-    label: "Dividend Yield Gun",
-    info: "Dividend Stocks and ETF's with Active Returns",
-    min: 15000,
-    winRate: "100",
-    dailyReturn: "1.45",
-    duration: "6 Months",
-    aum: 172.3,
-    risk: "aggressive",
-    img: "",
-    expectedReturn: "48.08",
-    status: "active",
   },
 ];
 
@@ -80,12 +34,39 @@ const style = {
 const Plans = () => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
-  const activePlans = plans.filter((plan) => plan.status === "active");
-  const closedPlans = plans.filter((plan) => plan.status === "closed");
+  const { data: plans } = useQuery({
+    queryKey: ["autoplans"],
+    queryFn: getAutoPlans,
+  });
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUserInfo,
+  });
+
+  const activePlans = user && user.activePlans;
+
+  const closedPlans =
+    activePlans &&
+    activePlans.length > 0 &&
+    activePlans.filter((plan) => plan.status === "closed");
+
+  const activePlanLength = activePlans?.length;
+  const closedPlanLength = closedPlans?.length;
+
+  const activeAll = tabs.filter((tb) => tb.id !== "closed");
+  const all = tabs.filter((tb) => tb.id === "plans");
+
+  const tabsToshow =
+    activePlanLength > 0 && closedPlanLength > 0
+      ? tabs
+      : activePlanLength > 0 && closedPlanLength === 0
+      ? activeAll
+      : all;
+
   return (
     <React.Fragment>
       <div className="d-flex align-items-center gap-2">
-        {tabs.map((tb) => {
+        {tabsToshow.map((tb) => {
           return (
             <button
               className={`btn ${
@@ -103,13 +84,13 @@ const Plans = () => {
       </div>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="plans">
-          <AllPlans style={style} plans={plans} />
+          <AllPlans style={style} plans={plans || []} />
         </TabPane>
         <TabPane tabId="active">
-          <ActivePlans style={style} plans={activePlans} />
+          <ActivePlans style={style} plans={activePlans || []} />
         </TabPane>
         <TabPane tabId="closed">
-          <ClosedPlans style={style} plans={closedPlans} />
+          <ClosedPlans style={style} plans={closedPlans || []} />
         </TabPane>
       </TabContent>
     </React.Fragment>
