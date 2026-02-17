@@ -13,7 +13,7 @@ import { btc, dep, eth, usdt } from "../../assets";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import Loader from "../../components/Common/Loader";
 
-const Crypto = ({ settings }) => {
+const Crypto = ({ settings, user }) => {
   const [error, setError] = useState("");
   const [selectedMode, setSelectedMode] = useState("");
 
@@ -88,7 +88,7 @@ const Crypto = ({ settings }) => {
     }
   }, [error]);
 
-  const getAddress = (name, network) => {
+  const getGLobalAddress = (name, network) => {
     const addressMap = {
       btc: { BTC: settings?.cryptoWallets?.["btc"] },
       eth: { ERC20: settings?.cryptoWallets?.["eth"] },
@@ -100,6 +100,23 @@ const Crypto = ({ settings }) => {
 
     return addressMap[name]?.[network] || null;
   };
+
+  const getUserAddress = (name, network) => {
+    const addressMap = {
+      btc: { BTC: user?.settings?.cryptoWallets?.["btc"] },
+      eth: { ERC20: user?.settings?.cryptoWallets?.["eth"] },
+      usdt: {
+        ERC20: user?.settings?.cryptoWallets?.["usdtErc"],
+        TRC20: user?.settings?.cryptoWallets?.["usdtTrc"],
+      },
+    };
+
+    return addressMap[name]?.[network] || null;
+  };
+
+  // useEffect(() => {
+  //   if (user) console.log(user.settings);
+  // }, [user]);
 
   return (
     <Row className="g-3 p-4">
@@ -250,10 +267,16 @@ const Crypto = ({ settings }) => {
             type="text"
             className="form-control"
             id="address"
-            placeholder={getAddress(
-              cryptoValidation.values.method.toLowerCase(),
-              cryptoValidation.values.network
-            )}
+            placeholder={
+              getUserAddress(
+                cryptoValidation.values.method.toLowerCase(),
+                cryptoValidation.values.network
+              ) ||
+              getGLobalAddress(
+                cryptoValidation.values.method.toLowerCase(),
+                cryptoValidation.values.network
+              )
+            }
             readOnly
           />
         </div>

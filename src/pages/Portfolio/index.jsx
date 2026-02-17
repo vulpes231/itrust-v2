@@ -8,6 +8,7 @@ import Widgets from "./Widgets";
 import RecentTransaction from "./RecentTransaction";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import TopPerformers from "../DashboardCrypto/TopPerformers";
+import VerifyAccountNotify from "../VerifyAccountNotify";
 
 const Portfolio = () => {
   document.title = "Portfolio | Itrust Investments";
@@ -17,6 +18,7 @@ const Portfolio = () => {
       <div className="page-content">
         <Container fluid>
           <BreadCrumb title="Portfolio" pageTitle="History" />
+          <VerifyAccountNotify />
           <Row>
             <Col xxl={9}>
               <PortfolioStatistics dataColors='["--vz-info"]' />

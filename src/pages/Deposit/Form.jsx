@@ -169,7 +169,9 @@ const Form = ({ handleView, analytics }) => {
                       backgroundColor:
                         selectedMethod === method.id ? "#E5E7F5" : "",
                     }}
-                    onClick={() => setSelectedMethod(method.id)}
+                    onClick={() => {
+                      setSelectedMethod(method.id);
+                    }}
                     className={`p-3 `}
                   >
                     <FlexRow>

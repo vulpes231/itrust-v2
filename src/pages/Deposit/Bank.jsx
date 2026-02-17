@@ -13,7 +13,7 @@ import Loader from "../../components/Common/Loader";
 import { BsBank } from "react-icons/bs";
 import { IoAlertCircleOutline } from "react-icons/io5";
 
-const Bank = ({ settings }) => {
+const Bank = ({ settings, userBank }) => {
   const [error, setError] = useState("");
 
   const mutation = useMutation({
@@ -59,7 +59,10 @@ const Bank = ({ settings }) => {
       return () => clearTimeout(timeout);
     }
   }, [error]);
-  // console.log(settings);
+
+  useEffect(() => {
+    if (userBank) console.log(userBank);
+  }, [userBank]);
 
   return (
     <Row className="g-3 p-4">
@@ -131,7 +134,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             readOnly
-            value={settings?.bankDetails?.bankName}
+            value={userBank?.bankName ?? settings?.bankDetails?.bankName}
           />
         </div>
       </Col>
@@ -144,7 +147,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             readOnly
-            value={settings?.bankDetails?.accountName}
+            value={userBank?.accountName ?? settings?.bankDetails?.accountName}
           />
         </div>
       </Col>
@@ -157,7 +160,9 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             readOnly
-            value={settings?.bankDetails?.accountNumber}
+            value={
+              userBank?.accountNumber ?? settings?.bankDetails?.accountNumber
+            }
           />
         </div>
       </Col>
@@ -170,7 +175,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             readOnly
-            value={settings?.bankDetails?.routing}
+            value={userBank?.routing ?? settings?.bankDetails?.routing}
           />
         </div>
       </Col>
@@ -191,7 +196,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             readOnly
-            value={settings?.bankDetails?.address}
+            value={userBank?.address ?? settings?.bankDetails?.address}
           />
         </div>
       </Col>
@@ -204,7 +209,7 @@ const Bank = ({ settings }) => {
             type="text"
             className="form-control"
             readOnly
-            value={settings?.bankDetails?.reference}
+            value={userBank?.reference ?? settings?.bankDetails?.reference}
           />
         </div>
       </Col>
