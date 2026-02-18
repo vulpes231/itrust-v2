@@ -24,6 +24,7 @@ import PendingWithdrawal from "./PendingWithdrawal";
 import WithdrawStat from "./WithdrawStat";
 import WithForm from "./WithForm";
 import { getTransactionAnalytics } from "../../services/user/transactions";
+import { getUserInfo } from "../../services/user/user";
 
 const WithdrawForm = () => {
   const token = getAccessToken();
@@ -44,6 +45,12 @@ const WithdrawForm = () => {
     enabled: !!token,
   });
 
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUserInfo,
+    enabled: !!token,
+  });
+
   return (
     <React.Fragment>
       <TrxCrumb
@@ -56,7 +63,7 @@ const WithdrawForm = () => {
             {activeView === "default" ? (
               <WithForm handleView={handleView} settings={settings} />
             ) : activeView === "crypto" ? (
-              <Crypto settings={settings} />
+              <Crypto settings={settings} user={user} />
             ) : activeView === "bank" ? (
               <Bank settings={settings} />
             ) : null}
@@ -73,7 +80,11 @@ const WithdrawForm = () => {
             <WithdrawStat analytics={analytics} />
           </Card>
           <Card>
-            <WithdrawalLimits />
+            <WithdrawalLimits
+              userSettings={user?.settings}
+              globalSettings={settings}
+              active={activeView}
+            />
           </Card>
         </Col>
       </Row>

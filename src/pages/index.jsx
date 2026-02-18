@@ -17,6 +17,7 @@ import Transfer from "./Transfer";
 import Wallet from "./Wallet";
 import Withdraw from "./Withdraw";
 import Investing from "./Investing";
+import Profile from "./Profile";
 
 export {
   Contact,
@@ -38,4 +39,5 @@ export {
   KYCVerification,
   OpenAccount,
   Investing,
+  Profile,
 };

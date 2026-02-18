@@ -17,7 +17,13 @@ const CustomRow = ({ children }) => {
   );
 };
 
-const WithdrawalLimits = () => {
+const WithdrawalLimits = ({ userSettings, globalSettings, active }) => {
+  const bankLimits =
+    userSettings?.limits?.withdrawal?.bank ??
+    globalSettings?.withdrawalLimits?.bank;
+  const cryptoLimits =
+    userSettings?.limits?.withdrawal?.crypto ??
+    globalSettings?.withdrawalLimits?.crypto;
   return (
     <div>
       <Label
@@ -49,19 +55,20 @@ const WithdrawalLimits = () => {
             Minimum Withdrawal
           </b>
           <small style={{ color: "#495057", fontWeight: 500 }}>
-            {formatCurrency(50)}
+            {active === "crypto"
+              ? formatCurrency(cryptoLimits?.min ?? 0)
+              : formatCurrency(bankLimits?.min ?? 0)}
           </small>
         </CustomRow>
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>Daily Limit</b>
+          <b style={{ color: "#878A99", fontWeight: 300 }}>
+            {" "}
+            Maximum Withdrawal
+          </b>
           <small style={{ color: "#495057", fontWeight: 500 }}>
-            {formatCurrency(1000)}
-          </small>
-        </CustomRow>
-        <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>Monthly Limit</b>
-          <small style={{ color: "#495057", fontWeight: 500 }}>
-            {formatCurrency(3000)}
+            {active === "crypto"
+              ? formatCurrency(cryptoLimits?.max ?? 0)
+              : formatCurrency(bankLimits?.max ?? 0)}
           </small>
         </CustomRow>
       </div>

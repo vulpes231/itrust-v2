@@ -6,7 +6,6 @@ import {
   Login,
   Register,
   ForgetPassword,
-  UserProfile,
   Logout,
   Contact,
   Personal,
@@ -21,12 +20,13 @@ import {
   Transfer,
   OpenAccount,
   Investing,
+  Profile,
 } from "../pages";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardCrypto /> },
   { path: "/index", component: <DashboardCrypto /> },
-  { path: "/profile", component: <UserProfile /> },
+  { path: "/profile", component: <Profile /> },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

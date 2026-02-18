@@ -60,9 +60,9 @@ const Bank = ({ settings, userBank }) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (userBank) console.log(userBank);
-  }, [userBank]);
+  // useEffect(() => {
+  //   if (userBank) console.log(userBank);
+  // }, [userBank]);
 
   return (
     <Row className="g-3 p-4">
