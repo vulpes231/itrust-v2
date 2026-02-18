@@ -39,6 +39,7 @@ const SideTabs = ({ activeTab, setActiveTab }) => {
             <span
               onClick={() => setActiveTab(tb.id)}
               key={tb.id}
+              style={{ color: "#878A99" }}
               className={`${
                 activeTab === tb.id
                   ? "text-secondary bg-secondary-subtle fw-medium"

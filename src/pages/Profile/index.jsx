@@ -30,18 +30,18 @@ const Profile = () => {
       <div className="page-content">
         <Container fluid>
           <BreadCrumb title="User" pageTitle="Profile" />
-          <VerifyAccountNotify />
+          {/* <VerifyAccountNotify /> */}
           <Row>
             <Col md={3}>
-              <UserInfo />
+              <UserInfo user={user} />
               <SideTabs activeTab={activeTab} setActiveTab={setActiveTab} />
             </Col>
             <Col md={9}>
               {activeTab === "profile" && <PersonalInformation user={user} />}
-              {activeTab === "contact" && <ContactInformation />}
-              {activeTab === "investing" && <ConfigureInvesting />}
+              {activeTab === "contact" && <ContactInformation user={user} />}
+              {activeTab === "investing" && <ConfigureInvesting user={user} />}
               {activeTab === "security" && <Security />}
-              {activeTab === "settings" && <UserSettings />}
+              {activeTab === "settings" && <UserSettings user={user} />}
             </Col>
           </Row>
         </Container>

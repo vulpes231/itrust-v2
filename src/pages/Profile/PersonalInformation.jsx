@@ -4,9 +4,6 @@ import { Card, CardBody, CardHeader, Col, Label, Row } from "reactstrap";
 import { format } from "date-fns";
 
 const PersonalInformation = ({ user }) => {
-  useEffect(() => {
-    if (user) console.log(user);
-  });
   return (
     <Col>
       <Card>
@@ -66,7 +63,7 @@ const PersonalInformation = ({ user }) => {
             <button className="btn btn-primary">Edit</button>
           </div>
         </CardHeader>
-        <CardBody>
+        <CardBody className="d-flex flex-column gap-3 p-4">
           <Row>
             <Col md={6} className="d-flex flex-column gap-1">
               <span className="text-capitalize" style={{ color: "#878A99" }}>
