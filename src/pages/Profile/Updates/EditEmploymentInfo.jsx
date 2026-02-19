@@ -23,7 +23,7 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      employment: user?.professionalInfo?.experience || "",
+      employment: user?.professionalInfo?.employment || "",
       employerName: user?.employmentInfo?.employerName || "",
       position: user?.employmentInfo?.position || "",
       expYears: user?.employmentInfo?.expYears || "",

@@ -1,7 +1,9 @@
-import React from "react";
-import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+import React, { useState } from "react";
+import { Card, CardHeader, CardBody, Row, Col, Label } from "reactstrap";
+import EditPassword from "./Updates/EditPassword";
 
 const Security = () => {
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
   return (
     <Card>
       <CardHeader>
@@ -19,10 +21,21 @@ const Security = () => {
               </span>
             </div>
             <div className="pr-2">
-              <button className="btn btn-primary">Reset Password</button>
+              {!showPasswordForm && (
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordForm(true)}
+                  className="btn btn-primary"
+                >
+                  Reset Password
+                </button>
+              )}
             </div>
           </Col>
         </Row>
+        {showPasswordForm && (
+          <EditPassword onClose={() => setShowPasswordForm(false)} />
+        )}
         <Row>
           <Col className="d-flex align-items-center justify-content-between">
             <div className="d-flex flex-column gap-1">

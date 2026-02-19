@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa6";
 import { MdOutlineCancel, MdCheckCircleOutline } from "react-icons/md";
+import EditInvestOptions from "./Updates/EditInvestOptions";
 
 const ConfigureInvesting = ({ user }) => {
+  const [showInvestOptionModal, setShowInvestOptionModal] = useState(false);
   return (
     <Card>
       <CardHeader>
         <div className="d-flex align-items-center justify-content-between">
           <h5>Investing</h5>
-          <button className="btn btn-primary">Edit</button>
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={() => setShowInvestOptionModal(true)}
+          >
+            Edit
+          </button>
         </div>
       </CardHeader>
       <CardBody className="d-flex flex-column gap-3 p-4">
@@ -190,6 +198,13 @@ const ConfigureInvesting = ({ user }) => {
           </Col>
         </Row>
       </CardBody>
+      {showInvestOptionModal && (
+        <EditInvestOptions
+          isOpen={showInvestOptionModal}
+          handleToggle={() => setShowInvestOptionModal(false)}
+          user={user}
+        />
+      )}
     </Card>
   );
 };

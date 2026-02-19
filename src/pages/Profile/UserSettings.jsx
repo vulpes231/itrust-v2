@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa6";
 import { Card, CardHeader, CardBody, Col, Row } from "reactstrap";
+import DeleteAccount from "./Updates/DeleteAccount";
 
 const UserSettings = ({ user }) => {
+  const [showDeleteForm, setShowDeleteForm] = useState(false);
   return (
     <Card>
       <CardHeader>
@@ -74,7 +76,15 @@ const UserSettings = ({ user }) => {
                 Delete This Account:
               </h6>
               <div className="pr-2">
-                <button className="btn btn-primary">Delete Account</button>
+                {!showDeleteForm && (
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={() => setShowDeleteForm(true)}
+                  >
+                    Delete Account
+                  </button>
+                )}
               </div>
             </Col>
           </Row>
@@ -88,6 +98,9 @@ const UserSettings = ({ user }) => {
               on the status of your request.
             </span>
           </Col>
+          {showDeleteForm && (
+            <DeleteAccount onClose={() => setShowDeleteForm(false)} />
+          )}
         </Col>
       </CardBody>
     </Card>
