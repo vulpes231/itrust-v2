@@ -65,10 +65,10 @@ const ProfileDropdown = () => {
             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Profile</span>
           </DropdownItem>
-          <DropdownItem href="/apps-chat">
+          {/* <DropdownItem href="/apps-chat">
             <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>{" "}
             <span className="align-middle">Messages</span>
-          </DropdownItem>
+          </DropdownItem> */}
           <DropdownItem href="#">
             <i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>{" "}
             <span className="align-middle">Automated Investing</span>
@@ -89,13 +89,13 @@ const ProfileDropdown = () => {
               </b>
             </span>
           </DropdownItem>
-          <DropdownItem href="/profile">
+          {/* <DropdownItem href="/profile">
             <span className="badge bg-success-subtle text-success mt-1 float-end">
               New
             </span>
             <i className="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>{" "}
             <span className="align-middle">Settings</span>
-          </DropdownItem>
+          </DropdownItem> */}
 
           <DropdownItem href="/logout">
             <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{" "}

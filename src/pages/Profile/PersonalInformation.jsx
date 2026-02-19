@@ -4,10 +4,17 @@ import { Card, CardBody, CardHeader, Col, Label, Row } from "reactstrap";
 import { format } from "date-fns";
 import EditPersonalInfo from "./Updates/EditPersonalInfo";
 import EditEmploymentInfo from "./Updates/EditEmploymentInfo";
+import { Link } from "react-router-dom";
+import VerifyCard from "./VerifyCard";
+import VerifyPending from "./VerifyPending";
+import Verified from "./Verified";
+import Finc from "./Finc";
 
 const PersonalInformation = ({ user }) => {
   const [editPersonalModal, setEditPersonalModal] = useState(false);
   const [editEmploymentModal, setEditEmploymentModal] = useState(false);
+
+  // console.log(user);
   return (
     <Col>
       <Card>
@@ -64,6 +71,13 @@ const PersonalInformation = ({ user }) => {
               </h6>
             </Col>
           </Row>
+          {user?.identityVerification?.kycStatus === "not verified" ? (
+            <VerifyCard />
+          ) : user?.identityVerification?.kycStatus === "pending" ? (
+            <VerifyPending />
+          ) : user?.identityVerification?.kycStatus === "verified" ? (
+            <Verified />
+          ) : null}
         </CardBody>
       </Card>
       <Card>
@@ -122,6 +136,7 @@ const PersonalInformation = ({ user }) => {
               <h6>Not Set</h6>
             </Col>
           </Row>
+          <Finc />
         </CardBody>
       </Card>
       {editPersonalModal && (
