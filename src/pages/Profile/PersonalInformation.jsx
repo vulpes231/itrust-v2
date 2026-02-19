@@ -1,16 +1,26 @@
 import { capitalize } from "lodash";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardBody, CardHeader, Col, Label, Row } from "reactstrap";
 import { format } from "date-fns";
+import EditPersonalInfo from "./Updates/EditPersonalInfo";
+import EditEmploymentInfo from "./Updates/EditEmploymentInfo";
 
 const PersonalInformation = ({ user }) => {
+  const [editPersonalModal, setEditPersonalModal] = useState(false);
+  const [editEmploymentModal, setEditEmploymentModal] = useState(false);
   return (
     <Col>
       <Card>
         <CardHeader>
           <div className="d-flex align-items-center justify-content-between">
             <h5>Personal Information</h5>
-            <button className="btn btn-primary">Edit</button>
+            <button
+              type="button"
+              onClick={() => setEditPersonalModal(true)}
+              className="btn btn-primary"
+            >
+              Edit
+            </button>
           </div>
         </CardHeader>
         <CardBody className="d-flex flex-column gap-3 p-4">
@@ -60,7 +70,13 @@ const PersonalInformation = ({ user }) => {
         <CardHeader>
           <div className="d-flex align-items-center justify-content-between">
             <h5>Employment &amp; Finances</h5>
-            <button className="btn btn-primary">Edit</button>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={() => setEditEmploymentModal(true)}
+            >
+              Edit
+            </button>
           </div>
         </CardHeader>
         <CardBody className="d-flex flex-column gap-3 p-4">
@@ -108,6 +124,20 @@ const PersonalInformation = ({ user }) => {
           </Row>
         </CardBody>
       </Card>
+      {editPersonalModal && (
+        <EditPersonalInfo
+          isOpen={editPersonalModal}
+          handleToggle={() => setEditPersonalModal(false)}
+          user={user}
+        />
+      )}
+      {editEmploymentModal && (
+        <EditEmploymentInfo
+          isOpen={editEmploymentModal}
+          handleToggle={() => setEditEmploymentModal(false)}
+          user={user}
+        />
+      )}
     </Col>
   );
 };

@@ -1,18 +1,25 @@
 import { capitalize } from "lodash";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, Col, Row } from "reactstrap";
+import EditContactInfo from "./Updates/EditContactInfo";
+import EditTrustedContact from "./Updates/EditTrustedContact";
 
 const ContactInformation = ({ user }) => {
-  // useEffect(() => {
-  //   if (user) console.log(user);
-  // });
+  const [editContactModal, setEditContactModal] = useState(false);
+  const [editTrustedModal, setEditTrustedModal] = useState(false);
   return (
     <Col>
       <Card>
         <CardHeader>
           <div className="d-flex align-items-center justify-content-between">
             <h5>Contact Information</h5>
-            <button className="btn btn-primary">Edit</button>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={() => setEditContactModal(true)}
+            >
+              Edit
+            </button>
           </div>
         </CardHeader>
         <CardBody className="d-flex flex-column gap-3 p-4">
@@ -62,7 +69,13 @@ const ContactInformation = ({ user }) => {
         <CardHeader>
           <div className="d-flex align-items-center justify-content-between">
             <h5>Trusted Contacts</h5>
-            <button className="btn btn-primary">Edit</button>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={() => setEditTrustedModal(true)}
+            >
+              Edit
+            </button>
           </div>
         </CardHeader>
         <CardBody className="d-flex flex-column gap-3 p-4">
@@ -73,6 +86,20 @@ const ContactInformation = ({ user }) => {
           </div>
         </CardBody>
       </Card>
+      {editContactModal && (
+        <EditContactInfo
+          isOpen={editContactModal}
+          handleToggle={() => setEditContactModal(false)}
+          user={user}
+        />
+      )}
+      {editTrustedModal && (
+        <EditTrustedContact
+          isOpen={editTrustedModal}
+          handleToggle={() => setEditTrustedModal(false)}
+          user={user}
+        />
+      )}
     </Col>
   );
 };
