@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalHeader,
   Row,
+  Spinner,
 } from "reactstrap";
 
 import {
@@ -16,6 +17,8 @@ import {
   getStatesByCountry,
 } from "../../../services/location/geo";
 import { updateUserInfo } from "../../../services/user/user";
+import ErrorToast from "../../../components/Common/ErrorToast";
+import SuccessToast from "../../../components/Common/SuccessToast";
 
 const EditContactInfo = ({ isOpen, handleToggle, user }) => {
   const [error, setError] = useState("");
@@ -51,7 +54,7 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
       }
       console.log(changedValues);
 
-      // mutation.mutate(changedValues);
+      mutation.mutate(changedValues);
     },
   });
 
@@ -75,9 +78,16 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
     }
   }, [error]);
 
-  // useEffect(() => {
-  //   if (user) console.log(user);
-  // }, [user]);
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      const tmt = setTimeout(() => {
+        mutation.reset();
+        handleToggle();
+        window.location.reload();
+      }, 1000);
+      return () => clearTimeout(tmt);
+    }
+  }, [mutation.isSuccess]);
 
   return (
     <React.Fragment>
@@ -193,7 +203,12 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
             </Row>
             <Row>
               <Col className="d-flex align-items-center justify-content-end">
-                <button type="submit" className="btn btn-primary">
+                <button
+                  disabled={mutation.isPending}
+                  type="submit"
+                  className="btn btn-primary d-flex align-items-center gap-2"
+                >
+                  {mutation.isPending && <Spinner size={"sm"}></Spinner>}
                   Update
                 </button>
               </Col>
@@ -201,6 +216,20 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
           </form>
         </ModalBody>
       </Modal>
+      {error && (
+        <ErrorToast
+          errorMsg={error}
+          isOpen={!!error}
+          onClose={() => setError("")}
+        />
+      )}
+      {mutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Contact Information Updated"}
+          isOpen={mutation.isSuccess}
+          onClose={() => mutation.reset()}
+        />
+      )}
     </React.Fragment>
   );
 };

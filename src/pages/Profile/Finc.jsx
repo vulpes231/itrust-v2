@@ -1,11 +1,12 @@
 import React from "react";
 import { Col } from "reactstrap";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 const Finc = () => {
   return (
     <Col className="d-flex align-items-start gap-2 justify-content-between bg-primary-subtle p-3 rounded">
       <div className="d-flex align-items-start gap-4 text-primary">
-        <span>Icon</span>
+        <IoAlertCircleOutline />
         <span>
           <span className="fs-13 fw-light">
             Financial information is required by regulatory bodies (FINRA, SEC)

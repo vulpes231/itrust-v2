@@ -1,12 +1,12 @@
 import React from "react";
-
+import { IoAlertCircleOutline } from "react-icons/io5";
 import { Col } from "reactstrap";
 
 const VerifyPending = () => {
   return (
     <Col className="d-flex align-items-start gap-2 justify-content-between bg-warning-subtle p-3 rounded">
       <div className="d-flex align-items-start gap-4 text-warning">
-        <span>Icon</span>
+        <IoAlertCircleOutline />
         <span>
           <h6 className="text-warning fs-16 fw-medium">
             Identity Document Submitted

@@ -9,8 +9,11 @@ import {
   ModalBody,
   ModalHeader,
   Row,
+  Spinner,
 } from "reactstrap";
 import { updateUserInfo } from "../../../services/user/user";
+import SuccessToast from "../../../components/Common/SuccessToast";
+import ErrorToast from "../../../components/Common/ErrorToast";
 
 const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
   const [error, setError] = useState("");
@@ -24,13 +27,13 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
     enableReinitialize: true,
     initialValues: {
       employment: user?.professionalInfo?.employment || "",
-      employerName: user?.employmentInfo?.employerName || "",
-      position: user?.employmentInfo?.position || "",
-      expYears: user?.employmentInfo?.expYears || "",
-      annualIncome: user?.employmentInfo?.annualIncome || "",
-      estimatedNet: user?.employmentInfo?.estimatedNet || "",
-      liquidNet: user?.employmentInfo?.liquidNet || "",
-      taxBracket: user?.employmentInfo?.taxBracket || "",
+      employerName: user?.professionalInfo?.employmentInfo?.employerName || "",
+      position: user?.professionalInfo?.employmentInfo?.position || "",
+      expYears: user?.professionalInfo?.employmentInfo?.expYears || "",
+      annualIncome: user?.professionalInfo?.employmentInfo?.annualIncome || "",
+      estimatedNet: user?.professionalInfo?.employmentInfo?.estimatedNet || "",
+      liquidNet: user?.professionalInfo?.employmentInfo?.liquidNet || "",
+      taxBracket: user?.professionalInfo?.employmentInfo?.taxBracket || "",
     },
     onSubmit: (values) => {
       const changedValues = {};
@@ -47,7 +50,7 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
       }
       console.log(changedValues);
 
-      // mutation.mutate(changedValues);
+      mutation.mutate(changedValues);
     },
   });
 
@@ -59,6 +62,17 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      const tmt = setTimeout(() => {
+        mutation.reset();
+        handleToggle();
+        window.location.reload();
+      }, 1000);
+      return () => clearTimeout(tmt);
+    }
+  }, [mutation.isSuccess]);
 
   return (
     <React.Fragment>
@@ -214,9 +228,9 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
                 </Label>
                 <Input
                   type="select"
-                  name="annualIncome"
+                  name="taxBracket"
                   onChange={validation.handleChange}
-                  value={validation.values.annualIncome}
+                  value={validation.values.taxBracket}
                   className="text-capitalize"
                 >
                   <option value="">Select Tax Bracket</option>
@@ -228,7 +242,12 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
             </Row>
             <Row>
               <Col className="d-flex align-items-center justify-content-end">
-                <button type="submit" className="btn btn-primary">
+                <button
+                  disabled={mutation.isPending}
+                  type="submit"
+                  className="btn btn-primary d-flex align-items-center gap-2"
+                >
+                  {mutation.isPending && <Spinner size={"sm"}></Spinner>}
                   Update
                 </button>
               </Col>
@@ -236,6 +255,20 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
           </form>
         </ModalBody>
       </Modal>
+      {error && (
+        <ErrorToast
+          errorMsg={error}
+          isOpen={!!error}
+          onClose={() => setError("")}
+        />
+      )}
+      {mutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Employment Information Updated"}
+          isOpen={mutation.isSuccess}
+          onClose={() => mutation.reset()}
+        />
+      )}
     </React.Fragment>
   );
 };

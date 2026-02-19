@@ -40,7 +40,7 @@ const Profile = () => {
               {activeTab === "profile" && <PersonalInformation user={user} />}
               {activeTab === "contact" && <ContactInformation user={user} />}
               {activeTab === "investing" && <ConfigureInvesting user={user} />}
-              {activeTab === "security" && <Security />}
+              {activeTab === "security" && <Security user={user} />}
               {activeTab === "settings" && <UserSettings user={user} />}
             </Col>
           </Row>

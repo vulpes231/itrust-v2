@@ -9,9 +9,12 @@ import {
   ModalBody,
   ModalHeader,
   Row,
+  Spinner,
 } from "reactstrap";
 import { getNations } from "../../../services/location/geo";
 import { updateUserInfo } from "../../../services/user/user";
+import ErrorToast from "../../../components/Common/ErrorToast";
+import SuccessToast from "../../../components/Common/SuccessToast";
 
 const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
   const [error, setError] = useState("");
@@ -47,7 +50,7 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
       }
       console.log(changedValues);
 
-      // mutation.mutate(changedValues);
+      mutation.mutate(changedValues);
     },
   });
 
@@ -64,6 +67,17 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      const tmt = setTimeout(() => {
+        mutation.reset();
+        handleToggle();
+        window.location.reload();
+      }, 1000);
+      return () => clearTimeout(tmt);
+    }
+  }, [mutation.isSuccess]);
 
   return (
     <React.Fragment>
@@ -151,7 +165,12 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
             </Row>
             <Row>
               <Col className="d-flex align-items-center justify-content-end">
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary d-flex align-items-center gap-2"
+                  disabled={mutation.isPending}
+                >
+                  {mutation.isPending && <Spinner size={"sm"}></Spinner>}
                   Update
                 </button>
               </Col>
@@ -159,6 +178,20 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
           </form>
         </ModalBody>
       </Modal>
+      {error && (
+        <ErrorToast
+          errorMsg={error}
+          isOpen={!!error}
+          onClose={() => setError("")}
+        />
+      )}
+      {mutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Personal Information Updated"}
+          isOpen={mutation.isSuccess}
+          onClose={() => mutation.reset()}
+        />
+      )}
     </React.Fragment>
   );
 };

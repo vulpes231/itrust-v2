@@ -9,34 +9,37 @@ import {
   ModalBody,
   ModalHeader,
   Row,
+  Spinner,
 } from "reactstrap";
 
 import {
   getCountries,
   getStatesByCountry,
 } from "../../../services/location/geo";
-import { updateUserInfo } from "../../../services/user/user";
+import { updateTrustedContact } from "../../../services/user/user";
+import ErrorToast from "../../../components/Common/ErrorToast";
+import SuccessToast from "../../../components/Common/SuccessToast";
 
 const EditTrustedContact = ({ isOpen, handleToggle, user }) => {
   const [error, setError] = useState("");
 
   const mutation = useMutation({
-    mutationFn: updateUserInfo,
+    mutationFn: updateTrustedContact,
     onError: (err) => setError(err.message),
   });
 
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      firstName: user?.trustedContact?.firstName || "",
-      lastName: user?.trustedContact?.lastName || "",
-      email: user?.trustedContact?.email || "",
-      phone: user?.trustedContact?.phone || "",
-      address: user?.trustedContact?.address?.street || "",
-      countryId: user?.trustedContact?.countryId || "",
-      stateId: user?.trustedContact?.stateId || "",
-      city: user?.trustedContact?.address?.city || "",
-      zipCode: user?.trustedContact?.address?.zipCode || "",
+      firstName: user?.settings?.beneficiary?.firstName || "",
+      lastName: user?.settings?.beneficiary?.lastName || "",
+      email: user?.settings?.beneficiary?.contact?.email || "",
+      phone: user?.settings?.beneficiary?.contact?.phone || "",
+      street: user?.settings?.beneficiary?.address?.street || "",
+      countryId: user?.settings?.beneficiary?.address?.country?.id || "",
+      stateId: user?.settings?.beneficiary?.address?.state?.id || "",
+      city: user?.settings?.beneficiary?.address?.city || "",
+      zipCode: user?.settings?.beneficiary?.address?.zipCode || "",
     },
     onSubmit: (values) => {
       const changedValues = {};
@@ -53,7 +56,7 @@ const EditTrustedContact = ({ isOpen, handleToggle, user }) => {
       }
       console.log(changedValues);
 
-      // mutation.mutate(changedValues);
+      mutation.mutate(changedValues);
     },
   });
 
@@ -77,9 +80,16 @@ const EditTrustedContact = ({ isOpen, handleToggle, user }) => {
     }
   }, [error]);
 
-  // useEffect(() => {
-  //   if (user) console.log(user);
-  // }, [user]);
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      const tmt = setTimeout(() => {
+        mutation.reset();
+        handleToggle();
+        window.location.reload();
+      }, 1000);
+      return () => clearTimeout(tmt);
+    }
+  }, [mutation.isSuccess]);
 
   return (
     <React.Fragment>
@@ -145,9 +155,9 @@ const EditTrustedContact = ({ isOpen, handleToggle, user }) => {
                 </Label>
                 <Input
                   type="text"
-                  name="address"
+                  name="street"
                   onChange={validation.handleChange}
-                  value={validation.values.address}
+                  value={validation.values.street}
                 />
               </Col>
             </Row>
@@ -213,7 +223,12 @@ const EditTrustedContact = ({ isOpen, handleToggle, user }) => {
             </Row>
             <Row>
               <Col className="d-flex align-items-center justify-content-end">
-                <button type="submit" className="btn btn-primary">
+                <button
+                  disabled={mutation.isPending}
+                  type="submit"
+                  className="btn btn-primary d-flex align-items-center gap-2"
+                >
+                  {mutation.isPending && <Spinner size={"sm"}></Spinner>}
                   Update
                 </button>
               </Col>
@@ -221,6 +236,20 @@ const EditTrustedContact = ({ isOpen, handleToggle, user }) => {
           </form>
         </ModalBody>
       </Modal>
+      {error && (
+        <ErrorToast
+          errorMsg={error}
+          isOpen={!!error}
+          onClose={() => setError("")}
+        />
+      )}
+      {mutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Trusted Contact Information Updated"}
+          isOpen={mutation.isSuccess}
+          onClose={() => mutation.reset()}
+        />
+      )}
     </React.Fragment>
   );
 };

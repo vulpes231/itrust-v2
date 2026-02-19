@@ -3,6 +3,7 @@ import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa6";
 import { MdOutlineCancel, MdCheckCircleOutline } from "react-icons/md";
 import EditInvestOptions from "./Updates/EditInvestOptions";
+import { FaRegEdit } from "react-icons/fa";
 
 const ConfigureInvesting = ({ user }) => {
   const [showInvestOptionModal, setShowInvestOptionModal] = useState(false);
@@ -12,11 +13,11 @@ const ConfigureInvesting = ({ user }) => {
         <div className="d-flex align-items-center justify-content-between">
           <h5>Investing</h5>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary d-flex align-items-center gap-2"
             type="button"
             onClick={() => setShowInvestOptionModal(true)}
           >
-            Edit
+            <FaRegEdit /> Edit
           </button>
         </div>
       </CardHeader>
@@ -28,7 +29,7 @@ const ConfigureInvesting = ({ user }) => {
           </Col>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>risk tolerance</span>
-            <h6>Not Set</h6>
+            <h6>{user?.professionalInfo?.investmentInfo.riskTolerance}</h6>
           </Col>
         </Row>
         <Row>
@@ -38,7 +39,7 @@ const ConfigureInvesting = ({ user }) => {
           </Col>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>retirement time horizon</span>
-            <h6>not set</h6>
+            <h6>{user?.professionalInfo?.investmentInfo.retiring} Years</h6>
           </Col>
         </Row>
 
@@ -148,12 +149,12 @@ const ConfigureInvesting = ({ user }) => {
             <span
               style={{ width: "100px", borderRadius: "5px" }}
               className={`${
-                user?.settings?.trading?.isDripEnabled
+                user?.settings?.trading?.isMarginEnabled
                   ? "bg-success-subtle text-success"
                   : "bg-danger-subtle text-danger"
               } d-flex align-items-center justify-content-center p-1 fs-12`}
             >
-              {user?.settings?.trading?.isDripEnabled ? (
+              {user?.settings?.trading?.isMarginEnabled ? (
                 <span className="d-flex align-items-center gap-2">
                   <MdCheckCircleOutline />
                   Active

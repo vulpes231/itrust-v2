@@ -10,7 +10,6 @@ const UserSettings = ({ user }) => {
       <CardHeader>
         <div className="d-flex align-items-center justify-content-between">
           <h5>Settings</h5>
-          <button className="btn btn-primary">Edit</button>
         </div>
       </CardHeader>
       <CardBody className="d-flex flex-column gap-4 p-4">

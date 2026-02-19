@@ -1,12 +1,20 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
+import { Col, FormFeedback, Input, Label, Row, Spinner } from "reactstrap";
 import ErrorToast from "../../../components/Common/ErrorToast";
 import * as Yup from "yup";
+import SuccessToast from "../../../components/Common/SuccessToast";
+import { useMutation } from "@tanstack/react-query";
+import { updatePassword } from "../../../services/user/user";
 
 const EditPassword = ({ onClose }) => {
   const [error, setError] = useState("");
+
+  const mutation = useMutation({
+    mutationFn: updatePassword,
+    onError: (err) => setError(err.message),
+  });
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -29,7 +37,8 @@ const EditPassword = ({ onClose }) => {
         setError("Passwords does not match!");
         return;
       }
-      console.log(values);
+      // console.log(values);
+      mutation.mutate(values);
     },
   });
 
@@ -42,6 +51,16 @@ const EditPassword = ({ onClose }) => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      const tmt = setTimeout(() => {
+        mutation.reset();
+        window.location.reload();
+      }, 1000);
+      return () => clearTimeout(tmt);
+    }
+  }, [mutation.isSuccess]);
 
   return (
     <div className=" d-flex flex-column gap-2">
@@ -125,8 +144,10 @@ const EditPassword = ({ onClose }) => {
           <button
             type="button"
             onClick={validation.handleSubmit}
-            className="btn btn-primary text-capitalize"
+            className="btn btn-primary d-flex align-items-center gap-2"
+            disabled={mutation.isPending}
           >
+            {mutation.isPending && <Spinner size={"sm"}></Spinner>}
             change password
           </button>
         </Col>
@@ -136,6 +157,13 @@ const EditPassword = ({ onClose }) => {
           errorMsg={error}
           isOpen={!!error}
           onClose={() => setError("")}
+        />
+      )}
+      {mutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Password Updated"}
+          isOpen={mutation.isSuccess}
+          onClose={() => mutation.reset()}
         />
       )}
     </div>

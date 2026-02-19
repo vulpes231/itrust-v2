@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody, Row, Col, Label } from "reactstrap";
 import EditPassword from "./Updates/EditPassword";
 
-const Security = () => {
+import { formatDistanceToNow } from "date-fns";
+
+const Security = ({ user }) => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   return (
     <Card>
@@ -17,7 +19,12 @@ const Security = () => {
             <div className="d-flex flex-column gap-1">
               <h6 className="text-capitalize">Reset Password</h6>
               <span style={{ color: "#878A99" }}>
-                Last changed 45 days ago.
+                {user?.credentials?.passUpdatedAt
+                  ? `Last changed ${formatDistanceToNow(
+                      new Date(user.credentials.passUpdatedAt),
+                      { addSuffix: true }
+                    )}`
+                  : null}
               </span>
             </div>
             <div className="pr-2">

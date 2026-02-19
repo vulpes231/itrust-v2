@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 const VerifyAddress = () => {
   return (
     <Col className="d-flex align-items-start gap-2 justify-content-between bg-danger-subtle p-3 rounded">
       <div className="d-flex align-items-start gap-4 text-danger">
-        <span>Icon</span>
+        <IoAlertCircleOutline />
         <span>
           <h6 className="text-danger fs-16 fw-medium">
             Proof of Address Verification
