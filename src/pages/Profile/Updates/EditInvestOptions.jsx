@@ -20,6 +20,13 @@ import { updateUserInfo } from "../../../services/user/user";
 import ErrorToast from "../../../components/Common/ErrorToast";
 import SuccessToast from "../../../components/Common/SuccessToast";
 
+const ALL_OBJECTIVES = [
+  "growth",
+  "income",
+  "capital preservation",
+  "speculation",
+];
+
 const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
   const [error, setError] = useState("");
 
@@ -33,7 +40,7 @@ const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
     initialValues: {
       experience: user?.professionalInfo?.experience || "",
       riskTolerance: user?.investOption?.riskTolerance || "",
-      objectives: user?.investOption?.objectives || "",
+      objectives: user?.investOption?.objectives || [],
       retiring: user?.investOption?.retiring || "",
     },
     onSubmit: (values) => {
@@ -145,15 +152,53 @@ const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
                 <Label className="fs-15 fw-normal text-capitalize">
                   objectives
                 </Label>
+
+                <div className="d-flex flex-wrap gap-2 mb-2">
+                  {validation.values.objectives.map((obj) => (
+                    <div
+                      key={obj}
+                      className="badge bg-primary d-flex align-items-center gap-2 px-3 py-2"
+                    >
+                      <span className="text-capitalize">{obj}</span>
+                      <span
+                        role="button"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          const updated = validation.values.objectives.filter(
+                            (item) => item !== obj
+                          );
+                          validation.setFieldValue("objectives", updated);
+                        }}
+                      >
+                        ×
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
                 <Input
                   type="select"
-                  name="objectives"
-                  onChange={validation.handleChange}
-                  value={validation.values.objectives}
-                  className="text-capitalize"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (!value) return;
+
+                    validation.setFieldValue("objectives", [
+                      ...validation.values.objectives,
+                      value,
+                    ]);
+
+                    e.target.value = "";
+                  }}
+                  value=""
                 >
-                  <option value="">Select Objectives</option>
-                  <option value="growth">Growth</option>
+                  <option value="">Select Objective</option>
+                  {ALL_OBJECTIVES.filter(
+                    (obj) => !validation.values.objectives.includes(obj)
+                  ).map((obj, idx) => (
+                    <option key={idx} value={obj}>
+                      {obj.charAt(0).toUpperCase() + obj.slice(1)}
+                    </option>
+                  ))}
                 </Input>
               </Col>
             </Row>

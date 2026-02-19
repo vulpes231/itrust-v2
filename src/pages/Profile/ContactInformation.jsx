@@ -4,12 +4,15 @@ import { Card, CardHeader, CardBody, Col, Row } from "reactstrap";
 import EditContactInfo from "./Updates/EditContactInfo";
 import EditTrustedContact from "./Updates/EditTrustedContact";
 import { FaRegEdit } from "react-icons/fa";
+import VerifyAddress from "./Updates/Address/VerifyAddress";
+import VerifyAddressPending from "./Updates/Address/VerifyAddressPending";
+import AddressVerified from "./Updates/Address/AddressVerified";
 
 const ContactInformation = ({ user }) => {
   const [editContactModal, setEditContactModal] = useState(false);
   const [editTrustedModal, setEditTrustedModal] = useState(false);
 
-  // console.log(user.settings);
+  // console.log(user);
   return (
     <Col>
       <Card>
@@ -66,6 +69,13 @@ const ContactInformation = ({ user }) => {
               <h6>{user?.contactInfo?.address?.zipCode}</h6>
             </Col>
           </Row>
+          {user?.contactInfo?.address?.isVerified === "not verified" ? (
+            <VerifyAddress />
+          ) : user?.contactInfo?.address?.isVerified === "pending" ? (
+            <VerifyAddressPending />
+          ) : user?.contactInfo?.address?.isVerified === "verified" ? (
+            <AddressVerified />
+          ) : null}
         </CardBody>
       </Card>
       <Card>

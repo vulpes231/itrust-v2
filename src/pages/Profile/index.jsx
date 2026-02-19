@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
 import BreadCrumb from "../../components/Common/BreadCrumb";
 import VerifyAccountNotify from "../VerifyAccountNotify";
@@ -15,7 +15,14 @@ import { getAccessToken } from "../../constants";
 
 const Profile = () => {
   document.title = "User Profile | Itrust Investments";
-  const [activeTab, setActiveTab] = useState("profile");
+
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem("profileActiveTab") || "profile";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("profileActiveTab", activeTab);
+  }, [activeTab]);
 
   const tk = getAccessToken();
 

@@ -35,7 +35,20 @@ const ConfigureInvesting = ({ user }) => {
         <Row>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>objectives</span>
-            <h6>not set</h6>
+            <h6 className="d-flex align-items-center gap-2">
+              {user?.professionalInfo?.investmentInfo?.objectives.map(
+                (obj, idx) => {
+                  return (
+                    <span
+                      className="bg-info-subtle py-1 px-3 rounded text-info"
+                      key={idx}
+                    >
+                      {obj}
+                    </span>
+                  );
+                }
+              ) ?? "Not Set"}
+            </h6>
           </Col>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>retirement time horizon</span>

@@ -17,6 +17,7 @@ const Logout = (props) => {
       const timeout = setTimeout(() => {
         mutation.reset();
         sessionStorage.clear();
+        localStorage.removeItem("profileActiveTab");
         window.location.href = "/login";
       }, 1000);
     }
