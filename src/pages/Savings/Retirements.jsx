@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Row } from "reactstrap";
 import { IoShieldOutline } from "react-icons/io5";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -46,6 +46,12 @@ const Retirements = ({ analytics, accts }) => {
         return null;
     }
   };
+
+  useEffect(() => {
+    if (accts.length) {
+      console.log(accts);
+    }
+  }, [accts]);
 
   return (
     <React.Fragment>
@@ -171,71 +177,84 @@ const Retirements = ({ analytics, accts }) => {
               )}
             </div>
           </Col>
-          <Col>
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-3">
-                <span className="d-flex flex-column">
-                  <span className="fw-bold fs-15" style={{ color: "#495057" }}>
-                    Contribute
-                  </span>
-                  <span
-                    className="fw-regular fs-14"
-                    style={{ color: "#212529" }}
-                  >
-                    Add funds to your retirement account.
-                  </span>
-                </span>
-              </div>
-              <div onClick={handleContribute}>
-                {contribute ? <IoIosArrowUp /> : <IoIosArrowDown />}
-              </div>
-            </div>
-            <div style={{ display: contribute ? "block" : "none" }}>
-              <Contribute accts={accts} handleIcon={getIcon} />
-            </div>
-          </Col>
-          <Col>
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-3">
-                <span className="d-flex flex-column">
-                  <span className="fw-bold fs-15" style={{ color: "#495057" }}>
-                    Portfolio Allocation
-                  </span>
-                  <span
-                    className="fw-regular fs-14"
-                    style={{ color: "#212529" }}
-                  >
-                    Set up risk profile and allocation strategy.
-                  </span>
-                </span>
-              </div>
-              <div onClick={handlePortfolio}>
-                {portfolio ? <IoIosArrowUp /> : <IoIosArrowDown />}
-              </div>
-            </div>
-            <div style={{ display: portfolio ? "block" : "none" }}></div>
-          </Col>
-          <Col>
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-3">
-                <span className="d-flex flex-column">
-                  <span className="fw-bold fs-15" style={{ color: "#495057" }}>
-                    Retirement Projection
-                  </span>
-                  <span
-                    className="fw-regular fs-14"
-                    style={{ color: "#212529" }}
-                  >
-                    See your projected returns in retirement
-                  </span>
-                </span>
-              </div>
-              <div onClick={handleProjection}>
-                {projection ? <IoIosArrowUp /> : <IoIosArrowDown />}
-              </div>
-            </div>
-            <div style={{ display: projection ? "block" : "none" }}></div>
-          </Col>
+          {retirementAccounts && retirementAccounts.length > 0 && (
+            <Col>
+              <Col>
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="d-flex flex-column">
+                      <span
+                        className="fw-bold fs-15"
+                        style={{ color: "#495057" }}
+                      >
+                        Contribute
+                      </span>
+                      <span
+                        className="fw-regular fs-14"
+                        style={{ color: "#212529" }}
+                      >
+                        Add funds to your retirement account.
+                      </span>
+                    </span>
+                  </div>
+                  <div onClick={handleContribute}>
+                    {contribute ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                  </div>
+                </div>
+                <div style={{ display: contribute ? "block" : "none" }}>
+                  <Contribute accts={accts} handleIcon={getIcon} />
+                </div>
+              </Col>
+              <Col>
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="d-flex flex-column">
+                      <span
+                        className="fw-bold fs-15"
+                        style={{ color: "#495057" }}
+                      >
+                        Portfolio Allocation
+                      </span>
+                      <span
+                        className="fw-regular fs-14"
+                        style={{ color: "#212529" }}
+                      >
+                        Set up risk profile and allocation strategy.
+                      </span>
+                    </span>
+                  </div>
+                  <div onClick={handlePortfolio}>
+                    {portfolio ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                  </div>
+                </div>
+                <div style={{ display: portfolio ? "block" : "none" }}></div>
+              </Col>
+              <Col>
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="d-flex flex-column">
+                      <span
+                        className="fw-bold fs-15"
+                        style={{ color: "#495057" }}
+                      >
+                        Retirement Projection
+                      </span>
+                      <span
+                        className="fw-regular fs-14"
+                        style={{ color: "#212529" }}
+                      >
+                        See your projected returns in retirement
+                      </span>
+                    </span>
+                  </div>
+                  <div onClick={handleProjection}>
+                    {projection ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                  </div>
+                </div>
+                <div style={{ display: projection ? "block" : "none" }}></div>
+              </Col>
+            </Col>
+          )}
         </Card>
       </Col>
     </React.Fragment>

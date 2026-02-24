@@ -34,7 +34,7 @@ const Widgets1 = () => {
 
   return (
     <React.Fragment>
-      <Col lg={12}>
+      <Col>
         <Swiper
           slidesPerView={1}
           spaceBetween={24}

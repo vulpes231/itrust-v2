@@ -3,6 +3,8 @@ import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 import ReactApexChart from "react-apexcharts";
 
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
+import TopStats from "./TopStats";
+import BottomStats from "./BottomStats";
 
 const Statistics = ({ dataColors }) => {
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
@@ -296,33 +298,7 @@ const Statistics = ({ dataColors }) => {
         autoScaleYaxis: true,
       },
     },
-    // annotations: {
-    //   yaxis: [{
-    //     y: 30,
-    //     borderColor: '#999',
-    //     // label: {
-    //     //   show: true,
-    //     //   text: 'Support',
-    //     //   style: {
-    //     //     color: "#fff",
-    //     //     background: '#00E396'
-    //     //   }
-    //     // }
-    //   }],
-    //   xaxis: [{
-    //     x: new Date('14 Nov 2012').getTime(),
-    //     borderColor: '#999',
-    //     yAxisIndex: 0,
-    //     // label: {
-    //     //   show: true,
-    //     //   text: 'Rally',
-    //     //   style: {
-    //     //     color: "#fff",
-    //     //     background: '#775DD0'
-    //     //   }
-    //     // }
-    //   }]
-    // },
+
     colors: portfolioStatisticsColors,
     dataLabels: {
       enabled: false,
@@ -355,8 +331,9 @@ const Statistics = ({ dataColors }) => {
 
   return (
     <React.Fragment>
-      <Col xl={8}>
+      <Col>
         <Card>
+          <TopStats />
           <CardHeader>
             <div className="d-flex align-items-center">
               <div className="flex-grow-1">
@@ -408,6 +385,7 @@ const Statistics = ({ dataColors }) => {
               </div>
             </div>
           </CardBody>
+          <BottomStats />
         </Card>
       </Col>
     </React.Fragment>

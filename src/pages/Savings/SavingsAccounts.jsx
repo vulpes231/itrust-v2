@@ -150,50 +150,60 @@ const SavingsAccounts = ({ analytics, accts }) => {
             </div>
           </Col>
 
-          <Col>
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-3">
-                <span className="d-flex flex-column">
-                  <span className="fw-bold fs-15" style={{ color: "#495057" }}>
-                    Add Funds
-                  </span>
-                  <span
-                    className="fw-regular fs-14"
-                    style={{ color: "#212529" }}
-                  >
-                    Add funds to your savings account.
-                  </span>
-                </span>
-              </div>
-              <div onClick={handleFund}>
-                {fund ? <IoIosArrowUp /> : <IoIosArrowDown />}
-              </div>
-            </div>
-            <div style={{ display: fund ? "block" : "none" }}>
-              <AddFunds accts={accts} handleIcon={getIcon} />
-            </div>
-          </Col>
-          <Col>
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-3">
-                <span className="d-flex flex-column">
-                  <span className="fw-bold fs-15" style={{ color: "#495057" }}>
-                    Saving Goals
-                  </span>
-                  <span
-                    className="fw-regular fs-14"
-                    style={{ color: "#212529" }}
-                  >
-                    Create track and achieve your financial goals.
-                  </span>
-                </span>
-              </div>
-              <div onClick={handleGoals}>
-                {goals ? <IoIosArrowUp /> : <IoIosArrowDown />}
-              </div>
-            </div>
-            <div style={{ display: goals ? "block" : "none" }}></div>
-          </Col>
+          {savingsAccts && savingsAccts.length > 0 && (
+            <Col>
+              <Col>
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="d-flex flex-column">
+                      <span
+                        className="fw-bold fs-15"
+                        style={{ color: "#495057" }}
+                      >
+                        Add Funds
+                      </span>
+                      <span
+                        className="fw-regular fs-14"
+                        style={{ color: "#212529" }}
+                      >
+                        Add funds to your savings account.
+                      </span>
+                    </span>
+                  </div>
+                  <div onClick={handleFund}>
+                    {fund ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                  </div>
+                </div>
+                <div style={{ display: fund ? "block" : "none" }}>
+                  <AddFunds accts={accts} handleIcon={getIcon} />
+                </div>
+              </Col>
+              <Col>
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="d-flex flex-column">
+                      <span
+                        className="fw-bold fs-15"
+                        style={{ color: "#495057" }}
+                      >
+                        Saving Goals
+                      </span>
+                      <span
+                        className="fw-regular fs-14"
+                        style={{ color: "#212529" }}
+                      >
+                        Create track and achieve your financial goals.
+                      </span>
+                    </span>
+                  </div>
+                  <div onClick={handleGoals}>
+                    {goals ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                  </div>
+                </div>
+                <div style={{ display: goals ? "block" : "none" }}></div>
+              </Col>
+            </Col>
+          )}
         </Card>
       </Col>
     </React.Fragment>

@@ -33,7 +33,7 @@ const MyCurrencies = () => {
 
   return (
     <React.Fragment>
-      <Col xl={8}>
+      <Col>
         <Card className="card-height-100">
           <CardHeader className="align-items-center d-flex">
             <h4 className="card-title mb-0 flex-grow-1">My Currencies</h4>

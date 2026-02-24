@@ -20,8 +20,6 @@ const OpenAccount = () => {
   const token = getAccessToken();
   const history = useNavigate();
 
-  // console.log(user);
-
   const [error, setError] = useState("");
   const [selectedAcct, setSelectedAcct] = useState("");
 
@@ -36,7 +34,6 @@ const OpenAccount = () => {
     queryFn: getUserInfo,
     enabled: !!token,
   });
-  // console.log(user);
 
   const mutation = useMutation({
     mutationFn: () => openSavings({ accountId: selectedAcct._id }),
@@ -46,27 +43,23 @@ const OpenAccount = () => {
   const savingsAccts =
     savingAccounts &&
     savingAccounts.length > 0 &&
-    savingAccounts.filter((acct) => acct.category !== "retirement");
+    savingAccounts.filter((acct) => acct.tag !== "retirement");
 
   const retirementAccts =
     savingAccounts &&
     savingAccounts.length > 0 &&
-    savingAccounts.filter((acct) => acct.category !== "savings");
+    savingAccounts.filter((acct) => acct.tag !== "savings");
 
   const handleSelection = (acct) => {
     if (!user || !acct) {
       return;
     }
     const userCountryId = user?.locationDetails?.country?.countryId;
-    console.log(user);
-    console.log(user.savingsAccounts);
+
     if (!acct.eligibleCountries.includes(userCountryId)) {
       setError("Account not available in your country!");
       return;
     }
-
-    // console.log(acct.eligibleCountries);
-    // console.log(selectedAcct);
 
     setSelectedAcct(acct);
   };
@@ -101,6 +94,12 @@ const OpenAccount = () => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (savingAccounts.length > 0) {
+      console.log(savingAccounts);
+    }
+  }, [savingAccounts]);
 
   return (
     <React.Fragment>
@@ -153,15 +152,15 @@ const OpenAccount = () => {
                                     style={{ color: "#878A99" }}
                                     className="fw-bold fs-13"
                                   >
-                                    {`${capitalize(
-                                      acct.name.slice(0, 1)
-                                    )}${acct.name.slice(1)}`}
+                                    {`${acct.name.slice(0, 1)}${acct.name.slice(
+                                      1
+                                    )}`}
                                   </span>
                                   <span
                                     style={{ color: "#495057" }}
                                     className="fw-semibold fs-21"
                                   >
-                                    {acct.symbol}
+                                    {acct.slug}
                                   </span>
                                 </span>
                               </div>
@@ -177,14 +176,14 @@ const OpenAccount = () => {
                                   style={{ color: "#495057" }}
                                   className="fw-regular fs-14"
                                 >
-                                  {acct.subTitle}
+                                  {acct.information}
                                 </span>
                                 <ul
                                   style={{ color: "#495057" }}
                                   className="fw-regular fs-14"
                                 >
-                                  {acct.note.length > 0 &&
-                                    acct.note.map((nt, idx) => {
+                                  {acct.details.length > 0 &&
+                                    acct.details.map((nt, idx) => {
                                       return <li key={idx}>{nt}</li>;
                                     })}
                                 </ul>
@@ -220,17 +219,17 @@ const OpenAccount = () => {
                                 <span className="d-flex flex-column">
                                   <span
                                     style={{ color: "#878A99" }}
-                                    className="fw-bold fs-13"
+                                    className="fw-bold fs-13 text-capitalize"
                                   >
-                                    {`${capitalize(
-                                      acct.name.slice(0, 1)
-                                    )}${acct.name.slice(1)}`}
+                                    {`${acct.name.slice(0, 1)}${acct.name.slice(
+                                      1
+                                    )}`}
                                   </span>
                                   <span
                                     style={{ color: "#495057" }}
-                                    className="fw-semibold fs-21"
+                                    className="fw-semibold fs-21 text-uppercase"
                                   >
-                                    {acct.symbol}
+                                    {acct.slug}
                                   </span>
                                 </span>
                               </div>
@@ -238,22 +237,22 @@ const OpenAccount = () => {
                               <div className="d-flex flex-column gap-1">
                                 <span
                                   style={{ color: "#495057" }}
-                                  className="fw-semibold fs-15"
+                                  className="fw-semibold fs-15 text-capitalize"
                                 >
                                   {acct.title}
                                 </span>
                                 <span
                                   style={{ color: "#495057" }}
-                                  className="fw-regular fs-14"
+                                  className="fw-regular fs-14 text-capitalize"
                                 >
-                                  {acct.subTitle}
+                                  {acct.information}
                                 </span>
                                 <ul
                                   style={{ color: "#495057" }}
-                                  className="fw-regular fs-14"
+                                  className="fw-regular fs-14 text-capitalize"
                                 >
-                                  {acct.note.length > 0 &&
-                                    acct.note.map((nt, idx) => {
+                                  {acct.details.length > 0 &&
+                                    acct.details.map((nt, idx) => {
                                       return <li key={idx}>{nt}</li>;
                                     })}
                                 </ul>
@@ -284,17 +283,18 @@ const OpenAccount = () => {
                         <span className="d-flex flex-column">
                           <span
                             style={{ color: "#878A99" }}
-                            className="fw-bold fs-13"
+                            className="fw-bold fs-13 text-capitalize"
                           >
-                            {`${capitalize(
-                              selectedAcct?.name.slice(0, 1)
+                            {`${selectedAcct?.name.slice(
+                              0,
+                              1
                             )}${selectedAcct?.name.slice(1)}`}
                           </span>
                           <span
                             style={{ color: "#495057" }}
-                            className="fw-semibold fs-21"
+                            className="fw-semibold fs-21 text-uppercase"
                           >
-                            {selectedAcct?.symbol}
+                            {selectedAcct?.slug}
                           </span>
                         </span>
                       </div>
@@ -302,23 +302,23 @@ const OpenAccount = () => {
                       <div className="d-flex flex-column gap-1">
                         <span
                           style={{ color: "#495057" }}
-                          className="fw-semibold fs-15"
+                          className="fw-semibold fs-15 text-capitalize"
                         >
                           {selectedAcct?.title}
                         </span>
                         <span
                           style={{ color: "#495057" }}
-                          className="fw-regular fs-14"
+                          className="fw-regular fs-14 text-capitalize"
                         >
-                          {selectedAcct?.subTitle}
+                          {selectedAcct?.information}
                         </span>
                         <ul
                           style={{ color: "#495057" }}
-                          className="fw-regular fs-14"
+                          className="fw-regular fs-14 text-capitalize"
                         >
                           {selectedAcct &&
-                            selectedAcct.note.length > 0 &&
-                            selectedAcct.note.map((nt, idx) => {
+                            selectedAcct.details.length > 0 &&
+                            selectedAcct.details.map((nt, idx) => {
                               return <li key={idx}>{nt}</li>;
                             })}
                         </ul>

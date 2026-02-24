@@ -50,7 +50,7 @@ const PersonalInformation = ({ user }) => {
               <span className="text-capitalize" style={{ color: "#878A99" }}>
                 username
               </span>
-              <h6>{capitalize(user?.credentials?.username)}</h6>
+              <h6>{user?.credentials?.username}</h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1">
               <span className="text-capitalize" style={{ color: "#878A99" }}>
@@ -130,10 +130,11 @@ const PersonalInformation = ({ user }) => {
                 experience
               </span>
               <h6>
-                {" "}
-                {capitalize(user?.professionalInfo?.employmentInfo?.expYears) ||
-                  "Not Set"}{" "}
-                Years
+                {user?.professionalInfo?.employmentInfo?.expYears
+                  ? `${capitalize(
+                      user?.professionalInfo?.employmentInfo?.expYears
+                    )} Years`
+                  : "Not Set"}
               </h6>
             </Col>
           </Row>

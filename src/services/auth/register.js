@@ -7,7 +7,9 @@ async function registerUser(formData) {
     const response = await api.create("/signup", formData);
     return { token: response.token };
   } catch (error) {
-    const errMsg = error || error?.message;
+    console.log(error);
+    const errMsg =
+      error || error?.message || "Registration failed. Try again later.";
     throw new Error(errMsg);
   }
 }
@@ -18,7 +20,7 @@ async function completeRegister(formData) {
     console.log(response.data);
     return { user: response.data };
   } catch (error) {
-    const errMsg = error?.message;
+    const errMsg = error || error?.message;
     throw new Error(errMsg);
   }
 }

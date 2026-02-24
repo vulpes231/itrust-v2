@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Alert } from "reactstrap";
+import { Container, Row, Alert, Col } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import MyCurrencies from "./MyCurrencies";
 import MyPortfolio from "./MyPortfolio";
@@ -13,7 +13,7 @@ import Statistics from "./Statistics";
 import VerifyAccountNotify from "../VerifyAccountNotify";
 
 const DashboardCrypto = () => {
-  document.title = "Dashboard | Itrust Investments";
+  document.title = "Dashboard - Itrust Investments";
 
   return (
     <React.Fragment>
@@ -23,25 +23,34 @@ const DashboardCrypto = () => {
           <VerifyAccountNotify />
 
           <Row>
-            <Widgets />
+            <Col md={9}>
+              <Statistics dataColors='["--vz-info"]' />
+              <Widgets1 />
+              <MyCurrencies />
+            </Col>
+            <Col md={3}>
+              <MyPortfolio />
+            </Col>
           </Row>
 
-          <Row>
-            <Statistics dataColors='["--vz-info"]' />
-            <MyPortfolio />
+          <Row>{/* <Widgets /> */}</Row>
+
+          {/* <Row>
+          
+           
           </Row>
           <Row>
-            <Widgets1 />
+          
           </Row>
           <Row>
-            <MyCurrencies />
+           
             <Trading />
-          </Row>
-          <Row>
+          </Row> */}
+          {/* <Row>
             <RecentActivity />
             <TopPerformers />
             <NewsFeed />
-          </Row>
+          </Row> */}
         </Container>
       </div>
     </React.Fragment>

@@ -138,7 +138,11 @@ const ContactInformation = ({ user }) => {
               </Col>
               <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
                 <span style={{ color: "#878A99" }}>address</span>
-                <h6>{`${user?.settings?.beneficiary?.address?.street},  ${user?.settings?.beneficiary?.address?.city}, ${user?.settings?.beneficiary?.address?.state?.name} ${user?.settings?.beneficiary?.address?.zipCode}`}</h6>
+                <h6>
+                  {user?.settings?.beneficiary
+                    ? `${user?.settings?.beneficiary?.address?.street},  ${user?.settings?.beneficiary?.address?.city}, ${user?.settings?.beneficiary?.address?.state?.name} ${user?.settings?.beneficiary?.address?.zipCode}`
+                    : "Not Set"}
+                </h6>
               </Col>
             </Row>
           </Col>

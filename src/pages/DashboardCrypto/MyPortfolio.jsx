@@ -61,13 +61,9 @@ const MyPortfolio = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (wallets) console.log(wallets);
-  // }, [wallets]);
-
   return (
     <React.Fragment>
-      <Col xl={4}>
+      <Col>
         <div className="card card-height-100">
           <div className="card-header border-0 align-items-center d-flex">
             <h4 className="card-title mb-0 flex-grow-1">My Portfolio</h4>
