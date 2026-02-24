@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -10,11 +10,14 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
+import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { useQuery } from "@tanstack/react-query";
 import { getAssets } from "../../services/asset/asset";
 import { formatCurrency } from "../../constants";
+import numeral from "numeral";
 
 const MyCurrencies = () => {
+  const [assetFilter, setAssetFilter] = useState("crypto");
   const queryData = {
     sortBy: "priceData.volume",
     type: "crypto",
@@ -25,40 +28,43 @@ const MyCurrencies = () => {
     queryKey: ["assets"],
   });
 
-  // useEffect(() => {
-  //   if (assets) {
-  //     console.log(assets);
-  //   }
-  // }, [assets]);
+  useEffect(() => {
+    if (assets) {
+      console.log(assets);
+    }
+  }, [assets]);
 
   return (
     <React.Fragment>
       <Col>
         <Card className="card-height-100">
           <CardHeader className="align-items-center d-flex">
-            <h4 className="card-title mb-0 flex-grow-1">My Currencies</h4>
-            <div className="flex-shrink-0">
-              <button className="btn btn-soft-primary btn-sm">24H</button>
-            </div>
-            <div className="flex-shrink-0 ms-2">
-              <UncontrolledDropdown
-                className="card-header-dropdown"
-                direction="start"
+            <h4 className="card-title mb-0 flex-grow-1">Most Active</h4>
+            <div className="flex-shrink-0 d-flex align-items-center gap-2 ">
+              <span style={{ color: "#878A99" }}>Filter by:</span>
+              <select
+                className="btn btn-soft-primary btn-sm text-capitalize"
+                name=""
               >
-                <DropdownToggle
-                  className="btn btn-soft-primary btn-sm"
-                  role="button"
-                  tag="a"
-                >
-                  Get Report
-                  <i className="mdi mdi-chevron-down align-middle ms-1"></i>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-menu dropdown-menu-end">
-                  <DropdownItem>Download Report</DropdownItem>
-                  <DropdownItem>Export</DropdownItem>
-                  <DropdownItem>Import</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+                <option value="">Crypto</option>
+                <option value="">Stock</option>
+                <option value="">ETF</option>
+              </select>
+              <button className="btn btn-soft-primary btn-sm text-capitalize">
+                24H
+              </button>
+              <button className="btn btn-soft-primary btn-sm text-capitalize">
+                watchlist
+              </button>
+              <button className="btn btn-soft-primary btn-sm text-capitalize">
+                top gainers
+              </button>
+              <button className="btn btn-soft-primary btn-sm text-capitalize">
+                top losers
+              </button>
+              <button className="btn btn-soft-primary btn-sm text-capitalize">
+                market cap
+              </button>
             </div>
           </CardHeader>
           <div className="card-body">
@@ -66,11 +72,13 @@ const MyCurrencies = () => {
               <table className="table table-hover table-borderless table-centered align-middle table-nowrap mb-0">
                 <thead className="text-muted bg-light-subtle">
                   <tr>
-                    <th>Coin Name</th>
+                    <th>Watchlist</th>
+                    <th>Asset</th>
                     <th>Price</th>
+                    <th>24 High</th>
+                    <th>24 Low</th>
+                    <th>Market Volume</th>
                     <th>24h Change</th>
-                    <th>Daily High</th>
-                    <th>Daily Low</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -78,10 +86,15 @@ const MyCurrencies = () => {
                   {(
                     (assets &&
                       assets.data?.length > 0 &&
-                      assets.data.slice(0, 7)) ||
+                      assets.data.slice(0, 14)) ||
                     []
                   ).map((asset, key) => (
                     <tr key={key}>
+                      <td>
+                        <span style={{ color: "#FFC84B" }}>
+                          <AiOutlineStar size={20} />
+                        </span>
+                      </td>
                       <td>
                         <div className="d-flex align-items-center">
                           <div className="me-2">
@@ -92,11 +105,22 @@ const MyCurrencies = () => {
                             />
                           </div>
                           <div>
-                            <h6 className="mb-0">{asset.name}</h6>
+                            <h6 className="mb-0">
+                              {asset.name.slice(0, 14)}
+                              {asset.name.length > 14 ? "..." : ""}
+                            </h6>
                           </div>
                         </div>
                       </td>
                       <td>{formatCurrency(asset.priceData.current)}</td>
+
+                      <td>{formatCurrency(asset.priceData.dayHigh)}</td>
+                      <td>{formatCurrency(asset.priceData.dayLow)}</td>
+                      <td>
+                        {numeral(asset.priceData.volume)
+                          .format("$0.00a")
+                          .toUpperCase()}
+                      </td>
                       <td>
                         <h6
                           className={`mb-0 ${
@@ -112,11 +136,20 @@ const MyCurrencies = () => {
                                 : "mdi mdi-trending-down"
                             }`}
                           ></i>
-                          {parseFloat(asset.priceData.changePercent).toFixed(2)}
+                          <span>
+                            {" "}
+                            {numeral(asset.priceData.change).format("$0,0.00")}
+                          </span>
+                          <span>
+                            {" "}
+                            (
+                            {parseFloat(asset.priceData.changePercent).toFixed(
+                              2
+                            )}
+                            %)
+                          </span>
                         </h6>
                       </td>
-                      <td>{formatCurrency(asset.priceData.dayHigh)}</td>
-                      <td>{formatCurrency(asset.priceData.dayLow)}</td>
                       <td>
                         <Link
                           to="/apps-crypto-buy-sell"

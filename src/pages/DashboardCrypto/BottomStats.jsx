@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { formatCurrency } from "../../constants";
+import numeral from "numeral";
 
-const BottomStats = () => {
+const BottomStats = ({ walletAnalytics }) => {
   return (
-    <Col className="p-3 bg-light mb-3 d-flex flex-column gap-3">
+    <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <div className="d-flex align-items-start justify-content-between px-3">
         <h5>Balances</h5>
         <Link className="btn btn-secondary text-capitalize" to={"/cash"}>
@@ -19,7 +20,11 @@ const BottomStats = () => {
           md={4}
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>{formatCurrency(1000)}</h3>
+            <h3 style={{ color: "#495057" }}>
+              {walletAnalytics
+                ? numeral(walletAnalytics?.totalInvested).format("$0,0.00")
+                : formatCurrency(0)}
+            </h3>
             <span
               style={{ color: "#878A99" }}
               className="text-capitalize fs-16 fw-light"
@@ -34,7 +39,7 @@ const BottomStats = () => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>{formatCurrency(1000)}</h3>
+            <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
             <span
               style={{ color: "#878A99" }}
               className="text-capitalize fs-16 fw-light"
@@ -49,7 +54,11 @@ const BottomStats = () => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>{formatCurrency(1000)}</h3>
+            <h3 style={{ color: "#495057" }}>
+              {walletAnalytics
+                ? numeral(walletAnalytics?.availableBalance).format("$0,0.00")
+                : formatCurrency(0)}
+            </h3>
             <span
               style={{ color: "#878A99" }}
               className="text-capitalize fs-16 fw-light"

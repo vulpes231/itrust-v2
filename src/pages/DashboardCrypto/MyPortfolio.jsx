@@ -66,7 +66,7 @@ const MyPortfolio = () => {
       <Col>
         <div className="card card-height-100">
           <div className="card-header border-0 align-items-center d-flex">
-            <h4 className="card-title mb-0 flex-grow-1">My Portfolio</h4>
+            <h4 className="card-title mb-0 flex-grow-1">My Accounts</h4>
             <div>
               <UncontrolledDropdown direction="start">
                 <DropdownToggle

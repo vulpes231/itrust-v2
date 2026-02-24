@@ -11,8 +11,7 @@ async function getAssets(queryData) {
 
     return { data: response.data, pagination: response.pagination };
   } catch (error) {
-    console.log("Frontend - Error:", error);
-    const errMsg = error.response?.data?.message;
+    const errMsg = error || "Fetch assets failed.";
     throw new Error(errMsg);
   }
 }
@@ -25,7 +24,7 @@ async function getAssetInfo(queryParam) {
     );
     return response.data;
   } catch (error) {
-    const errMsg = error.response?.data?.message;
+    const errMsg = error || "Fetch asset info failed";
     throw new Error(errMsg);
   }
 }

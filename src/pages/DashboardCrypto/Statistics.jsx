@@ -6,7 +6,7 @@ import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 import TopStats from "./TopStats";
 import BottomStats from "./BottomStats";
 
-const Statistics = ({ dataColors }) => {
+const Statistics = ({ dataColors, analytics }) => {
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
   const series = [
     {
@@ -333,11 +333,11 @@ const Statistics = ({ dataColors }) => {
     <React.Fragment>
       <Col>
         <Card>
-          <TopStats />
+          <TopStats walletAnalytics={analytics} />
           <CardHeader>
             <div className="d-flex align-items-center">
               <div className="flex-grow-1">
-                <h5 className="card-title mb-0">My Portfolio Statistics</h5>
+                <h5 className="card-title mb-0">Statistics</h5>
               </div>
               <div className="toolbar d-flex align-items-start justify-content-center flex-wrap gap-2">
                 <button
@@ -385,7 +385,7 @@ const Statistics = ({ dataColors }) => {
               </div>
             </div>
           </CardBody>
-          <BottomStats />
+          <BottomStats walletAnalytics={analytics} />
         </Card>
       </Col>
     </React.Fragment>

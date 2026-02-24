@@ -89,7 +89,10 @@ const Widgets1 = () => {
                         className="bg-light rounded-circle p-1 avatar-xs img-fluid"
                         alt=""
                       />
-                      <h6 className="ms-2 mb-0 fs-15">{item.name}</h6>
+                      <h6 className="ms-2 mb-0 fs-14">
+                        {item.name.slice(0, 14)}
+                        {item.name.length > 14 ? "..." : ""}
+                      </h6>
                     </div>
                     <Row className="align-items-end g-0">
                       <Col xs={6}>
@@ -97,13 +100,16 @@ const Widgets1 = () => {
                           {formatCurrency(item.priceData.current)}
                         </h5>
                         <p
-                          className={`fw-semibold mb-0 ${
+                          className={`fw-semibold mb-0 d-flex align-items-center gap-2 ${
                             item.priceData.changePercent > 0
                               ? "text-success"
                               : "text-danger"
                           }`}
                         >
-                          {item.priceData.changePercent.toFixed(2)}%
+                          <span>
+                            {" "}
+                            {item.priceData.changePercent.toFixed(2)}%
+                          </span>
                           <span className="text-muted ms-2 fs-13 text-uppercase">
                             {item.symbol}
                           </span>
