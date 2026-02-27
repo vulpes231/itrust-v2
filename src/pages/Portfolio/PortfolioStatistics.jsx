@@ -3,8 +3,9 @@ import { Card, CardBody, CardHeader } from "reactstrap";
 import ReactApexChart from "react-apexcharts";
 
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
+import FootStats from "./FootStats";
 
-const PortfolioStatistics = ({ dataColors }) => {
+const PortfolioStatistics = ({ dataColors, activeWallet }) => {
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
   const series = [
     {
@@ -296,33 +297,7 @@ const PortfolioStatistics = ({ dataColors }) => {
         autoScaleYaxis: true,
       },
     },
-    // annotations: {
-    //   yaxis: [{
-    //     y: 30,
-    //     borderColor: '#999',
-    //     // label: {
-    //     //   show: true,
-    //     //   text: 'Support',
-    //     //   style: {
-    //     //     color: "#fff",
-    //     //     background: '#00E396'
-    //     //   }
-    //     // }
-    //   }],
-    //   xaxis: [{
-    //     x: new Date('14 Nov 2012').getTime(),
-    //     borderColor: '#999',
-    //     yAxisIndex: 0,
-    //     // label: {
-    //     //   show: true,
-    //     //   text: 'Rally',
-    //     //   style: {
-    //     //     color: "#fff",
-    //     //     background: '#775DD0'
-    //     //   }
-    //     // }
-    //   }]
-    // },
+
     colors: portfolioStatisticsColors,
     dataLabels: {
       enabled: false,
@@ -407,6 +382,7 @@ const PortfolioStatistics = ({ dataColors }) => {
             </div>
           </div>
         </CardBody>
+        <FootStats activeWallet={activeWallet} />
       </Card>
     </React.Fragment>
   );

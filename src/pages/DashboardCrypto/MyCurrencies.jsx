@@ -28,11 +28,11 @@ const MyCurrencies = () => {
     queryKey: ["assets"],
   });
 
-  useEffect(() => {
-    if (assets) {
-      console.log(assets);
-    }
-  }, [assets]);
+  // useEffect(() => {
+  //   if (assets) {
+  //     console.log(assets);
+  //   }
+  // }, [assets]);
 
   return (
     <React.Fragment>
