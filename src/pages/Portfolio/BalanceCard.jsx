@@ -8,10 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserWallets } from "../../services/user/wallet";
 
 const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
-  // useEffect(() => {
-  //   if (wallets && wallets.length > 0) setActiveWallet(wallets[0]);
-  // }, [wallets]);
-
   return (
     <Card>
       <Row className="p-3">
@@ -22,7 +18,7 @@ const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
               onChange={handleChange}
               style={{ color: "#878A99" }}
             >
-              {activeWallet === null && wallets && wallets.length === 0 && (
+              {activeWallet && wallets && wallets.length === 0 && (
                 <option value="">Account</option>
               )}
               {(wallets || []).map((wallet) => {

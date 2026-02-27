@@ -16,6 +16,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Spinner,
 } from "reactstrap";
 import classnames from "classnames";
 import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
@@ -29,6 +30,22 @@ import Loader from "../../components/Common/Loader";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { capitalize } from "lodash";
+import numeral from "numeral";
+
+const units = [
+  { id: 1, label: "$1k", amount: 1000 },
+  { id: 2, label: "$2k", amount: 2000 },
+  { id: 3, label: "$5k", amount: 5000 },
+  { id: 4, label: "Max", amount: 10000 },
+];
+
+const allowedTypes = [
+  { id: "market", label: "Market Order" },
+  { id: "limit", label: "Limit Order" },
+  { id: "stoploss", label: "Stop Loss Order" },
+  { id: "takeprofit", label: "Take Profit Order" },
+  { id: "leverage", label: "Leverage Order" },
+];
 
 const TradeCard = () => {
   const [activeTab, setActiveTab] = useState("buy");
@@ -40,6 +57,7 @@ const TradeCard = () => {
   const [tradeType, setTradeType] = useState("market");
   const [selectedAcct, setSelectedAcct] = useState("");
   const [selectedAsset, setSelectedAsset] = useState("");
+  const [qty, setQty] = useState(0);
 
   const [form, setForm] = useState({
     assetId: "",
@@ -69,14 +87,13 @@ const TradeCard = () => {
       entry: "",
       stoploss: "",
       takeprofit: "",
-      leverage: tradeType === "leverage" || tradeType === "stoploss" ? "5" : "",
+      leverage: tradeType === "leverage" || tradeType === "stoploss" ? "2" : "",
       executionType: tradeType,
     },
     validationSchema: Yup.object({
       assetId: Yup.string().required("Please Select Asset"),
       walletId: Yup.string().required("Please Select Wallet"),
       amount: Yup.string().required("Please Enter Amount"),
-      assetType: Yup.string().required("Please Select Asset Type"),
       leverage: Yup.string().when("executionType", {
         is: (value) => value === "leverage" || value === "stoploss",
         then: (schema) => schema.required("Please select leverage"),
@@ -113,6 +130,7 @@ const TradeCard = () => {
   };
 
   const handleAssetSelect = (asset) => {
+    setIsDropdownOpen(false);
     setForm((prev) => ({
       ...prev,
       assetId: asset._id,
@@ -120,7 +138,6 @@ const TradeCard = () => {
     }));
     setSelectedAsset(asset);
     setSearchQuery(asset.name);
-    setIsDropdownOpen(false);
 
     validation.setFieldValue("assetId", asset._id);
   };
@@ -191,74 +208,94 @@ const TradeCard = () => {
   const availableWallets =
     wallets && wallets.filter((w) => w.name !== "automated investing");
 
-  const allowedTypes = [
-    { id: "market", label: "Market Order" },
-    { id: "limit", label: "Limit Order" },
-    { id: "stoploss", label: "Stop Loss Order" },
-    { id: "takeprofit", label: "Take Profit Order" },
-    { id: "leverage", label: "Leverage Order" },
-  ];
-
   function handleTypeChange(e) {
     setTradeType(e.target.value);
   }
 
-  const walletId = validation.values.walletId;
   useEffect(() => {
-    if (walletId) {
-      const wallet = wallets.find((wallet) => wallet._id === walletId);
+    if (validation.values.walletId) {
+      const wallet = wallets.find(
+        (wallet) => wallet._id === validation.values.walletId
+      );
       setSelectedAcct(wallet);
     }
-  }, [walletId]);
+  }, [validation.values.walletId]);
+
+  useEffect(() => {
+    if (selectedAsset && validation.values.amount) {
+      const parsedAmt = parseFloat(validation.values.amount);
+      const assetQty = parsedAmt / selectedAsset.priceData.current;
+      setQty(assetQty);
+    }
+  }, [selectedAsset, validation.values.amount]);
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   return (
     <Card>
-      <CardHeader className="d-flex flex-column">
-        <Col xl={5}>
-          <Input
-            style={{
-              textTransform: "capitalize",
-              border: "none",
-              backgroundColor: "transparent",
-              // color: "purple",
-              outline: "none",
-            }}
-            name="tradeType"
-            value={tradeType}
-            onChange={handleTypeChange}
-            type="select"
-          >
-            {allowedTypes.map((type) => {
-              return (
-                <option
-                  style={{ textTransform: "capitalize" }}
-                  key={type.id}
-                  value={type.id}
-                >
-                  {type.label}
-                </option>
-              );
-            })}
-          </Input>
-        </Col>
-        <Col>
-          <button
-            className={classnames({ active: activeTab === "buy" })}
-            onClick={() => {
-              toggleTab("buy");
-            }}
-          >
-            buy
-          </button>
-          <button
-            className={classnames({ active: activeTab === "sell" })}
-            onClick={() => {
-              toggleTab("sell");
-            }}
-          >
-            sell
-          </button>
-        </Col>
+      <CardHeader className="d-flex flex-column gap-2">
+        <Row className="bg-secondary-subtle">
+          <Col xs={6}>
+            <Input
+              style={{
+                textTransform: "capitalize",
+                border: "none",
+                backgroundColor: "transparent",
+                outline: "none",
+              }}
+              className="pr-4 text-secondary"
+              name="tradeType"
+              value={tradeType}
+              onChange={handleTypeChange}
+              type="select"
+            >
+              {allowedTypes.map((type) => {
+                return (
+                  <option
+                    style={{ textTransform: "capitalize" }}
+                    key={type.id}
+                    value={type.id}
+                  >
+                    {type.label}
+                  </option>
+                );
+              })}
+            </Input>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            {" "}
+            <button
+              className={`${
+                activeTab === "buy" ? "btn btn-success" : "btn btn-light"
+              } w-100 text-capitalize`}
+              onClick={() => {
+                toggleTab("buy");
+              }}
+            >
+              buy
+            </button>
+          </Col>
+          <Col>
+            <button
+              className={`${
+                activeTab === "sell" ? "btn btn-danger" : " btn bg-light"
+              } w-100 text-capitalize`}
+              onClick={() => {
+                toggleTab("sell");
+              }}
+            >
+              sell
+            </button>
+          </Col>
+        </Row>
       </CardHeader>
       <div className="card-body p-0">
         <TabContent activeTab={activeTab} className="p-0">
@@ -302,8 +339,12 @@ const TradeCard = () => {
                       {assetResults && assetResults.length > 0 ? (
                         assetResults.map((asset) => (
                           <DropdownItem
+                            toggle
                             key={asset._id}
-                            onClick={() => handleAssetSelect(asset)}
+                            onClick={() => {
+                              handleAssetSelect(asset);
+                              setIsDropdownOpen(false);
+                            }}
                             className="d-flex justify-content-between align-items-center"
                           >
                             <div>
@@ -333,6 +374,44 @@ const TradeCard = () => {
                       {validation.errors.assetId}
                     </FormFeedback>
                   ) : null}
+
+                  <Col className="px-2 mt-3 mx-1">
+                    {selectedAsset && (
+                      <Row className="border border-1 p-2 rounded-1">
+                        <Col className="d-flex align-items-start gap-2">
+                          <img
+                            src={selectedAsset.imageUrl}
+                            alt="coin"
+                            width={40}
+                            className="rounded-circle bg-light p-1"
+                          />
+                          <div className="lh-1">
+                            <h5>{selectedAsset.symbol}</h5>
+                            <span style={{ color: "#878A99" }}>
+                              {selectedAsset.name}
+                            </span>
+                          </div>
+                        </Col>
+                        <Col className="d-flex flex-column align-items-end">
+                          <h5>
+                            {formatter.format(selectedAsset.priceData?.current)}
+                          </h5>
+                          <span
+                            className={`${
+                              selectedAsset.priceData?.change < 0
+                                ? "text-danger"
+                                : "text-success"
+                            } fs-12`}
+                          >
+                            {formatter.format(selectedAsset.priceData?.change)}{" "}
+                            {`(${parseFloat(
+                              selectedAsset.priceData?.changePercent
+                            ).toFixed(2)}%)`}
+                          </span>
+                        </Col>
+                      </Row>
+                    )}
+                  </Col>
 
                   {/* Hidden input for formik to track the actual asset ID */}
                   <input
@@ -384,36 +463,50 @@ const TradeCard = () => {
                 ) : null}
               </Col>
 
-              <Row>
-                <div className="input-group mb-3">
-                  <Label htmlFor="amount" className="form-label">
-                    Amount <span className="text-danger">*</span>
-                  </Label>
-                  <div className="input-group mb-3">
-                    <label className="input-group-text">Price</label>
-                    <Input
-                      name="amount"
-                      type="text"
-                      placeholder="Enter Amount"
-                      onChange={validation.handleChange}
-                      onBlur={validation.handleBlur}
-                      value={validation.values.amount || ""}
-                      invalid={
-                        validation.touched.amount && validation.errors.amount
-                          ? true
-                          : false
-                      }
-                    />
-                    <label className="input-group-text">$</label>
-                  </div>
+              <Col className="mb-3 mt-3">
+                <Label htmlFor="amount" className="form-label">
+                  Amount <span className="text-danger">*</span>
+                </Label>
 
-                  {validation.touched.amount && validation.errors.amount ? (
-                    <FormFeedback type="invalid">
-                      {validation.errors.amount}
-                    </FormFeedback>
-                  ) : null}
+                <div className="d-flex flex-column gap-2">
+                  <Input
+                    name="amount"
+                    type="text"
+                    placeholder="$0.00"
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.amount || ""}
+                    invalid={
+                      validation.touched.amount && validation.errors.amount
+                        ? true
+                        : false
+                    }
+                  />
+                  <div className="align-items-center gap-2 d-flex fs-12">
+                    {units.map((ut) => {
+                      return (
+                        <span
+                          style={{ cursor: "default" }}
+                          className="bg-light rounded-1 px-4 py-1"
+                          onClick={() =>
+                            validation.setFieldValue("amount", ut.amount)
+                          }
+                          key={ut.id}
+                        >
+                          {ut.label}
+                        </span>
+                      );
+                    })}
+                  </div>
                 </div>
-              </Row>
+
+                {validation.touched.amount && validation.errors.amount ? (
+                  <FormFeedback type="invalid">
+                    {validation.errors.amount}
+                  </FormFeedback>
+                ) : null}
+              </Col>
+
               <Row style={{ display: tradeType === "limit" ? "flex" : "none" }}>
                 <div className="input-group mb-3">
                   <label className="input-group-text">Entry Point</label>
@@ -519,31 +612,6 @@ const TradeCard = () => {
                   </div>
                 </Col>
               </Row>
-              <div className="mt-3 pt-2">
-                <div className="d-flex mb-2">
-                  <div className="flex-grow-1">
-                    <p className="mb-0">
-                      Transaction Fees
-                      <span className="text-muted ms-1 fs-13">(0.05%)</span>
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <h6 className="mb-0">$1.08</h6>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-3 pt-2">
-                <button
-                  onClick={() => validation.handleSubmit()}
-                  type="button"
-                  className={`btn btn-primary w-100`}
-                  disabled={mutation.isPending}
-                >
-                  {mutation.isPending
-                    ? `Wait...`
-                    : `Buy ${form?.selectedAsset?.name || "Coin"}`}
-                </button>
-              </div>
             </div>
           </TabPane>
 
@@ -618,45 +686,68 @@ const TradeCard = () => {
                   />
                 </div>
               </div>
-              <div className="mt-3 pt-2">
-                <div className="d-flex mb-2">
-                  <div className="flex-grow-1">
-                    <p className="mb-0">
-                      Transaction Fees
-                      <span className="text-muted ms-1 fs-11">(0.05%)</span>
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <h6 className="mb-0">$1.08</h6>
-                  </div>
-                </div>
-                <div className="d-flex mb-2">
-                  <div className="flex-grow-1">
-                    <p className="mb-0">
-                      Minimum Received
-                      <span className="text-muted ms-1 fs-11">(2%)</span>
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <h6 className="mb-0">$7.85</h6>
-                  </div>
-                </div>
-                <div className="d-flex">
-                  <div className="flex-grow-1">
-                    <p className="mb-0">Estimated Rate</p>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <h6 className="mb-0">1 BTC ~ $34572.00</h6>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-3 pt-2">
-                <button type="button" className="btn btn-danger w-100">
-                  Sell Coin
-                </button>
-              </div>
             </div>
           </TabPane>
+
+          <div className="mt-3 p-3">
+            <div className="d-flex mb-2">
+              <div className="flex-grow-1">
+                <p className="mb-0">Quantity</p>
+              </div>
+              <div className="flex-shrink-0">
+                <h6 className="mb-0">{parseFloat(qty).toFixed(4)} shares</h6>
+              </div>
+            </div>
+            <div className="d-flex mb-2">
+              <div className="flex-grow-1">
+                <p className="mb-0">Cost per share</p>
+              </div>
+              <div className="flex-shrink-0">
+                <h6 className="mb-0">
+                  {selectedAsset?.priceData?.current
+                    ? formatter.format(selectedAsset?.priceData?.current)
+                    : numeral(0).format("$0,0.00")}
+                </h6>
+              </div>
+            </div>
+            <div className="d-flex mb-2">
+              <div className="flex-grow-1">
+                <p className="mb-0">
+                  Transaction Fees
+                  <span className="text-muted ms-1 fs-11">(0.05%)</span>
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <h6 className="mb-0">$1.08</h6>
+              </div>
+            </div>
+            <div className="d-flex">
+              <div className="flex-grow-1">
+                <p className="mb-0">Total</p>
+              </div>
+              <div className="flex-shrink-0">
+                <h6 className="mb-0">
+                  {numeral(validation.values.amount).format("$0, 0.00") ||
+                    parseFloat(0).toFixed(2)}
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div className="p-3">
+            <button
+              onClick={() => validation.handleSubmit()}
+              type="button"
+              className={`btn w-100 ${
+                activeTab === "buy" ? "btn-success" : "btn-danger"
+              }`}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending && (
+                <Spinner className="mr-1" size={"sm"}></Spinner>
+              )}
+              {activeTab === "buy" ? `Place Buy Order` : `Place Sell Order`}
+            </button>
+          </div>
         </TabContent>
       </div>
       {error && (

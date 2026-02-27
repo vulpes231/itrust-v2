@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import Watchlist from "./Watchlist";
@@ -42,6 +42,12 @@ const Portfolio = () => {
     setActiveWallet(selectedWallet);
   };
 
+  useEffect(() => {
+    if (wallets && wallets.length > 0) {
+      setActiveWallet(wallets[0]);
+    }
+  }, [wallets]);
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -59,7 +65,7 @@ const Portfolio = () => {
                 dataColors='["--vz-info"]'
                 activeWallet={activeWallet}
               />
-              <Watchlist />
+
               <MarketStatus />
             </Col>
             <Col xxl={3}>

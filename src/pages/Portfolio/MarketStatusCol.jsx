@@ -24,7 +24,9 @@ const Date = (cell) => {
   );
 };
 const Quantity = (cell) => {
-  return <React.Fragment>{cell.getValue()}</React.Fragment>;
+  return (
+    <React.Fragment>{parseFloat(cell.getValue()).toFixed(4)}</React.Fragment>
+  );
 };
 const OrderType = (cell) => {
   return (
@@ -47,7 +49,22 @@ const CurrentValue = (cell) => {
 };
 
 const Returns = (cell) => {
-  return <React.Fragment>{formatCurrency(cell.getValue())}</React.Fragment>;
+  const today = cell.row.original.performance.todayReturn;
+  const todayPercent = cell.row.original.performance.todayReturnPercent;
+  return (
+    <React.Fragment>
+      <div className="d-flex flex-column gap-1">
+        <span>{formatCurrency(today)}</span>
+        <span
+          className={`fs-12 ${
+            todayPercent < 0 ? "text-danger" : "text-success"
+          }`}
+        >
+          {parseFloat(todayPercent).toFixed(2)}%
+        </span>
+      </div>
+    </React.Fragment>
+  );
 };
 
 export { Quantity, AvgPrice, CurrentValue, Returns, OrderType, Date };

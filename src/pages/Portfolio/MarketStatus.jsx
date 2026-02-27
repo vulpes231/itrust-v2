@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { Card, CardBody, CardHeader } from "reactstrap";
+import { Card, CardBody, CardHeader, Input } from "reactstrap";
 import TableContainer from "../../components/Common/TableContainer";
 import { marketStatus } from "../../common/data";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ import {
 } from "./MarketStatusCol";
 import { getUserTrades } from "../../services/user/trade";
 import { formatCurrency, getAccessToken } from "../../constants";
+import numeral from "numeral";
 
 const MarketStatus = () => {
   const queryData = { limit: 6 };
@@ -58,7 +59,7 @@ const MarketStatus = () => {
       //   },
       // },
       {
-        header: "Name",
+        header: "Asset",
         accessorKey: "coinName",
         enableColumnFilter: false,
         cell: (cell) => (
@@ -77,14 +78,14 @@ const MarketStatus = () => {
           </div>
         ),
       },
-      {
-        header: "Type",
-        accessorKey: "orderType",
-        enableColumnFilter: false,
-        cell: (cell) => {
-          return <OrderType {...cell} />;
-        },
-      },
+      // {
+      //   header: "Type",
+      //   accessorKey: "orderType",
+      //   enableColumnFilter: false,
+      //   cell: (cell) => {
+      //     return <OrderType {...cell} />;
+      //   },
+      // },
       {
         header: "Quantity",
         accessorKey: "quantity",
@@ -110,27 +111,33 @@ const MarketStatus = () => {
         },
       },
       {
-        header: "Price",
-        accessorKey: "execution.price",
+        header: "24h P&L",
+        accessorKey: "performance.todayReturn",
         enableColumnFilter: false,
         cell: (cell) => {
           return <Returns {...cell} />;
         },
       },
       {
-        header: "Returns %",
+        header: "P&L",
         accessorKey: "percentage",
         enableColumnFilter: false,
-        cell: (cell) => (
-          <h6
-            className={
-              "text-" + cell.row.original.percentageClass + " fs-13 mb-0"
-            }
-          >
-            <i className={cell.row.original.icon + " align-middle me-1"}></i>
-            {parseFloat(cell.getValue()).toFixed(2)}%
-          </h6>
-        ),
+        cell: (cell) => {
+          const total = cell.row.original.performance.totalReturn;
+          const totalPercent = cell.row.original.performance.totalReturnPercent;
+          return (
+            <div className="d-flex flex-column gap-1">
+              <span>{numeral(total).format("$0,0.00")}</span>
+              <span
+                className={`fs-12 ${
+                  totalPercent < 0 ? "text-danger" : "text-success"
+                }`}
+              >
+                {parseFloat(totalPercent).toFixed(2)}%
+              </span>
+            </div>
+          );
+        },
       },
       {
         header: "Status",
@@ -162,16 +169,14 @@ const MarketStatus = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="border-bottom-dashed d-flex align-items-center">
-          <h4 className="card-title mb-0 flex-grow-1">Market Status</h4>
+          <h4 className="card-title mb-0 flex-grow-1">Portfolio Holdings</h4>
           <div className="flex-shrink-0">
-            <div className="btn-group" role="group" aria-label="Basic example">
-              <button type="button" className="btn btn-primary btn-sm">
-                Today
-              </button>
-              <button type="button" className="btn btn-outline-primary btn-sm">
-                Overall
-              </button>
-            </div>
+            <Input
+              type="select"
+              className="bg-secondary-subtle border-0 text-secondary outline-none"
+            >
+              <option value="">All</option>
+            </Input>
           </div>
         </CardHeader>
         <CardBody>
