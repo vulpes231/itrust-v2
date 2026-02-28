@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "reactstrap";
 
-import Watchlist from "./Watchlist";
 import PortfolioStatistics from "./PortfolioStatistics";
 import MarketStatus from "./MarketStatus";
-import Widgets from "./Widgets";
-import RecentTransaction from "./RecentTransaction";
+
 import BreadCrumb from "../../Components/Common/BreadCrumb";
-import TopPerformers from "../DashboardCrypto/TopPerformers";
+
 import VerifyAccountNotify from "../VerifyAccountNotify";
 import BalanceCard from "./BalanceCard";
 import { getAccessToken } from "../../constants";
@@ -16,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import TradeCard from "./TradeCard";
 import AssetAllocation from "./AssetAllocation";
 import AssetGraph from "./AssetGraph";
-import RecentOrders from "./RecentOrders";
+import RecentOrders from "../DashboardCrypto/RecentOrders";
 
 const Portfolio = () => {
   document.title = "Portfolio - Itrust Investments";

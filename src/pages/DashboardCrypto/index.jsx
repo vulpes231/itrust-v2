@@ -11,6 +11,7 @@ import Holdings from "./Holdings";
 import RecentOrders from "./RecentOrders";
 import { useQuery } from "@tanstack/react-query";
 import { getWalletAnalytics } from "../../services/user/wallet";
+import AssetGraph from "../Portfolio/AssetGraph";
 
 const DashboardCrypto = () => {
   document.title = "Dashboard - Itrust Investments";
@@ -38,6 +39,7 @@ const DashboardCrypto = () => {
             <Col md={3}>
               <MyPortfolio />
               <Holdings />
+              <AssetGraph />
               <RecentActivity />
               <RecentOrders />
             </Col>
