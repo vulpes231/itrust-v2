@@ -1,35 +1,27 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardBody, CardHeader, Input } from "reactstrap";
 import TableContainer from "../../components/Common/TableContainer";
-import { marketStatus } from "../../common/data";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import {
-  Quantity,
-  AvgPrice,
-  CurrentValue,
-  Returns,
-  OrderType,
-  Date,
-} from "./MarketStatusCol";
-import { getUserTrades } from "../../services/user/trade";
-import { formatCurrency, getAccessToken } from "../../constants";
+import { Quantity, AvgPrice, CurrentValue, Returns } from "./MarketStatusCol";
+import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
-const MarketStatus = () => {
-  const queryData = { limit: 6 };
-  const token = getAccessToken();
+const MarketStatus = ({ activeWallet, trades }) => {
+  const [currentAccount, setCurrentAccount] = useState("all");
 
-  const { data: trades, isLoading: getUserTradeLoading } = useQuery({
-    queryFn: getUserTrades,
-    queryKey: ["userTrades"],
-    enabled: !!token,
-  });
+  const handleAccountChange = (e) => {
+    setCurrentAccount(e.target.value);
+  };
 
   const transformedData = useMemo(() => {
     if (!trades) return [];
 
-    return trades.map((trade) => ({
+    const filteredTrades =
+      currentAccount === "all"
+        ? trades
+        : trades.filter((trd) => trd.wallet.name === currentAccount);
+
+    return filteredTrades.map((trade) => ({
       ...trade,
       coinName: trade.asset?.name || "Unknown",
       img: trade.asset?.img || "/default-coin.png",
@@ -46,18 +38,10 @@ const MarketStatus = () => {
           : "ri-arrow-down-line",
       status: trade.status || "open",
     }));
-  }, [trades]);
+  }, [trades, currentAccount]);
 
   const columns = useMemo(
     () => [
-      // {
-      //   header: "Date",
-      //   accessorKey: "createdAt",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => {
-      //     return <Date {...cell} />;
-      //   },
-      // },
       {
         header: "Asset",
         accessorKey: "coinName",
@@ -78,14 +62,6 @@ const MarketStatus = () => {
           </div>
         ),
       },
-      // {
-      //   header: "Type",
-      //   accessorKey: "orderType",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => {
-      //     return <OrderType {...cell} />;
-      //   },
-      // },
       {
         header: "Quantity",
         accessorKey: "quantity",
@@ -161,9 +137,9 @@ const MarketStatus = () => {
     []
   );
 
-  // useEffect(() => {
-  //   if (trades) console.log(trades);
-  // }, [trades]);
+  useEffect(() => {
+    if (activeWallet) setCurrentAccount(activeWallet.name);
+  }, [activeWallet]);
 
   return (
     <React.Fragment>
@@ -174,8 +150,13 @@ const MarketStatus = () => {
             <Input
               type="select"
               className="bg-secondary-subtle border-0 text-secondary outline-none"
+              onChange={handleAccountChange}
+              value={currentAccount}
             >
-              <option value="">All</option>
+              <option value="all">All</option>
+              <option value="cash">Cash</option>
+              <option value="brokerage">Brokerage</option>
+              <option value="automated investing">Automated Investing</option>
             </Input>
           </div>
         </CardHeader>
@@ -190,7 +171,7 @@ const MarketStatus = () => {
             divClass="table-responsive table-card mb-3"
             tableClass="align-middle table-nowrap"
             theadClass="table-light text-muted"
-            isLoading={getUserTradeLoading}
+            // isLoading={getUserTradeLoading}
           />
         </CardBody>
       </Card>

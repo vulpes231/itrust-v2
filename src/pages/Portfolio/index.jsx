@@ -72,7 +72,7 @@ const Portfolio = () => {
                 activeWallet={activeWallet}
               />
 
-              <MarketStatus />
+              <MarketStatus activeWallet={activeWallet} trades={trades} />
             </Col>
             <Col xxl={3}>
               <TradeCard />

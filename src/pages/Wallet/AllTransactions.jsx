@@ -5,6 +5,7 @@ import {
   CardBody,
   CardHeader,
   Col,
+  Input,
   Modal,
   ModalBody,
   ModalHeader,
@@ -36,28 +37,28 @@ const AllTransactions = () => {
     enabled: !!token,
   });
 
-  const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [action, setAction] = useState("");
+  const [filter, setFilter] = useState("all");
 
-  useEffect(() => {
-    if (transactions) {
-      setFilteredTransactions(transactions);
-    }
-  }, [transactions]);
-
-  const category = (e) => {
-    if (e === "All") {
-      setFilteredTransactions(transactions);
-    } else {
-      const filter = transactions.filter((item) => item.method?.mode === e);
-      setFilteredTransactions(filter);
-    }
+  const handleFilter = (e) => {
+    setFilter(e.target.value);
   };
 
   const transformedData = useMemo(() => {
-    if (!filteredTransactions) return [];
+    if (!transactions) return [];
 
-    return filteredTransactions.map((transaction, index) => {
+    const filteredTrnxs =
+      filter === "all"
+        ? transactions
+        : filter === "deposit" ||
+          filter === "withdrawal" ||
+          filter === "transfer"
+        ? transactions.filter((trx) => trx.type === filter)
+        : filter === "completed" || filter === "pending" || filter === "failed"
+        ? transactions.filter((trx) => trx.status === filter)
+        : transactions.filter((trx) => trx.account === filter);
+
+    return filteredTrnxs.map((transaction, index) => {
       let icon, iconClass, amountColor;
 
       switch (transaction.type) {
@@ -105,7 +106,7 @@ const AllTransactions = () => {
         image: getCurrencyImage(transaction.method?.mode),
       };
     });
-  }, [filteredTransactions]);
+  }, [transactions, filter]);
 
   function getCurrencyImage(currency) {
     const images = {
@@ -121,11 +122,6 @@ const AllTransactions = () => {
     };
     return images[currency?.toLowerCase()] || "/images/currencies/default.png";
   }
-
-  const selectAction = (type) => {
-    setAction(type);
-    // console.log(`Opening ${type} modal`);
-  };
 
   const columns = useMemo(
     () => [
@@ -236,67 +232,13 @@ const AllTransactions = () => {
     []
   );
 
-  // useEffect(() => {
-  //   if (transactions) console.log(transactions);
-  // }, [transactions]);
-
   return (
     <React.Fragment>
-      <Row className="align-items-center mb-4 g-3">
-        <Col sm={2}>
-          <div className="d-flex align-items-center gap-2">
-            <span className="text-muted flex-shrink-0">Sort by: </span>
-            <select
-              className="form-control mb-0"
-              name="choices-single-default"
-              id="choices-single-default"
-              onChange={(e) => category(e.target.value)}
-            >
-              <option value="All">All</option>
-              <option value="cash">Cash</option>
-              <option value="auto">Automated Investing</option>
-              <option value="brokerage">Brokerage</option>
-              <option value="eth">ETH</option>
-              <option value="usdt">USDT</option>
-              <option value="btc">BTC</option>
-            </select>
-          </div>
-        </Col>
-        <div className="col-sm-auto ms-auto">
-          <div className="d-flex gap-2">
-            {/* <button
-              type="button"
-              // data-bs-toggle="modal"
-              className="btn btn-info"
-              onClick={() => selectAction("deposit")}
-            >
-              Deposit
-            </button>
-            <button
-              type="button"
-              // data-bs-toggle="modal"
-              className="btn btn-danger"
-              onClick={() => selectAction("withdraw")}
-            >
-              Withdraw
-            </button>
-            <button
-              type="button"
-              // data-bs-toggle="modal"
-              className="btn btn-success"
-              onClick={() => selectAction("transfer")}
-            >
-              Transfer
-            </button> */}
-          </div>
-        </div>
-      </Row>
-
       <Card>
-        <CardHeader>
+        <CardHeader className="d-flex flex-column gap-2">
           <Row className="align-items-center g-3">
             <Col md={3}>
-              <h5 className="card-title mb-0">All Transactions</h5>
+              <h5 className="card-title mb-0">Recent Cash Transactions</h5>
             </Col>
             <div className="col-md-auto ms-auto">
               <div className="d-flex gap-2">
@@ -314,6 +256,73 @@ const AllTransactions = () => {
                 </button>
               </div>
             </div>
+          </Row>
+          <Row className="justify-content-between d-flex">
+            <Col className="d-flex gap-2">
+              <div className="d-flex align-items-center gap-1">
+                <span className="text-muted flex-shrink-0">Sort by: </span>
+                <Input type="select" onChange={handleFilter}>
+                  <option value="">Select Account</option>
+                  <option value="all">All</option>
+                  <option value="cash">Cash</option>
+                  <option value="automated investing">
+                    Automated Investing
+                  </option>
+                  <option value="brokerage">Brokerage</option>
+                </Input>
+              </div>
+              <div>
+                <Input type="select" onChange={handleFilter}>
+                  <option value="">Select Status</option>
+                  <option value="all">All Status</option>
+                  <option value="completed">Processed</option>
+                  <option value="pending">Pending</option>
+                  <option value="failed">Failed</option>
+                </Input>
+              </div>
+            </Col>
+            <Col className="d-flex align-items-center justify-content-end gap-2">
+              <button
+                onClick={() => setFilter("deposit")}
+                className={`btn text-capitalize ${
+                  filter === "deposit"
+                    ? "btn-secondary"
+                    : "bg-secondary-subtle text-secondary"
+                }`}
+              >
+                deposit
+              </button>
+              <button
+                onClick={() => setFilter("withdrawal")}
+                className={`btn text-capitalize ${
+                  filter === "withdrawal"
+                    ? "btn-secondary"
+                    : "bg-secondary-subtle text-secondary"
+                }`}
+              >
+                withdrawals
+              </button>
+              <button
+                onClick={() => setFilter("transfer")}
+                className={`btn text-capitalize ${
+                  filter === "transfer"
+                    ? "btn-secondary"
+                    : "bg-secondary-subtle text-secondary"
+                }`}
+              >
+                transfers
+              </button>
+              <button
+                onClick={() => setFilter("all")}
+                className={`btn text-capitalize ${
+                  filter === "all"
+                    ? "btn-secondary"
+                    : "bg-secondary-subtle text-secondary"
+                }`}
+              >
+                transactions
+              </button>
+            </Col>
           </Row>
         </CardHeader>
         <CardBody>

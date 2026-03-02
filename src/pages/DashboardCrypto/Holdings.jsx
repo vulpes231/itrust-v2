@@ -8,7 +8,7 @@ const Holdings = ({ trades, analytics }) => {
 
   useEffect(() => {
     if (analytics) {
-      console.log(analytics);
+      // console.log(analytics);
       setTotalHoldings(analytics.totalInvested);
     }
   }, [analytics]);
