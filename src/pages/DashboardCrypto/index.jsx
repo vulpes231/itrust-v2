@@ -12,14 +12,27 @@ import RecentOrders from "./RecentOrders";
 import { useQuery } from "@tanstack/react-query";
 import { getWalletAnalytics } from "../../services/user/wallet";
 import AssetGraph from "../Portfolio/AssetGraph";
+import { getUserTrades } from "../../services/user/trade";
+import { getAccessToken } from "../../constants";
 
 const DashboardCrypto = () => {
   document.title = "Dashboard - Itrust Investments";
 
+  const tk = getAccessToken();
+
   const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
     queryFn: getWalletAnalytics,
     queryKey: ["walletAnalytics"],
+    enabled: !!tk,
   });
+
+  const queryData = { limit: 7 };
+  const { data: trades } = useQuery({
+    queryKey: ["recentTrades"],
+    queryFn: () => getUserTrades(),
+    enabled: !!tk,
+  });
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -38,10 +51,10 @@ const DashboardCrypto = () => {
             </Col>
             <Col md={3}>
               <MyPortfolio />
-              <Holdings />
-              <AssetGraph />
+              <Holdings trades={trades} analytics={walletAnalytics} />
+              <AssetGraph count={trades?.length} />
               <RecentActivity />
-              <RecentOrders />
+              <RecentOrders trades={trades} />
             </Col>
           </Row>
         </Container>

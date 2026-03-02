@@ -1,22 +1,13 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
-import FeatherIcon from "feather-icons-react";
-import { useQuery } from "@tanstack/react-query";
 import { capitalize } from "lodash";
 import { formatCurrency } from "../../constants";
 import { format } from "date-fns";
 import { GoArrowRight } from "react-icons/go";
 import numeral from "numeral";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
-import { getUserTrades } from "../../services/user/trade";
 
-const RecentOrders = () => {
-  const queryData = { limit: 7 };
-  const { data: trades } = useQuery({
-    queryKey: ["recentTrades"],
-    queryFn: () => getUserTrades(),
-  });
-
+const RecentOrders = ({ trades }) => {
   const filteredTrades = trades && trades.length && trades.slice(0, 6);
 
   // console.log(filteredTrades);

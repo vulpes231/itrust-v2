@@ -5,13 +5,14 @@ import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
 const FootStats = ({ activeWallet }) => {
+  // console.log(activeWallet);
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <Row className="px-3">
         <Col
           style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
-          md={3}
+          md={activeWallet && activeWallet.name === "brokerage" ? 4 : 3}
         >
           <div className="d-flex flex-column">
             <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
@@ -24,7 +25,7 @@ const FootStats = ({ activeWallet }) => {
           </div>
         </Col>
         <Col
-          md={3}
+          md={activeWallet && activeWallet.name === "brokerage" ? 4 : 3}
           style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
         >
@@ -44,7 +45,7 @@ const FootStats = ({ activeWallet }) => {
           </div>
         </Col>
         <Col
-          md={3}
+          md={activeWallet && activeWallet.name === "brokerage" ? 4 : 3}
           style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
         >
@@ -64,7 +65,7 @@ const FootStats = ({ activeWallet }) => {
           </div>
         </Col>
         <Col
-          md={3}
+          md={activeWallet && activeWallet.name === "brokerage" ? 4 : 3}
           style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
         >
@@ -83,6 +84,41 @@ const FootStats = ({ activeWallet }) => {
             </span>
           </div>
         </Col>
+
+        {activeWallet && activeWallet.name === "brokerage" && (
+          <React.Fragment>
+            <Col
+              style={{ border: "solid 1px #dedede" }}
+              className="border-1 border-dotted p-2"
+              md={4}
+            >
+              <div className="d-flex flex-column">
+                <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
+                <span
+                  style={{ color: "#878A99" }}
+                  className="text-capitalize fs-16 fw-light"
+                >
+                  buy power
+                </span>
+              </div>
+            </Col>
+            <Col
+              md={4}
+              style={{ border: "solid 1px #dedede" }}
+              className="border-1 border-dotted p-2"
+            >
+              <div className="d-flex flex-column">
+                <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
+                <span
+                  style={{ color: "#878A99" }}
+                  className="text-capitalize fs-16 fw-light"
+                >
+                  margin debt
+                </span>
+              </div>
+            </Col>
+          </React.Fragment>
+        )}
       </Row>
     </Col>
   );

@@ -334,7 +334,7 @@ const PortfolioStatistics = ({ dataColors, activeWallet }) => {
         <CardHeader>
           <div className="d-flex align-items-center">
             <div className="flex-grow-1">
-              <h5 className="card-title mb-0">My Portfolio Statistics</h5>
+              <h5 className="card-title mb-0">Statistics</h5>
             </div>
             <div className="toolbar d-flex align-items-start justify-content-center flex-wrap gap-2">
               <button

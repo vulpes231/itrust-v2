@@ -2,7 +2,7 @@
 
 import { capitalize } from "lodash";
 import React, { useEffect, useState } from "react";
-import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
+import { Col, FormFeedback, Input, Label, Row, Spinner } from "reactstrap";
 import { getUserWallets } from "../../services/user/wallet";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { transferFund } from "../../services/user/transactions";
@@ -355,8 +355,10 @@ const Crypto = () => {
               validation.submitForm();
             }}
             style={{ width: "100%" }}
-            className="btn btn-primary"
+            className="btn btn-primary d-flex align-items-center gap-1 justify-content-center"
+            disabled={mutation.isPending}
           >
+            {mutation.isPending && <Spinner size={"sm"}></Spinner>}
             Confirm Transfer
           </button>
           <small
