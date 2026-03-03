@@ -155,28 +155,36 @@ const Market = () => {
         <CardHeader className="border-bottom-dashed">
           <Row className="align-items-center">
             <Col xs={3}>
-              <h5 className="card-title mb-0">Markets</h5>
+              <h4 className="card-title mb-0 flex-grow-1">Asset</h4>
             </Col>
             <div className="col-auto ms-auto">
-              <div className="d-flex gap-2">
-                <button className="btn btn-success">
-                  <i className="ri-equalizer-line align-bottom me-1"></i>{" "}
-                  Filters
+              <div className="flex-shrink-0 d-flex align-items-center gap-2 ">
+                <span style={{ color: "#878A99" }}>Filter by:</span>
+                <select
+                  className="btn btn-soft-primary btn-sm text-capitalize"
+                  name=""
+                >
+                  <option value="">Crypto</option>
+                  <option value="">Stock</option>
+                  <option value="">ETF</option>
+                </select>
+                <button className="btn btn-soft-primary btn-sm text-capitalize">
+                  watchlist
+                </button>
+                <button className="btn btn-soft-primary btn-sm text-capitalize">
+                  top gainers
+                </button>
+                <button className="btn btn-soft-primary btn-sm text-capitalize">
+                  top losers
+                </button>
+                <button className="btn btn-soft-primary btn-sm text-capitalize">
+                  market cap
                 </button>
               </div>
             </div>
           </Row>
         </CardHeader>
-        <CardBody className="p-0 border-bottom border-bottom-dashed">
-          <div className="search-box">
-            <input
-              type="text"
-              className="form-control search border-0 py-3"
-              placeholder="Search to currency..."
-            />
-            <i className="ri-search-line search-icon"></i>
-          </div>
-        </CardBody>
+
         <CardBody>
           <TableContainer
             columns={columns}

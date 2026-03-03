@@ -21,6 +21,7 @@ import {
   OpenAccount,
   Investing,
   Profile,
+  Histories,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -49,6 +50,7 @@ const authProtectedRoutes = [
   { path: "/transfer", component: <Transfer /> },
   { path: "/open-account", component: <OpenAccount /> },
   { path: "/automated-investing", component: <Investing /> },
+  { path: "/history", component: <Histories /> },
 ];
 
 const publicRoutes = [

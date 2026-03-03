@@ -1,7 +1,6 @@
 import React from "react";
 import CountUp from "react-countup";
 import { Card, CardBody, Col } from "reactstrap";
-// import { buysellWidgets } from "../../common/data";
 import { useQuery } from "@tanstack/react-query";
 import { getTradeAnalytics } from "../../services/user/trade";
 import { formatCurrency } from "../../constants";
@@ -12,10 +11,10 @@ const Widgets = () => {
     queryFn: getTradeAnalytics,
   });
 
-  const buysellWidgets = tradeAnalytics && [
+  const marketWidgets = tradeAnalytics && [
     {
       id: 1,
-      title: "Total Buy",
+      title: "Total Investments",
       counter: tradeAnalytics.totalBuys.toFixed(2).split(".")[0],
       decimal: tradeAnalytics.totalBuys.toFixed(2).split(".")[1],
       icon: "ri-shopping-bag-line",
@@ -23,7 +22,7 @@ const Widgets = () => {
     },
     {
       id: 2,
-      title: "Total Sell",
+      title: "Total P&L",
       counter: tradeAnalytics.totalSells.toFixed(2).split(".")[0] || 0,
       decimal: tradeAnalytics.totalSells.toFixed(2).split(".")[1],
       icon: "ri-funds-line",
@@ -31,7 +30,7 @@ const Widgets = () => {
     },
     {
       id: 3,
-      title: "Today's Buy",
+      title: "Cost Basis(Amount Invested)",
       counter: tradeAnalytics.totalBuysToday.toFixed(2).split(".")[0] || 0,
       decimal: tradeAnalytics.totalBuysToday.toFixed(2).split(".")[1],
       icon: "ri-arrow-left-down-fill",
@@ -39,7 +38,7 @@ const Widgets = () => {
     },
     {
       id: 4,
-      title: "Today's Sell",
+      title: "Available to Invest",
       counter: tradeAnalytics.totalSellsToday.toFixed(2).split(".")[0] || 0,
       decimal: tradeAnalytics.totalSellsToday.toFixed(2).split(".")[1],
       icon: "ri-arrow-right-up-fill",
@@ -50,9 +49,9 @@ const Widgets = () => {
   // console.log(tradeAnalytics);
   return (
     <React.Fragment>
-      {buysellWidgets &&
-        buysellWidgets.length > 0 &&
-        buysellWidgets.map((item, key) => (
+      {marketWidgets &&
+        marketWidgets.length > 0 &&
+        marketWidgets.map((item, key) => (
           <Col xl={3} sm={6} key={key}>
             <Card className="card-animate">
               <CardBody>

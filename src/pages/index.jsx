@@ -18,6 +18,7 @@ import Wallet from "./Wallet";
 import Withdraw from "./Withdraw";
 import Investing from "./Investing";
 import Profile from "./Profile";
+import Histories from "./Histories";
 
 export {
   Contact,
@@ -40,4 +41,5 @@ export {
   OpenAccount,
   Investing,
   Profile,
+  Histories,
 };

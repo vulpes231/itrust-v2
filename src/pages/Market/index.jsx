@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row } from "reactstrap";
 import BreadCrumb from "../../components/Common/BreadCrumb";
 import MarketGraph from "./MarketGraph";
@@ -6,9 +6,17 @@ import Widgets from "./Widgets";
 import BuySellCoin from "./BuySellCoin";
 import Market from "./Market";
 import VerifyAccountNotify from "../VerifyAccountNotify";
+import AssetManager from "./AssetManager";
+import OrderHistory from "./OrderHistory";
 
 const BuySell = () => {
   document.title = "Buy & Sell | Itrust Investments";
+
+  const [activeMarketTab, setActiveMarketTab] = useState("asset");
+
+  const handleTabChange = (tabName) => {
+    setActiveMarketTab(tabName);
+  };
 
   return (
     <React.Fragment>
@@ -19,11 +27,18 @@ const BuySell = () => {
           <Row>
             <Widgets />
           </Row>
-          <Row>
-            <MarketGraph dataColors='["--vz-success", "--vz-danger"]' />
-            <BuySellCoin />
+          <Row className="px-3">
+            <AssetManager
+              activeTab={activeMarketTab}
+              handleChange={handleTabChange}
+            />
           </Row>
-          <Market />
+          <Row className="px-3">
+            <Market />
+          </Row>
+          <Row className="px-3">
+            <OrderHistory />
+          </Row>
         </Container>
       </div>
     </React.Fragment>
