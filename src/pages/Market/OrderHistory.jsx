@@ -45,7 +45,7 @@ const OrderHistory = () => {
 
     return trades.map((trade) => ({
       ...trade,
-      date: format(trade?.createdAt, "MM/dd/yyyy"),
+      date: format(trade?.createdAt, "MMM dd, yyyy"),
       type: trade?.orderType,
       name:
         `${
@@ -175,9 +175,9 @@ const OrderHistory = () => {
     []
   );
 
-  useEffect(() => {
-    if (trades) console.log(trades);
-  }, [trades]);
+  // useEffect(() => {
+  //   if (trades) console.log(trades);
+  // }, [trades]);
 
   const [activeOrderTab, setActiveOrderTab] = useState("trades");
 

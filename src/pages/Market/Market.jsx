@@ -10,6 +10,9 @@ import {
 } from "../../constants";
 import { useQuery } from "@tanstack/react-query";
 import { getAssets } from "../../services/asset/asset";
+import { AiOutlineStar } from "react-icons/ai";
+import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
+import { percent } from "feather-icons-react/build/icons.json";
 
 const Market = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,7 +46,7 @@ const Market = () => {
         `${
           asset?.name.length > 15
             ? `${asset?.name.slice(0, 15)}...`
-            : `${asset?.name} (${asset.symbol})`
+            : `${asset?.name} `
         }` || "Unknown",
       img: asset?.imageUrl || "/default-coin.png",
       price: formatCurrency(asset.priceData?.current) || 0,
@@ -64,6 +67,16 @@ const Market = () => {
   const columns = useMemo(
     () => [
       {
+        header: "Watchlist",
+        accessorKey: "watchlist",
+        enableColumnFilter: false,
+        cell: (cell) => (
+          <span style={{ color: "#FFC84B" }}>
+            <AiOutlineStar size={20} />
+          </span>
+        ),
+      },
+      {
         header: "Asset",
         accessorKey: "name",
         enableColumnFilter: false,
@@ -77,8 +90,9 @@ const Market = () => {
                 e.target.src = "/default-coin.png";
               }}
             />
-            <Link to="#" className="currency_name">
-              {cell.getValue()}
+            <Link to="#" className="currency_name d-flex flex-column ">
+              <span className="fw-medium"> {cell.getValue()}</span>
+              <span className="fs-13"> {cell.row.original.symbol}</span>
             </Link>
           </div>
         ),
@@ -89,14 +103,6 @@ const Market = () => {
         enableColumnFilter: false,
         cell: (cell) => {
           return <Price {...cell} />;
-        },
-      },
-      {
-        header: "Pairs",
-        accessorKey: "symbol",
-        enableColumnFilter: false,
-        cell: (cell) => {
-          return <Pairs {...cell} />;
         },
       },
       {
@@ -124,25 +130,30 @@ const Market = () => {
         },
       },
       {
-        header: "Volume %",
+        header: "24 P&L %",
         accessorKey: "percentChange",
         enableColumnFilter: false,
-        cell: (cell) => (
-          <h6
-            className={
-              "text-" + cell.row.original.percentageClass + " fs-13 mb-0"
-            }
-          >
-            <i className={cell.row.original.icon + " align-middle me-1"}></i>
-            {cell.getValue()}%
-          </h6>
-        ),
+        cell: (cell) => {
+          const percent = cell.row.original.percentChange;
+          return (
+            <h6
+              className={`d-flex gap-2 align-items-center ${
+                percent < 0 ? "text-danger" : "text-success"
+              }`}
+            >
+              <span>
+                {percent < 0 ? <FaArrowTrendDown /> : <FaArrowTrendUp />}
+              </span>
+              <span>{cell.getValue()}%</span>
+            </h6>
+          );
+        },
       },
       {
         header: "Action",
         cell: () => (
           <>
-            <button className="btn btn-sm btn-soft-info">Trade Now</button>
+            <button className="btn btn-sm btn-soft-secondary">Trade Now</button>
           </>
         ),
       },

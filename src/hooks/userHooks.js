@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAccessToken } from "../constants";
 import { getUserInfo } from "../services/user/user";
+import { useEffect, useState } from "react";
 
 const useProfile = () => {
   const token = getAccessToken();
@@ -24,4 +25,18 @@ const useProfile = () => {
   };
 };
 
-export { useProfile };
+const useDebounce = (value, delay = 500) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
+export { useProfile, useDebounce };
