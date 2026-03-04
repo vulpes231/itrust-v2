@@ -7,7 +7,7 @@ import VerifyAccountNotify from "../VerifyAccountNotify";
 import AssetManager from "./AssetManager";
 import OrderHistory from "./OrderHistory";
 import TradeSection from "./TradeSection";
-import { getUserWallets } from "../../services/user/wallet";
+import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
 import { useQuery } from "@tanstack/react-query";
 import { getAccessToken } from "../../constants";
 
@@ -30,6 +30,11 @@ const BuySell = () => {
     enabled: !!tk,
   });
 
+  const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
+    queryFn: getWalletAnalytics,
+    queryKey: ["walletAnalytics"],
+  });
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -37,7 +42,7 @@ const BuySell = () => {
           <BreadCrumb title="Market" pageTitle="Trade" />
           <VerifyAccountNotify />
           <Row>
-            <Widgets />
+            <Widgets analytics={walletAnalytics} />
           </Row>
           <Row className="px-3">
             <AssetManager

@@ -5,48 +5,48 @@ import { useQuery } from "@tanstack/react-query";
 import { getTradeAnalytics } from "../../services/user/trade";
 import { formatCurrency } from "../../constants";
 
-const Widgets = () => {
+const Widgets = ({ analytics }) => {
   const { data: tradeAnalytics, isLoading: tradeAnalyticsLoading } = useQuery({
     queryKey: ["tradeAnalytics"],
     queryFn: getTradeAnalytics,
   });
 
-  const marketWidgets = tradeAnalytics && [
+  const marketWidgets = analytics && [
     {
       id: 1,
       title: "Total Investments",
-      counter: tradeAnalytics.totalBuys.toFixed(2).split(".")[0],
-      decimal: tradeAnalytics.totalBuys.toFixed(2).split(".")[1],
+      counter: analytics.totalInvested.toFixed(2).split(".")[0],
+      decimal: analytics.totalInvested.toFixed(2).split(".")[1],
       icon: "ri-shopping-bag-line",
       iconClass: "danger",
     },
     {
       id: 2,
       title: "Total P&L",
-      counter: tradeAnalytics.totalSells.toFixed(2).split(".")[0] || 0,
-      decimal: tradeAnalytics.totalSells.toFixed(2).split(".")[1],
+      counter: analytics.totalProfit.toFixed(2).split(".")[0] || 0,
+      decimal: analytics.totalProfit.toFixed(2).split(".")[1],
       icon: "ri-funds-line",
       iconClass: "info",
     },
     {
       id: 3,
-      title: "Cost Basis(Amount Invested)",
-      counter: tradeAnalytics.totalBuysToday.toFixed(2).split(".")[0] || 0,
-      decimal: tradeAnalytics.totalBuysToday.toFixed(2).split(".")[1],
+      title: "Cost Basis (Amount Invested)",
+      counter: analytics.totalInvested.toFixed(2).split(".")[0] || 0,
+      decimal: analytics.totalInvested.toFixed(2).split(".")[1],
       icon: "ri-arrow-left-down-fill",
       iconClass: "warning",
     },
     {
       id: 4,
       title: "Available to Invest",
-      counter: tradeAnalytics.totalSellsToday.toFixed(2).split(".")[0] || 0,
-      decimal: tradeAnalytics.totalSellsToday.toFixed(2).split(".")[1],
+      counter: analytics.availableBalance.toFixed(2).split(".")[0] || 0,
+      decimal: analytics.availableBalance.toFixed(2).split(".")[1],
       icon: "ri-arrow-right-up-fill",
       iconClass: "success",
     },
   ];
 
-  // console.log(tradeAnalytics);
+  // console.log(analytics);
   return (
     <React.Fragment>
       {marketWidgets &&
