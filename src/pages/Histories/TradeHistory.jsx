@@ -160,8 +160,6 @@ const TradeHistory = ({ trades }) => {
     []
   );
 
-  const [activeOrderTab, setActiveOrderTab] = useState("trades");
-
   return (
     <React.Fragment>
       <Card className="mt-4">
