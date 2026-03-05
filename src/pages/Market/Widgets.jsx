@@ -1,16 +1,8 @@
 import React from "react";
 import CountUp from "react-countup";
 import { Card, CardBody, Col } from "reactstrap";
-import { useQuery } from "@tanstack/react-query";
-import { getTradeAnalytics } from "../../services/user/trade";
-import { formatCurrency } from "../../constants";
 
 const Widgets = ({ analytics }) => {
-  const { data: tradeAnalytics, isLoading: tradeAnalyticsLoading } = useQuery({
-    queryKey: ["tradeAnalytics"],
-    queryFn: getTradeAnalytics,
-  });
-
   const marketWidgets = analytics && [
     {
       id: 1,
