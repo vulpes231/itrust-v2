@@ -28,7 +28,7 @@ import Deposit from "../Deposit";
 import Withdraw from "../Withdraw";
 import Transfer from "../Transfer";
 
-const TransactionHistory = () => {
+const TransactionHistory = ({ filter }) => {
   const token = getAccessToken();
 
   const { data: transactions, isLoading: getTransactionLoading } = useQuery({
@@ -38,11 +38,6 @@ const TransactionHistory = () => {
   });
 
   const [action, setAction] = useState("");
-  const [filter, setFilter] = useState("all");
-
-  const handleFilter = (e) => {
-    setFilter(e.target.value);
-  };
 
   const transformedData = useMemo(() => {
     if (!transactions) return [];
@@ -148,33 +143,6 @@ const TransactionHistory = () => {
           </>
         ),
       },
-      // {
-      //   header: "Method",
-      //   accessorKey: "currency",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => (
-      //     <div className="d-flex align-items-center">
-      //       <img
-      //         src={getCurrencyImage(cell.getValue())}
-      //         alt={cell.getValue()}
-      //         className="avatar-xxs me-2"
-      //         onError={(e) => {
-      //           e.target.src = "/images/currencies/default.png";
-      //         }}
-      //       />
-      //       {cell.getValue().toUpperCase()}
-      //     </div>
-      //   ),
-      // },
-      // {
-      //   header: "From",
-      //   accessorKey: "from",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => {
-      //     return <FromCol {...cell} />;
-      //   },
-      // },
-
       {
         header: "Details",
         accessorKey: "details",
@@ -199,14 +167,6 @@ const TransactionHistory = () => {
           return <TransactionID {...cell} />;
         },
       },
-      // {
-      //   header: "Type",
-      //   accessorKey: "type",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => {
-      //     return <TypeCol {...cell} />;
-      //   },
-      // },
       {
         header: "Amount",
         accessorKey: "amount",

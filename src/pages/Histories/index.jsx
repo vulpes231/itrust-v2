@@ -9,6 +9,7 @@ import { getAccessToken } from "../../constants";
 import { getUserTrades } from "../../services/user/trade";
 import HistoryManager from "./HistoryManager";
 import TransactionHistory from "./TransactionHistory";
+import TradeHistory from "./TradeHistory";
 
 const Histories = () => {
   const token = getAccessToken();
@@ -49,7 +50,19 @@ const Histories = () => {
             activeHistoryTab={activeHistoryTab}
             setActiveHistoryTab={setActiveHistoryTab}
           />
-          {activeHistoryTab === "all" && <TransactionHistory />}
+          {activeHistoryTab === "all" && (
+            <TransactionHistory filter={activeHistoryTab} />
+          )}
+          {activeHistoryTab === "trade" && <TradeHistory trades={trades} />}
+          {activeHistoryTab === "deposit" && (
+            <TransactionHistory filter={activeHistoryTab} />
+          )}
+          {activeHistoryTab === "transfer" && (
+            <TransactionHistory filter={activeHistoryTab} />
+          )}
+          {activeHistoryTab === "withdrawal" && (
+            <TransactionHistory filter={activeHistoryTab} />
+          )}
         </Container>
       </div>
     </React.Fragment>
