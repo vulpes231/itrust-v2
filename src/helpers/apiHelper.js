@@ -17,7 +17,7 @@ axios.interceptors.response.use(
 
     switch (error.response?.status) {
       case 500:
-        message = error.response.data;
+        message = error.response.data.message;
         break;
       case 401:
         message = "Invalid credentials";
@@ -25,12 +25,12 @@ axios.interceptors.response.use(
         window.location.href = "/login";
         break;
       case 403:
-        message = error.response.data;
+        message = error.response.data?.message || "Forbidden";
         sessionStorage.clear();
         window.location.href = "/login";
         break;
       case 404:
-        message = error.response.data;
+        message = error.response.data?.message || "Not found";
         break;
       default:
         message = error.response?.data?.message || error.message || error;

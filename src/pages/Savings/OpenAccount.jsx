@@ -95,12 +95,6 @@ const OpenAccount = () => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (savingAccounts.length > 0) {
-      console.log(savingAccounts);
-    }
-  }, [savingAccounts]);
-
   return (
     <React.Fragment>
       <div className="page-content">

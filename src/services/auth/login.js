@@ -8,8 +8,9 @@ async function loginUser(formData) {
 
     return { user: response.data, token: response.token };
   } catch (error) {
-    const errMsg = error || error?.message || "Login failed!";
-    // console.log(errMsg);
+    const errMsg = error || error.message;
+
+    console.log(errMsg);
     throw new Error(errMsg);
   }
 }

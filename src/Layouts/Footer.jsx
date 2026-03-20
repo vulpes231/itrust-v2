@@ -8,12 +8,8 @@ const Footer = () => {
         <Container fluid>
           <Row>
             <Col sm={6}>
-              {new Date().getFullYear()} &copy; Itrust Investment.
-            </Col>
-            <Col sm={6}>
-              <div className="text-sm-end d-none d-sm-block">
-                Developed by Vulpescodes
-              </div>
+              {new Date().getFullYear()} &copy; Itrust Investment. All Rights
+              Reserved.
             </Col>
           </Row>
         </Container>

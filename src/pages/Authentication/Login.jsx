@@ -16,16 +16,11 @@ import {
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import withRouter from "../../components/Common/withRouter";
-
-// Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-import logoLight from "../../assets/images/logo-light.png";
-
 import { logo } from "../../assets";
 import { loginUser } from "../../services/auth/login";
+import withRouter from "../../Components/Common/withRouter";
 
 const Login = (props) => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -35,11 +30,8 @@ const Login = (props) => {
   const mutation = useMutation({
     mutationFn: loginUser,
     onError: (err) => {
-      console.log(err.message);
+      console.log(err);
       setError(err.message);
-    },
-    onSuccess: (user) => {
-      // console.log(user);
     },
   });
 
@@ -47,50 +39,47 @@ const Login = (props) => {
     enableReinitialize: true,
 
     initialValues: {
-      email: form.email || "newtrust@mbox.re" || "",
-      password: form.password || "12345" || "",
+      email: form.email || "",
+      password: form.password || "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      console.log(values);
       mutation.mutate(values);
     },
   });
 
-  const signIn = (type) => {};
-
-  //handleTwitterLoginResponse
-  const twitterResponse = (e) => {};
-
-  //for facebook and google authentication
-  const socialResponse = (type) => {
-    signIn(type);
-  };
-
   useEffect(() => {
-    if (mutation.isSuccess) {
-      // console.log(mutation.data);
-      sessionStorage.setItem("token", mutation.data.token);
-      sessionStorage.setItem("user", JSON.stringify(mutation.data.user));
-      const user = mutation.data.user;
-      if (user && user.accountStatus) {
+    if (!mutation.isSuccess || !mutation.data) return;
+
+    const user = mutation.data.user;
+    const token = mutation.data.token;
+
+    sessionStorage.setItem("token", token);
+    sessionStorage.setItem("user", JSON.stringify(user));
+
+    const timeout = setTimeout(() => {
+      if (user?.accountStatus) {
         if (user.accountStatus.emailVerified) {
-          // window.location.href = "/verifyemail";
+          window.location.href = "/verifyemail";
         } else if (!user.accountStatus.isProfileComplete) {
           window.location.href = "/contact";
         } else if (user.accountStatus.banned) {
-          // window.location.href = "/appeal";
+          window.location.href = "/appeal";
         } else if (user.accountStatus.twoFaActivated) {
-          // window.location.href = "/appeal";
+          window.location.href = "/appeal";
         } else {
           window.location.href = "/dashboard";
         }
+      } else {
+        console.log("No accountStatus found", user);
       }
-    }
-  }, [mutation.isSuccess]);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [mutation.isSuccess, mutation.data]);
 
   useEffect(() => {
     if (error) {
@@ -101,7 +90,7 @@ const Login = (props) => {
     }
   }, [error]);
 
-  document.title = "Login | Itrust Investments";
+  document.title = "Login - Itrust Investments";
   return (
     <React.Fragment>
       <ParticlesAuth>
@@ -162,6 +151,7 @@ const Login = (props) => {
                                 ? true
                                 : false
                             }
+                            autoComplete="off"
                           />
                           {validation.touched.email &&
                           validation.errors.email ? (
@@ -247,40 +237,6 @@ const Login = (props) => {
                             ) : null}
                             Sign In
                           </Button>
-                        </div>
-
-                        <div className="mt-4 text-center">
-                          <div className="signin-other-title">
-                            <h5 className="fs-13 mb-4 title">Sign In with</h5>
-                          </div>
-                          <div>
-                            <Link
-                              to="#"
-                              className="btn btn-primary btn-icon me-1"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                socialResponse("facebook");
-                              }}
-                            >
-                              <i className="ri-facebook-fill fs-16" />
-                            </Link>
-                            <Link
-                              to="#"
-                              className="btn btn-danger btn-icon me-1"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                socialResponse("google");
-                              }}
-                            >
-                              <i className="ri-google-fill fs-16" />
-                            </Link>
-                            <Button color="dark" className="btn-icon">
-                              <i className="ri-github-fill fs-16"></i>
-                            </Button>{" "}
-                            <Button color="info" className="btn-icon">
-                              <i className="ri-twitter-fill fs-16"></i>
-                            </Button>
-                          </div>
                         </div>
                       </Form>
                     </div>

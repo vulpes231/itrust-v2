@@ -2,17 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown, DropdownMenu, DropdownToggle, Form } from "reactstrap";
 
-//import images
-import logoSm from "../assets/images/logo-sm.png";
-import logoDark from "../assets/images/logo-dark.png";
-import logoLight from "../assets/images/logo-light.png";
-
 //import Components
 import SearchOption from "../components/Common/SearchOption";
-import LanguageDropdown from "../components/Common/LanguageDropdown";
-import WebAppsDropdown from "../components/Common/WebAppsDropdown";
-import MyCartDropdown from "../components/Common/MyCartDropdown";
-import FullScreenDropdown from "../components/Common/FullScreenDropdown";
 import NotificationDropdown from "../components/Common/NotificationDropdown";
 import ProfileDropdown from "../components/Common/ProfileDropdown";
 import LightDark from "../components/Common/LightDark";
@@ -155,28 +146,13 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                 </DropdownMenu>
               </Dropdown>
 
-              {/* LanguageDropdown */}
-              {/* <LanguageDropdown /> */}
-
-              {/* WebAppsDropdown
-              <WebAppsDropdown />
-
-              MyCartDropdwon
-              <MyCartDropdown /> */}
-
-              {/* FullScreenDropdown */}
-              {/* <FullScreenDropdown /> */}
-
-              {/* Dark/Light Mode set */}
               <LightDark
                 layoutMode={layoutModeType}
                 onChangeLayoutMode={onChangeLayoutMode}
               />
 
-              {/* NotificationDropdown */}
               <NotificationDropdown />
 
-              {/* ProfileDropdown */}
               <ProfileDropdown />
             </div>
           </div>

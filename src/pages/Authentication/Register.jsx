@@ -66,10 +66,7 @@ const Register = () => {
     if (mutation.isSuccess) {
       sessionStorage.setItem("token", mutation.data.token);
       const timeout = setTimeout(() => {
-        // console.log(mutation);
-        const tok = sessionStorage.getItem("token");
-        console.log(tok);
-        window.location.href = "/contact";
+        window.location.href = "/dashboard";
       }, 3000);
       return () => clearTimeout(timeout);
     }
@@ -85,7 +82,7 @@ const Register = () => {
     }
   }, [error]);
 
-  document.title = "Register | Itrust Investments";
+  document.title = "Register - Itrust Investments";
 
   return (
     <React.Fragment>
@@ -291,7 +288,7 @@ const Register = () => {
                         </div>
 
                         <div className="mb-4">
-                          <p className="mb-0 fs-12 text-muted fst-italic">
+                          <p className="mb-0 fs-12 text-muted fst-italic d-flex gap-1">
                             By registering you agree to the Itrust
                             <Link
                               to="#"
@@ -312,41 +309,6 @@ const Register = () => {
                               ? "Creating Account..."
                               : "Signup"}
                           </button>
-                        </div>
-
-                        <div className="mt-4 text-center">
-                          <div className="signin-other-title">
-                            <h5 className="fs-13 mb-4 title text-muted">
-                              Create account with
-                            </h5>
-                          </div>
-
-                          <div>
-                            <button
-                              type="button"
-                              className="btn btn-primary btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-facebook-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-danger btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-google-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-dark btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-github-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-info btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-twitter-fill fs-16"></i>
-                            </button>
-                          </div>
                         </div>
                       </Form>
                     </div>
