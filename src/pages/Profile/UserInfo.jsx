@@ -9,10 +9,10 @@ const UserInfo = ({ user }) => {
         <img src={avatar1} alt="user" width={50} className="rounded-circle" />
         <span className="d-flex flex-column align-items-center justify-content-center">
           <h4 className="lh-sm text-capitalize">
-            {user?.name?.firstName} {user?.name?.lastName}
+            {user?.personalInfo?.firstName} {user?.personalInfo?.lastName}
           </h4>
           <span style={{ color: "#878A99" }} className="fw-light">
-            @{user?.credentials?.username}
+            @{user?.personalInfo?.username}
           </span>
         </span>
       </Col>

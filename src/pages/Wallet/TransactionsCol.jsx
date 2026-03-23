@@ -14,11 +14,11 @@ const FromCol = (cell) => {
 const ToCol = (cell) => {
   const getIcon = (value) => {
     switch (value) {
-      case "cash":
-        return broke;
+      case "cash account":
+        return cash;
       case "automated investing":
         return auto;
-      case "brokerage":
+      case "individual brokerage":
         return (
           <i
             style={{ color: "#C5CAD0" }}
@@ -44,24 +44,20 @@ const ToCol = (cell) => {
   return (
     <React.Fragment>
       <div className="d-flex align-items-center gap-2">
-        {(icon && cellValue === "cash") ||
+        {(icon && cellValue === "cash account") ||
         cellValue === "automated investing" ? (
           <img src={icon} alt="" width={20} />
         ) : (
           <span>{icon}</span>
         )}
-        <span>
-          {cellValue === "Traditional IRA" || cellValue === "Health Savings"
-            ? cellValue
-            : capitalize(cellValue)}
-        </span>
+        <span className="text-capitalize">{cellValue}</span>
       </div>
     </React.Fragment>
   );
 };
 
 const DetailsCol = (cell) => {
-  return <React.Fragment>{capitalize(cell.getValue())}</React.Fragment>;
+  return <React.Fragment>{cell.getValue()}</React.Fragment>;
 };
 
 const TransactionID = (cell) => {
@@ -73,27 +69,23 @@ const TypeCol = (cell) => {
 };
 
 const Status = (cell) => {
+  const status = cell.getValue();
+  const icon =
+    status === "pending" ? <i className="ri-time-line align-bottom"></i> : null;
   return (
     <React.Fragment>
-      {cell.getValue() === "pending" ? (
-        <span className="badge bg-warning-subtle text-warning fs-11">
-          {" "}
-          <i className="ri-time-line align-bottom"></i>{" "}
-          {capitalize(cell.getValue())}
+      <span
+        className={`${
+          status === "pending"
+            ? "bg-warning-subtle text-warning badge text-capitalize"
+            : ""
+        }`}
+      >
+        <span className="d-flex items-center gap-1 p-1 rounded-4">
+          {icon}
+          {cell.getValue()}
         </span>
-      ) : cell.getValue() === "completed" ? (
-        <span className="badge bg-success-subtle text-success fs-11">
-          {" "}
-          <i className="ri-checkbox-circle-line align-bottom"></i>{" "}
-          {capitalize("processed")}
-        </span>
-      ) : cell.getValue() === "failed" ? (
-        <span className="badge bg-danger-subtle text-danger fs-11">
-          {" "}
-          <i className="ri-close-circle-line align-bottom"></i>{" "}
-          {capitalize(cell.getValue())}
-        </span>
-      ) : null}
+      </span>
     </React.Fragment>
   );
 };

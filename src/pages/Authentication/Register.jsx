@@ -129,6 +129,7 @@ const Register = () => {
                             First Name <span className="text-danger">*</span>
                           </Label>
                           <Input
+                            autoComplete="off"
                             id="firstname"
                             name="firstname"
                             className="form-control"
@@ -156,6 +157,7 @@ const Register = () => {
                             Last Name <span className="text-danger">*</span>
                           </Label>
                           <Input
+                            autoComplete="off"
                             id="lastname"
                             name="lastname"
                             className="form-control"
@@ -183,6 +185,7 @@ const Register = () => {
                             Email <span className="text-danger">*</span>
                           </Label>
                           <Input
+                            autoComplete="off"
                             id="email"
                             name="email"
                             className="form-control"
@@ -210,6 +213,7 @@ const Register = () => {
                             Username <span className="text-danger">*</span>
                           </Label>
                           <Input
+                            autoComplete="off"
                             name="username"
                             type="text"
                             placeholder="Enter Username"
@@ -236,6 +240,7 @@ const Register = () => {
                             Password <span className="text-danger">*</span>
                           </Label>
                           <Input
+                            autoComplete="off"
                             name="password"
                             type="password"
                             placeholder="Enter Password"
@@ -266,6 +271,7 @@ const Register = () => {
                             <span className="text-danger">*</span>
                           </Label>
                           <Input
+                            autoComplete="off"
                             name="confirm_password"
                             type="password"
                             placeholder="Confirm Password"

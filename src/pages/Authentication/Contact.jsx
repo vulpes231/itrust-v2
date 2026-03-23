@@ -61,7 +61,7 @@ const Contact = () => {
     enabled: !!validation.values.countryId,
   });
 
-  document.title = "Register | Contact Information";
+  document.title = "Complete Profile - Contact Information";
 
   return (
     <React.Fragment>
@@ -171,6 +171,7 @@ const Contact = () => {
                                 ? true
                                 : false
                             }
+                            autoComplete="off"
                           />
                           {validation.touched.phone &&
                           validation.errors.phone ? (
@@ -197,6 +198,7 @@ const Contact = () => {
                                 ? true
                                 : false
                             }
+                            autoComplete="off"
                           />
                           {validation.touched.street &&
                           validation.errors.street ? (
@@ -269,6 +271,7 @@ const Contact = () => {
                                 ? true
                                 : false
                             }
+                            autoComplete="off"
                           />
                           {validation.touched.city && validation.errors.city ? (
                             <FormFeedback type="invalid">
@@ -294,6 +297,7 @@ const Contact = () => {
                                 ? true
                                 : false
                             }
+                            autoComplete="off"
                           />
                           {validation.touched.zipCode &&
                           validation.errors.zipCode ? (
@@ -304,7 +308,7 @@ const Contact = () => {
                         </div>
 
                         <div className="mb-4">
-                          <p className="mb-0 fs-12 text-muted fst-italic">
+                          <p className="mb-0 fs-12 text-muted fst-italic d-flex gap-1">
                             By registering you agree to the Itrust
                             <Link
                               to="#"
@@ -323,57 +327,10 @@ const Contact = () => {
                             Next
                           </button>
                         </div>
-
-                        <div className="mt-4 text-center">
-                          <div className="signin-other-title">
-                            <h5 className="fs-13 mb-4 title text-muted">
-                              Create account with
-                            </h5>
-                          </div>
-
-                          <div>
-                            <button
-                              type="button"
-                              className="btn btn-primary btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-facebook-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-danger btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-google-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-dark btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-github-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-info btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-twitter-fill fs-16"></i>
-                            </button>
-                          </div>
-                        </div>
                       </Form>
                     </div>
                   </CardBody>
                 </Card>
-                <div className="mt-4 text-center">
-                  <p className="mb-0">
-                    Already have an account ?{" "}
-                    <Link
-                      to="/login"
-                      className="fw-semibold text-primary text-decoration-underline"
-                    >
-                      {" "}
-                      Signin{" "}
-                    </Link>{" "}
-                  </p>
-                </div>
               </Col>
             </Row>
           </Container>

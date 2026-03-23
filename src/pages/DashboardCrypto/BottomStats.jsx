@@ -9,7 +9,7 @@ const BottomStats = ({ walletAnalytics }) => {
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <div className="d-flex align-items-start justify-content-between px-3">
         <h5>Balances</h5>
-        <Link className="btn btn-secondary text-capitalize" to={"/cash"}>
+        <Link className="btn btn-secondary text-capitalize" to={"/deposit"}>
           deposit cash
         </Link>
       </div>

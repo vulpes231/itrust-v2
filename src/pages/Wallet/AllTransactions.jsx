@@ -28,6 +28,8 @@ import Deposit from "../Deposit";
 import Withdraw from "../Withdraw";
 import Transfer from "../Transfer";
 
+import { format } from "date-fns";
+
 const AllTransactions = () => {
   const token = getAccessToken();
 
@@ -39,6 +41,7 @@ const AllTransactions = () => {
 
   const [action, setAction] = useState("");
   const [filter, setFilter] = useState("all");
+  const [showFilter, setShowFilter] = useState(true);
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
@@ -54,7 +57,9 @@ const AllTransactions = () => {
           filter === "withdrawal" ||
           filter === "transfer"
         ? transactions.filter((trx) => trx.type === filter)
-        : filter === "completed" || filter === "pending" || filter === "failed"
+        : filter === "processed" ||
+          filter === "pending" ||
+          filter === "cancelled"
         ? transactions.filter((trx) => trx.status === filter)
         : transactions.filter((trx) => trx.account === filter);
 
@@ -110,12 +115,12 @@ const AllTransactions = () => {
 
   function getCurrencyImage(currency) {
     const images = {
-      cash: cash,
+      "cash account": cash,
       usdt: usdt,
       btc: btc,
       eth: eth,
       bank: ltc,
-      brokerage: broke,
+      "individual brokerage": broke,
       "automated investing": auto,
       "Traditional ira": auto,
       "Health savings": auto,
@@ -139,41 +144,17 @@ const AllTransactions = () => {
       },
       {
         header: "Date",
-        accessorKey: "time",
+        accessorKey: "createdAt",
         enableColumnFilter: false,
         cell: (cell) => (
-          <>
-            {cell.row.original.date}{" "}
-            <small className="text-muted">{cell.getValue()}</small>
-          </>
+          <span className="d-flex gap-1 align-items-end">
+            <span>{format(cell.getValue(), "MMM dd, yyyy")}</span>
+            <small className="text-muted">
+              {format(cell.getValue(), "hh:mm a")}
+            </small>
+          </span>
         ),
       },
-      // {
-      //   header: "Method",
-      //   accessorKey: "currency",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => (
-      //     <div className="d-flex align-items-center">
-      //       <img
-      //         src={getCurrencyImage(cell.getValue())}
-      //         alt={cell.getValue()}
-      //         className="avatar-xxs me-2"
-      //         onError={(e) => {
-      //           e.target.src = "/images/currencies/default.png";
-      //         }}
-      //       />
-      //       {cell.getValue().toUpperCase()}
-      //     </div>
-      //   ),
-      // },
-      // {
-      //   header: "From",
-      //   accessorKey: "from",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => {
-      //     return <FromCol {...cell} />;
-      //   },
-      // },
 
       {
         header: "Details",
@@ -199,14 +180,7 @@ const AllTransactions = () => {
           return <TransactionID {...cell} />;
         },
       },
-      // {
-      //   header: "Type",
-      //   accessorKey: "type",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => {
-      //     return <TypeCol {...cell} />;
-      //   },
-      // },
+
       {
         header: "Amount",
         accessorKey: "amount",
@@ -242,88 +216,94 @@ const AllTransactions = () => {
             </Col>
             <div className="col-md-auto ms-auto">
               <div className="d-flex gap-2">
-                <div className="search-box">
+                {/* <div className="search-box">
                   <input
                     type="text"
                     className="form-control search"
                     placeholder="Search for transactions..."
                   />
                   <i className="ri-search-line search-icon"></i>
-                </div>
-                <button className="btn btn-success">
+                </div> */}
+                <button
+                  type="button"
+                  onClick={() => setShowFilter(!showFilter)}
+                  className="btn btn-success"
+                >
                   <i className="ri-equalizer-line align-bottom me-1"></i>
                   Filters
                 </button>
               </div>
             </div>
           </Row>
-          <Row className="justify-content-between d-flex">
-            <Col className="d-flex gap-2">
-              <div className="d-flex align-items-center gap-1">
-                <span className="text-muted flex-shrink-0">Sort by: </span>
-                <Input type="select" onChange={handleFilter}>
-                  <option value="">Select Account</option>
-                  <option value="all">All</option>
-                  <option value="cash">Cash</option>
-                  <option value="automated investing">
-                    Automated Investing
-                  </option>
-                  <option value="brokerage">Brokerage</option>
-                </Input>
-              </div>
-              <div>
-                <Input type="select" onChange={handleFilter}>
-                  <option value="">Select Status</option>
-                  <option value="all">All Status</option>
-                  <option value="completed">Processed</option>
-                  <option value="pending">Pending</option>
-                  <option value="failed">Failed</option>
-                </Input>
-              </div>
-            </Col>
-            <Col className="d-flex align-items-center justify-content-end gap-2">
-              <button
-                onClick={() => setFilter("deposit")}
-                className={`btn text-capitalize ${
-                  filter === "deposit"
-                    ? "btn-secondary"
-                    : "bg-secondary-subtle text-secondary"
-                }`}
-              >
-                deposit
-              </button>
-              <button
-                onClick={() => setFilter("withdrawal")}
-                className={`btn text-capitalize ${
-                  filter === "withdrawal"
-                    ? "btn-secondary"
-                    : "bg-secondary-subtle text-secondary"
-                }`}
-              >
-                withdrawals
-              </button>
-              <button
-                onClick={() => setFilter("transfer")}
-                className={`btn text-capitalize ${
-                  filter === "transfer"
-                    ? "btn-secondary"
-                    : "bg-secondary-subtle text-secondary"
-                }`}
-              >
-                transfers
-              </button>
-              <button
-                onClick={() => setFilter("all")}
-                className={`btn text-capitalize ${
-                  filter === "all"
-                    ? "btn-secondary"
-                    : "bg-secondary-subtle text-secondary"
-                }`}
-              >
-                transactions
-              </button>
-            </Col>
-          </Row>
+          {showFilter && (
+            <Row className="justify-content-between d-flex">
+              <Col className="d-flex gap-2">
+                <div className="d-flex align-items-center gap-1">
+                  <span className="text-muted flex-shrink-0">Sort by: </span>
+                  <Input type="select" onChange={handleFilter}>
+                    <option value="">Select Account</option>
+                    <option value="all">All</option>
+                    <option value="cash">Cash</option>
+                    <option value="automated investing">
+                      Automated Investing
+                    </option>
+                    <option value="brokerage">Brokerage</option>
+                  </Input>
+                </div>
+                <div>
+                  <Input type="select" onChange={handleFilter}>
+                    <option value="">Select Status</option>
+                    <option value="all">All Status</option>
+                    <option value="completed">Processed</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                  </Input>
+                </div>
+              </Col>
+              <Col className="d-flex align-items-center justify-content-end gap-2">
+                <button
+                  onClick={() => setFilter("deposit")}
+                  className={`btn text-capitalize ${
+                    filter === "deposit"
+                      ? "btn-secondary"
+                      : "bg-secondary-subtle text-secondary"
+                  }`}
+                >
+                  deposit
+                </button>
+                <button
+                  onClick={() => setFilter("withdrawal")}
+                  className={`btn text-capitalize ${
+                    filter === "withdrawal"
+                      ? "btn-secondary"
+                      : "bg-secondary-subtle text-secondary"
+                  }`}
+                >
+                  withdrawals
+                </button>
+                <button
+                  onClick={() => setFilter("transfer")}
+                  className={`btn text-capitalize ${
+                    filter === "transfer"
+                      ? "btn-secondary"
+                      : "bg-secondary-subtle text-secondary"
+                  }`}
+                >
+                  transfers
+                </button>
+                <button
+                  onClick={() => setFilter("all")}
+                  className={`btn text-capitalize ${
+                    filter === "all"
+                      ? "btn-secondary"
+                      : "bg-secondary-subtle text-secondary"
+                  }`}
+                >
+                  transactions
+                </button>
+              </Col>
+            </Row>
+          )}
         </CardHeader>
         <CardBody>
           <TableContainer

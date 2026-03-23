@@ -5,6 +5,8 @@ import DeleteAccount from "./Updates/DeleteAccount";
 
 const UserSettings = ({ user }) => {
   const [showDeleteForm, setShowDeleteForm] = useState(false);
+
+  // console.log(user);
   return (
     <Card>
       <CardHeader>
@@ -24,7 +26,11 @@ const UserSettings = ({ user }) => {
               </span>
             </div>
             <span className="pr-2">
-              <FaToggleOff size={26} />
+              {user?.mailing?.emailNotification ? (
+                <FaToggleOn size={26} />
+              ) : (
+                <FaToggleOff size={26} />
+              )}
             </span>
           </Col>
         </Row>
@@ -37,7 +43,11 @@ const UserSettings = ({ user }) => {
               </span>
             </div>
             <span className="pr-2">
-              <FaToggleOff size={26} />
+              {user?.mailing?.priceAlert ? (
+                <FaToggleOn size={26} />
+              ) : (
+                <FaToggleOff size={26} />
+              )}
             </span>
           </Col>
         </Row>
@@ -50,7 +60,11 @@ const UserSettings = ({ user }) => {
               </span>
             </div>
             <span className="pr-2">
-              <FaToggleOff size={26} />
+              {user?.mailing?.orderNotification ? (
+                <FaToggleOn size={26} />
+              ) : (
+                <FaToggleOff size={26} />
+              )}
             </span>
           </Col>
         </Row>
@@ -63,7 +77,11 @@ const UserSettings = ({ user }) => {
               </span>
             </div>
             <span className="pr-2">
-              <FaToggleOff size={26} />
+              {user?.mailing?.loginAlert ? (
+                <FaToggleOn size={26} />
+              ) : (
+                <FaToggleOff size={26} />
+              )}
             </span>
           </Col>
         </Row>

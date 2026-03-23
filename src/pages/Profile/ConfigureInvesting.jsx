@@ -25,42 +25,37 @@ const ConfigureInvesting = ({ user }) => {
         <Row>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>experience</span>
-            <h6>{user?.professionalInfo?.experience || "Not Set"}</h6>
+            <h6>{user?.investmentInfo?.experience || "Not Set"}</h6>
           </Col>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>risk tolerance</span>
-            <h6>
-              {user?.professionalInfo?.investmentInfo.riskTolerance ||
-                "Not Set"}
-            </h6>
+            <h6>{user?.investmentInfo.riskTolerance || "Not Set"}</h6>
           </Col>
         </Row>
         <Row>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>objectives</span>
             <h6 className="d-flex align-items-center gap-2">
-              {user?.professionalInfo?.investmentInfo?.objectives &&
-              user?.professionalInfo?.investmentInfo?.objectives.length > 0
-                ? user?.professionalInfo?.investmentInfo?.objectives.map(
-                    (obj, idx) => {
-                      return (
-                        <span
-                          className="bg-info-subtle py-1 px-3 rounded text-info"
-                          key={idx}
-                        >
-                          {obj}
-                        </span>
-                      );
-                    }
-                  )
+              {user?.investmentInfo?.objectives &&
+              user?.investmentInfo?.objectives.length > 0
+                ? user?.investmentInfo?.objectives.map((obj, idx) => {
+                    return (
+                      <span
+                        className="bg-info-subtle py-1 px-3 rounded text-info"
+                        key={idx}
+                      >
+                        {obj}
+                      </span>
+                    );
+                  })
                 : "Not Set"}
             </h6>
           </Col>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>retirement time horizon</span>
             <h6>
-              {user?.professionalInfo?.investmentInfo.retiring
-                ? `${user?.professionalInfo?.investmentInfo.retiring} Years`
+              {user?.investmentInfo.retiring
+                ? `${user?.investmentInfo.retiring} Years`
                 : "Not Set"}{" "}
             </h6>
           </Col>
@@ -74,12 +69,12 @@ const ConfigureInvesting = ({ user }) => {
             <span
               style={{ width: "100px", borderRadius: "5px" }}
               className={`${
-                user?.settings?.trading?.isDripEnabled
+                user?.investmentInfo?.drip
                   ? "bg-success-subtle text-success"
                   : "bg-danger-subtle text-danger"
               } d-flex align-items-center justify-content-center p-1 fs-12`}
             >
-              {user?.settings?.trading?.isDripEnabled ? (
+              {user?.investmentInfo?.drip ? (
                 <span className="d-flex align-items-center gap-2">
                   <MdCheckCircleOutline />
                   Active
@@ -105,7 +100,7 @@ const ConfigureInvesting = ({ user }) => {
               </span>
             </div>
             <span className="pr-2">
-              {user?.settings?.trading?.isDripEnabled ? (
+              {user?.investmentInfo?.drip ? (
                 <FaToggleOn size={26} />
               ) : (
                 <FaToggleOff size={26} />
@@ -146,12 +141,12 @@ const ConfigureInvesting = ({ user }) => {
             <span
               style={{ width: "100px", borderRadius: "5px" }}
               className={`${
-                user?.settings?.trading?.isOptionsEnabled
+                user?.investmentInfo?.options
                   ? "bg-success-subtle text-success"
                   : "bg-danger-subtle text-danger"
               } d-flex align-items-center justify-content-center p-1 fs-12`}
             >
-              {user?.settings?.trading?.isOptionsEnabled ? (
+              {user?.investmentInfo?.options ? (
                 <span className="d-flex align-items-center gap-2">
                   <MdCheckCircleOutline />
                   Active
@@ -172,12 +167,12 @@ const ConfigureInvesting = ({ user }) => {
             <span
               style={{ width: "100px", borderRadius: "5px" }}
               className={`${
-                user?.settings?.trading?.isMarginEnabled
+                user?.investmentInfo?.margin
                   ? "bg-success-subtle text-success"
                   : "bg-danger-subtle text-danger"
               } d-flex align-items-center justify-content-center p-1 fs-12`}
             >
-              {user?.settings?.trading?.isMarginEnabled ? (
+              {user?.investmentInfo?.margin ? (
                 <span className="d-flex align-items-center gap-2">
                   <MdCheckCircleOutline />
                   Active
@@ -213,7 +208,7 @@ const ConfigureInvesting = ({ user }) => {
               </span>
             </div>
             <span className="pr-2">
-              {user?.settings?.trading?.isOptionsEnabled ? (
+              {user?.investmentInfo?.options ? (
                 <FaToggleOn size={26} />
               ) : (
                 <FaToggleOff size={26} />

@@ -34,7 +34,7 @@ const ContactInformation = ({ user }) => {
               <span className="text-capitalize" style={{ color: "#878A99" }}>
                 email address
               </span>
-              <h6>{user?.credentials?.email}</h6>
+              <h6>{user?.contactInfo?.email}</h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1">
               <span className="text-capitalize" style={{ color: "#878A99" }}>
@@ -46,34 +46,34 @@ const ContactInformation = ({ user }) => {
           <Row>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>address</span>
-              <h6>{user?.contactInfo?.address?.street}</h6>
+              <h6>{user?.contactInfo?.street}</h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>country</span>
-              <h6>{capitalize(user?.locationDetails?.country?.name)}</h6>
+              <h6>{capitalize(user?.contactInfo?.country?.name)}</h6>
             </Col>
           </Row>
           <Row>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>state/province</span>
-              <h6>{capitalize(user?.locationDetails?.state?.name)}</h6>
+              <h6>{capitalize(user?.contactInfo?.state?.name)}</h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>city</span>
-              <h6>{user?.contactInfo?.address?.city}</h6>
+              <h6>{user?.contactInfo?.city}</h6>
             </Col>
           </Row>
           <Row>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>post code</span>
-              <h6>{user?.contactInfo?.address?.zipCode}</h6>
+              <h6>{user?.contactInfo?.zipCode}</h6>
             </Col>
           </Row>
-          {user?.contactInfo?.address?.isVerified === "not verified" ? (
+          {user?.contactInfo?.status === "not verified" ? (
             <VerifyAddress />
-          ) : user?.contactInfo?.address?.isVerified === "pending" ? (
+          ) : user?.contactInfo?.status === "pending" ? (
             <VerifyAddressPending />
-          ) : user?.contactInfo?.address?.isVerified === "verified" ? (
+          ) : user?.contactInfo?.status === "verified" ? (
             <AddressVerified />
           ) : null}
         </CardBody>

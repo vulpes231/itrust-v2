@@ -88,7 +88,7 @@ const Personal = () => {
     }
   }, [error]);
 
-  document.title = "Profile | Personal Information";
+  document.title = "Complete Profile - Personal Information";
 
   return (
     <React.Fragment>
@@ -130,7 +130,7 @@ const Personal = () => {
                       >
                         {mutation.isSuccess && mutation.isSuccess ? (
                           <>
-                            {toast("Your Redirect To Login Page...", {
+                            {toast("Your Redirect To Dashboard...", {
                               position: "top-right",
                               hideProgressBar: false,
                               progress: undefined,
@@ -177,7 +177,8 @@ const Personal = () => {
 
                         <div className="mb-3">
                           <Label htmlFor="employment" className="form-label">
-                            Employment <span className="text-danger">*</span>
+                            Employment Status{" "}
+                            <span className="text-danger">*</span>
                           </Label>
                           <Input
                             id="employment"
@@ -402,57 +403,10 @@ const Personal = () => {
                             Complete Profile
                           </Button>
                         </div>
-
-                        <div className="mt-4 text-center">
-                          <div className="signin-other-title">
-                            <h5 className="fs-13 mb-4 title text-muted">
-                              Create account with
-                            </h5>
-                          </div>
-
-                          <div>
-                            <button
-                              type="button"
-                              className="btn btn-primary btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-facebook-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-danger btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-google-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-dark btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-github-fill fs-16"></i>
-                            </button>{" "}
-                            <button
-                              type="button"
-                              className="btn btn-info btn-icon waves-effect waves-light"
-                            >
-                              <i className="ri-twitter-fill fs-16"></i>
-                            </button>
-                          </div>
-                        </div>
                       </Form>
                     </div>
                   </CardBody>
                 </Card>
-                <div className="mt-4 text-center">
-                  <p className="mb-0">
-                    Already have an account ?{" "}
-                    <Link
-                      to="/login"
-                      className="fw-semibold text-primary text-decoration-underline"
-                    >
-                      {" "}
-                      Signin{" "}
-                    </Link>{" "}
-                  </p>
-                </div>
               </Col>
             </Row>
           </Container>

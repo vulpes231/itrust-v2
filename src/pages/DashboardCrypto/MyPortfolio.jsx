@@ -143,9 +143,9 @@ const MyPortfolio = () => {
                           <span className="avatar-title bg-light p-1 rounded-circle">
                             <img
                               src={
-                                wallet.name === "cash"
+                                wallet.slug === "cash"
                                   ? cash
-                                  : wallet.name === "brokerage"
+                                  : wallet.slug === "brokerage"
                                   ? broke
                                   : auto
                               }
@@ -155,22 +155,20 @@ const MyPortfolio = () => {
                           </span>
                         </div>
                         <div className="flex-grow-1 ms-2">
-                          <h6 className="mb-1">{capitalize(wallet.name)}</h6>
-                          <p className="fs-13 mb-0 text-muted">
+                          <h6 className="mb-1 text-capitalize">
+                            {wallet.name}
+                          </h6>
+                          <p className="fs-13 mb-0 text-muted text-capitalize">
                             <i
                               className={`mdi mdi-circle fs-10 align-middle  ${
-                                wallet.name === "cash"
+                                wallet.slug === "cash"
                                   ? "text-primary"
-                                  : wallet.name === "brokerage"
+                                  : wallet.slug === "brokerage"
                                   ? "text-warning"
                                   : "text-info"
                               }  me-1`}
                             ></i>
-                            {wallet.name === "cash"
-                              ? "cash"
-                              : wallet.name === "brokerage"
-                              ? "brokerage"
-                              : "auto"}
+                            {wallet.slug}
                           </p>
                         </div>
                         <div className="flex-shrink-0 text-end">

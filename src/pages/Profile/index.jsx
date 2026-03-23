@@ -14,7 +14,7 @@ import { getUserInfo } from "../../services/user/user";
 import { getAccessToken } from "../../constants";
 
 const Profile = () => {
-  document.title = "User Profile | Itrust Investments";
+  document.title = "Profile - Itrust Investments";
 
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem("profileActiveTab") || "profile";

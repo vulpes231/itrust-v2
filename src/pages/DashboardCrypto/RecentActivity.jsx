@@ -19,6 +19,8 @@ const RecentActivity = () => {
   });
 
   const filteredtrnxs = trnxs && trnxs.length && trnxs.slice(0, 6);
+
+  // console.log(filteredtrnxs);
   return (
     <React.Fragment>
       <Col>
@@ -78,29 +80,23 @@ const RecentActivity = () => {
                           </span>
                           <span
                             className={`fs-10 px-2 py-1 rounded-1 text-capitalize d-flex align-items-center gap-1 ${
-                              trx.status === "completed"
+                              trx.status === "processed"
                                 ? `bg-success-subtle text-success`
                                 : trx.status === "pending"
                                 ? `bg-warning-subtle text-warning`
-                                : trx.status === "failed"
+                                : trx.status === "cancelled"
                                 ? `bg-danger-subtle text-danger`
                                 : null
                             }`}
                           >
-                            {trx.status === "completed" ? (
+                            {trx.status === "processed" ? (
                               <MdOutlineCheckCircle />
                             ) : trx.status === "pending" ? (
                               <GoClock />
-                            ) : trx.status === "failed" ? (
+                            ) : trx.status === "cancelled" ? (
                               <MdOutlineCancel />
                             ) : null}
-                            {trx.status === "completed"
-                              ? "processed"
-                              : trx.status === "pending"
-                              ? "pending"
-                              : trx.status === "failed"
-                              ? "cancelled"
-                              : null}
+                            {trx.status}
                           </span>
                         </h6>
                         <p
@@ -109,20 +105,19 @@ const RecentActivity = () => {
                         >
                           <span className="fw-normal fs-12">
                             {" "}
-                            {trx.method.mode === "btc"
+                            {trx.method.mode === "BTC"
                               ? "Bitcoin"
-                              : trx.method.mode === "usdt"
+                              : trx.method.mode === "USDT"
                               ? "USDT"
-                              : trx.method.mode === "eth"
+                              : trx.method.mode === "ETH"
                               ? "Ethereum"
                               : capitalize(trx?.method?.mode)}
                           </span>
                           <span>
                             <GoArrowRight />
                           </span>
-                          <span className="fw-normal fs-12">
-                            {" "}
-                            {capitalize(trx?.account)}
+                          <span className="fw-normal fs-12 text-capitalize">
+                            {trx?.account}
                           </span>
                         </p>
                         <span className="text-muted fs-11">
