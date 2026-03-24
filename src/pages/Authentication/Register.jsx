@@ -66,7 +66,7 @@ const Register = () => {
     if (mutation.isSuccess) {
       sessionStorage.setItem("token", mutation.data.token);
       const timeout = setTimeout(() => {
-        window.location.href = "/dashboard";
+        window.location.href = "/contact";
       }, 3000);
       return () => clearTimeout(timeout);
     }

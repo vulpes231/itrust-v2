@@ -5,6 +5,7 @@ import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
 const BottomStats = ({ walletAnalytics }) => {
+  // console.log(walletAnalytics);
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <div className="d-flex align-items-start justify-content-between px-3">
@@ -22,7 +23,9 @@ const BottomStats = ({ walletAnalytics }) => {
           <div className="d-flex flex-column">
             <h3 style={{ color: "#495057" }}>
               {walletAnalytics
-                ? numeral(walletAnalytics?.totalInvested).format("$0,0.00")
+                ? numeral(
+                    Math.floor(walletAnalytics?.totalInvested * 100) / 100
+                  ).format("$0,0.00")
                 : formatCurrency(0)}
             </h3>
             <span
@@ -56,7 +59,7 @@ const BottomStats = ({ walletAnalytics }) => {
           <div className="d-flex flex-column">
             <h3 style={{ color: "#495057" }}>
               {walletAnalytics
-                ? numeral(walletAnalytics?.availableBalance).format("$0,0.00")
+                ? numeral(walletAnalytics?.cashBalance).format("$0,0.00")
                 : formatCurrency(0)}
             </h3>
             <span

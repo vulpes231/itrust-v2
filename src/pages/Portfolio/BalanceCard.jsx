@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FaEyeSlash } from "react-icons/fa";
 import { Card, Col, Input, Row } from "reactstrap";
 import { format } from "date-fns";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
-import { formatCurrency, getAccessToken } from "../../constants";
-import { useQuery } from "@tanstack/react-query";
-import { getUserWallets } from "../../services/user/wallet";
+import { formatCurrency } from "../../constants";
 
 const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
+  // console.log(wallets);
   return (
     <Card>
       <Row className="p-3">
@@ -17,8 +16,9 @@ const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
               className="border-0 bg-transparent fs-13 text-uppercase"
               onChange={handleChange}
               style={{ color: "#878A99" }}
+              value={activeWallet?._id || ""}
             >
-              {activeWallet && wallets && wallets.length === 0 && (
+              {wallets && wallets.length === 0 && (
                 <option value="">Account</option>
               )}
               {(wallets || []).map((wallet) => {

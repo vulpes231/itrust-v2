@@ -9,7 +9,7 @@ import BreadCrumb from "../../Components/Common/BreadCrumb";
 import VerifyAccountNotify from "../VerifyAccountNotify";
 import BalanceCard from "./BalanceCard";
 import { getAccessToken } from "../../constants";
-import { getUserWallets } from "../../services/user/wallet";
+import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
 import { useQuery } from "@tanstack/react-query";
 import TradeCard from "./TradeCard";
 import AssetAllocation from "./AssetAllocation";
@@ -30,6 +30,12 @@ const Portfolio = () => {
     enabled: !!tk,
   });
 
+  const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
+    queryFn: getWalletAnalytics,
+    queryKey: ["walletAnalytics"],
+    enabled: !!tk,
+  });
+
   const queryData = { limit: 7 };
   const { data: trades } = useQuery({
     queryKey: ["recentTrades"],
@@ -37,22 +43,25 @@ const Portfolio = () => {
     enabled: !!tk,
   });
 
+  const filteredWallets = (wallets || []).filter(
+    (wallet) => wallet.slug !== "cash"
+  );
+
   const handleChange = (e) => {
-    const walletId = e.target.value.toString();
+    const walletId = e.target.value;
 
-    const selectedWallet =
-      wallets &&
-      wallets.length > 0 &&
-      wallets.find((wallet) => wallet._id.toString() === walletId);
+    const selectedWallet = filteredWallets.find(
+      (wallet) => wallet._id === walletId
+    );
 
-    setActiveWallet(selectedWallet);
+    setActiveWallet(selectedWallet || null);
   };
 
   useEffect(() => {
-    if (wallets && wallets.length > 0) {
-      setActiveWallet(wallets[0]);
+    if (!activeWallet && filteredWallets.length > 0) {
+      setActiveWallet(filteredWallets[0]);
     }
-  }, [wallets]);
+  }, [filteredWallets, activeWallet]);
 
   return (
     <React.Fragment>
@@ -65,7 +74,7 @@ const Portfolio = () => {
               <BalanceCard
                 activeWallet={activeWallet}
                 handleChange={handleChange}
-                wallets={wallets}
+                wallets={filteredWallets}
               />
               <PortfolioStatistics
                 dataColors='["--vz-info"]'
@@ -76,7 +85,10 @@ const Portfolio = () => {
             </Col>
             <Col xxl={3}>
               <TradeCard />
-              <AssetGraph count={trades?.length} />
+              <AssetGraph
+                count={trades?.length}
+                walletAnalytics={walletAnalytics}
+              />
               <AssetAllocation />
               <RecentOrders trades={trades} />
             </Col>

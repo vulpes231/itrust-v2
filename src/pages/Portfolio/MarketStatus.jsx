@@ -99,11 +99,14 @@ const MarketStatus = ({ activeWallet, trades }) => {
         accessorKey: "percentage",
         enableColumnFilter: false,
         cell: (cell) => {
-          const total = cell.row.original.performance.totalReturn;
+          const value = Number(cell.row.original.performance.totalReturn) || 0;
+
+          const safeValue = Math.abs(value) < 0.005 ? 0 : value;
+
           const totalPercent = cell.row.original.performance.totalReturnPercent;
           return (
             <div className="d-flex flex-column gap-1">
-              <span>{numeral(total).format("$0,0.00")}</span>
+              <span>{numeral(safeValue).format("$0,0.00")}</span>
               <span
                 className={`fs-12 ${
                   totalPercent < 0 ? "text-danger" : "text-success"
@@ -154,8 +157,7 @@ const MarketStatus = ({ activeWallet, trades }) => {
               value={currentAccount}
             >
               <option value="all">All</option>
-              <option value="cash">Cash</option>
-              <option value="brokerage">Brokerage</option>
+              <option value="individual brokerage">Brokerage</option>
               <option value="automated investing">Automated Investing</option>
             </Input>
           </div>

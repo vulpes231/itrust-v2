@@ -52,7 +52,10 @@ const DashboardCrypto = () => {
             <Col md={3}>
               <MyPortfolio />
               <Holdings trades={trades} analytics={walletAnalytics} />
-              <AssetGraph count={trades?.length} />
+              <AssetGraph
+                count={trades?.length}
+                walletAnalytics={walletAnalytics}
+              />
               <RecentActivity />
               <RecentOrders trades={trades} />
             </Col>

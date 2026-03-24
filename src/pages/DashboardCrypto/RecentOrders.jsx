@@ -22,6 +22,9 @@ const RecentOrders = ({ trades }) => {
             <div className="p-3">
               {filteredTrades && filteredTrades.length > 0 ? (
                 filteredTrades.map((trade) => {
+                  const value = Number(trade?.performance?.totalReturn) || 0;
+
+                  const safeValue = Math.abs(value) < 0.005 ? 0 : value;
                   return (
                     <div
                       key={trade._id}
@@ -79,9 +82,9 @@ const RecentOrders = ({ trades }) => {
                           <span>
                             <GoArrowRight />
                           </span>
-                          <span className="fw-normal fs-12">
+                          <span className="fw-normal fs-12 text-capitalize">
                             {" "}
-                            {capitalize(trade.wallet.name)}
+                            {trade.wallet.name}
                           </span>
                         </p>
                         <span className="text-muted fs-11">
@@ -110,9 +113,7 @@ const RecentOrders = ({ trades }) => {
                             : trade.orderType === "sell"
                             ? `-`
                             : null}
-                          {numeral(trade.performance.totalReturn).format(
-                            "$0,0.00"
-                          )}
+                          {numeral(safeValue).format("$0,0.00")}
                         </span>
                       </div>
                     </div>

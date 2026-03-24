@@ -12,7 +12,7 @@ const FootStats = ({ activeWallet }) => {
         <Col
           style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
-          md={activeWallet && activeWallet.name === "brokerage" ? 4 : 3}
+          md={activeWallet && activeWallet.slug === "brokerage" ? 4 : 3}
         >
           <div className="d-flex flex-column">
             <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
@@ -25,7 +25,7 @@ const FootStats = ({ activeWallet }) => {
           </div>
         </Col>
         <Col
-          md={activeWallet && activeWallet.name === "brokerage" ? 4 : 3}
+          md={activeWallet && activeWallet.slug === "brokerage" ? 4 : 3}
           style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
         >
@@ -45,7 +45,7 @@ const FootStats = ({ activeWallet }) => {
           </div>
         </Col>
         <Col
-          md={activeWallet && activeWallet.name === "brokerage" ? 4 : 3}
+          md={activeWallet && activeWallet.slug === "brokerage" ? 4 : 3}
           style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
         >
@@ -65,7 +65,7 @@ const FootStats = ({ activeWallet }) => {
           </div>
         </Col>
         <Col
-          md={activeWallet && activeWallet.name === "brokerage" ? 4 : 3}
+          md={activeWallet && activeWallet.slug === "brokerage" ? 4 : 3}
           style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
         >
@@ -85,7 +85,7 @@ const FootStats = ({ activeWallet }) => {
           </div>
         </Col>
 
-        {activeWallet && activeWallet.name === "brokerage" && (
+        {activeWallet && activeWallet.slug === "brokerage" && (
           <React.Fragment>
             <Col
               style={{ border: "solid 1px #dedede" }}
@@ -93,7 +93,9 @@ const FootStats = ({ activeWallet }) => {
               md={4}
             >
               <div className="d-flex flex-column">
-                <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
+                <h3 style={{ color: "#495057" }}>
+                  {formatCurrency(activeWallet?.buyPower) || formatCurrency(0)}
+                </h3>
                 <span
                   style={{ color: "#878A99" }}
                   className="text-capitalize fs-16 fw-light"
@@ -108,7 +110,11 @@ const FootStats = ({ activeWallet }) => {
               className="border-1 border-dotted p-2"
             >
               <div className="d-flex flex-column">
-                <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
+                <h3 style={{ color: "#495057" }}>
+                  {" "}
+                  {formatCurrency(activeWallet?.marginDebt) ||
+                    formatCurrency(0)}
+                </h3>
                 <span
                   style={{ color: "#878A99" }}
                   className="text-capitalize fs-16 fw-light"

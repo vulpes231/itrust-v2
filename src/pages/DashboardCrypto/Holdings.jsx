@@ -13,6 +13,8 @@ const Holdings = ({ trades, analytics }) => {
     }
   }, [analytics]);
 
+  // console.log(trades);
+
   return (
     <React.Fragment>
       <Card>
@@ -39,6 +41,9 @@ const Holdings = ({ trades, analytics }) => {
             {trades &&
               trades.length > 0 &&
               trades.map((trade) => {
+                const value = Number(trade?.performance?.totalReturn) || 0;
+
+                const safeValue = Math.abs(value) < 0.005 ? 0 : value;
                 return (
                   <Row key={trade._id} className="border-bottom">
                     <Col className="d-flex align-items-start gap-2">
@@ -72,12 +77,7 @@ const Holdings = ({ trades, analytics }) => {
                             : "text-success"
                         }`}
                       >
-                        <span>
-                          {" "}
-                          {numeral(trade.performance.totalReturn).format(
-                            "$0,0.00"
-                          )}
-                        </span>
+                        <span> {numeral(safeValue).format("$0,0.00")}</span>
                         <span>
                           {" "}
                           ({" "}
@@ -93,7 +93,7 @@ const Holdings = ({ trades, analytics }) => {
               })}
           </Col>
           <button className="btn w-100 btn-success mt-3">
-            {formatCurrency(totalHoldings)}
+            {numeral(Math.floor(totalHoldings * 100) / 100).format("$0,0.00")}
           </button>
         </CardBody>
       </Card>

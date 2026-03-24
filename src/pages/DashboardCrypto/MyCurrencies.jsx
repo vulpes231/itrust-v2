@@ -82,78 +82,80 @@ const MyCurrencies = () => {
                       assets.data?.length > 0 &&
                       assets.data.slice(0, 14)) ||
                     []
-                  ).map((asset, key) => (
-                    <tr key={key}>
-                      <td>
-                        <span style={{ color: "#FFC84B" }}>
-                          <AiOutlineStar size={20} />
-                        </span>
-                      </td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <div className="me-2">
-                            <img
-                              src={asset.imageUrl}
-                              alt=""
-                              className="avatar-xxs"
-                            />
-                          </div>
-                          <div>
-                            <h6 className="mb-0">
-                              {asset.name.slice(0, 14)}
-                              {asset.name.length > 14 ? "..." : ""}
-                            </h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>{formatCurrency(asset.priceData.current)}</td>
+                  ).map((asset, key) => {
+                    const value = Number(asset.priceData.change) || 0;
 
-                      <td>{formatCurrency(asset.priceData.dayHigh)}</td>
-                      <td>{formatCurrency(asset.priceData.dayLow)}</td>
-                      <td>
-                        {numeral(asset.priceData.volume)
-                          .format("$0.00a")
-                          .toUpperCase()}
-                      </td>
-                      <td>
-                        <h6
-                          className={`mb-0 ${
-                            asset.priceData.changePercent > 0
-                              ? "text-success"
-                              : "text-danger"
-                          }`}
-                        >
-                          <i
-                            className={`align-middle me-1 ${
+                    const safeValue = Math.abs(value) < 0.005 ? 0 : value;
+                    return (
+                      <tr key={key}>
+                        <td>
+                          <span style={{ color: "#FFC84B" }}>
+                            <AiOutlineStar size={20} />
+                          </span>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <div className="me-2">
+                              <img
+                                src={asset.imageUrl}
+                                alt=""
+                                className="avatar-xxs"
+                              />
+                            </div>
+                            <div>
+                              <h6 className="mb-0">
+                                {asset.name.slice(0, 14)}
+                                {asset.name.length > 14 ? "..." : ""}
+                              </h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{formatCurrency(asset.priceData.current)}</td>
+
+                        <td>{formatCurrency(asset.priceData.dayHigh)}</td>
+                        <td>{formatCurrency(asset.priceData.dayLow)}</td>
+                        <td>
+                          {numeral(asset.priceData.volume)
+                            .format("$0.00a")
+                            .toUpperCase()}
+                        </td>
+                        <td>
+                          <h6
+                            className={`mb-0 ${
                               asset.priceData.changePercent > 0
-                                ? "mdi mdi-trending-up"
-                                : "mdi mdi-trending-down"
+                                ? "text-success"
+                                : "text-danger"
                             }`}
-                          ></i>
-                          <span>
-                            {" "}
-                            {numeral(asset.priceData.change).format("$0,0.00")}
-                          </span>
-                          <span>
-                            {" "}
-                            (
-                            {parseFloat(asset.priceData.changePercent).toFixed(
-                              2
-                            )}
-                            %)
-                          </span>
-                        </h6>
-                      </td>
-                      <td>
-                        <Link
-                          to="/apps-crypto-buy-sell"
-                          className="btn btn-sm btn-soft-secondary"
-                        >
-                          Trade
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
+                          >
+                            <i
+                              className={`align-middle me-1 ${
+                                asset.priceData.changePercent > 0
+                                  ? "mdi mdi-trending-up"
+                                  : "mdi mdi-trending-down"
+                              }`}
+                            ></i>
+                            <span> {numeral(safeValue).format("$0,0.00")}</span>
+                            <span>
+                              {" "}
+                              (
+                              {parseFloat(
+                                asset.priceData.changePercent
+                              ).toFixed(2)}
+                              %)
+                            </span>
+                          </h6>
+                        </td>
+                        <td>
+                          <Link
+                            to="/apps-crypto-buy-sell"
+                            className="btn btn-sm btn-soft-secondary"
+                          >
+                            Trade
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

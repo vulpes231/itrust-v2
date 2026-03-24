@@ -71,13 +71,23 @@ const TypeCol = (cell) => {
 const Status = (cell) => {
   const status = cell.getValue();
   const icon =
-    status === "pending" ? <i className="ri-time-line align-bottom"></i> : null;
+    status === "pending" ? (
+      <i className="ri-time-line align-bottom"></i>
+    ) : status === "processed" ? (
+      <i className="ri-checkbox-circle-line align-bottom"></i>
+    ) : status === "cancelled" ? (
+      <i className="ri-close-circle-line align-bottom"></i>
+    ) : null;
   return (
     <React.Fragment>
       <span
         className={`${
           status === "pending"
             ? "bg-warning-subtle text-warning badge text-capitalize"
+            : status === "processed"
+            ? "bg-success-subtle text-success badge text-capitalize"
+            : status === "cancelled"
+            ? "bg-danger-subtle text-danger badge text-capitalize"
             : ""
         }`}
       >

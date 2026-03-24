@@ -8,12 +8,7 @@ import { formatCurrency } from "../../constants";
 
 import { FaChartLine } from "react-icons/fa6";
 
-const AssetGraph = ({ count }) => {
-  const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
-    queryFn: getWalletAnalytics,
-    queryKey: ["walletAnalytics"],
-  });
-
+const AssetGraph = ({ count, walletAnalytics }) => {
   return (
     <Card>
       <CardBody className="px-4">
@@ -27,7 +22,9 @@ const AssetGraph = ({ count }) => {
             </span>
             <h4 className="fs-28 fw-semibold">
               {walletAnalytics?.totalInvested
-                ? numeral(walletAnalytics?.totalInvested).format("$0,0.00")
+                ? numeral(
+                    Math.floor(walletAnalytics?.totalInvested * 100) / 100
+                  ).format("$0,0.00")
                 : formatCurrency(0)}
             </h4>
             <p
