@@ -14,7 +14,6 @@ import {
   Savings,
   Portfolio,
   Wallet,
-  KYCVerification,
   Deposit,
   Withdraw,
   Transfer,
@@ -22,6 +21,7 @@ import {
   Investing,
   Profile,
   Histories,
+  Landing,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -38,12 +38,12 @@ const authProtectedRoutes = [
   },
   { path: "/contact", component: <Contact /> },
   { path: "/personal", component: <Personal /> },
-  { path: "*", component: <Navigate to="/dashboard" /> },
+  // { path: "*", component: <Navigate to="/dashboard" /> },
   { path: "/trade", component: <Market /> },
   { path: "/savings", component: <Savings /> },
   { path: "/portfolio", component: <Portfolio /> },
   { path: "/cash", component: <Wallet /> },
-  { path: "/verifyaccount", component: <KYCVerification /> },
+  // { path: "/verifyaccount", component: <KYCVerification /> },
   { path: "/deposit", component: <Deposit /> },
   { path: "/withdraw", component: <Withdraw /> },
   { path: "/transfer", component: <Transfer /> },
@@ -54,7 +54,7 @@ const authProtectedRoutes = [
 
 const publicRoutes = [
   // Authentication Page
-  { path: "/", component: <Login /> },
+  { path: "/", component: <Landing /> },
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPassword /> },

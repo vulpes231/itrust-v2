@@ -19,6 +19,7 @@ import Withdraw from "./Withdraw";
 import Investing from "./Investing";
 import Profile from "./Profile";
 import Histories from "./Histories";
+import Landing from "./Landing";
 
 export {
   Contact,
@@ -42,4 +43,5 @@ export {
   Investing,
   Profile,
   Histories,
+  Landing,
 };

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
-// import { logoutUser } from "../slices/thunks";
+import { Navigate, Route, useLocation, useNavigate } from "react-router-dom";
 import { setAuthorization } from "../helpers/apiHelper";
 import { useProfile } from "../hooks/userHooks";
 import { useMutation } from "@tanstack/react-query";
@@ -10,12 +8,24 @@ import { logoutUser } from "../services/auth/logout";
 const AuthProtected = (props) => {
   const [error, setError] = useState("");
 
+  const location = useLocation();
   const { userProfile, loading, token } = useProfile();
 
   const mutation = useMutation({
     mutationFn: logoutUser,
     onError: (err) => setError(err.message),
   });
+
+  const allowedRoutesIfNotVerified = [
+    "/dashboard",
+    "/cash",
+    "/deposit",
+    "/transfer",
+    "/withdraw",
+    "/profile",
+  ];
+
+  const kycStatus = userProfile?.identityVerification?.kycStatus;
 
   useEffect(() => {
     if (userProfile && !loading && token) {
@@ -26,33 +36,14 @@ const AuthProtected = (props) => {
     }
   }, [token, userProfile, loading]);
 
-  useEffect(() => {
-    if (error) {
-      const tmt = setTimeout(() => {
-        setError("");
-      }, 1000);
-      return () => clearTimeout(tmt);
+  if (!loading && token && userProfile) {
+    if (
+      kycStatus !== "verified" &&
+      !allowedRoutesIfNotVerified.includes(location.pathname)
+    ) {
+      return <Navigate to={"/dashboard"} replace />;
     }
-  }, [error]);
-  /*
-    Navigate is un-auth access protected routes via url
-    */
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      const tmt = setTimeout(() => {
-        mutation.reset();
-        window.location.href = "/login";
-      }, 1000);
-      return () => clearTimeout(tmt);
-    }
-  }, [mutation.isSuccess]);
-
-  // if (!userProfile && !token) {
-  //   return (
-  //     <Navigate to={{ pathname: "/login", state: { from: props.location } }} />
-  //   );
-  // }
+  }
 
   return <>{props.children}</>;
 };

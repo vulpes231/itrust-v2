@@ -1,24 +1,16 @@
 import React from "react";
-import { Container, Row } from "reactstrap";
+import { Row } from "reactstrap";
 
-import KYC from "./KYCVerification";
-import BreadCrumb from "../../Components/Common/BreadCrumb";
+import KYCVerification from "./KYCVerification";
 
-const KYCVerification = () => {
-  document.title = "Verify Account | Itrust Investments";
-
+const Kyc = () => {
   return (
     <React.Fragment>
-      <div className="page-content">
-        <Container fluid>
-          <BreadCrumb title="KYC Application" pageTitle="Verification" />
-          <Row>
-            <KYC />
-          </Row>
-        </Container>
-      </div>
+      <Row className="">
+        <KYCVerification />
+      </Row>
     </React.Fragment>
   );
 };
 
-export default KYCVerification;
+export default Kyc;

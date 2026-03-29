@@ -2,18 +2,29 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import { Col, Collapse, Row } from "reactstrap";
-import withRouter from "../../components/Common/withRouter";
+import withRouter from "../../Components/Common/withRouter";
 
 // Import Data
 import navdata from "../LayoutMenuData";
 //i18n
 import { withTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import { getAccessToken } from "../../constants";
+import { getUserInfo } from "../../services/user/user";
 
 const HorizontalLayout = (props) => {
   const [isMoreMenu, setIsMoreMenu] = useState(false);
   const [activeMenu, setActiveMenu] = useState("");
   const location = useLocation();
   const navData = navdata().props.children;
+
+  const token = getAccessToken();
+
+  const { data: user } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!token,
+  });
 
   let menuItems = [];
   let splitMenuItems = [];
@@ -33,6 +44,8 @@ const HorizontalLayout = (props) => {
       menuItems.push(value);
     }
   });
+
+  // const kycStatus = user?.identityVerification?.kycStatus;
 
   // Update active menu when location changes
   useEffect(() => {

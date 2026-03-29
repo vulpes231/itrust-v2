@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Alert, Col } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import MyCurrencies from "./MyCurrencies";
@@ -14,6 +14,8 @@ import { getWalletAnalytics } from "../../services/user/wallet";
 import AssetGraph from "../Portfolio/AssetGraph";
 import { getUserTrades } from "../../services/user/trade";
 import { getAccessToken } from "../../constants";
+import { useLocation } from "react-router-dom";
+import ErrorToast from "../../components/Common/ErrorToast";
 
 const DashboardCrypto = () => {
   document.title = "Dashboard - Itrust Investments";

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown, DropdownMenu, DropdownToggle, Form } from "reactstrap";
-
-//import Components
 import SearchOption from "../components/Common/SearchOption";
 import NotificationDropdown from "../components/Common/NotificationDropdown";
 import ProfileDropdown from "../components/Common/ProfileDropdown";

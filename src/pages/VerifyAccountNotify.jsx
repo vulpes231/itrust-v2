@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 import { Alert, Row } from "reactstrap";
 import { getAccessToken } from "../constants";
 import { getUserInfo } from "../services/user/user";
+import KYCVerification from "./Kyc/KYCVerification";
 
 const VerifyAccountNotify = () => {
   const token = getAccessToken();
 
-  const [visible, setVisible] = useState(true);
-  const onDismiss = () => setVisible(false);
+  const [showKYCModal, setShowKYCModal] = useState(false);
 
   const { data: user } = useQuery({
     queryFn: getUserInfo,
@@ -26,16 +26,19 @@ const VerifyAccountNotify = () => {
       >
         To start trading, complete your profile verification and access multiple
         accounts and tools to help you manage your money.
-        <Link
+        <button
+          onClick={() => setShowKYCModal(true)}
           style={{
             textDecoration: "underline",
             color: "inherit",
             fontWeight: "500",
+            backgroundColor: "transparent",
+            border: "none",
           }}
-          to={"/verifyaccount"}
+          // to={"/verifyaccount"}
         >
           Verify your account
-        </Link>
+        </button>
       </Alert>
       <Alert
         color="warning"
@@ -45,6 +48,12 @@ const VerifyAccountNotify = () => {
       >
         Verification request submitted and awaiting review.
       </Alert>
+      {showKYCModal && (
+        <KYCVerification
+          isKycVerification={showKYCModal}
+          setIsKycVerification={setShowKYCModal}
+        />
+      )}
     </Row>
   );
 };
