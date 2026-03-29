@@ -40,14 +40,18 @@ const submitVericationRequest = async (formData, files) => {
       formDataToSend.append(key, formData[key]);
     });
 
-    files.forEach((file, index) => {
-      formDataToSend.append("idImages", file);
-    });
+    if (files.mainFile) {
+      formDataToSend.append("idImages", files.mainFile);
+    }
+
+    if (files.backFile) {
+      formDataToSend.append("idImages", files.backFile);
+    }
 
     const response = await api.upload("/kyc", formDataToSend);
     return response;
   } catch (error) {
-    throw new Error(error.message || "Failed to submit verification");
+    throw new Error(error || "Failed to submit verification");
   }
 };
 
