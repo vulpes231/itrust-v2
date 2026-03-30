@@ -1,23 +1,28 @@
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
+import { Alert, Col, FormFeedback, Input, Label, Row } from "reactstrap";
 
 import * as Yup from "yup";
 import { depositFunds } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
-import { formatCurrency } from "../../constants";
+import { formatBytes, formatCurrency } from "../../constants";
 import { CenterSpan, CustomSpan, FlexRow } from "./DepositUtils";
 import Loader from "../../components/Common/Loader";
 import { BsBank } from "react-icons/bs";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import { PiCopyLight } from "react-icons/pi";
+import Dropzone from "react-dropzone";
 
 const Bank = ({ settings, userBank }) => {
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState("");
+  const [fileError, setFileError] = useState("");
+  const [proof, setProof] = useState(null);
 
   const mutation = useMutation({
-    mutationFn: () => depositFunds(validation.values),
+    mutationFn: depositFunds,
     onError: (err) => setError(err.message),
   });
 
@@ -35,10 +40,41 @@ const Bank = ({ settings, userBank }) => {
       // amount: Yup.string().required("Enter deposit amount"),
     }),
     onSubmit: (values) => {
-      console.log(values);
-      mutation.mutate();
+      if (!proof) {
+        setFileError("Proof of payment is required!");
+        return;
+      }
+
+      setFileError("");
+      console.log({ ...values, proof });
+      mutation.mutate({ ...values, proof });
     },
   });
+
+  const handleCopy = async (value, id) => {
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+
+      setCopied(id);
+    } catch (err) {
+      console.log(err);
+      setError("Copy failed.");
+    }
+  };
+
+  function handleProof(files) {
+    const file = files[0];
+
+    if (!file) return;
+
+    const updatedFile = Object.assign(file, {
+      preview: URL.createObjectURL(file),
+      formattedSize: formatBytes(file.size),
+    });
+
+    setProof(updatedFile);
+  }
 
   useEffect(() => {
     if (mutation.isSuccess) {
@@ -51,18 +87,23 @@ const Bank = ({ settings, userBank }) => {
   }, [mutation.isSuccess]);
 
   useEffect(() => {
-    if (error) {
+    if (error || fileError) {
       const timeout = setTimeout(() => {
-        mutation.reset();
         setError("");
+        setFileError("");
       }, 3000);
       return () => clearTimeout(timeout);
     }
-  }, [error]);
+  }, [error, fileError]);
 
-  // useEffect(() => {
-  //   if (userBank) console.log(userBank);
-  // }, [userBank]);
+  useEffect(() => {
+    if (copied) {
+      const timeout = setTimeout(() => {
+        setCopied("");
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [copied]);
 
   return (
     <Row className="g-3 p-4">
@@ -130,12 +171,33 @@ const Bank = ({ settings, userBank }) => {
           <Label for="banknameInput" className="form-label">
             Bank Name
           </Label>
-          <Input
-            type="text"
-            className="form-control"
-            readOnly
-            value={userBank?.bankName ?? settings?.bankDetails?.bankName}
-          />
+          <div className="position-relative">
+            <Input
+              type="text"
+              className="form-control"
+              readOnly
+              value={userBank?.bankName ?? settings?.bankDetails?.bankName}
+            />
+            <button
+              onClick={() =>
+                handleCopy(
+                  userBank?.bankName || settings?.bankDetails?.bankName,
+                  1
+                )
+              }
+              type="button"
+              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+            >
+              <span
+                className={`${
+                  copied === 1 ? "text-success" : "text-muted"
+                } fw-light fs-11`}
+              >
+                {copied === 1 ? "Copied" : "Copy"}
+              </span>
+              <PiCopyLight className="text-muted" />
+            </button>
+          </div>
         </div>
       </Col>
       <Col lg={12}>
@@ -143,12 +205,35 @@ const Bank = ({ settings, userBank }) => {
           <Label for="banknameInput" className="form-label">
             Account Name
           </Label>
-          <Input
-            type="text"
-            className="form-control"
-            readOnly
-            value={userBank?.accountName ?? settings?.bankDetails?.accountName}
-          />
+          <div className="position-relative">
+            <Input
+              type="text"
+              className="form-control"
+              readOnly
+              value={
+                userBank?.accountName ?? settings?.bankDetails?.accountName
+              }
+            />
+            <button
+              onClick={() =>
+                handleCopy(
+                  userBank?.accountName || settings?.bankDetails?.accountName,
+                  2
+                )
+              }
+              type="button"
+              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+            >
+              <span
+                className={`${
+                  copied === 2 ? "text-success" : "text-muted"
+                } fw-light fs-11`}
+              >
+                {copied === 2 ? "Copied" : "Copy"}
+              </span>
+              <PiCopyLight className="text-muted" />
+            </button>
+          </div>
         </div>
       </Col>
       <Col lg={12}>
@@ -156,14 +241,36 @@ const Bank = ({ settings, userBank }) => {
           <Label for="banknameInput" className="form-label">
             Account Number
           </Label>
-          <Input
-            type="text"
-            className="form-control"
-            readOnly
-            value={
-              userBank?.accountNumber ?? settings?.bankDetails?.accountNumber
-            }
-          />
+          <div className="position-relative">
+            <Input
+              type="text"
+              className="form-control"
+              readOnly
+              value={
+                userBank?.accountNumber ?? settings?.bankDetails?.accountNumber
+              }
+            />
+            <button
+              onClick={() =>
+                handleCopy(
+                  userBank?.accountNumber ||
+                    settings?.bankDetails?.accountNumber,
+                  3
+                )
+              }
+              type="button"
+              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+            >
+              <span
+                className={`${
+                  copied === 3 ? "text-success" : "text-muted"
+                } fw-light fs-11`}
+              >
+                {copied === 3 ? "Copied" : "Copy"}
+              </span>
+              <PiCopyLight className="text-muted" />
+            </button>
+          </div>
         </div>
       </Col>
       <Col lg={12}>
@@ -171,12 +278,33 @@ const Bank = ({ settings, userBank }) => {
           <Label for="banknameInput" className="form-label">
             Routing Number
           </Label>
-          <Input
-            type="text"
-            className="form-control"
-            readOnly
-            value={userBank?.routing ?? settings?.bankDetails?.routing}
-          />
+          <div className="position-relative">
+            <Input
+              type="text"
+              className="form-control"
+              readOnly
+              value={userBank?.routing ?? settings?.bankDetails?.routing}
+            />
+            <button
+              onClick={() =>
+                handleCopy(
+                  userBank?.routing || settings?.bankDetails?.routing,
+                  4
+                )
+              }
+              type="button"
+              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+            >
+              <span
+                className={`${
+                  copied === 4 ? "text-success" : "text-muted"
+                } fw-light fs-11`}
+              >
+                {copied === 4 ? "Copied" : "Copy"}
+              </span>
+              <PiCopyLight className="text-muted" />
+            </button>
+          </div>
         </div>
       </Col>
       <Col lg={12}>
@@ -184,7 +312,27 @@ const Bank = ({ settings, userBank }) => {
           <Label for="banknameInput" className="form-label">
             Swift Code / BIC Code
           </Label>
-          <Input type="text" className="form-control" id="banknameInput" />
+          <div className="position-relative">
+            <Input type="text" className="form-control" id="banknameInput" />
+            <button
+              //  onClick={() =>
+              //   handleCopy(
+              //     userBank?.accountName || settings?.bankDetails?.accountName, 5
+              //   )
+              // }
+              type="button"
+              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+            >
+              <span
+                className={`${
+                  copied === 5 ? "text-success" : "text-muted"
+                } fw-light fs-11`}
+              >
+                {copied === 5 ? "Copied" : "Copy"}
+              </span>
+              <PiCopyLight className="text-muted" />
+            </button>
+          </div>
         </div>
       </Col>
       <Col lg={12}>
@@ -192,12 +340,33 @@ const Bank = ({ settings, userBank }) => {
           <Label for="banknameInput" className="form-label">
             Bank Address
           </Label>
-          <Input
-            type="text"
-            className="form-control"
-            readOnly
-            value={userBank?.address ?? settings?.bankDetails?.address}
-          />
+          <div className="position-relative">
+            <Input
+              type="text"
+              className="form-control"
+              readOnly
+              value={userBank?.address ?? settings?.bankDetails?.address}
+            />
+            <button
+              onClick={() =>
+                handleCopy(
+                  userBank?.address || settings?.bankDetails?.address,
+                  6
+                )
+              }
+              type="button"
+              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+            >
+              <span
+                className={`${
+                  copied === 6 ? "text-success" : "text-muted"
+                } fw-light fs-11`}
+              >
+                {copied === 6 ? "Copied" : "Copy"}
+              </span>
+              <PiCopyLight className="text-muted" />
+            </button>
+          </div>
         </div>
       </Col>
       <Col lg={12}>
@@ -205,12 +374,33 @@ const Bank = ({ settings, userBank }) => {
           <Label for="banknameInput" className="form-label">
             Reference (Required)
           </Label>
-          <Input
-            type="text"
-            className="form-control"
-            readOnly
-            value={userBank?.reference ?? settings?.bankDetails?.reference}
-          />
+          <div className="position-relative">
+            <Input
+              type="text"
+              className="form-control"
+              readOnly
+              value={userBank?.reference ?? settings?.bankDetails?.reference}
+            />
+            <button
+              onClick={() =>
+                handleCopy(
+                  userBank?.reference || settings?.bankDetails?.reference,
+                  7
+                )
+              }
+              type="button"
+              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+            >
+              <span
+                className={`${
+                  copied === 7 ? "text-success" : "text-muted"
+                } fw-light fs-11`}
+              >
+                {copied === 7 ? "Copied" : "Copy"}
+              </span>
+              <PiCopyLight className="text-muted" />
+            </button>
+          </div>
         </div>
       </Col>
 
@@ -270,6 +460,42 @@ const Bank = ({ settings, userBank }) => {
           <hr style={{ color: "#dedede" }} />
         </div>
       </Col>
+      <Col className="px-3">
+        {fileError && (
+          <Alert color="danger" className="mb-3">
+            {fileError}
+          </Alert>
+        )}
+
+        <div className="mb-1">
+          <Label className="form-label text-muted">Proof Of Payment</Label>
+        </div>
+
+        <Dropzone
+          onDrop={handleProof}
+          accept={{
+            "image/*": [".jpeg", ".jpg", ".png", ".webp"],
+          }}
+          maxFiles={1}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div className="dropzone dz-clickable bg-light-subtle">
+              <div className="dz-message needsclick pt-4" {...getRootProps()}>
+                <div className="mb-1">
+                  <i className="display-4 text-muted ri-upload-cloud-2-fill" />
+                </div>
+                <h6 className="mb-1">
+                  {proof ? proof.name : "Click to upload or drag and drop"}
+                </h6>
+
+                <small className="text-muted fs-12">
+                  {proof ? "Image uploaded" : "PNG, JPG up to 5MB"}
+                </small>
+              </div>
+            </div>
+          )}
+        </Dropzone>
+      </Col>
 
       <Col lg={12}>
         <CenterSpan>
@@ -286,10 +512,7 @@ const Bank = ({ settings, userBank }) => {
           >
             I have made payment
           </button>
-          <small
-            className="pb-3"
-            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
-          >
+          <small className="pb-3 fs-13 text-muted fw-light">
             After sending the wire transfer, click the button above to notify
             us. We'll credit your account once we receive the funds.
           </small>

@@ -46,7 +46,14 @@ const DepositForm = () => {
 
   return (
     <React.Fragment>
-      <TrxCrumb title="Deposit" handleMove={() => window.history.back()} />
+      <TrxCrumb
+        title="Deposit"
+        handleMove={
+          activeView === "default"
+            ? () => window.history.back()
+            : () => handleView("default")
+        }
+      />
       <Row>
         <Col lg={9}>
           <Card>

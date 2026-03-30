@@ -23,12 +23,26 @@ async function getTransactionAnalytics() {
 }
 
 async function depositFunds(formData) {
+  console.log("Service", formData);
   try {
+    if (formData.method === "bank") {
+      const formDataToSend = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formDataToSend.append(key, value);
+        }
+      });
+
+      const response = await api.upload("/transaction/deposit", formDataToSend);
+
+      return response.data;
+    }
+
     const response = await api.create("/transaction/deposit", formData);
     return response.data;
   } catch (error) {
-    const errMsg = error.response?.data?.message;
-    throw new Error(errMsg);
+    throw new Error(error || "Failed to initiate deposit.");
   }
 }
 
@@ -37,8 +51,7 @@ async function withdrawFund(formData) {
     const response = await api.create("/transaction/withdraw", formData);
     return response.data;
   } catch (error) {
-    // console.log(error);
-    const errMsg = error || error.message;
+    const errMsg = error || "Failed to initiate wthdrawal.";
     throw new Error(errMsg);
   }
 }
@@ -48,7 +61,7 @@ async function transferFund(formData) {
     const response = await api.create("/transaction/transfer", formData);
     return response.data;
   } catch (error) {
-    const errMsg = error.message;
+    const errMsg = error || "Transfer failed.";
     throw new Error(errMsg);
   }
 }

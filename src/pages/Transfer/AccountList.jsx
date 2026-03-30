@@ -46,7 +46,7 @@ const AccountList = () => {
                   key={wallet._id}
                 >
                   <div className="d-flex align-items-start gap-2">
-                    <img src={getWalletIcon(wallet.name)} alt="" width={20} />
+                    <img src={getWalletIcon(wallet.slug)} alt="" width={20} />
                     <span className="d-flex flex-column">
                       <span
                         style={{
@@ -66,7 +66,7 @@ const AccountList = () => {
                         className="d-flex align-items-center"
                       >
                         <GoDotFill
-                          style={{ color: getWalletColor(wallet.name) }}
+                          style={{ color: getWalletColor(wallet.slug) }}
                         />
                         {capitalize(wallet.name)}
                       </span>

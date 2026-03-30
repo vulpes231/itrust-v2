@@ -1,18 +1,5 @@
 import React, { useState } from "react";
-import {
-  Card,
-  Col,
-  ModalBody,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  TabContent,
-  TabPane,
-} from "reactstrap";
-import classnames from "classnames";
-
-// import Bank from "./Bank";
+import { Card, Col, Row } from "reactstrap";
 import Crypto from "./Crypto";
 import TrxCrumb from "../../components/Common/TrxCrumb";
 import BalanceCard from "../Deposit/BalanceCard";

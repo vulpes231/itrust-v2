@@ -18,7 +18,7 @@ import * as Yup from "yup";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { submitVericationRequest } from "../../services/user/verification";
 import { getUserInfo } from "../../services/user/user";
-import { getAccessToken } from "../../constants";
+import { formatBytes, getAccessToken } from "../../constants";
 import ErrorToast from "../../components/Common/ErrorToast";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import SuccessToast from "../../components/Common/SuccessToast";
@@ -71,15 +71,7 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
     },
   });
 
-  function formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-  }
+  //  formatBytes
 
   function toggleKycVerification() {
     setIsKycVerification(!isKycVerification);

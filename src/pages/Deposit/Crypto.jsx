@@ -13,6 +13,7 @@ import { btc, dep, eth, usdt } from "../../assets";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import Loader from "../../components/Common/Loader";
 import { PiCopyLight } from "react-icons/pi";
+import Barcode from "./Barcode";
 
 const methods = [
   { id: "btc", label: "Bitcoin", network: "BTC", img: btc, symbol: "BTC" },
@@ -37,13 +38,14 @@ const Crypto = ({ settings, user }) => {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const [selectedMode, setSelectedMode] = useState("");
+  const [depositAddress, setDepositAddress] = useState("");
 
   const handleMode = (asset) => {
     setSelectedMode(asset);
   };
 
   const cryptoMutation = useMutation({
-    mutationFn: () => depositFunds(cryptoValidation.values),
+    mutationFn: depositFunds,
     onError: (err) => setError(err.message),
   });
 
@@ -63,9 +65,8 @@ const Crypto = ({ settings, user }) => {
       amount: Yup.string().required("Enter deposit amount"),
     }),
     onSubmit: (values) => {
-      console.log("Submit clicked");
       console.log(values);
-      cryptoMutation.mutate();
+      // cryptoMutation.mutate(values);
     },
     validateOnMount: true,
   });
@@ -268,7 +269,21 @@ const Crypto = ({ settings, user }) => {
           <div className="d-flex flex-column">
             <hr style={{ color: "#dedede" }} />
             <div className="d-flex align-items-center justify-content-center">
-              <img src={dep} alt="" width={"120px"} height={"120px"} />
+              <Barcode
+                method={selectedMode?.symbol}
+                address={
+                  getUserAddress(
+                    cryptoValidation.values.method.toLowerCase(),
+                    cryptoValidation.values.network
+                  ) ||
+                  getGLobalAddress(
+                    cryptoValidation.values.method.toLowerCase(),
+                    cryptoValidation.values.network
+                  )
+                }
+                amount={data?.amount}
+                network={selectedMode?.network}
+              />
             </div>
           </div>
         </div>

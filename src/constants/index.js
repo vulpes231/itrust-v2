@@ -34,7 +34,7 @@ const getWalletColor = (name) => {
   switch (name) {
     case "brokerage":
       return "#5126BE";
-    case "automated investing":
+    case "auto":
       return "#F1CF24";
     case "cash":
       return "#29BADB";
@@ -46,7 +46,7 @@ const getWalletBg = (name) => {
   switch (name) {
     case "brokerage":
       return "#E8EBFD";
-    case "automated investing":
+    case "auto":
       return "#FFF7E4";
     case "cash":
       return "#DFF5FA";
@@ -59,7 +59,7 @@ const getWalletIcon = (name) => {
   switch (name) {
     case "brokerage":
       return broke;
-    case "automated investing":
+    case "auto":
       return auto;
     case "cash":
       return cash;
@@ -80,6 +80,16 @@ const getIconColor = (name) => {
       return null;
   }
 };
+
+function formatBytes(bytes, decimals = 2) {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+}
 
 const getIconBg = (name) => {
   switch (name) {
@@ -106,4 +116,5 @@ export {
   getWalletBg,
   getIconColor,
   getIconBg,
+  formatBytes,
 };

@@ -20,6 +20,9 @@ import {
 } from "../../constants";
 import { GoDotFill } from "react-icons/go";
 import Loader from "../../components/Common/Loader";
+import CashAccounts from "./CashAccounts";
+import OtherAccounts from "./OtherAccounts";
+import ChoseAccount from "./ChosenAccount";
 
 const buttons = [
   "100",
@@ -35,6 +38,7 @@ const buttons = [
 const Crypto = () => {
   const [error, setError] = useState("");
   const [selectedAccount, setSelectedAccount] = useState("");
+  const [accountSelected, setAccountSelected] = useState(false);
   const [toAccount, setToAccount] = useState("");
   const [amt, setAmt] = useState("");
 
@@ -62,9 +66,16 @@ const Crypto = () => {
       amount: Yup.string().required("Enter withdrawal amount"),
     }),
     onSubmit: (values) => {
-      console.log("values", values);
+      if (!selectedAccount._id || !toAccount._id) {
+        setError("Select from and to account!");
+        return;
+      }
       if (selectedAccount._id === toAccount._id) {
         setError("Invalid account selected!");
+        return;
+      }
+      if (parseFloat(values.amount) < 50) {
+        setError("Minimum transfer amount is $50");
         return;
       }
       mutation.mutate(values);
@@ -91,6 +102,12 @@ const Crypto = () => {
       return () => clearTimeout(timeout);
     }
   }, [error]);
+
+  const otherAccounts = (wallets || []).filter((acct) => acct.slug !== "cash");
+  const cashAccount = (wallets || []).filter((acct) => acct.slug === "cash");
+  const chosenAccount = (wallets || []).filter(
+    (acct) => acct.slug === selectedAccount?.slug
+  );
 
   return (
     <Row className="g-3 p-4">
@@ -139,7 +156,17 @@ const Crypto = () => {
             Account From
           </Label>
           <div className="d-flex flex-column gap-2">
-            {wallets &&
+            {accountSelected ? (
+              <ChoseAccount
+                chosenAccount={chosenAccount}
+                selectedAccount={selectedAccount}
+                setSelectedAccount={setSelectedAccount}
+                setAccountSelected={setAccountSelected}
+                accountSelected={accountSelected}
+                setToAccount={setToAccount}
+              />
+            ) : (
+              wallets &&
               wallets.length > 0 &&
               wallets.map((wallet) => {
                 return (
@@ -156,7 +183,10 @@ const Crypto = () => {
                           : "1px solid #dedede",
                     }}
                     key={wallet._id}
-                    onClick={() => setSelectedAccount(wallet)}
+                    onClick={() => {
+                      setAccountSelected(!accountSelected);
+                      setSelectedAccount(wallet);
+                    }}
                   >
                     <div className={`d-flex align-items-center gap-3`}>
                       <figure
@@ -221,10 +251,12 @@ const Crypto = () => {
                     </div>
                   </div>
                 );
-              })}
+              })
+            )}
           </div>
         </div>
       </Col>
+      {/* amount */}
       <Col>
         <div className="pb-4">
           <Label>Transfer Amount</Label>
@@ -265,83 +297,19 @@ const Crypto = () => {
             To Account
           </Label>
           <div className="d-flex flex-column gap-2">
-            {wallets &&
-              wallets.length > 0 &&
-              wallets.map((wallet) => {
-                return (
-                  <div
-                    className={`d-flex align-items-center gap-2 justify-content-between px-4 py-2 rounded  ${
-                      toAccount._id === wallet._id ? "bg-primary-subtle" : ""
-                    }`}
-                    style={{
-                      border:
-                        toAccount._id === wallet._id
-                          ? "1px solid #5156be"
-                          : "1px solid #dedede",
-                    }}
-                    key={wallet._id}
-                    onClick={() => setToAccount(wallet)}
-                  >
-                    <div className={`d-flex align-items-center gap-3`}>
-                      <figure
-                        style={{
-                          backgroundColor: getWalletBg(wallet.name),
-                          // color: getWalletColor(wallet.name),
-                        }}
-                        className="p-1 d-flex align-items-center justify-content-center rounded"
-                      >
-                        <img
-                          src={getWalletIcon(wallet.name)}
-                          alt=""
-                          width={20}
-                        />
-                      </figure>
-                      <div className="d-flex flex-column gap-1">
-                        <span
-                          style={{
-                            color: "#495057",
-                            fontWeight: 600,
-                            fontSize: "14px",
-                          }}
-                        >
-                          {capitalize(wallet.name)}
-                        </span>
-
-                        <span
-                          style={{
-                            color: "#212529",
-                            fontWeight: 300,
-                            fontSize: "14px",
-                          }}
-                        >
-                          Balance: {formatCurrency(wallet.availableBalance)}
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        border:
-                          toAccount._id === wallet._id
-                            ? "3px solid #5156be"
-                            : "3px solid #505050",
-                        borderRadius: "50%",
-                        width: "16px",
-                        height: "16px",
-                      }}
-                      className="d-flex align-items-center justify-content-center"
-                    >
-                      <GoDotFill
-                        style={{
-                          display:
-                            toAccount._id === wallet._id ? "flex" : "none",
-                          color:
-                            toAccount._id === wallet._id ? "#5156be" : "none",
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+            {accountSelected && selectedAccount?.slug === "cash" ? (
+              <OtherAccounts
+                otherAccts={otherAccounts}
+                toAccount={toAccount}
+                setToAccount={setToAccount}
+              />
+            ) : (
+              <CashAccounts
+                cashAccts={cashAccount}
+                toAccount={toAccount}
+                setToAccount={setToAccount}
+              />
+            )}
           </div>
         </div>
       </Col>
