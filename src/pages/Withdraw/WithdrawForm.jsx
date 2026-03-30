@@ -53,10 +53,7 @@ const WithdrawForm = () => {
 
   return (
     <React.Fragment>
-      <TrxCrumb
-        title={"Withdrawal"}
-        handleMove={() => setActiveView("default")}
-      />
+      <TrxCrumb title={"Withdrawal"} handleMove={() => window.history.back()} />
       <Row>
         <Col lg={9}>
           <Card>

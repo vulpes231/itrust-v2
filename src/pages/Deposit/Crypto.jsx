@@ -12,9 +12,30 @@ import { FaDollarSign } from "react-icons/fa";
 import { btc, dep, eth, usdt } from "../../assets";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import Loader from "../../components/Common/Loader";
+import { PiCopyLight } from "react-icons/pi";
+
+const methods = [
+  { id: "btc", label: "Bitcoin", network: "BTC", img: btc, symbol: "BTC" },
+  { id: "eth", label: "Ethereum", network: "ERC20", img: eth, symbol: "ETH" },
+  {
+    id: "usdtErc",
+    label: "Tether",
+    network: "ERC20",
+    img: usdt,
+    symbol: "USDT",
+  },
+  {
+    id: "usdtTrc",
+    label: "Tether",
+    network: "TRC20",
+    img: usdt,
+    symbol: "USDT",
+  },
+];
 
 const Crypto = ({ settings, user }) => {
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
   const [selectedMode, setSelectedMode] = useState("");
 
   const handleMode = (asset) => {
@@ -49,44 +70,15 @@ const Crypto = ({ settings, user }) => {
     validateOnMount: true,
   });
 
-  const methods = [
-    { id: "btc", label: "Bitcoin", network: "BTC", img: btc, symbol: "BTC" },
-    { id: "eth", label: "Ethereum", network: "ERC20", img: eth, symbol: "ETH" },
-    {
-      id: "usdtErc",
-      label: "Tether",
-      network: "ERC20",
-      img: usdt,
-      symbol: "USDT",
-    },
-    {
-      id: "usdtTrc",
-      label: "Tether",
-      network: "TRC20",
-      img: usdt,
-      symbol: "USDT",
-    },
-  ];
-
-  useEffect(() => {
-    if (cryptoMutation.isSuccess) {
-      const timeout = setTimeout(() => {
-        cryptoMutation.reset();
-        window.location.reload();
-      }, 3000);
-      return () => clearTimeout(timeout);
+  const handleCopy = async (value) => {
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+    } catch (err) {
+      setError("Copy failed.");
     }
-  }, [cryptoMutation.isSuccess]);
-
-  useEffect(() => {
-    if (error) {
-      const timeout = setTimeout(() => {
-        cryptoMutation.reset();
-        setError("");
-      }, 3000);
-      return () => clearTimeout(timeout);
-    }
-  }, [error]);
+  };
 
   const getGLobalAddress = (name, network) => {
     const addressMap = {
@@ -114,9 +106,33 @@ const Crypto = ({ settings, user }) => {
     return addressMap[name]?.[network] || null;
   };
 
-  // useEffect(() => {
-  //   if (user) console.log(user.settings);
-  // }, [user]);
+  useEffect(() => {
+    if (cryptoMutation.isSuccess) {
+      const timeout = setTimeout(() => {
+        cryptoMutation.reset();
+        window.location.reload();
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [cryptoMutation.isSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      const timeout = setTimeout(() => {
+        setError("");
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (copied) {
+      const timeout = setTimeout(() => {
+        setCopied(false);
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [copied]);
 
   return (
     <Row className="g-3 p-4">
@@ -263,22 +279,51 @@ const Crypto = ({ settings, user }) => {
           <Label for="address" className="form-label">
             Address
           </Label>
-          <Input
-            type="text"
-            className="form-control"
-            id="address"
-            placeholder={
-              getUserAddress(
-                cryptoValidation.values.method.toLowerCase(),
-                cryptoValidation.values.network
-              ) ||
-              getGLobalAddress(
-                cryptoValidation.values.method.toLowerCase(),
-                cryptoValidation.values.network
-              )
-            }
-            readOnly
-          />
+
+          <div className="position-relative">
+            <Input
+              type="text"
+              className="form-control pe-5"
+              id="address"
+              value={
+                getUserAddress(
+                  cryptoValidation.values.method.toLowerCase(),
+                  cryptoValidation.values.network
+                ) ||
+                getGLobalAddress(
+                  cryptoValidation.values.method.toLowerCase(),
+                  cryptoValidation.values.network
+                )
+              }
+              readOnly
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                handleCopy(
+                  getUserAddress(
+                    cryptoValidation.values.method.toLowerCase(),
+                    cryptoValidation.values.network
+                  ) ||
+                    getGLobalAddress(
+                      cryptoValidation.values.method.toLowerCase(),
+                      cryptoValidation.values.network
+                    )
+                )
+              }
+              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+            >
+              <span
+                className={`${
+                  copied ? "text-success" : "text-muted"
+                } fw-light fs-11`}
+              >
+                {copied ? "Copied" : "Copy"}
+              </span>
+              <PiCopyLight className="text-muted" />
+            </button>
+          </div>
         </div>
       </Col>
 

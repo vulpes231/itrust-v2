@@ -227,7 +227,7 @@ const AllTransactions = () => {
                 <button
                   type="button"
                   onClick={() => setShowFilter(!showFilter)}
-                  className="btn btn-success"
+                  className="btn btn-secondary"
                 >
                   <i className="ri-equalizer-line align-bottom me-1"></i>
                   Filters

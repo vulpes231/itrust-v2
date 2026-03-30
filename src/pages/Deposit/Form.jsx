@@ -67,7 +67,7 @@ const Form = ({ handleView, analytics }) => {
 
   return (
     <React.Fragment>
-      <div className="px-4 py-1" style={{ color: "#495057" }}>
+      <div className="px-4 py-3" style={{ color: "#495057" }}>
         <div className="pb-4">
           <FlexRow>
             <span
@@ -225,7 +225,7 @@ const Form = ({ handleView, analytics }) => {
               style={{ width: "100%" }}
               className="btn btn-primary"
             >
-              Confirm Deposit
+              Continue
             </button>
             <small
               className="pb-3"

@@ -24,10 +24,6 @@ const DepositLimit = ({ userSettings, globalSettings, active }) => {
     userSettings?.limits?.deposit?.crypto ??
     globalSettings?.depositLimits?.crypto;
 
-  useEffect(() => {
-    if (active) console.log(active);
-  }, [active]);
-
   return (
     <div>
       <Label

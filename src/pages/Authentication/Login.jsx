@@ -56,9 +56,19 @@ const Login = (props) => {
 
     const user = mutation.data.user;
     const token = mutation.data.token;
+    const d = new Date();
+
+    const loginTime = `Updated ${d.toLocaleDateString(
+      "en-GB"
+    )} at ${d.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    })}`;
 
     sessionStorage.setItem("token", token);
     sessionStorage.setItem("user", JSON.stringify(user));
+    sessionStorage.setItem("lastLogin", JSON.stringify(loginTime));
 
     const timeout = setTimeout(() => {
       if (user?.accountStatus) {
