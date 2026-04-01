@@ -41,8 +41,8 @@ const Form = ({ handleView, analytics }) => {
 
   function handleConfirm(e) {
     e.preventDefault();
-    console.log(analytics.pendingDeposit);
-    if (analytics && analytics.pendingDeposit > 500) {
+
+    if (analytics && analytics.pendingDeposit > 0) {
       setError("You have pending deposits!");
       return;
     }

@@ -16,14 +16,17 @@ import Dropzone from "react-dropzone";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { submitVericationRequest } from "../../services/user/verification";
-import { getUserInfo } from "../../services/user/user";
-import { formatBytes, getAccessToken } from "../../constants";
-import ErrorToast from "../../components/Common/ErrorToast";
+import { submitAddressVericationRequest } from "../../../../services/user/verification";
+import { getUserInfo } from "../../../../services/user/user";
+import { formatBytes, getAccessToken } from "../../../../constants";
+import ErrorToast from "../../../../components/Common/ErrorToast";
 import { IoAlertCircleOutline } from "react-icons/io5";
-import SuccessToast from "../../components/Common/SuccessToast";
+import SuccessToast from "../../../../components/Common/SuccessToast";
 
-const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
+const AddressVerificationForm = ({
+  isKycVerification,
+  setIsKycVerification,
+}) => {
   const token = getAccessToken();
 
   const { data: user } = useQuery({
@@ -34,18 +37,22 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
   const [error, setError] = useState("");
 
-  const [mainFile, setMainFile] = useState(null);
-  const [backFile, setBackFile] = useState(null);
+  const [addressFile, setAddressFile] = useState(null);
+
   const [fileError, setFileError] = useState("");
 
   const mutation = useMutation({
     mutationFn: (data) =>
-      submitVericationRequest(data, {
-        mainFile,
-        backFile,
+      submitAddressVericationRequest(data, {
+        addressFile,
       }),
     onError: (err) => {
       setError(err.message);
+    },
+    onSuccess: () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     },
   });
 
@@ -53,13 +60,18 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
     enableReinitialize: true,
     initialValues: {
       idType: "",
+      address: user?.contactInfo?.street || "",
+      country: user?.contactInfo?.country?.name || "",
+      state: user?.contactInfo?.state?.name || "",
+      city: user?.contactInfo?.city || "",
+      zipCode: user?.contactInfo?.zipCode || "",
     },
     validationSchema: Yup.object({
       idType: Yup.string().required("Please Select Your ID Type"),
     }),
     onSubmit: (values) => {
-      if (!mainFile) {
-        setFileError("Main ID is required!");
+      if (!addressFile) {
+        setFileError("Proof of Address is required!");
         return;
       }
 
@@ -68,20 +80,18 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
     },
   });
 
-  //  formatBytes
-
   function toggleKycVerification() {
     setIsKycVerification(!isKycVerification);
 
     if (isKycVerification) {
-      setMainFile(null);
-      setBackFile(null);
+      setAddressFile(null);
+
       validation.resetForm();
       setFileError("");
     }
   }
 
-  function handleMainFile(files) {
+  function handleAddressFile(files) {
     const file = files[0];
 
     if (!file) return;
@@ -91,29 +101,15 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
       formattedSize: formatBytes(file.size),
     });
 
-    setMainFile(updatedFile);
+    setAddressFile(updatedFile);
     setFileError("");
-  }
-
-  function handleBackFile(files) {
-    const file = files[0];
-
-    if (!file) return;
-
-    const updatedFile = Object.assign(file, {
-      preview: URL.createObjectURL(file),
-      formattedSize: formatBytes(file.size),
-    });
-
-    setBackFile(updatedFile);
   }
 
   useEffect(() => {
     return () => {
-      if (mainFile?.preview) URL.revokeObjectURL(mainFile.preview);
-      if (backFile?.preview) URL.revokeObjectURL(backFile.preview);
+      if (addressFile?.preview) URL.revokeObjectURL(addressFile.preview);
     };
-  }, [mainFile, backFile]);
+  }, [addressFile]);
 
   useEffect(() => {
     if (error) {
@@ -124,15 +120,6 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      const tmt = setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-      return () => clearTimeout(tmt);
-    }
-  }, [mutation.isSuccess]);
-
   return (
     <Modal
       isOpen={isKycVerification}
@@ -140,9 +127,13 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
       centered={true}
       size="lg"
     >
-      <ModalHeader className="p-3" toggle={toggleKycVerification}>
-        <h4>Identity Verification</h4>
-        <small className="text-muted">Upload your government issued ID</small>
+      <ModalHeader className="p-3 " toggle={toggleKycVerification}>
+        <div className="d-flex flex-column">
+          <span className="fs-18 fw-bold">Address Verification</span>
+          <small className="text-muted">
+            Upload your government utility bill
+          </small>
+        </div>
       </ModalHeader>
       <ModalBody className="p-0">
         <form className="checkout-tab">
@@ -150,8 +141,100 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
             <Row className="g-3">
               <Col>
                 <div>
+                  <Label for="address" className="form-label">
+                    Residential Address
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="address"
+                    onBlur={validation.handleBlur}
+                    onChange={validation.handleChange}
+                    value={validation.values.address}
+                    readOnly
+                    name="address"
+                  />
+                </div>
+              </Col>
+            </Row>
+
+            <Row className="g-3">
+              <Col>
+                <div>
+                  <Label for="country" className="form-label">
+                    Country of Residence
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="country"
+                    onBlur={validation.handleBlur}
+                    onChange={validation.handleChange}
+                    value={validation.values.country}
+                    readOnly
+                    name="country"
+                  />
+                </div>
+              </Col>
+              <Col>
+                <div>
+                  <Label for="state" className="form-label">
+                    State
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="state"
+                    onBlur={validation.handleBlur}
+                    onChange={validation.handleChange}
+                    value={validation.values.state}
+                    readOnly
+                    name="state"
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className="g-3">
+              <Col>
+                <div>
+                  <Label for="city" className="form-label">
+                    City
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="city"
+                    onBlur={validation.handleBlur}
+                    onChange={validation.handleChange}
+                    value={validation.values.city}
+                    readOnly
+                    name="city"
+                  />
+                </div>
+              </Col>
+              <Col>
+                <div>
+                  <Label for="zipCode" className="form-label">
+                    Zip Code
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    id="zipCode"
+                    onBlur={validation.handleBlur}
+                    onChange={validation.handleChange}
+                    value={validation.values.zipCode}
+                    readOnly
+                    name="zipCode"
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className="g-3">
+              <Col>
+                <div>
                   <Label for="ID Type" className="form-label">
-                    ID Type
+                    Document Type
                   </Label>
                   <Input
                     type="select"
@@ -167,11 +250,11 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                     }
                     name="idType"
                   >
-                    <option value="">Select ID Type</option>
-                    <option value="passport">Passport</option>
-                    <option value="drivers license">Drivers License</option>
-                    <option value="state id">State ID</option>
-                    <option value="national id">National ID</option>
+                    <option value="">Select Document Type</option>
+                    <option value="utility">Utility bill</option>
+                    <option value="statement">Bank Statement</option>
+                    <option value="lease">Lease Agreement</option>
+                    <option value="govid">Government ID</option>
                   </Input>
                   {validation.touched.idType && validation.errors.idType ? (
                     <FormFeedback type="invalid">
@@ -189,10 +272,10 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
               )}
 
               <div className="mb-1">
-                <Label className="form-label">Main ID</Label>
+                <Label className="form-label">Proof of Address</Label>
               </div>
               <Dropzone
-                onDrop={handleMainFile}
+                onDrop={handleAddressFile}
                 accept={{
                   "image/*": [".jpeg", ".jpg", ".png", ".webp"],
                 }}
@@ -211,13 +294,13 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                       </div>
 
                       <h6 className="mb-1">
-                        {mainFile
-                          ? mainFile.name
+                        {addressFile
+                          ? addressFile.name
                           : "Click to upload or drag and drop"}
                       </h6>
 
                       <small className="text-muted fs-12">
-                        {mainFile ? "Image uploaded" : "PNG, JPG up to 5MB"}
+                        {addressFile ? "Image uploaded" : "PNG, JPG up to 5MB"}
                       </small>
                     </div>
                   </div>
@@ -230,54 +313,21 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                   {fileError}
                 </Alert>
               )}
-
-              <div className="mb-1">
-                <Label className="form-label text-muted">
-                  Back ID (Optional)
-                </Label>
-              </div>
-
-              <Dropzone
-                onDrop={handleBackFile}
-                accept={{
-                  "image/*": [".jpeg", ".jpg", ".png", ".webp"],
-                }}
-                maxFiles={1}
-              >
-                {({ getRootProps, getInputProps }) => (
-                  <div className="dropzone dz-clickable">
-                    <div
-                      className="dz-message needsclick pt-4"
-                      {...getRootProps()}
-                    >
-                      <div className="mb-1">
-                        <i className="display-4 text-muted ri-upload-cloud-2-fill" />
-                      </div>
-                      <h6 className="mb-1">
-                        {backFile
-                          ? backFile.name
-                          : "Click to upload or drag and drop"}
-                      </h6>
-
-                      <small className="text-muted fs-12">
-                        {backFile ? "Image uploaded" : "PNG, JPG up to 5MB"}
-                      </small>
-                    </div>
-                  </div>
-                )}
-              </Dropzone>
             </Col>
             <Col>
               <Col className="d-flex align-items-start gap-2 justify-content-between bg-primary-subtle p-3 rounded">
                 <div className="d-flex align-items-start gap-4 text-primary">
                   <IoAlertCircleOutline />
                   <div>
-                    <span>Tips for a succesful verification</span>
+                    <span>
+                      Acceptable Documents(Must be dated within the last 3
+                      months)
+                    </span>
                     <ul>
-                      <li>Ensure all texts are clearly readable</li>
-                      <li>Avoid glare and shadows</li>
-                      <li>Include all four corners of the document</li>
-                      <li>Make sure the ID is not expired</li>
+                      <li>Utility bill (electricity, gas, water)</li>
+                      <li>Bank or credit card statement</li>
+                      <li>Lease or rental aggreement</li>
+                      <li>Government issued document</li>
                     </ul>
                     <span>
                       By submitting, you certify that the information provided
@@ -319,7 +369,7 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
           }}
         />
       )}
-      {mutation.isSuccess && (
+      {!mutation.isSuccess && (
         <SuccessToast
           successMsg={"Documents submitted."}
           isOpen={mutation.isSuccess}
@@ -332,4 +382,4 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
   );
 };
 
-export default KYCVerification;
+export default AddressVerificationForm;

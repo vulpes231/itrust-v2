@@ -7,10 +7,12 @@ import { FaRegEdit } from "react-icons/fa";
 import VerifyAddress from "./Updates/Address/VerifyAddress";
 import VerifyAddressPending from "./Updates/Address/VerifyAddressPending";
 import AddressVerified from "./Updates/Address/AddressVerified";
+import AddressVerificationForm from "./Updates/Address/AddressVerificationForm";
 
 const ContactInformation = ({ user }) => {
   const [editContactModal, setEditContactModal] = useState(false);
   const [editTrustedModal, setEditTrustedModal] = useState(false);
+  const [verifyAddressModal, setVerifyAddressModal] = useState(false);
 
   // console.log(user);
   return (
@@ -70,7 +72,10 @@ const ContactInformation = ({ user }) => {
             </Col>
           </Row>
           {user?.contactInfo?.status === "not verified" ? (
-            <VerifyAddress />
+            <VerifyAddress
+              show={verifyAddressModal}
+              setShow={setVerifyAddressModal}
+            />
           ) : user?.contactInfo?.status === "pending" ? (
             <VerifyAddressPending />
           ) : user?.contactInfo?.status === "verified" ? (
@@ -160,6 +165,12 @@ const ContactInformation = ({ user }) => {
           isOpen={editTrustedModal}
           handleToggle={() => setEditTrustedModal(false)}
           user={user}
+        />
+      )}
+      {verifyAddressModal && (
+        <AddressVerificationForm
+          isKycVerification={verifyAddressModal}
+          setIsKycVerification={setVerifyAddressModal}
         />
       )}
     </Col>

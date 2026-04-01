@@ -1,12 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa6";
 import { MdOutlineCancel, MdCheckCircleOutline } from "react-icons/md";
 import EditInvestOptions from "./Updates/EditInvestOptions";
 import { FaRegEdit } from "react-icons/fa";
+import { useMutation } from "@tanstack/react-query";
+import {
+  toggleDrip,
+  toggleMargin,
+  toggleOptions,
+} from "../../services/user/settings";
+import Loader from "../../components/Common/Loader";
+import SuccessToast from "../../components/Common/SuccessToast";
 
 const ConfigureInvesting = ({ user }) => {
   const [showInvestOptionModal, setShowInvestOptionModal] = useState(false);
+  const [error, setError] = useState("");
+
+  const dripMutation = useMutation({
+    mutationFn: toggleDrip,
+    onError: (err) => setError(err.message),
+    onSuccess: () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    },
+  });
+
+  const marginMutation = useMutation({
+    mutationFn: toggleMargin,
+    onError: (err) => setError(err.message),
+    onSuccess: () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    },
+  });
+
+  const optionsMutation = useMutation({
+    mutationFn: toggleOptions,
+    onError: (err) => setError(err.message),
+    onSuccess: () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      const tmt = setTimeout(() => {
+        setError("");
+      }, 2000);
+      return () => clearTimeout(tmt);
+    }
+  }, [error]);
+
   return (
     <Card>
       <CardHeader>
@@ -99,9 +148,9 @@ const ConfigureInvesting = ({ user }) => {
                 account.
               </span>
             </div>
-            <span className="pr-2">
+            <span onClick={() => dripMutation.mutate()} className="pr-2">
               {user?.investmentInfo?.drip ? (
-                <FaToggleOn size={26} />
+                <FaToggleOn size={26} className="text-success" />
               ) : (
                 <FaToggleOff size={26} />
               )}
@@ -194,8 +243,12 @@ const ConfigureInvesting = ({ user }) => {
                 Enable margin trading for your account.
               </span>
             </div>
-            <span className="pr-2">
-              <FaToggleOff size={26} />
+            <span onClick={() => marginMutation.mutate()} className="pr-2">
+              {user?.investmentInfo?.margin ? (
+                <FaToggleOn size={26} className="text-success" />
+              ) : (
+                <FaToggleOff size={26} />
+              )}
             </span>
           </Col>
         </Row>
@@ -207,9 +260,9 @@ const ConfigureInvesting = ({ user }) => {
                 Enable options trading for your account.
               </span>
             </div>
-            <span className="pr-2">
+            <span onClick={() => optionsMutation.mutate()} className="pr-2">
               {user?.investmentInfo?.options ? (
-                <FaToggleOn size={26} />
+                <FaToggleOn size={26} className="text-success" />
               ) : (
                 <FaToggleOff size={26} />
               )}
@@ -222,6 +275,27 @@ const ConfigureInvesting = ({ user }) => {
           isOpen={showInvestOptionModal}
           handleToggle={() => setShowInvestOptionModal(false)}
           user={user}
+        />
+      )}
+      {dripMutation.isPending && <Loader />}
+      {optionsMutation.isPending && <Loader />}
+      {marginMutation.isPending && <Loader />}
+      {dripMutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Drip trading updated."}
+          onClose={() => dripMutation.reset()}
+        />
+      )}
+      {marginMutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Marging trading updated."}
+          onClose={() => dripMutation.reset()}
+        />
+      )}
+      {optionsMutation.isSuccess && (
+        <SuccessToast
+          successMsg={"Options trading updated."}
+          onClose={() => dripMutation.reset()}
         />
       )}
     </Card>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { IoAlertCircleOutline } from "react-icons/io5";
 
-const VerifyAddress = () => {
+const VerifyAddress = ({ show, setShow }) => {
   return (
     <Col className="d-flex align-items-start gap-2 justify-content-between bg-danger-subtle p-3 rounded">
       <div className="d-flex align-items-start gap-4 text-danger">
@@ -19,9 +19,10 @@ const VerifyAddress = () => {
           </span>
         </span>
       </div>
-      <span>
-        <Link className="btn btn-danger">Click here to Upload</Link>
-      </span>
+
+      <button onClick={() => setShow(true)} className="btn btn-danger">
+        Click here to Upload
+      </button>
     </Col>
   );
 };

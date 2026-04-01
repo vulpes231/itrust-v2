@@ -55,4 +55,28 @@ const submitVericationRequest = async (formData, files) => {
   }
 };
 
-export { verifyEmail, twofactorAuth, submitVericationRequest };
+const submitAddressVericationRequest = async (formData, files) => {
+  try {
+    const formDataToSend = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      formDataToSend.append(key, formData[key]);
+    });
+
+    if (files.addressFile) {
+      formDataToSend.append("proof", files.addressFile);
+    }
+
+    const response = await api.upload("/kyc/address-proof", formDataToSend);
+    return response;
+  } catch (error) {
+    throw new Error(error || "Failed to submit address verification");
+  }
+};
+
+export {
+  verifyEmail,
+  twofactorAuth,
+  submitVericationRequest,
+  submitAddressVericationRequest,
+};
