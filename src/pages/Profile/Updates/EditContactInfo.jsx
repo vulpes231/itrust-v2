@@ -26,6 +26,11 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
   const mutation = useMutation({
     mutationFn: updateUserInfo,
     onError: (err) => setError(err.message),
+    onSuccess: () => {
+      sessionStorage.setItem("showContactToast", "true");
+      handleToggle();
+      window.location.reload();
+    },
   });
 
   const validation = useFormik({
@@ -77,17 +82,6 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      const tmt = setTimeout(() => {
-        mutation.reset();
-        handleToggle();
-        window.location.reload();
-      }, 1000);
-      return () => clearTimeout(tmt);
-    }
-  }, [mutation.isSuccess]);
 
   return (
     <React.Fragment>

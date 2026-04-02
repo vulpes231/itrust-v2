@@ -1,4 +1,3 @@
-import { capitalize } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, Col, Row } from "reactstrap";
 import EditContactInfo from "./Updates/EditContactInfo";
@@ -8,13 +7,32 @@ import VerifyAddress from "./Updates/Address/VerifyAddress";
 import VerifyAddressPending from "./Updates/Address/VerifyAddressPending";
 import AddressVerified from "./Updates/Address/AddressVerified";
 import AddressVerificationForm from "./Updates/Address/AddressVerificationForm";
+import SuccessToast from "../../components/Common/SuccessToast";
 
 const ContactInformation = ({ user }) => {
   const [editContactModal, setEditContactModal] = useState(false);
   const [editTrustedModal, setEditTrustedModal] = useState(false);
   const [verifyAddressModal, setVerifyAddressModal] = useState(false);
 
-  // console.log(user);
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (showToast) {
+      const tmt = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+      return () => clearTimeout(tmt);
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    const shouldShow = sessionStorage.getItem("showContactToast");
+
+    if (shouldShow) {
+      setShowToast(true);
+      sessionStorage.removeItem("showContactToast");
+    }
+  }, []);
   return (
     <Col>
       <Card>
@@ -155,6 +173,13 @@ const ContactInformation = ({ user }) => {
         <AddressVerificationForm
           isKycVerification={verifyAddressModal}
           setIsKycVerification={setVerifyAddressModal}
+        />
+      )}
+      {showToast && (
+        <SuccessToast
+          successMsg={"Contact Information Updated"}
+          isOpen={showToast}
+          onClose={() => setShowToast(false)}
         />
       )}
     </Col>

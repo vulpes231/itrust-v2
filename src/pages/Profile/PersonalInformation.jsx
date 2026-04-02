@@ -1,4 +1,3 @@
-import { capitalize } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Card, CardBody, CardHeader, Col, Label, Row } from "reactstrap";
 import { format } from "date-fns";
@@ -10,12 +9,31 @@ import VerifyPending from "./VerifyPending";
 import Verified from "./Verified";
 import Finc from "./Finc";
 import { FaRegEdit } from "react-icons/fa";
+import SuccessToast from "../../components/Common/SuccessToast";
 
 const PersonalInformation = ({ user }) => {
   const [editPersonalModal, setEditPersonalModal] = useState(false);
   const [editEmploymentModal, setEditEmploymentModal] = useState(false);
 
-  // console.log(user);
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (showToast) {
+      const tmt = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+      return () => clearTimeout(tmt);
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    const shouldShow = sessionStorage.getItem("showPersonalToast");
+
+    if (shouldShow) {
+      setShowToast(true);
+      sessionStorage.removeItem("showPersonalToast");
+    }
+  }, []);
 
   return (
     <Col>
@@ -141,6 +159,13 @@ const PersonalInformation = ({ user }) => {
           isOpen={editEmploymentModal}
           handleToggle={() => setEditEmploymentModal(false)}
           user={user}
+        />
+      )}
+      {showToast && (
+        <SuccessToast
+          successMsg={"Personal Information Updated"}
+          isOpen={showToast}
+          onClose={() => setShowToast(false)}
         />
       )}
     </Col>

@@ -55,6 +55,24 @@ const ConfigureInvesting = ({ user }) => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
+  const [showToast, setShowToast] = useState(false);
+  useEffect(() => {
+    if (showToast) {
+      const tmt = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+      return () => clearTimeout(tmt);
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    const shouldShow = sessionStorage.getItem("showSuccessToast");
+
+    if (shouldShow) {
+      setShowToast(true);
+      sessionStorage.removeItem("showSuccessToast");
+    }
+  }, []);
 
   return (
     <Card>
@@ -296,6 +314,14 @@ const ConfigureInvesting = ({ user }) => {
         <SuccessToast
           successMsg={"Options trading updated."}
           onClose={() => dripMutation.reset()}
+        />
+      )}
+
+      {showToast && (
+        <SuccessToast
+          successMsg={"Investing Information Updated"}
+          isOpen={showToast}
+          onClose={() => setShowToast(false)}
         />
       )}
     </Card>

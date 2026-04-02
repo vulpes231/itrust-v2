@@ -11,14 +11,8 @@ import {
   Row,
   Spinner,
 } from "reactstrap";
-
-import {
-  getCountries,
-  getStatesByCountry,
-} from "../../../services/location/geo";
 import { updateUserInfo } from "../../../services/user/user";
 import ErrorToast from "../../../components/Common/ErrorToast";
-import SuccessToast from "../../../components/Common/SuccessToast";
 
 const ALL_OBJECTIVES = [
   "growth",
@@ -33,6 +27,11 @@ const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
   const mutation = useMutation({
     mutationFn: updateUserInfo,
     onError: (err) => setError(err.message),
+    onSuccess: () => {
+      sessionStorage.setItem("showSuccessToast", "true");
+      handleToggle();
+      window.location.reload();
+    },
   });
 
   const validation = useFormik({
@@ -56,21 +55,9 @@ const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
         handleToggle();
         return;
       }
-      console.log(changedValues);
 
       mutation.mutate(changedValues);
     },
-  });
-
-  const { data: countries } = useQuery({
-    queryFn: getCountries,
-    queryKey: ["countries"],
-  });
-
-  const { data: states } = useQuery({
-    queryFn: () => getStatesByCountry(validation.values.countryId),
-    queryKey: ["states", validation.values.countryId],
-    enabled: !!validation.values.countryId,
   });
 
   useEffect(() => {
@@ -81,17 +68,6 @@ const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      const tmt = setTimeout(() => {
-        mutation.reset();
-        handleToggle();
-        window.location.reload();
-      }, 1000);
-      return () => clearTimeout(tmt);
-    }
-  }, [mutation.isSuccess]);
 
   return (
     <React.Fragment>
@@ -244,13 +220,6 @@ const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
           errorMsg={error}
           isOpen={!!error}
           onClose={() => setError("")}
-        />
-      )}
-      {mutation.isSuccess && (
-        <SuccessToast
-          successMsg={"Investing Information Updated"}
-          isOpen={mutation.isSuccess}
-          onClose={() => mutation.reset()}
         />
       )}
     </React.Fragment>

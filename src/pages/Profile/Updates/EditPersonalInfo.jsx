@@ -22,6 +22,11 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
   const mutation = useMutation({
     mutationFn: updateUserInfo,
     onError: (err) => setError(err.message),
+    onSuccess: () => {
+      sessionStorage.setItem("showPersonalToast", "true");
+      handleToggle();
+      window.location.reload();
+    },
   });
 
   // console.log(user);
@@ -67,17 +72,6 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      const tmt = setTimeout(() => {
-        mutation.reset();
-        handleToggle();
-        window.location.reload();
-      }, 1000);
-      return () => clearTimeout(tmt);
-    }
-  }, [mutation.isSuccess]);
 
   return (
     <React.Fragment>
@@ -198,13 +192,6 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
           errorMsg={error}
           isOpen={!!error}
           onClose={() => setError("")}
-        />
-      )}
-      {mutation.isSuccess && (
-        <SuccessToast
-          successMsg={"Personal Information Updated"}
-          isOpen={mutation.isSuccess}
-          onClose={() => mutation.reset()}
         />
       )}
     </React.Fragment>
