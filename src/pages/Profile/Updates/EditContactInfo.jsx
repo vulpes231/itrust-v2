@@ -31,13 +31,13 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      email: user?.credentials?.email || "",
+      email: user?.contactInfo?.email || "",
       phone: user?.contactInfo?.phone || "",
-      address: user?.contactInfo?.address?.street || "",
-      countryId: user?.locationDetails?.country?.countryId || "",
-      stateId: user?.locationDetails?.state?.stateId || "",
-      city: user?.contactInfo?.address?.city || "",
-      zipCode: user?.contactInfo?.address?.zipCode || "",
+      address: user?.contactInfo?.street || "",
+      countryId: user?.contactInfo?.country?.countryId || "",
+      stateId: user?.contactInfo?.state?.stateId || "",
+      city: user?.contactInfo?.city || "",
+      zipCode: user?.contactInfo?.zipCode || "",
     },
     onSubmit: (values) => {
       const changedValues = {};
@@ -125,6 +125,7 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   name="phone"
                   onChange={validation.handleChange}
                   value={validation.values.phone}
+                  readOnly={user?.contactInfo?.status === "verified"}
                 />
               </Col>
             </Row>
@@ -138,6 +139,7 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   name="address"
                   onChange={validation.handleChange}
                   value={validation.values.address}
+                  readOnly={user?.contactInfo?.status === "verified"}
                 />
               </Col>
             </Row>
@@ -152,6 +154,7 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.countryId}
                   className="text-capitalize"
+                  disabled={user?.contactInfo?.status === "verified"}
                 >
                   <option value="">Select Country</option>
                   {countries?.map((country) => (
@@ -169,6 +172,7 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.stateId}
                   className="text-capitalize"
+                  disabled={user?.contactInfo?.status === "verified"}
                 >
                   <option value="">Select State</option>
                   {states?.map((state) => (
@@ -187,6 +191,8 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   name="city"
                   onChange={validation.handleChange}
                   value={validation.values.city}
+                  autoComplete="off"
+                  readOnly={user?.contactInfo?.status === "verified"}
                 />
               </Col>
               <Col>
@@ -198,6 +204,8 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   name="zipCode"
                   onChange={validation.handleChange}
                   value={validation.values.zipCode}
+                  autoComplete="off"
+                  readOnly={user?.contactInfo?.status === "verified"}
                 />
               </Col>
             </Row>

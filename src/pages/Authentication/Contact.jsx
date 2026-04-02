@@ -43,7 +43,7 @@ const Contact = () => {
       zipCode: savedContact?.zipCode || "",
     },
     validationSchema: Yup.object({
-      country: Yup.string().required("Please Select Your Country"),
+      countryId: Yup.string().required("Please Select Your Country"),
       phone: Yup.string().required("Please Enter Your Phone"),
       street: Yup.string().required("Please Enter Your Street"),
       stateId: Yup.string().required("Please Select Your State"),
@@ -51,7 +51,9 @@ const Contact = () => {
       zipCode: Yup.string().required("Please Enter Your Zipcode"),
     }),
     onSubmit: (values) => {
-      //
+      // console.log(values);
+      sessionStorage.setItem("contact", JSON.stringify(values));
+      history("/personal");
     },
   });
 
@@ -72,7 +74,7 @@ const Contact = () => {
               <Col lg={12}>
                 <div className="text-center mt-sm-5 mb-4 text-white-50">
                   <div>
-                    <Link to="/" className="d-inline-block auth-logo">
+                    <Link to="#" className="d-inline-block auth-logo">
                       <img src={logo} alt="" height="20" />
                     </Link>
                   </div>
@@ -95,14 +97,7 @@ const Contact = () => {
                       <Form
                         onSubmit={(e) => {
                           e.preventDefault();
-                          validation.handleSubmit();
-
-                          sessionStorage.setItem(
-                            "contact",
-                            JSON.stringify(validation.values)
-                          );
-                          history("/personal");
-                          return false;
+                          validation.submitForm();
                         }}
                         className="needs-validation"
                         action="#"

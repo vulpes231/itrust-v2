@@ -38,10 +38,10 @@ const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      experience: user?.professionalInfo?.experience || "",
-      riskTolerance: user?.investOption?.riskTolerance || "",
-      objectives: user?.investOption?.objectives || [],
-      retiring: user?.investOption?.retiring || "",
+      experience: user?.investmentInfo?.experience || "",
+      riskTolerance: user?.investmentInfo?.riskTolerance || "",
+      objectives: [],
+      retiring: user?.investmentInfo?.retiring || "",
     },
     onSubmit: (values) => {
       const changedValues = {};

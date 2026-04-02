@@ -54,9 +54,7 @@ const ProfileDropdown = () => {
           </span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <h6 className="dropdown-header">
-            Welcome {capitalize(user?.personalInfo?.username)}
-          </h6>
+          <h6 className="dropdown-header">Welcome</h6>
           <DropdownItem href="/profile">
             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Profile</span>
@@ -67,22 +65,7 @@ const ProfileDropdown = () => {
             <span className="align-middle">History</span>
           </DropdownItem>
 
-          <DropdownItem href="/pages-faqs">
-            <i className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Help</span>
-          </DropdownItem>
           <div className="dropdown-divider"></div>
-          <DropdownItem href="/pages-profile">
-            <i className="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">
-              Balance :{" "}
-              <b>
-                {walletAnalytics && walletAnalytics.availableBalance
-                  ? formatCurrency(walletAnalytics.availableBalance)
-                  : formatCurrency(0)}
-              </b>
-            </span>
-          </DropdownItem>
 
           <DropdownItem href="/logout">
             <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{" "}

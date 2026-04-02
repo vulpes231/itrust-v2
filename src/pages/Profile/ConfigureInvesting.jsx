@@ -74,11 +74,11 @@ const ConfigureInvesting = ({ user }) => {
         <Row>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>experience</span>
-            <h6>{user?.investmentInfo?.experience || "Not Set"}</h6>
+            <h6>{user?.investmentInfo?.experience || "-"}</h6>
           </Col>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
             <span style={{ color: "#878A99" }}>risk tolerance</span>
-            <h6>{user?.investmentInfo.riskTolerance || "Not Set"}</h6>
+            <h6>{user?.investmentInfo.riskTolerance || "-"}</h6>
           </Col>
         </Row>
         <Row>
@@ -97,7 +97,7 @@ const ConfigureInvesting = ({ user }) => {
                       </span>
                     );
                   })
-                : "Not Set"}
+                : "-"}
             </h6>
           </Col>
           <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
@@ -105,7 +105,7 @@ const ConfigureInvesting = ({ user }) => {
             <h6>
               {user?.investmentInfo.retiring
                 ? `${user?.investmentInfo.retiring} Years`
-                : "Not Set"}{" "}
+                : "-"}{" "}
             </h6>
           </Col>
         </Row>

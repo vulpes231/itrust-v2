@@ -24,16 +24,16 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
     onError: (err) => setError(err.message),
   });
 
+  // console.log(user);
+
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      firstName: user?.name?.firstName || "",
-      lastName: user?.name?.lastName || "",
-      dob: user?.personalDetails?.dob
-        ? user.personalDetails.dob.split("T")[0]
-        : "",
-      nationalityId: user?.locationDetails?.nationality?.id || "",
-      username: user?.credentials?.username || "",
+      firstName: user?.personalInfo?.firstName || "",
+      lastName: user?.personalInfo?.lastName || "",
+      dob: user?.personalInfo?.dob ? user.personalInfo.dob.split("T")[0] : "",
+      nationalityId: user?.personalInfo?.nationality?.id || "",
+      username: user?.personalInfo?.username || "",
     },
     onSubmit: (values) => {
       const changedValues = {};
@@ -102,6 +102,10 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   name="firstName"
                   onChange={validation.handleChange}
                   value={validation.values.firstName}
+                  readOnly={
+                    user?.identityVerification?.kycStatus === "verified"
+                  }
+                  autoComplete="off"
                 />
               </Col>
             </Row>
@@ -115,6 +119,10 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   name="lastName"
                   onChange={validation.handleChange}
                   value={validation.values.lastName}
+                  readOnly={
+                    user?.identityVerification?.kycStatus === "verified"
+                  }
+                  autoComplete="off"
                 />
               </Col>
             </Row>
@@ -128,6 +136,7 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   name="username"
                   onChange={validation.handleChange}
                   value={validation.values.username}
+                  autoComplete="off"
                 />
               </Col>
             </Row>
@@ -142,6 +151,9 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.nationalityId}
                   className="text-capitalize"
+                  disabled={
+                    user?.identityVerification?.kycStatus === "verified"
+                  }
                 >
                   <option value="">Select nationality</option>
                   {nationalities?.map((nation) => (
@@ -160,6 +172,9 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   name="dob"
                   onChange={validation.handleChange}
                   value={validation.values.dob}
+                  readOnly={
+                    user?.identityVerification?.kycStatus === "verified"
+                  }
                 />
               </Col>
             </Row>

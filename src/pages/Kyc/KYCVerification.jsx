@@ -141,8 +141,10 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
       size="lg"
     >
       <ModalHeader className="p-3" toggle={toggleKycVerification}>
-        <h4>Identity Verification</h4>
-        <small className="text-muted">Upload your government issued ID</small>
+        <div className="d-flex flex-column gap-1">
+          <span className="fw-bold fs-18">Identity Verification</span>
+          <small className="text-muted">Upload your government issued ID</small>
+        </div>
       </ModalHeader>
       <ModalBody className="p-0">
         <form className="checkout-tab">
@@ -201,13 +203,13 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                 {({ getRootProps, getInputProps }) => (
                   <div className="dropzone dz-clickable">
                     <div
-                      className="dz-message needsclick pt-4 text-center"
+                      className="dz-message needsclick text-center"
                       {...getRootProps()}
                     >
                       <input {...getInputProps()} />
 
                       <div className="mb-3">
-                        <i className="display-4 text-muted ri-upload-cloud-2-fill" />
+                        <i className="display-5 text-muted ri-upload-cloud-2-fill" />
                       </div>
 
                       <h6 className="mb-1">
@@ -246,12 +248,9 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
               >
                 {({ getRootProps, getInputProps }) => (
                   <div className="dropzone dz-clickable">
-                    <div
-                      className="dz-message needsclick pt-4"
-                      {...getRootProps()}
-                    >
+                    <div className="dz-message needsclick" {...getRootProps()}>
                       <div className="mb-1">
-                        <i className="display-4 text-muted ri-upload-cloud-2-fill" />
+                        <i className="display-5 text-muted ri-upload-cloud-2-fill" />
                       </div>
                       <h6 className="mb-1">
                         {backFile

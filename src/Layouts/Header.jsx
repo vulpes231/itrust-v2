@@ -10,21 +10,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { changeSidebarVisibility } from "../features/layouts/thunk";
 import { logo } from "../assets";
+import { getAccessToken } from "../constants";
 
 const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
   const dispatch = useDispatch();
+  const token = getAccessToken();
 
   const selectDashboardData = createSelector(
     (state) => state.Layout,
     (sidebarVisibilitytype) => sidebarVisibilitytype.sidebarVisibilitytype
   );
-  // Inside your component
-  const sidebarVisibilitytype = useSelector(selectDashboardData);
 
-  const [search, setSearch] = useState(false);
-  const toogleSearch = () => {
-    setSearch(!search);
-  };
+  const sidebarVisibilitytype = useSelector(selectDashboardData);
 
   const toogleMenuBtn = () => {
     var windowSize = document.documentElement.clientWidth;
@@ -77,21 +74,27 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box horizontal-logo">
-                <Link to="/" className="logo logo-dark">
+                <Link
+                  to={token ? "/dashboard" : "/"}
+                  className="logo logo-dark"
+                >
                   <span className="logo-sm">
-                    <img src={logo} alt="" height="50" width="130" />
+                    <img src={logo} alt="" style={{ width: "100px" }} />
                   </span>
                   <span className="logo-lg">
-                    <img src={logo} alt="" height="17" />
+                    <img src={logo} alt="" style={{ width: "100px" }} />
                   </span>
                 </Link>
 
-                <Link to="/" className="logo logo-light">
+                <Link
+                  to={token ? "/dashboard" : "/"}
+                  className="logo logo-light"
+                >
                   <span className="logo-sm">
-                    <img src={logo} alt="" height="50" width="130" />
+                    <img src={logo} alt="" style={{ width: "100px" }} />
                   </span>
                   <span className="logo-lg">
-                    <img src={logo} alt="" height="17" />
+                    <img src={logo} alt="" style={{ width: "100px" }} />
                   </span>
                 </Link>
               </div>
@@ -109,41 +112,10 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                 </span>
               </button>
 
-              <SearchOption />
+              {/* <SearchOption /> */}
             </div>
 
             <div className="d-flex align-items-center">
-              <Dropdown
-                isOpen={search}
-                toggle={toogleSearch}
-                className="d-md-none topbar-head-dropdown header-item"
-              >
-                <DropdownToggle
-                  type="button"
-                  tag="button"
-                  className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
-                >
-                  <i className="bx bx-search fs-22"></i>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-lg dropdown-menu-end p-0">
-                  <Form className="p-3">
-                    <div className="form-group m-0">
-                      <div className="input-group">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Search ..."
-                          aria-label="Recipient's username"
-                        />
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </Form>
-                </DropdownMenu>
-              </Dropdown>
-
               <LightDark
                 layoutMode={layoutModeType}
                 onChangeLayoutMode={onChangeLayoutMode}

@@ -17,11 +17,11 @@ const Profile = () => {
   document.title = "Profile - Itrust Investments";
 
   const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem("profileActiveTab") || "profile";
+    return sessionStorage.getItem("profileActiveTab") || "profile";
   });
 
   useEffect(() => {
-    localStorage.setItem("profileActiveTab", activeTab);
+    sessionStorage.setItem("profileActiveTab", activeTab);
   }, [activeTab]);
 
   const tk = getAccessToken();
@@ -31,6 +31,12 @@ const Profile = () => {
     queryFn: getUserInfo,
     enabled: !!tk,
   });
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("profileActiveTab");
+    };
+  }, []);
 
   return (
     <React.Fragment>

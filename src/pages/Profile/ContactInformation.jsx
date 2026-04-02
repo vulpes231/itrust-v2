@@ -36,39 +36,39 @@ const ContactInformation = ({ user }) => {
               <span className="text-capitalize" style={{ color: "#878A99" }}>
                 email address
               </span>
-              <h6>{user?.contactInfo?.email}</h6>
+              <h6>{user?.contactInfo?.email || "-"}</h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1">
               <span className="text-capitalize" style={{ color: "#878A99" }}>
                 phone number
               </span>
-              <h6>{user?.contactInfo?.phone}</h6>
+              <h6>{user?.contactInfo?.phone || "-"}</h6>
             </Col>
           </Row>
           <Row>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>address</span>
-              <h6>{user?.contactInfo?.street}</h6>
+              <h6>{user?.contactInfo?.street || "-"}</h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>country</span>
-              <h6>{capitalize(user?.contactInfo?.country?.name)}</h6>
+              <h6>{user?.contactInfo?.country?.name || "-"}</h6>
             </Col>
           </Row>
           <Row>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>state/province</span>
-              <h6>{capitalize(user?.contactInfo?.state?.name)}</h6>
+              <h6>{user?.contactInfo?.state?.name || "-"}</h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>city</span>
-              <h6>{user?.contactInfo?.city}</h6>
+              <h6>{user?.contactInfo?.city || "-"}</h6>
             </Col>
           </Row>
           <Row>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>post code</span>
-              <h6>{user?.contactInfo?.zipCode}</h6>
+              <h6>{user?.contactInfo?.zipCode || "-"}</h6>
             </Col>
           </Row>
           {user?.contactInfo?.status === "not verified" ? (
@@ -99,54 +99,38 @@ const ContactInformation = ({ user }) => {
         <CardBody className="p-4">
           <Col className="d-flex flex-column gap-3 border p-2 rounded">
             <Row>
-              <Col md={6} className="d-flex flex-column gap-1">
-                <span className="text-capitalize" style={{ color: "#878A99" }}>
-                  first name
-                </span>
-                <h6>
-                  {capitalize(user?.settings?.beneficiary?.firstName) ??
-                    "Not Set"}
-                </h6>
+              <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+                <span style={{ color: "#878A99" }}>first name</span>
+                <h6>{user?.settings?.beneficiary?.firstName || "-"}</h6>
               </Col>
-              <Col md={6} className="d-flex flex-column gap-1">
-                <span className="text-capitalize" style={{ color: "#878A99" }}>
-                  last name
-                </span>
-                <h6>
-                  {capitalize(user?.settings?.beneficiary?.lastName) ??
-                    "Not Set"}
-                </h6>
+              <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+                <span style={{ color: "#878A99" }}>last name</span>
+                <h6>{user?.settings?.beneficiary?.lastName || "-"}</h6>
               </Col>
             </Row>
             <Row>
               <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
                 <span style={{ color: "#878A99" }}>relationship</span>
-                <h6>
-                  {user?.settings?.beneficiary?.relationship ?? "Not Set"}{" "}
-                </h6>
+                <h6>{user?.settings?.beneficiary?.relationship || "-"} </h6>
               </Col>
               <Col md={6} className="d-flex flex-column gap-1 ">
                 <span style={{ color: "#878A99" }} className="text-capitalize">
                   email address
                 </span>
-                <h6>
-                  {user?.settings?.beneficiary?.contact?.email ?? "Not Set"}
-                </h6>
+                <h6>{user?.settings?.beneficiary?.contact?.email || "-"}</h6>
               </Col>
             </Row>
             <Row>
               <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
                 <span style={{ color: "#878A99" }}>phone number</span>
-                <h6>
-                  {user?.settings?.beneficiary?.contact?.phone ?? "Not Set"}
-                </h6>
+                <h6>{user?.settings?.beneficiary?.contact?.phone || "-"}</h6>
               </Col>
               <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
                 <span style={{ color: "#878A99" }}>address</span>
                 <h6>
                   {user?.settings?.beneficiary
                     ? `${user?.settings?.beneficiary?.address?.street},  ${user?.settings?.beneficiary?.address?.city}, ${user?.settings?.beneficiary?.address?.state?.name} ${user?.settings?.beneficiary?.address?.zipCode}`
-                    : "Not Set"}
+                    : "-"}
                 </h6>
               </Col>
             </Row>

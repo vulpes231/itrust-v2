@@ -15,6 +15,8 @@ const PersonalInformation = ({ user }) => {
   const [editPersonalModal, setEditPersonalModal] = useState(false);
   const [editEmploymentModal, setEditEmploymentModal] = useState(false);
 
+  // console.log(user);
+
   return (
     <Col>
       <Card>
@@ -32,17 +34,17 @@ const PersonalInformation = ({ user }) => {
         </CardHeader>
         <CardBody className="d-flex flex-column gap-3 p-4">
           <Row>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span className="" style={{ color: "#878A99" }}>
                 first name
               </span>
-              <h6>{capitalize(user?.personalInfo?.firstName)}</h6>
+              <h6>{user?.personalInfo?.firstName || "-"}</h6>
             </Col>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span className="" style={{ color: "#878A99" }}>
                 last name
               </span>
-              <h6>{capitalize(user?.personalInfo?.lastName)}</h6>
+              <h6>{user?.personalInfo?.lastName || "-"}</h6>
             </Col>
           </Row>
           <Row>
@@ -50,22 +52,20 @@ const PersonalInformation = ({ user }) => {
               <span className="text-capitalize" style={{ color: "#878A99" }}>
                 username
               </span>
-              <h6>{user?.personalInfo?.username}</h6>
+              <h6>{user?.personalInfo?.username || "-"}</h6>
             </Col>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
-                nationality
-              </span>
-              <h6>{capitalize(user?.personalInfo?.nationality?.name)}</h6>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span style={{ color: "#878A99" }}>nationality</span>
+              <h6>{user?.personalInfo?.nationality?.name || "-"}</h6>
             </Col>
           </Row>
           <Row>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
-                date of birth
-              </span>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span style={{ color: "#878A99" }}>date of birth</span>
               <h6>
-                {user ? format(user?.personalInfo?.dob, "MMM dd, yyyy") : null}
+                {user && user.personalInfo && user.personalInfo.dob
+                  ? format(user.personalInfo.dob, "MMM dd, yyyy")
+                  : "-"}
               </h6>
             </Col>
           </Row>
@@ -93,54 +93,37 @@ const PersonalInformation = ({ user }) => {
         </CardHeader>
         <CardBody className="d-flex flex-column gap-3 p-4">
           <Row>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
-                employment status
-              </span>
-              <h6>{capitalize(user?.employmentInfo?.status) || "Not Set"}</h6>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span style={{ color: "#878A99" }}>employment status</span>
+              <h6>{user?.employmentInfo?.status || "-"}</h6>
             </Col>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
-                employer
-              </span>
-              <h6>
-                {capitalize(user?.employmentInfo?.employerName) || "Not Set"}
-              </h6>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span style={{ color: "#878A99" }}>employer</span>
+              <h6>{user?.employmentInfo?.employerName || "-"}</h6>
             </Col>
           </Row>
           <Row>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
-                position
-              </span>
-              <h6>
-                {" "}
-                {capitalize(user?.employmentInfo?.position) || "Not Set"}
-              </h6>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span style={{ color: "#878A99" }}>position</span>
+              <h6> {user?.employmentInfo?.position || "-"}</h6>
             </Col>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
-                experience
-              </span>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span style={{ color: "#878A99" }}>experience</span>
               <h6>
                 {user?.employmentInfo?.expYears
-                  ? `${capitalize(user?.employmentInfo?.expYears)} Years`
-                  : "Not Set"}
+                  ? `${user?.employmentInfo?.expYears} Years`
+                  : "-"}
               </h6>
             </Col>
           </Row>
           <Row>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
-                annual income
-              </span>
-              <h6>{user?.employmentInfo?.annualIncome || "Not Set"}</h6>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span style={{ color: "#878A99" }}>annual income</span>
+              <h6>{user?.employmentInfo?.annualIncome || "-"}</h6>
             </Col>
-            <Col md={6} className="d-flex flex-column gap-1">
-              <span className="text-capitalize" style={{ color: "#878A99" }}>
-                estimated net worth
-              </span>
-              <h6>{user?.employmentInfo?.estimatedNet || "Not Set"}</h6>
+            <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
+              <span style={{ color: "#878A99" }}>estimated net worth</span>
+              <h6>{user?.employmentInfo?.estimatedNet || "-"}</h6>
             </Col>
           </Row>
           <Finc />

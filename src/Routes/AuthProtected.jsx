@@ -23,11 +23,11 @@ const AuthProtected = (props) => {
     "/transfer",
     "/withdraw",
     "/profile",
+    "/contact",
+    "/personal",
   ];
 
   const kycStatus = userProfile?.identityVerification?.kycStatus;
-
-  // console.log(kycStatus);
 
   useEffect(() => {
     if (userProfile && !loading && token) {

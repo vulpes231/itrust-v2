@@ -99,7 +99,7 @@ const Personal = () => {
               <Col lg={12}>
                 <div className="text-center mt-sm-5 mb-4 text-white-50">
                   <div>
-                    <Link to="/" className="d-inline-block auth-logo">
+                    <Link to="#" className="d-inline-block auth-logo">
                       <img src={logo} alt="" height="20" />
                     </Link>
                   </div>
