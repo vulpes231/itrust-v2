@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Input, Label, Row } from "reactstrap";
+import { Col, Input, Label, Row, Spinner } from "reactstrap";
 import { useMutation } from "@tanstack/react-query";
 import { depositFunds } from "../../services/user/transactions";
 import { useFormik } from "formik";
@@ -65,8 +65,8 @@ const Crypto = ({ settings, user }) => {
       amount: Yup.string().required("Enter deposit amount"),
     }),
     onSubmit: (values) => {
-      console.log(values);
-      // cryptoMutation.mutate(values);
+      // console.log(values);
+      cryptoMutation.mutate(values);
     },
     validateOnMount: true,
   });
@@ -443,9 +443,10 @@ const Crypto = ({ settings, user }) => {
             }}
             type="submit"
             disabled={cryptoMutation.isPending}
-            className="btn btn-primary"
+            className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
           >
-            I have made payment
+            {cryptoMutation.isPending && <Spinner size={"sm"} />}I have made
+            payment
           </button>
           <small
             className="pb-3"

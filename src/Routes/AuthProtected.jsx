@@ -27,6 +27,8 @@ const AuthProtected = (props) => {
 
   const kycStatus = userProfile?.identityVerification?.kycStatus;
 
+  // console.log(kycStatus);
+
   useEffect(() => {
     if (userProfile && !loading && token) {
       setAuthorization(token);
@@ -38,7 +40,7 @@ const AuthProtected = (props) => {
 
   if (!loading && token && userProfile) {
     if (
-      kycStatus !== "verified" &&
+      kycStatus !== "approved" &&
       !allowedRoutesIfNotVerified.includes(location.pathname)
     ) {
       return <Navigate to={"/dashboard"} replace />;
