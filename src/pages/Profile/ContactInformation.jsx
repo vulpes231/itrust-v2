@@ -8,6 +8,7 @@ import VerifyAddressPending from "./Updates/Address/VerifyAddressPending";
 import AddressVerified from "./Updates/Address/AddressVerified";
 import AddressVerificationForm from "./Updates/Address/AddressVerificationForm";
 import SuccessToast from "../../components/Common/SuccessToast";
+import { Link } from "react-router-dom";
 
 const ContactInformation = ({ user }) => {
   const [editContactModal, setEditContactModal] = useState(false);
@@ -52,9 +53,26 @@ const ContactInformation = ({ user }) => {
           <Row>
             <Col md={6} className="d-flex flex-column gap-1">
               <span className="text-capitalize" style={{ color: "#878A99" }}>
-                email address
+                email address{" "}
               </span>
-              <h6>{user?.contactInfo?.email || "-"}</h6>
+              <h6 className="d-flex align-items-center gap-2">
+                {user?.contactInfo?.email || "-"}{" "}
+                <span className={`fs-10 fw-light text-capitalize`}>
+                  {user?.accountStatus?.isEmailVerified ? (
+                    <small className="text-success bg-success-subtle p-1 rounded-2">
+                      verified
+                    </small>
+                  ) : (
+                    <Link
+                      className="text-warning p-1"
+                      style={{ textDecoration: "underline" }}
+                      to={"/verifyemail"}
+                    >
+                      verify email
+                    </Link>
+                  )}
+                </span>
+              </h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1">
               <span className="text-capitalize" style={{ color: "#878A99" }}>

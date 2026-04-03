@@ -35,6 +35,7 @@ const EditTrustedContact = ({ isOpen, handleToggle, user }) => {
       lastName: user?.settings?.beneficiary?.lastName || "",
       email: user?.settings?.beneficiary?.contact?.email || "",
       phone: user?.settings?.beneficiary?.contact?.phone || "",
+      relationship: user?.settings?.beneficiary?.relationship || "",
       street: user?.settings?.beneficiary?.address?.street || "",
       countryId: user?.settings?.beneficiary?.address?.country?.id || "",
       stateId: user?.settings?.beneficiary?.address?.state?.id || "",
@@ -146,6 +147,30 @@ const EditTrustedContact = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.phone}
                 />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Label className="fs-15 fw-normal text-capitalize">
+                  relationship
+                </Label>
+                <Input
+                  type="select"
+                  name="relationship"
+                  className="text-capitalize"
+                  onChange={validation.handleChange}
+                  value={validation.values.relationship}
+                >
+                  <option value="">Select Relationship</option>
+                  <option value="father">father</option>
+                  <option value="mother">mother</option>
+                  <option value="siblings">siblings</option>
+                  <option value="cousin">cousin</option>
+                  <option value="friend">friend</option>
+                  <option value="partner">partner</option>
+                  <option value="colleague">colleague</option>
+                  <option value="others">others</option>
+                </Input>
               </Col>
             </Row>
             <Row>

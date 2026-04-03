@@ -21,19 +21,24 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
   const mutation = useMutation({
     mutationFn: updateUserInfo,
     onError: (err) => setError(err.message),
+    onSuccess: () => {
+      sessionStorage.setItem("showEmployerToast", "true");
+      handleToggle();
+      window.location.reload();
+    },
   });
 
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      employment: user?.professionalInfo?.employment || "",
-      employerName: user?.professionalInfo?.employmentInfo?.employerName || "",
-      position: user?.professionalInfo?.employmentInfo?.position || "",
-      expYears: user?.professionalInfo?.employmentInfo?.expYears || "",
-      annualIncome: user?.professionalInfo?.employmentInfo?.annualIncome || "",
-      estimatedNet: user?.professionalInfo?.employmentInfo?.estimatedNet || "",
-      liquidNet: user?.professionalInfo?.employmentInfo?.liquidNet || "",
-      taxBracket: user?.professionalInfo?.employmentInfo?.taxBracket || "",
+      employment: user?.employmentInfo?.status || "",
+      employerName: user?.employmentInfo?.employer || "",
+      position: user?.employmentInfo?.position || "",
+      expYears: user?.employmentInfo?.expYears || "",
+      annualIncome: user?.employmentInfo?.annualIncome || "",
+      estimatedNet: user?.employmentInfo?.estimatedNet || "",
+      liquidNet: user?.employmentInfo?.liquidNet || "",
+      taxBracket: user?.employmentInfo?.taxBracket || "",
     },
     onSubmit: (values) => {
       const changedValues = {};
@@ -63,16 +68,7 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      const tmt = setTimeout(() => {
-        mutation.reset();
-        handleToggle();
-        window.location.reload();
-      }, 1000);
-      return () => clearTimeout(tmt);
-    }
-  }, [mutation.isSuccess]);
+  // console.log(user);
 
   return (
     <React.Fragment>
@@ -152,23 +148,19 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
                   className="text-capitalize"
                 >
                   <option value="">Select Experience</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
+                  <option value="0 - 1 year">0 - 1 year</option>
+                  <option value="1 - 5 years">1 - 5 years</option>
+                  <option value="5 - 10 years">5 - 10 years</option>
+                  <option value="10 - 20 years">10 - 20 years</option>
+                  <option value="20 - 30 years">20 - 30 years</option>
+                  <option value="> 30 years">{`> 30 years`}</option>
                 </Input>
               </Col>
             </Row>
             <Row>
               <Col>
                 <Label className="fs-15 fw-normal text-capitalize">
-                  annual income
+                  annual income ({user?.currency?.sign})
                 </Label>
                 <Input
                   type="select"
@@ -178,15 +170,17 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
                   className="text-capitalize"
                 >
                   <option value="">Select Annual Income</option>
+                  <option value="1k - 10k">0k - 1k</option>
                   <option value="1k - 10k">1k - 10k</option>
                   <option value="10k - 100k">10k - 100k</option>
                   <option value="100k - 1M">100k - 1M</option>
                   <option value="1M - 10M">1M - 10M</option>
+                  <option value="> 10M">{`> 10M`}</option>
                 </Input>
               </Col>
               <Col>
                 <Label className="fs-15 fw-normal text-capitalize">
-                  estimated networth
+                  estimated networth ({user?.currency?.sign})
                 </Label>
                 <Input
                   type="select"
@@ -206,7 +200,7 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
             <Row>
               <Col>
                 <Label className="fs-15 fw-normal text-capitalize">
-                  liquid networth
+                  liquid networth ({user?.currency?.sign})
                 </Label>
                 <Input
                   type="select"

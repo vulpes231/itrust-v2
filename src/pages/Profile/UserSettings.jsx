@@ -27,9 +27,9 @@ const UserSettings = ({ user }) => {
             </div>
             <span className="pr-2">
               {user?.mailing?.emailNotification ? (
-                <FaToggleOn size={26} />
+                <FaToggleOn size={26} className="text-success" />
               ) : (
-                <FaToggleOff size={26} />
+                <FaToggleOff size={26} className="text-muted" />
               )}
             </span>
           </Col>
@@ -44,9 +44,9 @@ const UserSettings = ({ user }) => {
             </div>
             <span className="pr-2">
               {user?.mailing?.priceAlert ? (
-                <FaToggleOn size={26} />
+                <FaToggleOn size={26} className="text-success" />
               ) : (
-                <FaToggleOff size={26} />
+                <FaToggleOff size={26} className="text-muted" />
               )}
             </span>
           </Col>
@@ -61,9 +61,9 @@ const UserSettings = ({ user }) => {
             </div>
             <span className="pr-2">
               {user?.mailing?.orderNotification ? (
-                <FaToggleOn size={26} />
+                <FaToggleOn size={26} className="text-success" />
               ) : (
-                <FaToggleOff size={26} />
+                <FaToggleOff size={26} className="text-muted" />
               )}
             </span>
           </Col>
@@ -78,9 +78,9 @@ const UserSettings = ({ user }) => {
             </div>
             <span className="pr-2">
               {user?.mailing?.loginAlert ? (
-                <FaToggleOn size={26} />
+                <FaToggleOn size={26} className="text-success" />
               ) : (
-                <FaToggleOff size={26} />
+                <FaToggleOff size={26} className="text-muted" />
               )}
             </span>
           </Col>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Col } from "reactstrap";
 import { IoAlertCircleOutline } from "react-icons/io5";
 
-const VerifyCard = () => {
+const VerifyCard = ({ showVerify, setShowVerify }) => {
   return (
     <Col className="d-flex align-items-start gap-2 justify-content-between bg-danger-subtle p-3 rounded">
       <div className="d-flex align-items-start gap-4 text-danger">
@@ -18,7 +18,12 @@ const VerifyCard = () => {
         </span>
       </div>
       <span>
-        <Link className="btn btn-danger text-capitalize">verify account</Link>
+        <button
+          onClick={() => setShowVerify(true)}
+          className="btn btn-danger text-capitalize"
+        >
+          verify account
+        </button>
       </span>
     </Col>
   );

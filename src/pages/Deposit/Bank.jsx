@@ -46,8 +46,6 @@ const Bank = ({ settings, userBank }) => {
       }
 
       setFileError("");
-      // setError("Coming soon...");
-
       mutation.mutate({ ...values, proof });
     },
   });

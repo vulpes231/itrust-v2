@@ -284,7 +284,7 @@ const AddressVerificationForm = ({
                 {({ getRootProps, getInputProps }) => (
                   <div className="dropzone dz-clickable">
                     <div
-                      className="dz-message needsclick pt-4 text-center"
+                      className="dz-message needsclick text-center"
                       {...getRootProps()}
                     >
                       <input {...getInputProps()} />

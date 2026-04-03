@@ -73,6 +73,8 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
     }
   }, [error]);
 
+  // console.log(user);
+
   return (
     <React.Fragment>
       <Modal isOpen={isOpen} toggle={handleToggle} centered>
@@ -97,7 +99,7 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.firstName}
                   readOnly={
-                    user?.identityVerification?.kycStatus === "verified"
+                    user?.identityVerification?.kycStatus === "approved"
                   }
                   autoComplete="off"
                 />
@@ -114,7 +116,7 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.lastName}
                   readOnly={
-                    user?.identityVerification?.kycStatus === "verified"
+                    user?.identityVerification?.kycStatus === "approved"
                   }
                   autoComplete="off"
                 />
@@ -146,7 +148,7 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   value={validation.values.nationalityId}
                   className="text-capitalize"
                   disabled={
-                    user?.identityVerification?.kycStatus === "verified"
+                    user?.identityVerification?.kycStatus === "approved"
                   }
                 >
                   <option value="">Select nationality</option>
@@ -167,7 +169,7 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.dob}
                   readOnly={
-                    user?.identityVerification?.kycStatus === "verified"
+                    user?.identityVerification?.kycStatus === "approved"
                   }
                 />
               </Col>

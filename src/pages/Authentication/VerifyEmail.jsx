@@ -28,13 +28,7 @@ const VerifyEmail = () => {
     }
   };
 
-  useEffect(() => {
-    if (token) {
-      console.log(token, "access");
-    }
-  }, [token]);
-
-  document.title = "Email Verification | Itrust Investments";
+  document.title = "Email Verification - Itrust Investments";
 
   return (
     <React.Fragment>

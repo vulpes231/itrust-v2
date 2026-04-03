@@ -170,7 +170,7 @@ const ConfigureInvesting = ({ user }) => {
               {user?.investmentInfo?.drip ? (
                 <FaToggleOn size={26} className="text-success" />
               ) : (
-                <FaToggleOff size={26} />
+                <FaToggleOff size={26} className="text-muted" />
               )}
             </span>
           </Col>
@@ -265,7 +265,7 @@ const ConfigureInvesting = ({ user }) => {
               {user?.investmentInfo?.margin ? (
                 <FaToggleOn size={26} className="text-success" />
               ) : (
-                <FaToggleOff size={26} />
+                <FaToggleOff size={26} className="text-muted" />
               )}
             </span>
           </Col>
@@ -282,7 +282,7 @@ const ConfigureInvesting = ({ user }) => {
               {user?.investmentInfo?.options ? (
                 <FaToggleOn size={26} className="text-success" />
               ) : (
-                <FaToggleOff size={26} />
+                <FaToggleOff size={26} className="text-muted" />
               )}
             </span>
           </Col>

@@ -191,11 +191,12 @@ const EditInvestOptions = ({ isOpen, handleToggle, user }) => {
                   className="text-capitalize"
                 >
                   <option value="">Select Retirement Time Horizon</option>
-                  <option value="2">2 Years</option>
-                  <option value="4">4 Years</option>
-                  <option value="6">6 Years</option>
-                  <option value="8">8 Years</option>
-                  <option value="10">10 Years</option>
+                  <option value="0 - 1 year">0 - 1 year</option>
+                  <option value="1 - 5 years">1 - 5 years</option>
+                  <option value="5 - 10 years">5 - 10 years</option>
+                  <option value="10 - 20 years">10 - 20 years</option>
+                  <option value="20 - 30 years">20 - 30 years</option>
+                  <option value="> 30 years">{`> 30 years`}</option>
                 </Input>
               </Col>
             </Row>

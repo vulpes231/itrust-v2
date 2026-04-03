@@ -10,21 +10,26 @@ import Verified from "./Verified";
 import Finc from "./Finc";
 import { FaRegEdit } from "react-icons/fa";
 import SuccessToast from "../../components/Common/SuccessToast";
+import KYCVerification from "../Kyc/KYCVerification";
 
 const PersonalInformation = ({ user }) => {
   const [editPersonalModal, setEditPersonalModal] = useState(false);
   const [editEmploymentModal, setEditEmploymentModal] = useState(false);
 
   const [showToast, setShowToast] = useState(false);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+
+  const [showEmployerToast, setShowEmployerToast] = useState(false);
 
   useEffect(() => {
-    if (showToast) {
+    if (showToast || showEmployerToast) {
       const tmt = setTimeout(() => {
         setShowToast(false);
+        setShowEmployerToast(false);
       }, 3000);
       return () => clearTimeout(tmt);
     }
-  }, [showToast]);
+  }, [showToast, showEmployerToast]);
 
   useEffect(() => {
     const shouldShow = sessionStorage.getItem("showPersonalToast");
@@ -32,6 +37,15 @@ const PersonalInformation = ({ user }) => {
     if (shouldShow) {
       setShowToast(true);
       sessionStorage.removeItem("showPersonalToast");
+    }
+  }, []);
+
+  useEffect(() => {
+    const employToast = sessionStorage.getItem("showEmployerToast");
+
+    if (employToast) {
+      setShowToast(true);
+      sessionStorage.removeItem("showEmployerToast");
     }
   }, []);
 
@@ -88,7 +102,7 @@ const PersonalInformation = ({ user }) => {
             </Col>
           </Row>
           {user?.identityVerification?.kycStatus === "not verified" ? (
-            <VerifyCard />
+            <VerifyCard setShowVerify={setShowVerifyModal} />
           ) : user?.identityVerification?.kycStatus === "pending" ? (
             <VerifyPending />
           ) : user?.identityVerification?.kycStatus === "verified" ? (
@@ -117,7 +131,7 @@ const PersonalInformation = ({ user }) => {
             </Col>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
               <span style={{ color: "#878A99" }}>employer</span>
-              <h6>{user?.employmentInfo?.employerName || "-"}</h6>
+              <h6>{user?.employmentInfo?.employer || "-"}</h6>
             </Col>
           </Row>
           <Row>
@@ -136,11 +150,15 @@ const PersonalInformation = ({ user }) => {
           </Row>
           <Row>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
-              <span style={{ color: "#878A99" }}>annual income</span>
+              <span style={{ color: "#878A99" }}>
+                annual income ({user?.currency?.sign})
+              </span>
               <h6>{user?.employmentInfo?.annualIncome || "-"}</h6>
             </Col>
             <Col md={6} className="d-flex flex-column gap-1 text-capitalize">
-              <span style={{ color: "#878A99" }}>estimated net worth</span>
+              <span style={{ color: "#878A99" }}>
+                estimated net worth ({user?.currency?.sign})
+              </span>
               <h6>{user?.employmentInfo?.estimatedNet || "-"}</h6>
             </Col>
           </Row>
@@ -166,6 +184,19 @@ const PersonalInformation = ({ user }) => {
           successMsg={"Personal Information Updated"}
           isOpen={showToast}
           onClose={() => setShowToast(false)}
+        />
+      )}
+      {showEmployerToast && (
+        <SuccessToast
+          successMsg={"Employment Information Updated"}
+          isOpen={showEmployerToast}
+          onClose={() => setShowEmployerToast(false)}
+        />
+      )}
+      {showVerifyModal && (
+        <KYCVerification
+          isKycVerification={showVerifyModal}
+          setIsKycVerification={setShowVerifyModal}
         />
       )}
     </Col>
