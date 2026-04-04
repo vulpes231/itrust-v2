@@ -112,7 +112,7 @@ const MyPortfolio = () => {
                 selectedWallet={selectedWallet}
                 chartData={getChartData()}
                 chartLabels={getChartLabels()}
-                dataColors='["--vz-primary", "--vz-info", "--vz-warning", "--vz-success"]'
+                dataColors='["--vz-primary", "--vz-secondary", "--vz-warning"]'
               />
             </div>
 

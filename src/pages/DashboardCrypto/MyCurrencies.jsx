@@ -33,7 +33,7 @@ const MyCurrencies = () => {
       <Col>
         <Card className="card-height-100">
           <CardHeader className="align-items-center d-flex">
-            <h4 className="card-title mb-0 flex-grow-1">Most Active</h4>
+            <h4 className="card-title mb-0 flex-grow-1">Assets</h4>
             <div className="flex-shrink-0 d-flex align-items-center gap-2 ">
               <span style={{ color: "#878A99" }}>Filter by:</span>
               <select
@@ -156,6 +156,17 @@ const MyCurrencies = () => {
                       </tr>
                     );
                   })}
+
+                  {assets?.data?.length === 0 && (
+                    <div>
+                      <span
+                        style={{ color: "#878a99" }}
+                        className="fs-13 fw-semibold"
+                      >
+                        No records found
+                      </span>
+                    </div>
+                  )}
                 </tbody>
               </table>
             </div>

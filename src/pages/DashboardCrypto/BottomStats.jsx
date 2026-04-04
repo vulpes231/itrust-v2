@@ -9,7 +9,9 @@ const BottomStats = ({ walletAnalytics }) => {
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <div className="d-flex align-items-start justify-content-between px-3">
-        <h5>Balances</h5>
+        <span style={{ color: "#495057" }} className="fs-16 fw-semibold">
+          Balances
+        </span>
         <Link className="btn btn-secondary text-capitalize" to={"/deposit"}>
           deposit cash
         </Link>
@@ -21,16 +23,16 @@ const BottomStats = ({ walletAnalytics }) => {
           md={4}
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>
+            <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
               {walletAnalytics
                 ? numeral(
                     Math.floor(walletAnalytics?.totalInvested * 100) / 100
                   ).format("$0,0.00")
                 : formatCurrency(0)}
-            </h3>
+            </span>
             <span
               style={{ color: "#878A99" }}
-              className="text-capitalize fs-16 fw-light"
+              className="text-capitalize fs-14 fw-normal"
             >
               total investments
             </span>
@@ -42,10 +44,12 @@ const BottomStats = ({ walletAnalytics }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
+            <span style={{ color: "#495057" }} className="fs-17 fw-semibold">
+              {formatCurrency(0)}
+            </span>
             <span
               style={{ color: "#878A99" }}
-              className="text-capitalize fs-16 fw-light"
+              className="text-capitalize fs-14 fw-normal"
             >
               total savings
             </span>
@@ -57,14 +61,14 @@ const BottomStats = ({ walletAnalytics }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>
+            <span style={{ color: "#495057" }} className="fs-17 fw-semibold">
               {walletAnalytics
                 ? numeral(walletAnalytics?.cashBalance).format("$0,0.00")
                 : formatCurrency(0)}
-            </h3>
+            </span>
             <span
               style={{ color: "#878A99" }}
-              className="text-capitalize fs-16 fw-light"
+              className="text-capitalize fs-14 fw-normal"
             >
               cash balance
             </span>

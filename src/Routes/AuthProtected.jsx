@@ -1,53 +1,85 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Route, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { setAuthorization } from "../helpers/apiHelper";
 import { useProfile } from "../hooks/userHooks";
 import { useMutation } from "@tanstack/react-query";
 import { logoutUser } from "../services/auth/logout";
+import ErrorToast from "../components/Common/ErrorToast";
 
-const AuthProtected = (props) => {
-  const [error, setError] = useState("");
+const allowedRoutesIfNotVerified = [
+  "/dashboard",
+  "/cash",
+  "/deposit",
+  "/transfer",
+  "/withdraw",
+  "/profile",
+  "/contact",
+  "/personal",
+];
 
+const AuthProtected = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { userProfile, loading, token } = useProfile();
 
   const mutation = useMutation({
     mutationFn: logoutUser,
-    onError: (err) => setError(err.message),
   });
-
-  const allowedRoutesIfNotVerified = [
-    "/dashboard",
-    "/cash",
-    "/deposit",
-    "/transfer",
-    "/withdraw",
-    "/profile",
-    "/contact",
-    "/personal",
-  ];
 
   const kycStatus = userProfile?.identityVerification?.kycStatus;
 
   useEffect(() => {
-    if (userProfile && !loading && token) {
-      setAuthorization(token);
-    } else if (!userProfile && !loading && !token) {
-      sessionStorage.clear();
-      mutation.mutate();
+    if (!loading) {
+      if (token && userProfile) {
+        setAuthorization(token);
+      } else if (!token) {
+        sessionStorage.clear();
+        mutation.mutate();
+      }
     }
-  }, [token, userProfile, loading]);
+  }, [loading, token, userProfile, mutation]);
 
-  if (!loading && token && userProfile) {
-    if (
-      kycStatus !== "approved" &&
-      !allowedRoutesIfNotVerified.includes(location.pathname)
-    ) {
-      return <Navigate to={"/dashboard"} replace />;
+  const isAuthenticated = !loading && token;
+  const isKycApproved = kycStatus === "approved";
+
+  const isRouteAllowedForUnverified = allowedRoutesIfNotVerified.includes(
+    location.pathname
+  );
+
+  const shouldBlockAccess =
+    isAuthenticated &&
+    userProfile &&
+    !isKycApproved &&
+    !isRouteAllowedForUnverified;
+
+  useEffect(() => {
+    let timer;
+
+    if (shouldBlockAccess) {
+      timer = setTimeout(() => {
+        navigate("/dashboard", { replace: true });
+      }, 1000);
     }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [shouldBlockAccess, navigate]);
+
+  if (!loading && !token) {
+    return <Navigate to="/login" replace />;
   }
 
-  return <>{props.children}</>;
+  if (shouldBlockAccess) {
+    return (
+      <ErrorToast
+        errorMsg="Profile Verification Required!"
+        onClose={() => {}}
+      />
+    );
+  }
+
+  return <>{children}</>;
 };
 
 const AccessRoute = ({ component: Component, ...rest }) => {

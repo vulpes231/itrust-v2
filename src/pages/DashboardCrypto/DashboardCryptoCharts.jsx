@@ -13,10 +13,8 @@ const PortfolioCharts = ({
   chartLabels,
 }) => {
   const getChartData = () => {
-    // When there's no data or all values are zero, return [100] to show full circle
     if (!chartData || chartData.length === 0) return [100];
 
-    // Check if all balances are zero
     const totalBalance = getTotalBalance();
     if (totalBalance === 0) return [100];
 
@@ -26,7 +24,6 @@ const PortfolioCharts = ({
   const getChartLabels = () => {
     if (!chartLabels || chartLabels.length === 0) return ["No Data"];
 
-    // When balance is zero but we have wallets, show wallet names
     const totalBalance = getTotalBalance();
     if (totalBalance === 0 && chartLabels.length > 0) {
       return chartLabels;

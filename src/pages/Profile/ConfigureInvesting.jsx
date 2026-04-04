@@ -168,7 +168,7 @@ const ConfigureInvesting = ({ user }) => {
             </div>
             <span onClick={() => dripMutation.mutate()} className="pr-2">
               {user?.investmentInfo?.drip ? (
-                <FaToggleOn size={26} className="text-success" />
+                <FaToggleOn size={26} className="text-secondary" />
               ) : (
                 <FaToggleOff size={26} className="text-muted" />
               )}
@@ -263,7 +263,7 @@ const ConfigureInvesting = ({ user }) => {
             </div>
             <span onClick={() => marginMutation.mutate()} className="pr-2">
               {user?.investmentInfo?.margin ? (
-                <FaToggleOn size={26} className="text-success" />
+                <FaToggleOn size={26} className="text-secondary" />
               ) : (
                 <FaToggleOff size={26} className="text-muted" />
               )}
@@ -280,7 +280,7 @@ const ConfigureInvesting = ({ user }) => {
             </div>
             <span onClick={() => optionsMutation.mutate()} className="pr-2">
               {user?.investmentInfo?.options ? (
-                <FaToggleOn size={26} className="text-success" />
+                <FaToggleOn size={26} className="text-secondary" />
               ) : (
                 <FaToggleOff size={26} className="text-muted" />
               )}
