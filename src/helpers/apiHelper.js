@@ -2,7 +2,7 @@ import axios from "axios";
 import { devUrl, getAccessToken, liveUrl } from "../constants";
 
 // default
-axios.defaults.baseURL = liveUrl;
+axios.defaults.baseURL = devUrl;
 
 const token = getAccessToken();
 if (token) axios.defaults.headers.common["Authorization"] = "Bearer " + token;
