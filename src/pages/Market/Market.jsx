@@ -16,6 +16,7 @@ import { percent } from "feather-icons-react/build/icons.json";
 
 const Market = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentAsset, setCurrentAsset] = useState("stock");
   const queryData = {
     limit: 10,
     sortBy: "priceData.volume",
@@ -28,6 +29,10 @@ const Market = () => {
     setCurrentPage(newPage);
   };
 
+  const handleAssetChange = (type) => {
+    setCurrentAsset(type);
+  };
+
   const { data, isLoading: getAssetsLoading } = useQuery({
     queryFn: () => getAssets(queryData),
     queryKey: ["marketAssets", currentPage],
@@ -38,31 +43,37 @@ const Market = () => {
   const pagination = data?.pagination;
 
   const transformedData = useMemo(() => {
-    if (!assets) return [];
+    if (!assets || assets.length === 0) return [];
 
-    return assets.map((asset) => ({
+    const filteredAssets = assets.filter(
+      (asset) => asset.type === currentAsset
+    );
+
+    // If no assets match the filter, return empty array
+    if (filteredAssets.length === 0) return [];
+
+    return filteredAssets.map((asset) => ({
       ...asset,
-      name:
-        `${
-          asset?.name.length > 15
-            ? `${asset?.name.slice(0, 15)}...`
-            : `${asset?.name} `
-        }` || "Unknown",
+      name: asset?.name
+        ? asset.name.length > 15
+          ? `${asset.name.slice(0, 15)}...`
+          : asset.name
+        : "Unknown",
       img: asset?.imageUrl || "/default-coin.png",
-      price: formatCurrency(asset.priceData?.current) || 0,
-      symbol: asset?.symbol,
-      dailyHigh: formatCurrency(asset.priceData?.dayHigh) || 0,
-      dailyLow: formatCurrency(asset.priceData?.dayLow) || 0,
-      volume: formatMarketCap(asset.priceData?.volume) || 0,
-      percentChange: asset.priceData?.changePercent?.toFixed(2) || 0,
+      price: formatCurrency(asset?.priceData?.current) || 0,
+      symbol: asset?.symbol || "",
+      dailyHigh: formatCurrency(asset?.priceData?.dayHigh) || 0,
+      dailyLow: formatCurrency(asset?.priceData?.dayLow) || 0,
+      volume: formatMarketCap(asset?.priceData?.volume) || 0,
+      percentChange: asset?.priceData?.changePercent?.toFixed(2) || 0,
       percentageClass:
-        (asset.priceData?.changePercent || 0) > 0 ? "success" : "danger",
+        (asset?.priceData?.changePercent || 0) > 0 ? "success" : "danger",
       icon:
-        (asset.priceData?.changePercent || 0) > 0
+        (asset?.priceData?.changePercent || 0) > 0
           ? "ri-arrow-up-line"
           : "ri-arrow-down-line",
     }));
-  }, [assets]);
+  }, [assets, currentAsset]);
 
   const columns = useMemo(
     () => [
@@ -173,11 +184,13 @@ const Market = () => {
                 <span style={{ color: "#878A99" }}>Filter by:</span>
                 <select
                   className="btn btn-soft-primary btn-sm text-capitalize"
-                  name=""
+                  name="currentAsset"
+                  onChange={handleAssetChange}
+                  value={currentAsset}
                 >
-                  <option value="">Crypto</option>
-                  <option value="">Stock</option>
-                  <option value="">ETF</option>
+                  <option value="crypto">Crypto</option>
+                  <option value="stock">Stock</option>
+                  <option value="etf">ETF</option>
                 </select>
                 <button className="btn btn-soft-primary btn-sm text-capitalize">
                   watchlist

@@ -8,6 +8,7 @@ import { formatCurrency, getAccessToken } from "../../constants";
 import { getWalletAnalytics } from "../../services/user/wallet";
 import { brief, cash } from "../../assets";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { format } from "date-fns";
 
 const Widgets = () => {
   const token = getAccessToken();
@@ -42,10 +43,6 @@ const Widgets = () => {
       setDecimalPart(decimal);
     }
   }, [walletAnalytics]);
-
-  // useEffect(() => {
-  //   if (walletAnalytics) console.log(walletAnalytics);
-  // }, [walletAnalytics]);
 
   return (
     <React.Fragment>
@@ -143,7 +140,7 @@ const Widgets = () => {
                 </span>
               </div>
               <span className="text-muted fs-11">
-                {JSON.parse(sessionStorage.getItem("lastLogin"))}
+                Updated at {`${format(Date.now(), "dd/MM/yyyy")}`}
               </span>
             </div>
           </Col>

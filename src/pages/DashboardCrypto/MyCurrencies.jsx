@@ -147,7 +147,7 @@ const MyCurrencies = () => {
                         </td>
                         <td>
                           <Link
-                            to="/apps-crypto-buy-sell"
+                            to="/trade"
                             className="btn btn-sm btn-soft-secondary"
                           >
                             Trade
