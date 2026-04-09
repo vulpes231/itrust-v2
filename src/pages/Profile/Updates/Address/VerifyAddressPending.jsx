@@ -6,10 +6,13 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 const VerifyAddressPending = () => {
   return (
     <Col className="d-flex align-items-start gap-2 justify-content-between bg-warning-subtle p-3 rounded">
-      <div className="d-flex align-items-start gap-4 text-warning">
+      <div
+        style={{ color: "#D9AA40" }}
+        className="d-flex align-items-start gap-4"
+      >
         <IoAlertCircleOutline />
         <span>
-          <h6 className="text-warning fs-16 fw-medium">
+          <h6 style={{ color: "#D9AA40" }} className="fs-16 fw-medium">
             Proof Of Address Submitted
           </h6>
           <span className="fs-13 fw-light">

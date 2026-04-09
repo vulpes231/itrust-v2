@@ -46,7 +46,10 @@ const VerifyAccountNotify = () => {
         // toggle={onDismiss}
         style={{ display: "flex", gap: "2px" }}
       >
-        Verification request submitted and awaiting review.
+        <span style={{ color: "#D9AA40" }}>
+          Your Documents are being reviewed, Most verifications are completed
+          within 24 hours and you'll receive an email notification.
+        </span>
       </Alert>
       {showKYCModal && (
         <KYCVerification

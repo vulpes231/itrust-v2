@@ -120,6 +120,9 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.phone}
                   readOnly={user?.contactInfo?.status === "verified"}
+                  className={
+                    user?.contactInfo?.status === "verified" ? "bg-light" : ""
+                  }
                 />
               </Col>
             </Row>
@@ -134,6 +137,9 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   onChange={validation.handleChange}
                   value={validation.values.address}
                   readOnly={user?.contactInfo?.status === "verified"}
+                  className={
+                    user?.contactInfo?.status === "verified" ? "bg-light" : ""
+                  }
                 />
               </Col>
             </Row>
@@ -187,6 +193,9 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   value={validation.values.city}
                   autoComplete="off"
                   readOnly={user?.contactInfo?.status === "verified"}
+                  className={
+                    user?.contactInfo?.status === "verified" ? "bg-light" : ""
+                  }
                 />
               </Col>
               <Col>
@@ -200,6 +209,9 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   value={validation.values.zipCode}
                   autoComplete="off"
                   readOnly={user?.contactInfo?.status === "verified"}
+                  className={
+                    user?.contactInfo?.status === "verified" ? "bg-light" : ""
+                  }
                 />
               </Col>
             </Row>

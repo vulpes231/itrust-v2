@@ -190,10 +190,12 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
                   className="text-capitalize"
                 >
                   <option value="">Select Estimated Networth</option>
+                  <option value="1k - 10k">0k - 1k</option>
                   <option value="1k - 10k">1k - 10k</option>
                   <option value="10k - 100k">10k - 100k</option>
                   <option value="100k - 1M">100k - 1M</option>
                   <option value="1M - 10M">1M - 10M</option>
+                  <option value="> 10M">{`> 10M`}</option>
                 </Input>
               </Col>
             </Row>
@@ -210,10 +212,12 @@ const EditEmploymentInfo = ({ isOpen, handleToggle, user }) => {
                   className="text-capitalize"
                 >
                   <option value="">Select Liquid Networth</option>
+                  <option value="1k - 10k">0k - 1k</option>
                   <option value="1k - 10k">1k - 10k</option>
                   <option value="10k - 100k">10k - 100k</option>
                   <option value="100k - 1M">100k - 1M</option>
                   <option value="1M - 10M">1M - 10M</option>
+                  <option value="> 10M">{`> 10M`}</option>
                 </Input>
               </Col>
               <Col>

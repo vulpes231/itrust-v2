@@ -43,9 +43,35 @@ const Portfolio = () => {
     enabled: !!tk,
   });
 
-  const filteredWallets = (wallets || []).filter(
-    (wallet) => wallet.slug !== "cash"
+  const result = (wallets || []).reduce(
+    (acc, wallet) => {
+      if (wallet.slug !== "cash") {
+        acc.defaultWallets.push(wallet);
+      }
+
+      acc.totalBalance += wallet.totalBalance;
+      acc.availableBalance += wallet.availableBalance;
+
+      return acc;
+    },
+    {
+      defaultWallets: [],
+      totalBalance: 0,
+      availableBalance: 0,
+    }
   );
+
+  const investing = {
+    totalBalance: result.totalBalance,
+    availableBalance: result.availableBalance,
+    slug: "default",
+    name: "investing",
+    _id: "default",
+  };
+
+  const filteredWallets = [investing, ...result.defaultWallets];
+
+  // console.log(filteredWallets);
 
   const handleChange = (e) => {
     const walletId = e.target.value;

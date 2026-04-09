@@ -147,7 +147,7 @@ const MyCurrencies = () => {
                         </td>
                         <td>
                           <Link
-                            to="/trade"
+                            to={`/trade/${asset._id}`}
                             className="btn btn-sm btn-soft-secondary"
                           >
                             Trade

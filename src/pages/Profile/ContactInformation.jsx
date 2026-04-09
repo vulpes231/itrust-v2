@@ -9,6 +9,8 @@ import AddressVerified from "./Updates/Address/AddressVerified";
 import AddressVerificationForm from "./Updates/Address/AddressVerificationForm";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { Link } from "react-router-dom";
+import { FaRegCircleCheck } from "react-icons/fa6";
+import { FiAlertCircle } from "react-icons/fi";
 
 const ContactInformation = ({ user }) => {
   const [editContactModal, setEditContactModal] = useState(false);
@@ -59,16 +61,16 @@ const ContactInformation = ({ user }) => {
                 {user?.contactInfo?.email || "-"}{" "}
                 <span className={`fs-10 fw-light text-capitalize`}>
                   {user?.accountStatus?.isEmailVerified ? (
-                    <small className="text-success bg-success-subtle p-1 rounded-2">
-                      verified
+                    <small className="text-success bg-success-subtle p-1 rounded-2 d-flex align-items-center gap-1">
+                      <FaRegCircleCheck /> verified
                     </small>
                   ) : (
                     <Link
-                      className="text-warning p-1"
-                      style={{ textDecoration: "underline" }}
+                      className="p-1 fw-bold fs-11 d-flex align-items-center gap-1"
+                      style={{ textDecoration: "underline", color: "#D9AA40" }}
                       to={"/verifyemail"}
                     >
-                      verify email
+                      <FiAlertCircle /> verify email
                     </Link>
                   )}
                 </span>
@@ -128,7 +130,7 @@ const ContactInformation = ({ user }) => {
               type="button"
               onClick={() => setEditTrustedModal(true)}
             >
-              <FaRegEdit /> Edit
+              <FaRegEdit /> Add Contact
             </button>
           </div>
         </CardHeader>

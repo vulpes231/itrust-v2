@@ -122,7 +122,7 @@ const ConfigureInvesting = ({ user }) => {
             <span style={{ color: "#878A99" }}>retirement time horizon</span>
             <h6>
               {user?.investmentInfo.retiring
-                ? `${user?.investmentInfo.retiring} Years`
+                ? `${user?.investmentInfo.retiring} `
                 : "-"}{" "}
             </h6>
           </Col>

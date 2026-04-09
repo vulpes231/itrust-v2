@@ -6,9 +6,6 @@ import {
   FormFeedback,
   Input,
   Label,
-  Nav,
-  NavItem,
-  NavLink,
   Row,
   TabContent,
   TabPane,
@@ -17,16 +14,16 @@ import {
   DropdownMenu,
   DropdownItem,
   Spinner,
+  UncontrolledDropdown,
 } from "reactstrap";
 import classnames from "classnames";
-import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
+import { getUserWallets } from "../../services/user/wallet";
 import { searchAsset } from "../../services/asset/asset";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "../../constants";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { openPosition } from "../../services/user/trade";
-import Loader from "../../components/Common/Loader";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { capitalize } from "lodash";
@@ -54,7 +51,10 @@ const TradeCard = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const timeoutRef = useRef(null);
-  const [tradeType, setTradeType] = useState("market");
+  const [tradeType, setTradeType] = useState({
+    id: "market",
+    label: "Market Order",
+  });
   const [selectedAcct, setSelectedAcct] = useState("");
   const [selectedAsset, setSelectedAsset] = useState("");
   const [qty, setQty] = useState(0);
@@ -71,24 +71,41 @@ const TradeCard = () => {
     leverage: "",
   });
 
+  const { data: wallets } = useQuery({
+    queryFn: getUserWallets,
+    queryKey: ["wallets"],
+  });
+
+  const { data: assetResults } = useQuery({
+    queryFn: () => searchAsset(debouncedQuery),
+    queryKey: ["searchAsset", debouncedQuery],
+    enabled: debouncedQuery.length > 0,
+  });
+
   const mutation = useMutation({
     mutationFn: openPosition,
     onError: (err) => setError(err.message),
   });
 
+  const availableWallets =
+    wallets && wallets.filter((w) => w.slug === "brokerage");
+
+  const defaultWalletId = form.walletId || availableWallets?.[0]?._id || "";
+
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
       assetId: form.assetId || "",
-      walletId: form.walletId || "",
+      walletId: defaultWalletId,
       amount: form.amount || "",
       orderType: activeTab || "",
       assetType: "",
       entry: "",
       stoploss: "",
       takeprofit: "",
-      leverage: tradeType === "leverage" || tradeType === "stoploss" ? "2" : "",
-      executionType: tradeType,
+      leverage:
+        tradeType.id === "leverage" || tradeType.id === "stoploss" ? "2" : "",
+      executionType: tradeType.id,
     },
     validationSchema: Yup.object({
       assetId: Yup.string().required("Please Select Asset"),
@@ -99,14 +116,11 @@ const TradeCard = () => {
         then: (schema) => schema.required("Please select leverage"),
         otherwise: (schema) => schema.notRequired(),
       }),
-      // entry: Yup.string().required("Please Enter Entry Point"),
-      // stoploss: Yup.string().required("Please Enter Stop Loss"),
-      // takeprofit: Yup.string().required("Please Enter Take Profit"),
     }),
 
     onSubmit: (values) => {
       console.log(values);
-      mutation.mutate(values);
+      // mutation.mutate(values);
     },
   });
 
@@ -141,22 +155,6 @@ const TradeCard = () => {
 
     validation.setFieldValue("assetId", asset._id);
   };
-
-  const { data: walletAnalytics } = useQuery({
-    queryFn: getWalletAnalytics,
-    queryKey: ["walletAnalytics"],
-  });
-
-  const { data: wallets } = useQuery({
-    queryFn: getUserWallets,
-    queryKey: ["wallets"],
-  });
-
-  const { data: assetResults } = useQuery({
-    queryFn: () => searchAsset(debouncedQuery),
-    queryKey: ["searchAsset", debouncedQuery],
-    enabled: debouncedQuery.length > 0,
-  });
 
   useEffect(() => {
     if (searchQuery.length === 0) {
@@ -205,11 +203,15 @@ const TradeCard = () => {
     }
   }, [mutation.isSuccess]);
 
-  const availableWallets =
-    wallets && wallets.filter((w) => w.name !== "automated investing");
+  useEffect(() => {
+    if (availableWallets?.length && !validation.values.walletId) {
+      validation.setFieldValue("walletId", availableWallets[0]._id);
+      setSelectedAcct(availableWallets[0]);
+    }
+  }, [availableWallets]);
 
-  function handleTypeChange(e) {
-    setTradeType(e.target.value);
+  function handleTypeChange(type) {
+    setTradeType(type);
   }
 
   useEffect(() => {
@@ -240,32 +242,42 @@ const TradeCard = () => {
     <Card>
       <CardHeader className="d-flex flex-column gap-2">
         <Row className="bg-secondary-subtle">
-          <Col xs={6}>
-            <Input
-              style={{
-                textTransform: "capitalize",
-                border: "none",
-                backgroundColor: "transparent",
-                outline: "none",
-              }}
-              className="pr-4 text-secondary"
-              name="tradeType"
-              value={tradeType}
-              onChange={handleTypeChange}
-              type="select"
-            >
-              {allowedTypes.map((type) => {
-                return (
-                  <option
-                    style={{ textTransform: "capitalize" }}
-                    key={type.id}
-                    value={type.id}
+          <Col>
+            <div>
+              <UncontrolledDropdown direction="start">
+                <DropdownToggle
+                  tag="button"
+                  className="btn btn-soft-primary btn-sm"
+                >
+                  <span className="text-uppercase">
+                    {tradeType.label}
+                    <i className="mdi mdi-chevron-down align-middle ms-1"></i>
+                  </span>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu dropdown-menu-end">
+                  {/* Add "All" option */}
+                  <DropdownItem
+                    onClick={() =>
+                      handleTypeChange({ id: "all", label: "all" })
+                    }
+                    className={tradeType.id === "market" ? "active" : ""}
                   >
-                    {type.label}
-                  </option>
-                );
-              })}
-            </Input>
+                    All
+                  </DropdownItem>
+                  {allowedTypes.map((type) => {
+                    return (
+                      <DropdownItem
+                        key={type.id}
+                        onClick={() => handleTypeChange(type)}
+                        className={tradeType.id === type.id ? "active" : ""}
+                      >
+                        {capitalize(type.label)}
+                      </DropdownItem>
+                    );
+                  })}
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </div>
           </Col>
         </Row>
 
@@ -377,7 +389,7 @@ const TradeCard = () => {
 
                   <Col className="px-2 mt-3 mx-1">
                     {selectedAsset && (
-                      <Row className="border border-1 p-2 rounded-1">
+                      <Row className="border border-1 px-1 py-3 rounded-1">
                         <Col className="d-flex align-items-start gap-2">
                           <img
                             src={selectedAsset.imageUrl}
@@ -386,14 +398,19 @@ const TradeCard = () => {
                             className="rounded-circle bg-light p-1"
                           />
                           <div className="lh-1">
-                            <h5>{selectedAsset.symbol}</h5>
-                            <span style={{ color: "#878A99" }}>
+                            <h5 className="fs-15 fw-bold">
+                              {selectedAsset.symbol}
+                            </h5>
+                            <span
+                              className="fs-14 fw-normal"
+                              style={{ color: "#878A99" }}
+                            >
                               {selectedAsset.name}
                             </span>
                           </div>
                         </Col>
                         <Col className="d-flex flex-column align-items-end">
-                          <h5>
+                          <h5 className="fs-15 fw-semibold">
                             {formatter.format(selectedAsset.priceData?.current)}
                           </h5>
                           <span

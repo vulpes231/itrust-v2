@@ -143,7 +143,7 @@ const PersonalInformation = ({ user }) => {
               <span style={{ color: "#878A99" }}>experience</span>
               <h6>
                 {user?.employmentInfo?.expYears
-                  ? `${user?.employmentInfo?.expYears} Years`
+                  ? `${user?.employmentInfo?.expYears}`
                   : "-"}
               </h6>
             </Col>

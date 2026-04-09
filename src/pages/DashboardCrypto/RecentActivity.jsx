@@ -152,7 +152,7 @@ const RecentActivity = () => {
                   );
                 })
               ) : (
-                <div>You have no transaction.</div>
+                <div>No records found.</div>
               )}
             </div>
             {/* </SimpleBar> */}

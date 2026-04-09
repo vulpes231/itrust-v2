@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row } from "reactstrap";
 import BreadCrumb from "../../components/Common/BreadCrumb";
 import Widgets from "./Widgets";
@@ -10,11 +10,14 @@ import TradeSection from "./TradeSection";
 import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
 import { useQuery } from "@tanstack/react-query";
 import { getAccessToken } from "../../constants";
+import { useParams } from "react-router-dom";
+import { getAssetInfo } from "../../services/asset/asset";
 
 const BuySell = () => {
   document.title = "Market - Itrust Investments";
 
   const tk = getAccessToken();
+  const { assetId } = useParams();
 
   const [activeMarketTab, setActiveMarketTab] = useState("asset");
   const [showTradeSection, setShowTradeSection] = useState(false);
@@ -30,10 +33,22 @@ const BuySell = () => {
     enabled: !!tk,
   });
 
+  const { data: preSelectedAsset } = useQuery({
+    queryFn: () => getAssetInfo({ assetId }),
+    queryKey: ["preSelectedAsset"],
+    enabled: !!assetId,
+  });
+
   const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
     queryFn: getWalletAnalytics,
     queryKey: ["walletAnalytics"],
   });
+
+  useEffect(() => {
+    if (preSelectedAsset) {
+      setActiveMarketTab("trade");
+    }
+  }, [preSelectedAsset]);
 
   return (
     <React.Fragment>
@@ -54,9 +69,13 @@ const BuySell = () => {
             />
           </Row>
           <Row className="px-3">
-            {showTradeSection && (
-              <TradeSection asset={selectedAsset} accounts={wallets} />
-            )}
+            {showTradeSection ||
+              (preSelectedAsset && (
+                <TradeSection
+                  asset={selectedAsset || preSelectedAsset}
+                  accounts={wallets}
+                />
+              ))}
           </Row>
           {activeMarketTab !== "trade" && (
             <Row className="px-3">

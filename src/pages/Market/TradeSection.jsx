@@ -94,7 +94,7 @@ const TradeSection = ({ asset, accounts }) => {
       executionType: tradeType,
     },
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       mutation.mutate(values);
     },
   });

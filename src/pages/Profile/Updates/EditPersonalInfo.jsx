@@ -102,6 +102,11 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                     user?.identityVerification?.kycStatus === "approved"
                   }
                   autoComplete="off"
+                  className={
+                    user?.identityVerification?.kycStatus === "approved"
+                      ? "bg-light"
+                      : ""
+                  }
                 />
               </Col>
             </Row>
@@ -119,6 +124,11 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                     user?.identityVerification?.kycStatus === "approved"
                   }
                   autoComplete="off"
+                  className={
+                    user?.identityVerification?.kycStatus === "approved"
+                      ? "bg-light"
+                      : ""
+                  }
                 />
               </Col>
             </Row>
@@ -170,6 +180,11 @@ const EditPersonalInfo = ({ isOpen, handleToggle, user }) => {
                   value={validation.values.dob}
                   readOnly={
                     user?.identityVerification?.kycStatus === "approved"
+                  }
+                  className={
+                    user?.identityVerification?.kycStatus === "approved"
+                      ? "bg-light"
+                      : ""
                   }
                 />
               </Col>

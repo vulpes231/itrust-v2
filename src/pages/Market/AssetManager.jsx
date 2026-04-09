@@ -26,6 +26,8 @@ const AssetManager = ({
     enabled: debouncedSearchTerm.length > 3,
   });
 
+  // console.log(assetName);
+
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
