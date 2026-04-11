@@ -38,7 +38,6 @@ const Crypto = ({ settings, user }) => {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const [selectedMode, setSelectedMode] = useState("");
-  const [depositAddress, setDepositAddress] = useState("");
 
   const handleMode = (asset) => {
     setSelectedMode(asset);
@@ -65,7 +64,6 @@ const Crypto = ({ settings, user }) => {
       amount: Yup.string().required("Enter deposit amount"),
     }),
     onSubmit: (values) => {
-      // console.log(values);
       cryptoMutation.mutate(values);
     },
     validateOnMount: true,
@@ -204,7 +202,7 @@ const Crypto = ({ settings, user }) => {
                     cursor: "pointer",
                   }}
                   key={mtd.id}
-                  className={`d-flex align-items-center gap-3 py-1 px-2 ${
+                  className={`d-flex align-items-center gap-3 py-3 px-3 ${
                     selectedMode.id === mtd.id ? "bg-primary-subtle" : ""
                   }`}
                   onClick={() => handleMode(mtd)}

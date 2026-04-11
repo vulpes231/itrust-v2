@@ -41,8 +41,8 @@ const DepositForm = () => {
   });
 
   // useEffect(() => {
-  //   if (user) console.log(user);
-  // }, [user]);
+  //   if (analytics) console.log(analytics);
+  // }, [analytics]);
 
   return (
     <React.Fragment>
@@ -60,8 +60,11 @@ const DepositForm = () => {
             {activeView === "default" ? (
               <Form
                 handleView={handleView}
-                settings={settings}
+                settings={settings?.depositLimits}
                 analytics={analytics}
+                limits={user?.settings?.limits?.deposit}
+                currency={user?.currency}
+                addressVerified={user?.contactInfo?.status}
               />
             ) : activeView === "crypto" ? (
               <Crypto settings={settings} user={user} />

@@ -35,6 +35,7 @@ const CustomRow = ({ children }) => {
 };
 
 const AccountStat = ({ analytics }) => {
+  // console.log(analytics);
   return (
     <div>
       <Label

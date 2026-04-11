@@ -33,11 +33,26 @@ const paymentMethods = [
   },
 ];
 
-const Form = ({ handleView, analytics }) => {
+const Form = ({
+  handleView,
+  analytics,
+  settings,
+  limits,
+  currency,
+  addressVerified,
+}) => {
   const [selectedMethod, setSelectedMethod] = useState("crypto");
 
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
+
+  // console.log(settings, "settings");
+  // console.log(limits, "limits");
+
+  const minCryptoDepositLimit = limits?.crypto?.min || settings?.crypto?.min;
+  const maxCryptoDepositLimit = limits?.crypto?.max || settings?.crypto?.max;
+  const minBankDepositLimit = limits?.bank?.min || settings?.bank?.min;
+  const maxBankDepositLimit = limits?.bank?.max || settings?.bank?.max;
 
   function handleConfirm(e) {
     e.preventDefault();
@@ -48,6 +63,35 @@ const Form = ({ handleView, analytics }) => {
     }
     if (!amount) {
       setError("Amount required!");
+      return;
+    }
+    if (selectedMethod === "crypto" && amount < minCryptoDepositLimit) {
+      setError(
+        `Minimum crypto deposit is ${currency?.sign}${minCryptoDepositLimit}`
+      );
+      return;
+    }
+    if (selectedMethod === "crypto" && amount > maxCryptoDepositLimit) {
+      setError(
+        `Maximum crypto deposit is ${currency?.sign}${maxCryptoDepositLimit}`
+      );
+      return;
+    }
+
+    if (selectedMethod === "bank" && addressVerified !== "verified") {
+      setError(`Verify contact information!`);
+      return;
+    }
+    if (selectedMethod === "bank" && amount < minBankDepositLimit) {
+      setError(
+        `Minimum bank deposit is ${currency?.sign}${minBankDepositLimit}`
+      );
+      return;
+    }
+    if (selectedMethod === "bank" && amount > maxBankDepositLimit) {
+      setError(
+        `Maximum bank deposit is ${currency?.sign}${maxBankDepositLimit}`
+      );
       return;
     }
 
@@ -116,6 +160,7 @@ const Form = ({ handleView, analytics }) => {
                 setAmount(e.target.value);
               }}
               value={amount}
+              autoComplete="off"
             />
             <FlexRow>
               {buttons.map((btn, idx) => {
