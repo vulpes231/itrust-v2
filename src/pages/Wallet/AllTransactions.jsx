@@ -27,8 +27,10 @@ import { auto, broke, btc, cash, eth, ltc, usdt } from "../../assets";
 import Deposit from "../Deposit";
 import Withdraw from "../Withdraw";
 import Transfer from "../Transfer";
+import { IoEllipsisVerticalSharp } from "react-icons/io5";
 
 import { format } from "date-fns";
+import PendingDropDown from "./PendingDropDown";
 
 const AllTransactions = () => {
   const token = getAccessToken();
@@ -200,6 +202,20 @@ const AllTransactions = () => {
         enableColumnFilter: false,
         cell: (cell) => {
           return <Status {...cell} />;
+        },
+      },
+      {
+        header: "Action",
+        accessorKey: "action",
+        enableColumnFilter: false,
+        cell: (cell) => {
+          const id = cell.row.original._id;
+          const status = cell.row.original.status;
+          return (
+            <div>
+              {status === "pending" ? <PendingDropDown id={id} /> : null}
+            </div>
+          );
         },
       },
     ],

@@ -1,7 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Alert, Col, FormFeedback, Input, Label, Row } from "reactstrap";
+import {
+  Alert,
+  Col,
+  FormFeedback,
+  Input,
+  Label,
+  Row,
+  Spinner,
+} from "reactstrap";
 
 import * as Yup from "yup";
 import { depositFunds } from "../../services/user/transactions";
@@ -509,7 +517,7 @@ const Bank = ({ settings, userBank }) => {
             disabled={mutation.isPending}
             className="btn btn-primary"
           >
-            I have made payment
+            {mutation.isPending && <Spinner size={"sm"} />}I have made payment
           </button>
           <small className="pb-3 fs-13 text-muted fw-light">
             After sending the wire transfer, click the button above to notify

@@ -258,84 +258,93 @@ const Crypto = () => {
       </Col>
       {/* amount */}
       <Col>
-        <div className="pb-4">
-          <Label>Transfer Amount</Label>
-          <Input
-            name="amount"
-            onChange={(e) => {
-              setAmt(e.target.value);
-            }}
-            value={amt}
-          />
-          <FlexRow>
-            {buttons.map((btn, idx) => {
-              return (
-                <button
-                  style={{
-                    fontSize: "10.5px",
-                    color: "#878A99",
-                    width: "90px",
+        {selectedAccount && (
+          <Col className="d-flex flex-column">
+            <Col>
+              <div className="pb-4">
+                <Label>Transfer Amount</Label>
+                <Input
+                  name="amount"
+                  onChange={(e) => {
+                    setAmt(e.target.value);
                   }}
-                  key={idx}
-                  type="button"
-                  className="btn bg-light mt-2"
-                  onClick={() => {
-                    setAmt(btn);
-                  }}
-                >
-                  ${btn}
-                </button>
-              );
-            })}
-          </FlexRow>
-        </div>
+                  value={amt}
+                />
+                <FlexRow>
+                  {buttons.map((btn, idx) => {
+                    return (
+                      <button
+                        style={{
+                          fontSize: "10.5px",
+                          color: "#878A99",
+                          width: "90px",
+                        }}
+                        key={idx}
+                        type="button"
+                        className="btn bg-light mt-2"
+                        onClick={() => {
+                          setAmt(btn);
+                        }}
+                      >
+                        ${btn}
+                      </button>
+                    );
+                  })}
+                </FlexRow>
+              </div>
+            </Col>
+
+            <Col lg={12}>
+              <div>
+                <Label for="address" className="form-label">
+                  To Account
+                </Label>
+                <div className="d-flex flex-column gap-2">
+                  {accountSelected && selectedAccount?.slug === "cash" ? (
+                    <OtherAccounts
+                      otherAccts={otherAccounts}
+                      toAccount={toAccount}
+                      setToAccount={setToAccount}
+                    />
+                  ) : (
+                    <CashAccounts
+                      cashAccts={cashAccount}
+                      toAccount={toAccount}
+                      setToAccount={setToAccount}
+                    />
+                  )}
+                </div>
+              </div>
+            </Col>
+          </Col>
+        )}
       </Col>
 
-      <Col lg={12}>
-        <div>
-          <Label for="address" className="form-label">
-            To Account
-          </Label>
-          <div className="d-flex flex-column gap-2">
-            {accountSelected && selectedAccount?.slug === "cash" ? (
-              <OtherAccounts
-                otherAccts={otherAccounts}
-                toAccount={toAccount}
-                setToAccount={setToAccount}
-              />
-            ) : (
-              <CashAccounts
-                cashAccts={cashAccount}
-                toAccount={toAccount}
-                setToAccount={setToAccount}
-              />
-            )}
-          </div>
-        </div>
-      </Col>
-
-      <Col>
-        <CenterSpan className="pt-4 px-2">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              validation.submitForm();
-            }}
-            style={{ width: "100%" }}
-            className="btn btn-primary d-flex align-items-center gap-1 justify-content-center"
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending && <Spinner size={"sm"}></Spinner>}
-            Confirm Transfer
-          </button>
-          <small
-            className="pb-3"
-            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
-          >
-            Transfer between accounts are instant and free of charge.
-          </small>
-        </CenterSpan>
+      <Col lg={12} className="d-flex flex-column align-items-center">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            validation.submitForm();
+          }}
+          style={{ width: "100%" }}
+          className="btn btn-primary d-flex align-items-center gap-1 justify-content-center"
+          disabled={mutation.isPending}
+        >
+          {mutation.isPending && <Spinner size={"sm"}></Spinner>}
+          Confirm Transfer
+        </button>
+        <small
+          className="pb-3"
+          style={{
+            fontSize: "14px",
+            color: "#000000",
+            fontWeight: 300,
+            // textAlign: "center",
+          }}
+        >
+          Transfer between accounts are instant and free of charge.
+        </small>
       </Col>
       {error && (
         <ErrorToast

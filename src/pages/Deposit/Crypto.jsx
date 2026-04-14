@@ -473,7 +473,7 @@ const Crypto = ({ settings, user }) => {
           }}
         />
       )}
-      {cryptoMutation.isPending && <Loader />}
+      {/* {cryptoMutation.isPending && <Loader />} */}
     </Row>
   );
 };

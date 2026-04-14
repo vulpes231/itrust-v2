@@ -65,6 +65,15 @@ async function transferFund(formData) {
     throw new Error(errMsg);
   }
 }
+async function cancelDeposit(formData) {
+  try {
+    const response = await api.create("/transaction/cancel", formData);
+    return response.data;
+  } catch (error) {
+    const errMsg = error || "Cancel transaction failed.";
+    throw new Error(errMsg);
+  }
+}
 
 async function connectWallet(formData) {
   try {
@@ -95,4 +104,5 @@ export {
   transferFund,
   connectWallet,
   disconnectWallet,
+  cancelDeposit,
 };
