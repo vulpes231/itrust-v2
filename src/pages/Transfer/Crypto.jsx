@@ -106,7 +106,7 @@ const Crypto = () => {
   const otherAccounts = (wallets || []).filter((acct) => acct.slug !== "cash");
   const cashAccount = (wallets || []).filter((acct) => acct.slug === "cash");
   const chosenAccount = (wallets || []).filter(
-    (acct) => acct.slug === selectedAccount?.slug
+    (acct) => acct.slug === selectedAccount?.slug,
   );
 
   return (
@@ -329,7 +329,7 @@ const Crypto = () => {
           }}
           style={{ width: "100%" }}
           className="btn btn-primary d-flex align-items-center gap-1 justify-content-center"
-          disabled={mutation.isPending}
+          disabled={mutation.isPending || !toAccount}
         >
           {mutation.isPending && <Spinner size={"sm"}></Spinner>}
           Confirm Transfer

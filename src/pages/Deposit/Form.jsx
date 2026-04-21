@@ -46,9 +46,6 @@ const Form = ({
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
 
-  // console.log(settings, "settings");
-  // console.log(limits, "limits");
-
   const minCryptoDepositLimit = limits?.crypto?.min || settings?.crypto?.min;
   const maxCryptoDepositLimit = limits?.crypto?.max || settings?.crypto?.max;
   const minBankDepositLimit = limits?.bank?.min || settings?.bank?.min;
@@ -67,13 +64,13 @@ const Form = ({
     }
     if (selectedMethod === "crypto" && amount < minCryptoDepositLimit) {
       setError(
-        `Minimum crypto deposit is ${currency?.sign}${minCryptoDepositLimit}`
+        `Minimum crypto deposit is ${currency?.sign}${minCryptoDepositLimit}`,
       );
       return;
     }
     if (selectedMethod === "crypto" && amount > maxCryptoDepositLimit) {
       setError(
-        `Maximum crypto deposit is ${currency?.sign}${maxCryptoDepositLimit}`
+        `Maximum crypto deposit is ${currency?.sign}${maxCryptoDepositLimit}`,
       );
       return;
     }
@@ -84,13 +81,13 @@ const Form = ({
     }
     if (selectedMethod === "bank" && amount < minBankDepositLimit) {
       setError(
-        `Minimum bank deposit is ${currency?.sign}${minBankDepositLimit}`
+        `Minimum bank deposit is ${currency?.sign}${minBankDepositLimit}`,
       );
       return;
     }
     if (selectedMethod === "bank" && amount > maxBankDepositLimit) {
       setError(
-        `Maximum bank deposit is ${currency?.sign}${maxBankDepositLimit}`
+        `Maximum bank deposit is ${currency?.sign}${maxBankDepositLimit}`,
       );
       return;
     }
@@ -212,12 +209,12 @@ const Form = ({
                       borderRadius: "5px",
                       cursor: "pointer",
                       backgroundColor:
-                        selectedMethod === method.id ? "#E5E7F5" : "",
+                        selectedMethod === method.id ? "#E5E7F5" : "#f3f3f3",
                     }}
                     onClick={() => {
                       setSelectedMethod(method.id);
                     }}
-                    className={`p-3 `}
+                    className={`p-3 mb-2`}
                   >
                     <FlexRow>
                       <span

@@ -41,9 +41,11 @@ const UserInfo = ({ user }) => {
       </Col>
       <Col className="d-flex flex-column gap-3">
         <div className="d-flex justify-content-between align-items-center">
-          <h6 className="m-0">Complete Your Profile</h6>
-          <small style={{ color: "#878A99" }}>
-            {completedSteps} of {steps.length} completed
+          <h6 className="m-0 " style={{ whiteSpace: "nowrap" }}>
+            Complete Your Profile
+          </h6>
+          <small style={{ color: "#878A99", whiteSpace: "nowrap" }}>
+            {progress}% completed
           </small>
         </div>
 
@@ -75,14 +77,11 @@ const UserInfo = ({ user }) => {
             >
               <span
                 style={{
-                  textDecoration: step.done ? "line-through" : "none",
                   color: step.done ? "#5162be" : "#878A99",
                 }}
               >
                 {step.label}
               </span>
-
-              <span>{step.done ? "✔️" : "⬜"}</span>
             </div>
           ))}
         </div>

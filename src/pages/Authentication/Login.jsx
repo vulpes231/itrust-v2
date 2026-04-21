@@ -59,7 +59,7 @@ const Login = (props) => {
     const d = new Date();
 
     const loginTime = `Updated ${d.toLocaleDateString(
-      "en-GB"
+      "en-GB",
     )} at ${d.toLocaleTimeString([], {
       hour: "numeric",
       minute: "2-digit",
@@ -254,8 +254,8 @@ const Login = (props) => {
                 </Card>
 
                 <div className="mt-4 text-center">
-                  <p className="mb-0">
-                    Don't have an account ?{" "}
+                  <p className="mb-0 d-flex align-itesm-center gap-2 justify-content-center">
+                    Don't have an account?{" "}
                     <Link
                       to="/register"
                       className="fw-semibold text-primary text-decoration-underline"

@@ -116,6 +116,7 @@ const Register = () => {
                     </div>
                     <div className="p-2 mt-4">
                       <Form
+                        autoComplete="off"
                         onSubmit={(e) => {
                           e.preventDefault();
                           validation.handleSubmit();
@@ -240,7 +241,7 @@ const Register = () => {
                             Password <span className="text-danger">*</span>
                           </Label>
                           <Input
-                            autoComplete="off"
+                            autoComplete="new-password"
                             name="password"
                             type="password"
                             placeholder="Enter Password"
@@ -271,7 +272,7 @@ const Register = () => {
                             <span className="text-danger">*</span>
                           </Label>
                           <Input
-                            autoComplete="off"
+                            autoComplete="new-password"
                             name="confirm_password"
                             type="password"
                             placeholder="Confirm Password"
@@ -321,8 +322,8 @@ const Register = () => {
                   </CardBody>
                 </Card>
                 <div className="mt-4 text-center">
-                  <p className="mb-0">
-                    Already have an account ?{" "}
+                  <p className="mb-0 d-flex align-itesm-center gap-2 justify-content-center">
+                    Already have an account?{" "}
                     <Link
                       to="/login"
                       className="fw-semibold text-primary text-decoration-underline"

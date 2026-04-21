@@ -217,7 +217,7 @@ const TradeCard = () => {
   useEffect(() => {
     if (validation.values.walletId) {
       const wallet = wallets.find(
-        (wallet) => wallet._id === validation.values.walletId
+        (wallet) => wallet._id === validation.values.walletId,
       );
       setSelectedAcct(wallet);
     }
@@ -256,14 +256,14 @@ const TradeCard = () => {
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu dropdown-menu-end">
                   {/* Add "All" option */}
-                  <DropdownItem
+                  {/* <DropdownItem
                     onClick={() =>
                       handleTypeChange({ id: "all", label: "all" })
                     }
                     className={tradeType.id === "market" ? "active" : ""}
                   >
                     All
-                  </DropdownItem>
+                  </DropdownItem> */}
                   {allowedTypes.map((type) => {
                     return (
                       <DropdownItem
@@ -422,7 +422,7 @@ const TradeCard = () => {
                           >
                             {formatter.format(selectedAsset.priceData?.change)}{" "}
                             {`(${parseFloat(
-                              selectedAsset.priceData?.changePercent
+                              selectedAsset.priceData?.changePercent,
                             ).toFixed(2)}%)`}
                           </span>
                         </Col>

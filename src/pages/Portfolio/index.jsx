@@ -30,6 +30,8 @@ const Portfolio = () => {
     enabled: !!tk,
   });
 
+  // console.log(wallets);
+
   const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
     queryFn: getWalletAnalytics,
     queryKey: ["walletAnalytics"],
@@ -45,12 +47,13 @@ const Portfolio = () => {
 
   const result = (wallets || []).reduce(
     (acc, wallet) => {
-      if (wallet.slug !== "cash") {
-        acc.defaultWallets.push(wallet);
-      }
+      const isCashWallet = wallet.slug === "cash";
 
-      acc.totalBalance += wallet.totalBalance;
-      acc.availableBalance += wallet.availableBalance;
+      if (!isCashWallet) {
+        acc.defaultWallets.push(wallet);
+        acc.totalBalance += wallet.totalBalance;
+        acc.availableBalance += wallet.availableBalance;
+      }
 
       return acc;
     },
@@ -58,7 +61,7 @@ const Portfolio = () => {
       defaultWallets: [],
       totalBalance: 0,
       availableBalance: 0,
-    }
+    },
   );
 
   const investing = {
@@ -77,7 +80,7 @@ const Portfolio = () => {
     const walletId = e.target.value;
 
     const selectedWallet = filteredWallets.find(
-      (wallet) => wallet._id === walletId
+      (wallet) => wallet._id === walletId,
     );
 
     setActiveWallet(selectedWallet || null);

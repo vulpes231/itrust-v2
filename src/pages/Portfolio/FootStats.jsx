@@ -15,10 +15,12 @@ const FootStats = ({ activeWallet }) => {
           md={activeWallet && activeWallet.slug === "brokerage" ? 4 : 3}
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>{formatCurrency(0)}</h3>
+            <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
+              {formatCurrency(0)}
+            </span>
             <span
               style={{ color: "#878A99" }}
-              className="text-capitalize fs-16 fw-light"
+              className="text-capitalize fs-14 fw-normal"
             >
               total investments
             </span>
@@ -30,15 +32,15 @@ const FootStats = ({ activeWallet }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>
+            <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
               {" "}
               {activeWallet?.dailyProfit
                 ? formatCurrency(activeWallet.dailyProfit)
                 : formatCurrency(0)}
-            </h3>
+            </span>
             <span
               style={{ color: "#878A99" }}
-              className="text-capitalize fs-16 fw-light"
+              className="text-capitalize fs-14 fw-normal"
             >
               P&amp;L
             </span>
@@ -50,15 +52,15 @@ const FootStats = ({ activeWallet }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>
+            <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
               {" "}
               {activeWallet?.availableBalance
                 ? formatCurrency(activeWallet.availableBalance)
                 : formatCurrency(0)}
-            </h3>
+            </span>
             <span
               style={{ color: "#878A99" }}
-              className="text-capitalize fs-16 fw-light"
+              className="text-capitalize fs-14 fw-normal"
             >
               uninvested cash
             </span>
@@ -70,15 +72,15 @@ const FootStats = ({ activeWallet }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <h3 style={{ color: "#495057" }}>
+            <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
               {" "}
               {activeWallet?.totalBalance
                 ? formatCurrency(activeWallet.totalBalance)
                 : formatCurrency(0)}
-            </h3>
+            </span>
             <span
               style={{ color: "#878A99" }}
-              className="text-capitalize fs-16 fw-light"
+              className="text-capitalize fs-14 fw-normal"
             >
               cash balance
             </span>
@@ -93,12 +95,15 @@ const FootStats = ({ activeWallet }) => {
               md={4}
             >
               <div className="d-flex flex-column">
-                <h3 style={{ color: "#495057" }}>
+                <span
+                  className="fs-17 fw-semibold"
+                  style={{ color: "#495057" }}
+                >
                   {formatCurrency(activeWallet?.buyPower) || formatCurrency(0)}
-                </h3>
+                </span>
                 <span
                   style={{ color: "#878A99" }}
-                  className="text-capitalize fs-16 fw-light"
+                  className="text-capitalize fs-14 fw-normal"
                 >
                   buy power
                 </span>
@@ -110,14 +115,17 @@ const FootStats = ({ activeWallet }) => {
               className="border-1 border-dotted p-2"
             >
               <div className="d-flex flex-column">
-                <h3 style={{ color: "#495057" }}>
+                <span
+                  className="fs-17 fw-semibold"
+                  style={{ color: "#495057" }}
+                >
                   {" "}
                   {formatCurrency(activeWallet?.marginDebt) ||
                     formatCurrency(0)}
-                </h3>
+                </span>
                 <span
                   style={{ color: "#878A99" }}
-                  className="text-capitalize fs-16 fw-light"
+                  className="text-capitalize fs-14 fw-normal"
                 >
                   margin debt
                 </span>

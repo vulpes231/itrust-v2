@@ -234,201 +234,234 @@ const Crypto = ({ settings, user }) => {
           </div>
         </div>
       </Col>
-      <Col lg={12}>
-        <div className="d-flex align-items-center bg-primary-subtle rounded mx-2 gap-3 mb-3 py-2 px-4">
-          <div>
-            <IoAlertCircleOutline className="text-primary" />
-          </div>
-          <div
-            style={{ fontWeight: 300, fontSize: "14px" }}
-            className="d-flex flex-column text-primary"
-          >
-            <span>
-              Send exactly <b>{formatCurrency(data?.amount)}</b>{" "}
-              <b>{selectedMode?.symbol}</b> to the address below{" "}
-            </span>
-            <span>
-              Processing time: 1-30 minutes after network confirmation
-            </span>
-          </div>
-        </div>
-      </Col>
-      <Col lg={12}>
-        <div className="px-2">
-          <span className="d-flex align-items-center justify-content-between">
-            <Label
-              style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
-            >
-              Deposit Address
-            </Label>
-            <img src={selectedMode?.img} alt="" width={30} />
-          </span>
-
-          <div className="d-flex flex-column">
-            <hr style={{ color: "#dedede" }} />
-            <div className="d-flex align-items-center justify-content-center">
-              <Barcode
-                method={selectedMode?.symbol}
-                address={
-                  getUserAddress(
-                    cryptoValidation.values.method.toLowerCase(),
-                    cryptoValidation.values.network
-                  ) ||
-                  getGLobalAddress(
-                    cryptoValidation.values.method.toLowerCase(),
-                    cryptoValidation.values.network
-                  )
-                }
-                amount={data?.amount}
-                network={selectedMode?.network}
-              />
+      {selectedMode && (
+        <div>
+          <Col lg={12}>
+            <div className="d-flex align-items-center bg-primary-subtle rounded mx-2 gap-3 mb-3 py-2 px-4">
+              <div>
+                <IoAlertCircleOutline className="text-primary" />
+              </div>
+              <div
+                style={{ fontWeight: 300, fontSize: "14px" }}
+                className="d-flex flex-column text-primary"
+              >
+                <span>
+                  Send exactly <b>{formatCurrency(data?.amount)}</b>{" "}
+                  <b>{selectedMode?.symbol}</b> to the address below{" "}
+                </span>
+                <span>
+                  Processing time: 1-30 minutes after network confirmation
+                </span>
+              </div>
             </div>
-          </div>
-        </div>
-      </Col>
+          </Col>
+          <Col lg={12}>
+            <div className="px-2">
+              <span className="d-flex align-items-center justify-content-between">
+                <Label
+                  style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
+                >
+                  Deposit Address
+                </Label>
+                <img src={selectedMode?.img} alt="" width={30} />
+              </span>
 
-      <Col lg={12}>
-        <div className="mb-3 px-2">
-          <Label for="address" className="form-label">
-            Address
-          </Label>
+              <div className="d-flex flex-column">
+                <hr style={{ color: "#dedede" }} />
+                <div className="d-flex align-items-center justify-content-center">
+                  <Barcode
+                    method={selectedMode?.symbol}
+                    address={
+                      getUserAddress(
+                        cryptoValidation.values.method.toLowerCase(),
+                        cryptoValidation.values.network,
+                      ) ||
+                      getGLobalAddress(
+                        cryptoValidation.values.method.toLowerCase(),
+                        cryptoValidation.values.network,
+                      )
+                    }
+                    amount={data?.amount}
+                    network={selectedMode?.network}
+                  />
+                </div>
+              </div>
+            </div>
+          </Col>
 
-          <div className="position-relative">
-            <Input
-              type="text"
-              className="form-control pe-5"
-              id="address"
-              value={
-                getUserAddress(
-                  cryptoValidation.values.method.toLowerCase(),
-                  cryptoValidation.values.network
-                ) ||
-                getGLobalAddress(
-                  cryptoValidation.values.method.toLowerCase(),
-                  cryptoValidation.values.network
-                )
-              }
-              readOnly
-            />
+          <Col lg={12}>
+            <div className="mb-3 px-2">
+              <Label for="address" className="form-label">
+                Address
+              </Label>
 
-            <button
-              type="button"
-              onClick={() =>
-                handleCopy(
-                  getUserAddress(
-                    cryptoValidation.values.method.toLowerCase(),
-                    cryptoValidation.values.network
-                  ) ||
+              <div className="position-relative">
+                <Input
+                  type="text"
+                  className="form-control pe-5"
+                  id="address"
+                  value={
+                    getUserAddress(
+                      cryptoValidation.values.method.toLowerCase(),
+                      cryptoValidation.values.network,
+                    ) ||
                     getGLobalAddress(
                       cryptoValidation.values.method.toLowerCase(),
-                      cryptoValidation.values.network
+                      cryptoValidation.values.network,
                     )
-                )
-              }
-              className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
-            >
-              <span
-                className={`${
-                  copied ? "text-success" : "text-muted"
-                } fw-light fs-11`}
-              >
-                {copied ? "Copied" : "Copy"}
+                  }
+                  readOnly
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleCopy(
+                      getUserAddress(
+                        cryptoValidation.values.method.toLowerCase(),
+                        cryptoValidation.values.network,
+                      ) ||
+                        getGLobalAddress(
+                          cryptoValidation.values.method.toLowerCase(),
+                          cryptoValidation.values.network,
+                        ),
+                    )
+                  }
+                  className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+                >
+                  <span
+                    className={`${
+                      copied ? "text-success" : "text-muted"
+                    } fw-light fs-11`}
+                  >
+                    {copied ? "Copied" : "Copy"}
+                  </span>
+                  <PiCopyLight className="text-muted" />
+                </button>
+              </div>
+            </div>
+          </Col>
+
+          <Col lg={12}>
+            <div className="px-2">
+              <span className="d-flex align-items-center justify-content-between">
+                <Label
+                  style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
+                >
+                  Deposit Summary
+                </Label>
+                {/* <img src="" alt="coin" /> */}
               </span>
-              <PiCopyLight className="text-muted" />
-            </button>
-          </div>
+
+              <hr style={{ color: "#dedede" }} />
+
+              <div className="d-flex flex-column gap-2 px-3">
+                <span className="d-flex align-items-center justify-content-between">
+                  <span
+                    style={{
+                      color: "#878A99",
+                      fontSize: "14px",
+                      fontWeight: 300,
+                    }}
+                  >
+                    Amount to Send
+                  </span>
+                  <span
+                    style={{
+                      color: "#495057",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {formatCurrency(data?.amount)}
+                  </span>
+                </span>
+                <span className="d-flex align-items-center justify-content-between">
+                  <span
+                    style={{
+                      color: "#878A99",
+                      fontSize: "14px",
+                      fontWeight: 300,
+                    }}
+                  >
+                    {selectedMode?.symbol} Value
+                  </span>
+                  <span
+                    style={{
+                      color: "#495057",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    0.0015647 {selectedMode?.symbol}
+                  </span>
+                </span>
+                <span className="d-flex align-items-center justify-content-between">
+                  <span
+                    style={{
+                      color: "#878A99",
+                      fontSize: "14px",
+                      fontWeight: 300,
+                    }}
+                  >
+                    Network Fee
+                  </span>
+                  <span
+                    className="text-success"
+                    style={{ fontSize: "14px", fontWeight: 600 }}
+                  >
+                    {formatCurrency(0)}
+                  </span>
+                </span>
+                <span className="d-flex align-items-center justify-content-between">
+                  <span
+                    style={{
+                      color: "#495057",
+                      fontSize: "14px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    You will receive
+                  </span>
+                  <span
+                    style={{
+                      color: "#495057",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {formatCurrency(data?.amount)}
+                  </span>
+                </span>
+              </div>
+              <hr style={{ color: "#dedede" }} />
+            </div>
+          </Col>
+
+          <Col lg={12}>
+            <div className="d-flex align-items-start bg-warning-subtle rounded py-1 px-3 gap-3 mb-3 mx-2">
+              <span>
+                <IoAlertCircleOutline className="text-warning" />
+              </span>
+              <span
+                style={{ fontWeight: 300, fontSize: "14px" }}
+                className="d-flex flex-column text-warning"
+              >
+                <span style={{ fontWeight: 500 }}>Important</span>
+                <ul>
+                  <li>Only send {selectedMode?.symbol} to this address</li>
+                  <li>
+                    Sending any other cryptocurrency will result in permanent
+                    loss
+                  </li>
+                  <li>Minimum deposit $50</li>
+                  <li>Deposit are credited after network confirmation</li>
+                </ul>
+              </span>
+            </div>
+          </Col>
         </div>
-      </Col>
-
-      <Col lg={12}>
-        <div className="px-2">
-          <span className="d-flex align-items-center justify-content-between">
-            <Label
-              style={{ fontSize: "16px", color: "495057", fontWeight: 600 }}
-            >
-              Deposit Summary
-            </Label>
-            {/* <img src="" alt="coin" /> */}
-          </span>
-
-          <hr style={{ color: "#dedede" }} />
-
-          <div className="d-flex flex-column gap-2 px-3">
-            <span className="d-flex align-items-center justify-content-between">
-              <span
-                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
-              >
-                Amount to Send
-              </span>
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
-              >
-                {formatCurrency(data?.amount)}
-              </span>
-            </span>
-            <span className="d-flex align-items-center justify-content-between">
-              <span
-                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
-              >
-                {selectedMode?.symbol} Value
-              </span>
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
-              >
-                0.0015647 {selectedMode?.symbol}
-              </span>
-            </span>
-            <span className="d-flex align-items-center justify-content-between">
-              <span
-                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
-              >
-                Network Fee
-              </span>
-              <span
-                className="text-success"
-                style={{ fontSize: "14px", fontWeight: 600 }}
-              >
-                {formatCurrency(0)}
-              </span>
-            </span>
-            <span className="d-flex align-items-center justify-content-between">
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 500 }}
-              >
-                You will receive
-              </span>
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
-              >
-                {formatCurrency(data?.amount)}
-              </span>
-            </span>
-          </div>
-          <hr style={{ color: "#dedede" }} />
-        </div>
-      </Col>
-
-      <Col lg={12}>
-        <div className="d-flex align-items-start bg-warning-subtle rounded py-1 px-3 gap-3 mb-3 mx-2">
-          <span>
-            <IoAlertCircleOutline className="text-warning" />
-          </span>
-          <span
-            style={{ fontWeight: 300, fontSize: "14px" }}
-            className="d-flex flex-column text-warning"
-          >
-            <span style={{ fontWeight: 500 }}>Important</span>
-            <ul>
-              <li>Only send {selectedMode?.symbol} to this address</li>
-              <li>
-                Sending any other cryptocurrency will result in permanent loss
-              </li>
-              <li>Minimum deposit $50</li>
-              <li>Deposit are credited after network confirmation</li>
-            </ul>
-          </span>
-        </div>
-      </Col>
+      )}
 
       <Col lg={12}>
         <CenterSpan>
@@ -440,7 +473,7 @@ const Crypto = ({ settings, user }) => {
               return false;
             }}
             type="submit"
-            disabled={cryptoMutation.isPending}
+            disabled={cryptoMutation.isPending || !selectedMode}
             className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
           >
             {cryptoMutation.isPending && <Spinner size={"sm"} />}I have made
