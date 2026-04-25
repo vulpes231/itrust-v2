@@ -1,7 +1,7 @@
 import axios from "axios";
 import { devUrl, getAccessToken, liveUrl } from "../constants";
 
-axios.defaults.baseURL = liveUrl;
+axios.defaults.baseURL = devUrl;
 
 const token = getAccessToken();
 if (token) axios.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -34,7 +34,7 @@ axios.interceptors.response.use(
         message = error.response?.data?.message || error.message || error;
     }
     return Promise.reject(message);
-  }
+  },
 );
 
 /**

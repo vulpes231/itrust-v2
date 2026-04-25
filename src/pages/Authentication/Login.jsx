@@ -72,7 +72,8 @@ const Login = (props) => {
 
     const timeout = setTimeout(() => {
       if (user?.accountStatus) {
-        if (user.accountStatus.emailVerified) {
+        if (!user.accountStatus.emailVerified) {
+          sessionStorage.setItem("email_registered", validation.values.email);
           window.location.href = "/verifyemail";
         } else if (!user.accountStatus.isProfileComplete) {
           window.location.href = "/contact";

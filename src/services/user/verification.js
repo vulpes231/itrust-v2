@@ -7,7 +7,7 @@ async function verifyEmail(formData) {
     const response = await api.create("/code/mail", formData);
     return response.data;
   } catch (error) {
-    const errMsg = error.response?.data?.message;
+    const errMsg = error || "Failed to submit code!.";
     throw new Error(errMsg);
   }
 }

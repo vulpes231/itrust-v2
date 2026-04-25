@@ -65,8 +65,10 @@ const Register = () => {
   useEffect(() => {
     if (mutation.isSuccess) {
       sessionStorage.setItem("token", mutation.data.token);
+      sessionStorage.setItem("email_registered", validation.values.email);
       const timeout = setTimeout(() => {
-        window.location.href = "/contact";
+        mutation.reset();
+        window.location.href = "/verifyemail";
       }, 3000);
       return () => clearTimeout(timeout);
     }

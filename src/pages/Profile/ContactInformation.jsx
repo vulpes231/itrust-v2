@@ -36,6 +36,8 @@ const ContactInformation = ({ user }) => {
       sessionStorage.removeItem("showContactToast");
     }
   }, []);
+
+  // console.log(user?.accountStatus);
   return (
     <Col>
       <Card>
@@ -60,7 +62,7 @@ const ContactInformation = ({ user }) => {
               <h6 className="d-flex align-items-center gap-2">
                 {user?.contactInfo?.email || "-"}{" "}
                 <span className={`fs-10 fw-light text-capitalize`}>
-                  {user?.accountStatus?.isEmailVerified ? (
+                  {user?.accountStatus?.emailVerified ? (
                     <small className="text-success bg-success-subtle p-1 rounded-2 d-flex align-items-center gap-1">
                       <FaRegCircleCheck /> verified
                     </small>
