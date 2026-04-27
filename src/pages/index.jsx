@@ -20,9 +20,11 @@ import Investing from "./Investing";
 import Profile from "./Profile";
 import Histories from "./Histories";
 import Landing from "./Landing";
+import TwoFa from "./Authentication/TwoFa";
 
 export {
   Contact,
+  TwoFa,
   Deposit,
   Withdraw,
   Transfer,

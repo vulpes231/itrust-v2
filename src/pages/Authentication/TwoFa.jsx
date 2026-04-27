@@ -13,40 +13,35 @@ import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 import { logo } from "../../assets";
 
 import { useMutation } from "@tanstack/react-query";
-import { sendEmailVerificationCode } from "../../services/otp/requestOtp";
-import { verifyEmail } from "../../services/user/verification";
+import { sendAuthCode } from "../../services/otp/requestOtp";
+import { verifyEmail, verifyTwoFa } from "../../services/user/verification";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { Loader } from "feather-icons-react";
 
-const VerifyEmail = () => {
-  document.title = "Verify Your Email - Itrust Investments";
+const TwoFa = () => {
+  document.title = "Aunthenticate Login - Itrust Investments";
 
   const [disableResend, setDisableResend] = useState(true);
   const [error, setError] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
 
   const sessionEmail = sessionStorage.getItem("email_registered");
-  const savedUser = JSON.parse(sessionStorage.getItem("user"));
-
-  const accountStatus = savedUser?.accountStatus;
 
   const resendMutation = useMutation({
-    mutationFn: sendEmailVerificationCode,
+    mutationFn: sendAuthCode,
     onError: (err) => setError(err.message),
     onSuccess: () => {
       setDisableResend(true);
     },
   });
 
-  const verifyMutation = useMutation({
-    mutationFn: verifyEmail,
+  const verifyTwoFaMutation = useMutation({
+    mutationFn: verifyTwoFa,
     onError: (err) => setError(err.message),
     onSuccess: () => {
       sessionStorage.removeItem("email_registered");
-      window.location.href = accountStatus?.isPersonalComplete
-        ? "/dashboard"
-        : "/contact";
+      window.location.href = "/dashboard";
     },
   });
 
@@ -73,14 +68,22 @@ const VerifyEmail = () => {
 
     const code = otp.join("");
 
+    // console.log("clicked", sessionEmail, code);
+
+    if (!sessionEmail) {
+      setError("Problem re-sending OTP. Try again later");
+      sessionStorage.clear();
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+    }
+
     if (code.length !== 4) {
       setError("Enter the complete 4-digit OTP!");
       return;
     }
 
-    console.log(code);
-
-    verifyMutation.mutate({ code });
+    verifyTwoFaMutation.mutate({ email: sessionEmail, code });
   };
 
   const handleCodeResend = (e) => {
@@ -91,10 +94,18 @@ const VerifyEmail = () => {
       return;
     }
 
-    console.log(sessionEmail);
-
     resendMutation.mutate({ email: sessionEmail });
   };
+
+  // useEffect(() => {
+  //   if (verifyTwoFaMutation.isSuccess) {
+  //     const tmt = setTimeout(() => {
+  //       sessionStorage.setItem("accessToken", verifyTwoFaMutation.data.token);
+  //       sessionStorage.setItem("user", verifyTwoFaMutation.data.user);
+  //       window.location.href = "/dashboard";
+  //     }, 3000);
+  //   }
+  // });
 
   useEffect(() => {
     if (error) {
@@ -121,9 +132,7 @@ const VerifyEmail = () => {
                   <Link to="/dashboard" className="auth-logo">
                     <img src={logo} alt="" height="20" />
                   </Link>
-                  <p className="mt-3 fs-16 fw-semibold">
-                    Verify Your Email Address
-                  </p>
+                  <p className="mt-3 fs-16 fw-semibold">Authenticate Login</p>
                 </div>
               </Col>
             </Row>
@@ -133,47 +142,54 @@ const VerifyEmail = () => {
                 <Card className="mt-4">
                   <CardBody className="p-4">
                     <div className="text-center mb-4">
-                      <h4>Verify Your Email</h4>
+                      <h4>Verify Your Login</h4>
                       <p>
                         Enter the 4-digit code sent to{" "}
                         <strong>{sessionEmail}</strong>
                       </p>
                     </div>
 
-                    <Row>
-                      {otp.map((digit, index) => (
-                        <Col key={index} className="col-3">
-                          <input
-                            id={`digit${index + 1}-input`}
-                            type="text"
-                            value={digit}
-                            maxLength="1"
-                            className="form-control text-center"
-                            onChange={(e) =>
-                              handleChange(e.target.value, index)
-                            }
-                            onKeyDown={(e) => handleKeyDown(e, index)}
-                          />
-                        </Col>
-                      ))}
-                    </Row>
+                    <form onSubmit={handleSubmit}>
+                      <Row>
+                        {otp.map((digit, index) => (
+                          <Col key={index} className="col-3">
+                            <input
+                              id={`digit${index + 1}-input`}
+                              type="text"
+                              value={digit}
+                              maxLength="1"
+                              className="form-control text-center"
+                              onChange={(e) =>
+                                handleChange(e.target.value, index)
+                              }
+                              onKeyDown={(e) => handleKeyDown(e, index)}
+                            />
+                          </Col>
+                        ))}
+                      </Row>
 
-                    {error && (
-                      <p className="text-danger text-center mt-2">{error}</p>
-                    )}
-
-                    <Button
-                      onClick={handleSubmit}
-                      className="w-100 mt-3"
-                      disabled={verifyMutation.isPending}
-                    >
-                      {verifyMutation.isPending && <Spinner size="sm" />}{" "}
-                      Confirm Email
-                    </Button>
+                      <button
+                        type="submit"
+                        className="w-100 mt-3 btn btn-secondary"
+                        disabled={verifyTwoFaMutation.isPending}
+                      >
+                        {verifyTwoFaMutation.isPending && <Spinner size="sm" />}{" "}
+                        Submit
+                      </button>
+                    </form>
                   </CardBody>
                 </Card>
 
-                <div className="mt-4 text-center">
+                <div className="mt-4 text-center d-flex align-items-center gap-2 justify-content-center">
+                  <span
+                    onClick={() => {
+                      sessionStorage.clear();
+                      window.location.href = "/login";
+                    }}
+                    className="text-decoration-underline text-secondary"
+                  >
+                    Go Back
+                  </span>
                   <button
                     disabled={disableResend || resendMutation.isPending}
                     onClick={handleCodeResend}
@@ -188,10 +204,10 @@ const VerifyEmail = () => {
         </div>
       </ParticlesAuth>
       {error && <ErrorToast errorMsg={error} onClose={() => setError("")} />}
-      {verifyMutation.isSuccess && (
+      {verifyTwoFaMutation.isSuccess && (
         <SuccessToast
-          successMsg={"Email Verified"}
-          onClose={() => verifyMutation.reset()}
+          successMsg={"Login Authenticated."}
+          onClose={() => verifyTwoFaMutation.reset()}
         />
       )}
       {resendMutation.isPending && <Loader />}
@@ -199,4 +215,4 @@ const VerifyEmail = () => {
   );
 };
 
-export default VerifyEmail;
+export default TwoFa;

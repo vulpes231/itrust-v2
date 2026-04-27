@@ -75,12 +75,13 @@ const Login = (props) => {
         if (!user.accountStatus.emailVerified) {
           sessionStorage.setItem("email_registered", validation.values.email);
           window.location.href = "/verifyemail";
-        } else if (!user.accountStatus.isProfileComplete) {
-          window.location.href = "/contact";
         } else if (user.accountStatus.banned) {
           window.location.href = "/appeal";
         } else if (user.accountStatus.twoFaActivated) {
-          window.location.href = "/appeal";
+          sessionStorage.setItem("email_registered", validation.values.email);
+          window.location.href = "/twofactor";
+        } else if (!user.accountStatus.isProfileComplete) {
+          window.location.href = "/contact";
         } else {
           window.location.href = "/dashboard";
         }

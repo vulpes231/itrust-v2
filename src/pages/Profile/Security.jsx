@@ -1,11 +1,49 @@
-import React, { useState } from "react";
-import { Card, CardHeader, CardBody, Row, Col, Label } from "reactstrap";
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Row,
+  Col,
+  Label,
+  Spinner,
+} from "reactstrap";
 import EditPassword from "./Updates/EditPassword";
 
 import { formatDistanceToNow } from "date-fns";
+import { useMutation } from "@tanstack/react-query";
+import { updateTwoFactor } from "../../services/user/user";
+import SuccessToast from "../../components/Common/SuccessToast";
+import ErrorToast from "../../components/Common/ErrorToast";
 
 const Security = ({ user }) => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [error, setError] = useState("");
+
+  const twoFactorMutation = useMutation({
+    mutationFn: updateTwoFactor,
+    onError: (err) => setError(err.message),
+    onSuccess: () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    twoFactorMutation.mutate();
+  };
+
+  useEffect(() => {
+    if (error) {
+      const tmt = setTimeout(() => {
+        setError("");
+      }, 3000);
+
+      return () => clearTimeout(tmt);
+    }
+  }, [error]);
   return (
     <Card>
       <CardHeader>
@@ -22,7 +60,7 @@ const Security = ({ user }) => {
                 {user?.credentials?.passUpdatedAt
                   ? `Last changed ${formatDistanceToNow(
                       new Date(user.credentials.passUpdatedAt),
-                      { addSuffix: true }
+                      { addSuffix: true },
                     )}`
                   : null}
               </span>
@@ -54,13 +92,29 @@ const Security = ({ user }) => {
               </span>
             </div>
             <div className="pr-2">
-              <button className="btn btn-primary">
-                Enable Two-Factor Authentication
+              <button
+                onClick={handleSubmit}
+                type="button"
+                className="btn btn-primary d-flex align-items-center"
+                disabled={twoFactorMutation.isPending}
+              >
+                {twoFactorMutation.isPending && <Spinner size={"sm"} />}
+                {user?.accountStatus?.twoFaActivated
+                  ? "Disable"
+                  : "Enable"}{" "}
+                Two-Factor Authentication
               </button>
             </div>
           </Col>
         </Row>
       </CardBody>
+      {twoFactorMutation.isSuccess && (
+        <SuccessToast
+          successMsg={"2FA Updated."}
+          onClose={() => twoFactorMutation.reset()}
+        />
+      )}
+      {error && <ErrorToast errorMsg={error} onClose={() => setError("")} />}
     </Card>
   );
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { devUrl, getAccessToken, liveUrl } from "../constants";
 
-axios.defaults.baseURL = devUrl;
+axios.defaults.baseURL = liveUrl;
 
 const token = getAccessToken();
 if (token) axios.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -18,9 +18,16 @@ axios.interceptors.response.use(
         message = error.response.data.message;
         break;
       case 401:
-        message = "Invalid credentials";
-        sessionStorage.clear();
-        window.location.href = "/login";
+        const isAuthRoute =
+          error.config.url.includes("/login") ||
+          error.config.url.includes("/code/auth");
+
+        if (!isAuthRoute) {
+          sessionStorage.clear();
+          window.location.href = "/login";
+        }
+
+        message = error.response?.data?.message || "Unauthorized";
         break;
       case 403:
         message = error.response.data?.message || "Forbidden";

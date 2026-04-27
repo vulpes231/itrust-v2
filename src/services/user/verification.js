@@ -12,22 +12,18 @@ async function verifyEmail(formData) {
   }
 }
 
-async function twofactorAuth(formData) {
+async function verifyTwoFa(formData) {
   try {
-    const response = await api.create("/code/auth", formdata);
-    return response.data;
-  } catch (error) {
-    const errMsg = error.response?.data?.message;
-    throw new Error(errMsg);
-  }
-}
+    const response = await api.create("/code/auth", formData);
 
-async function resendMailCode() {
-  try {
-    const response = await api.get("/wallet/analytics");
-    return response.data;
+    console.log(response);
+
+    sessionStorage.setItem("token", response.token);
+    sessionStorage.setItem("user", response.user);
+
+    return { user: response.data, token: response.token };
   } catch (error) {
-    const errMsg = error.response?.data?.message;
+    const errMsg = error || "Aunthentication failed.";
     throw new Error(errMsg);
   }
 }
@@ -76,7 +72,7 @@ const submitAddressVericationRequest = async (formData, files) => {
 
 export {
   verifyEmail,
-  twofactorAuth,
+  verifyTwoFa,
   submitVericationRequest,
   submitAddressVericationRequest,
 };

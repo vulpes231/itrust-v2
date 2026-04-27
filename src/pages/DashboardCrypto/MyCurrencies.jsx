@@ -4,6 +4,7 @@ import {
   Card,
   CardHeader,
   Col,
+  Row,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
@@ -17,15 +18,17 @@ import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
 const MyCurrencies = () => {
-  const [assetFilter, setAssetFilter] = useState("crypto");
+  const [assetFilter, setAssetFilter] = useState("stock");
+  const [sort, setSort] = useState("volume");
+
   const queryData = {
-    sortBy: "priceData.volume",
-    type: "crypto",
+    sortBy: sort,
+    type: assetFilter,
   };
 
   const { data: assets, isLoading: getAssetsLoading } = useQuery({
     queryFn: () => getAssets(queryData),
-    queryKey: ["assets"],
+    queryKey: ["assets", assetFilter, sort],
   });
 
   return (
@@ -38,25 +41,48 @@ const MyCurrencies = () => {
               <span style={{ color: "#878A99" }}>Filter by:</span>
               <select
                 className="btn btn-soft-primary btn-sm text-capitalize"
-                name=""
+                name="assetFilter"
+                onChange={(e) => setAssetFilter(e.target.value)}
+                value={assetFilter}
               >
-                <option value="">Crypto</option>
-                <option value="">Stock</option>
-                <option value="">ETF</option>
+                <option value="stock">Stock</option>
+                <option value="crypto">Crypto</option>
+
+                <option value="etf">ETF</option>
               </select>
-              <button className="btn btn-soft-primary btn-sm text-capitalize">
+              <button
+                type="button"
+                onClick={() => setSort("24h_change")}
+                className="btn btn-soft-primary btn-sm text-capitalize"
+              >
                 24H
               </button>
-              <button className="btn btn-soft-primary btn-sm text-capitalize">
+              <button
+                type="button"
+                onClick={() => setSort("")}
+                className="btn btn-soft-primary btn-sm text-capitalize"
+              >
                 watchlist
               </button>
-              <button className="btn btn-soft-primary btn-sm text-capitalize">
+              <button
+                type="button"
+                onClick={() => setSort("top_gainers")}
+                className="btn btn-soft-primary btn-sm text-capitalize"
+              >
                 top gainers
               </button>
-              <button className="btn btn-soft-primary btn-sm text-capitalize">
+              <button
+                type="button"
+                onClick={() => setSort("top_losers")}
+                className="btn btn-soft-primary btn-sm text-capitalize"
+              >
                 top losers
               </button>
-              <button className="btn btn-soft-primary btn-sm text-capitalize">
+              <button
+                type="button"
+                onClick={() => setSort("market_cap")}
+                className="btn btn-soft-primary btn-sm text-capitalize"
+              >
                 market cap
               </button>
             </div>
@@ -94,21 +120,21 @@ const MyCurrencies = () => {
                           </span>
                         </td>
                         <td>
-                          <div className="d-flex align-items-center">
-                            <div className="me-2">
+                          <span className="d-flex align-items-center">
+                            <span className="me-2">
                               <img
                                 src={asset.imageUrl}
                                 alt=""
                                 className="avatar-xxs"
                               />
-                            </div>
-                            <div>
+                            </span>
+                            <span>
                               <h6 className="mb-0">
                                 {asset.name.slice(0, 14)}
                                 {asset.name.length > 14 ? "..." : ""}
                               </h6>
-                            </div>
-                          </div>
+                            </span>
+                          </span>
                         </td>
                         <td>{formatCurrency(asset.priceData.current)}</td>
 
@@ -139,7 +165,7 @@ const MyCurrencies = () => {
                               {" "}
                               (
                               {parseFloat(
-                                asset.priceData.changePercent
+                                asset.priceData.changePercent,
                               ).toFixed(2)}
                               %)
                             </span>
@@ -157,15 +183,27 @@ const MyCurrencies = () => {
                     );
                   })}
 
+                  {getAssetsLoading && (
+                    <tr>
+                      <td colSpan="8">
+                        <div className="p-5 d-flex align-items-center justify-content-center w-100">
+                          <span className="fs-14 fw-semibold text-muted">
+                            Fetching {assetFilter}s...
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
                   {assets?.data?.length === 0 && (
-                    <div>
-                      <span
-                        style={{ color: "#878a99" }}
-                        className="fs-13 fw-semibold"
-                      >
-                        No records found
-                      </span>
-                    </div>
+                    <tr>
+                      <td colSpan="8">
+                        <div className="p-5 d-flex align-items-center justify-content-center w-100">
+                          <span className="fs-14 fw-semibold text-muted">
+                            No records found
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </table>

@@ -22,6 +22,7 @@ import {
   Profile,
   Histories,
   Landing,
+  TwoFa,
 } from "../pages";
 
 const authProtectedRoutes = [
@@ -61,6 +62,7 @@ const publicRoutes = [
   { path: "/forgot-password", component: <ForgetPassword /> },
   { path: "/register", component: <Register /> },
   { path: "/verifyemail", component: <VerifyEmail /> },
+  { path: "/twofactor", component: <TwoFa /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

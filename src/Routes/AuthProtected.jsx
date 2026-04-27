@@ -17,6 +17,8 @@ const allowedRoutesIfNotVerified = [
   "/personal",
 ];
 
+const publicRoutes = ["/login", "/2fa"];
+
 const AuthProtected = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -32,9 +34,12 @@ const AuthProtected = ({ children }) => {
     if (!loading) {
       if (token && userProfile) {
         setAuthorization(token);
-      } else if (!token) {
-        sessionStorage.clear();
-        mutation.mutate();
+      } else if (
+        !loading &&
+        !token &&
+        !publicRoutes.includes(location.pathname)
+      ) {
+        return <Navigate to="/login" replace />;
       }
     }
   }, [loading, token, userProfile, mutation]);
@@ -43,7 +48,7 @@ const AuthProtected = ({ children }) => {
   const isKycApproved = kycStatus === "approved";
 
   const isRouteAllowedForUnverified = allowedRoutesIfNotVerified.includes(
-    location.pathname
+    location.pathname,
   );
 
   const shouldBlockAccess =
