@@ -1,10 +1,25 @@
 import axios from "axios";
 import { devUrl, getAccessToken, liveUrl } from "../constants";
 
-axios.defaults.baseURL = liveUrl;
+axios.defaults.baseURL = devUrl;
 
 const token = getAccessToken();
 if (token) axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+
+axios.interceptors.request.use(
+  (config) => {
+    const token = getAccessToken();
+
+    if (token) {
+      config.headers["Authorization"] = "Bearer " + token;
+    } else {
+      delete config.headers["Authorization"];
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 axios.interceptors.response.use(
   function (response) {

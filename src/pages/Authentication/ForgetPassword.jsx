@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -11,47 +11,66 @@ import {
   Input,
   Label,
   Form,
+  Spinner,
 } from "reactstrap";
-
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
 import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
-
-// Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-// action
-// import { userForgetPassword } from "../../slices/thunks";
-
-// import images
-// import profile from "../../assets/images/bg.png";
 import logoLight from "../../assets/images/logo-light.png";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 import { createSelector } from "reselect";
 import { logo } from "../../assets";
 
+import { useMutation } from "@tanstack/react-query";
+import {
+  confirmResetCode,
+  sendResetCode,
+} from "../../services/resetAccountPass";
+import ForgetPassOtp from "./ForgetPassOtp";
+import ChangePass from "./ChangePass";
+
 const ForgetPasswordPage = (props) => {
   document.title = "Reset Password | Itrust Investments";
 
-  const dispatch = useDispatch();
+  const [error, setError] = useState("");
+  const [step, setStep] = useState(1);
+
+  const sendPasswordResetCode = useMutation({
+    mutationFn: sendResetCode,
+    onError: (err) => setError(err.message),
+    onSuccess: () => {
+      handleStep(2);
+    },
+  });
 
   const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
-
     initialValues: {
       email: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
     }),
+
     onSubmit: (values) => {
-      // dispatch(userForgetPassword(values, props.router.location.pathname));
+      sessionStorage.setItem("email_registered", values.email);
+      sendPasswordResetCode.mutate(values);
     },
   });
+
+  function handleStep(newStep) {
+    setStep(newStep);
+  }
+
+  useEffect(() => {
+    if (error) {
+      const tmt = setTimeout(() => {
+        setError("");
+      }, 3000);
+      return () => clearTimeout(tmt);
+    }
+  }, [error]);
 
   return (
     <ParticlesAuth>
@@ -69,97 +88,111 @@ const ForgetPasswordPage = (props) => {
             </Col>
           </Row>
 
-          <Row className="justify-content-center">
-            <Col md={8} lg={6} xl={5}>
-              <Card className="mt-4">
-                <CardBody className="p-4">
-                  <div className="text-center mt-2">
-                    <h5 className="text-primary">Forgot Password?</h5>
-                    <p className="text-muted">Reset password with itrust</p>
+          {step === 1 && (
+            <Row className="justify-content-center">
+              <Col md={8} lg={6} xl={5}>
+                <Card className="mt-4">
+                  <CardBody className="p-4">
+                    <div className="text-center mt-2">
+                      <h5 className="text-primary">Forgot Password?</h5>
+                      <p className="text-muted">Reset password with itrust</p>
 
-                    <lord-icon
-                      src="https://cdn.lordicon.com/rhvddzym.json"
-                      trigger="loop"
-                      colors="primary:#0ab39c"
-                      className="avatar-xl"
-                      style={{ width: "120px", height: "120px" }}
-                    ></lord-icon>
-                  </div>
+                      <lord-icon
+                        src="https://cdn.lordicon.com/rhvddzym.json"
+                        trigger="loop"
+                        colors="primary:#0ab39c"
+                        className="avatar-xl"
+                        style={{ width: "120px", height: "120px" }}
+                      ></lord-icon>
+                    </div>
 
-                  <Alert
-                    className="border-0 alert-warning text-center mb-2 mx-2"
-                    role="alert"
-                  >
-                    Enter your email and instructions will be sent to you!
-                  </Alert>
-                  <div className="p-2">
-                    {/* {forgetError && forgetError ? (
-                      <Alert color="danger" style={{ marginTop: "13px" }}>
-                        {forgetError}
-                      </Alert>
-                    ) : null}
-                    {forgetSuccessMsg ? (
-                      <Alert color="success" style={{ marginTop: "13px" }}>
-                        {forgetSuccessMsg}
-                      </Alert>
-                    ) : null} */}
-                    <Form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
+                    <Alert
+                      className="border-0 alert-warning text-center mb-2 mx-2"
+                      role="alert"
                     >
-                      <div className="mb-4">
-                        <Label className="form-label">Email</Label>
-                        <Input
-                          name="email"
-                          className="form-control"
-                          placeholder="Enter email"
-                          type="email"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.email || ""}
-                          invalid={
-                            validation.touched.email && validation.errors.email
-                              ? true
-                              : false
-                          }
-                        />
-                        {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid">
-                            <div>{validation.errors.email}</div>
-                          </FormFeedback>
-                        ) : null}
-                      </div>
+                      Enter your registered email and instructions will be sent
+                      to you!
+                    </Alert>
+                    <div className="p-2">
+                      <Form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          validation.handleSubmit();
+                          return false;
+                        }}
+                      >
+                        <div className="mb-4">
+                          <Label className="form-label">Email</Label>
+                          <Input
+                            name="email"
+                            autoComplete="off"
+                            className="form-control"
+                            placeholder="Enter email"
+                            type="email"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.email || ""}
+                            invalid={
+                              validation.touched.email &&
+                              validation.errors.email
+                                ? true
+                                : false
+                            }
+                          />
+                          {validation.touched.email &&
+                          validation.errors.email ? (
+                            <FormFeedback type="invalid">
+                              <div>{validation.errors.email}</div>
+                            </FormFeedback>
+                          ) : null}
+                        </div>
 
-                      <div className="text-center mt-4">
-                        <button
-                          className="btn btn-secondary w-100"
-                          type="submit"
-                        >
-                          Send OTP
-                        </button>
-                      </div>
-                    </Form>
-                  </div>
-                </CardBody>
-              </Card>
+                        <div className="text-center mt-4">
+                          <button
+                            className="btn btn-secondary w-100 d-flex align-items-center gap-2 justify-content-center"
+                            type="submit"
+                            disabled={sendPasswordResetCode.isPending}
+                          >
+                            {sendPasswordResetCode.isPending && (
+                              <Spinner size={"sm"} />
+                            )}
+                            Send Reset Code
+                          </button>
+                        </div>
+                      </Form>
+                    </div>
+                  </CardBody>
+                </Card>
 
-              <div className="mt-4 text-center">
-                <p className="mb-0">
-                  Wait, I remember my password...{" "}
-                  <Link
-                    to="/login"
-                    className="fw-semibold text-primary text-decoration-underline"
-                  >
-                    {" "}
-                    Click here{" "}
-                  </Link>{" "}
-                </p>
-              </div>
-            </Col>
-          </Row>
+                <div className="mt-4 text-center">
+                  <p className="mb-0">
+                    Wait, I remember my password...{" "}
+                    <Link
+                      to="/login"
+                      className="fw-semibold text-primary text-decoration-underline"
+                    >
+                      {" "}
+                      Click here{" "}
+                    </Link>{" "}
+                  </p>
+                </div>
+              </Col>
+            </Row>
+          )}
+          {step === 2 && (
+            <Row className="justify-content-center">
+              <Col md={8} lg={6} xl={5}>
+                <ForgetPassOtp handleStep={handleStep} />
+              </Col>
+            </Row>
+          )}
+          {step === 3 && (
+            <Row className="justify-content-center">
+              <Col md={8} lg={6} xl={5}>
+                <ChangePass handleStep={handleStep} />
+              </Col>
+            </Row>
+          )}
         </Container>
       </div>
     </ParticlesAuth>
