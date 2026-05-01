@@ -6,6 +6,7 @@ import { useDebounce } from "../../hooks/userHooks";
 import numeral from "numeral";
 import ErrorToast from "../../components/Common/ErrorToast";
 import TradeSection from "./TradeSection";
+import { useNavigate } from "react-router-dom";
 
 const AssetManager = ({
   activeTab,
@@ -39,9 +40,11 @@ const AssetManager = ({
     }
 
     setSelectedAsset(asset);
+    handleChange("trade");
     setSearchTerm("");
     setShowResult(false);
     toggleTradeSection(true);
+    // console.log("toggled");
   };
 
   useEffect(() => {
@@ -60,6 +63,8 @@ const AssetManager = ({
     }
   }, [error]);
 
+  const navigate = useNavigate();
+
   return (
     <Card className="p-0 ">
       <CardHeader>
@@ -68,7 +73,10 @@ const AssetManager = ({
           <span className="d-flex align-items-center gap-2">
             <button
               type="button"
-              onClick={() => handleChange("asset")}
+              onClick={() => {
+                handleChange("asset");
+                navigate("/trade");
+              }}
               className={`btn text-capitalize ${
                 activeTab === "asset"
                   ? "btn-secondary"

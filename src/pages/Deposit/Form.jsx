@@ -209,7 +209,7 @@ const Form = ({
                       borderRadius: "5px",
                       cursor: "pointer",
                       backgroundColor:
-                        selectedMethod === method.id ? "#E5E7F5" : "#f3f3f3",
+                        selectedMethod === method.id ? "#E5E7F5" : "", // selectedMethod === method.id ? "#E5E7F5" :
                     }}
                     onClick={() => {
                       setSelectedMethod(method.id);
@@ -241,7 +241,7 @@ const Form = ({
                     </FlexRow>
                     <span
                       style={{
-                        border: "3px solid #5b71b9",
+                        // border: `3px solid #5b71b9`,
                         width: "13px",
                         height: "13px",
                         borderRadius: "50%",
@@ -249,9 +249,10 @@ const Form = ({
                         alignItems: "center",
                         justifyItems: "center",
                       }}
+                      className={`border-3 border ${selectedMethod === method.id ? "border-secondary" : "border-muted"} `}
                     >
                       {selectedMethod === method.id && (
-                        <GoDotFill className="text-primary" />
+                        <GoDotFill className="text-secondary" />
                       )}
                     </span>
                   </div>

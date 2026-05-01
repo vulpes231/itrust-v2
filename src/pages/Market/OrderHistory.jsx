@@ -28,6 +28,7 @@ import numeral from "numeral";
 const OrderHistory = () => {
   const tk = getAccessToken();
   const [currentPage, setCurrentPage] = useState(1);
+  const [showFilter, setShowFilter] = useState(true);
 
   const queryData = { limit: 7 };
   const { data: trades } = useQuery({
@@ -172,7 +173,7 @@ const OrderHistory = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   // useEffect(() => {
@@ -192,45 +193,53 @@ const OrderHistory = () => {
             <div className="col-auto ms-auto">
               <div className="flex-shrink-0 d-flex align-items-center gap-2 ">
                 <Input type="text" placeholder="Search for orders" />
-                <button className="btn btn-secondary">filter</button>
+                <button
+                  type="button"
+                  onClick={() => setShowFilter(!showFilter)}
+                  className="btn btn-secondary"
+                >
+                  filter
+                </button>
               </div>
             </div>
           </Row>
         </CardHeader>
         <CardBody>
-          <Col className="d-flex align-items-center justify-content-between">
-            <div className="d-flex align-items-center gap-2">
-              <span style={{ whiteSpace: "nowrap" }}>Sort by:</span>
-              <Input type="select">
-                <option value="">All Account</option>
-              </Input>
-              <Input type="select">
-                <option value="">Status</option>
-              </Input>
-            </div>
-            <div className="d-flex gap-2">
-              <button
-                onClick={() => setActiveOrderTab("trades")}
-                className={`btn text-capitalize ${
-                  activeOrderTab === "trades"
-                    ? "btn-secondary"
-                    : "bg-secondary-subtle text-secondary"
-                }`}
-              >
-                trade orders
-              </button>
-              <button
-                onClick={() => setActiveOrderTab("dividends")}
-                className={`btn text-capitalize ${
-                  activeOrderTab === "dividends"
-                    ? "btn-secondary"
-                    : "bg-secondary-subtle text-secondary"
-                }`}
-              >
-                dividends
-              </button>
-            </div>
-          </Col>
+          {showFilter && (
+            <Col className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center gap-2">
+                <span style={{ whiteSpace: "nowrap" }}>Sort by:</span>
+                <Input type="select">
+                  <option value="">All Account</option>
+                </Input>
+                <Input type="select">
+                  <option value="">Status</option>
+                </Input>
+              </div>
+              <div className="d-flex gap-2">
+                <button
+                  onClick={() => setActiveOrderTab("trades")}
+                  className={`btn text-capitalize ${
+                    activeOrderTab === "trades"
+                      ? "btn-secondary"
+                      : "bg-secondary-subtle text-secondary"
+                  }`}
+                >
+                  trade orders
+                </button>
+                <button
+                  onClick={() => setActiveOrderTab("dividends")}
+                  className={`btn text-capitalize ${
+                    activeOrderTab === "dividends"
+                      ? "btn-secondary"
+                      : "bg-secondary-subtle text-secondary"
+                  }`}
+                >
+                  dividends
+                </button>
+              </div>
+            </Col>
+          )}
         </CardBody>
 
         <CardBody>

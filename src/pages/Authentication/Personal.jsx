@@ -150,6 +150,98 @@ const Personal = () => {
                         ) : null}
 
                         <div className="mb-3">
+                          <Label htmlFor="nationality" className="form-label">
+                            Nationality <span className="text-danger">*</span>
+                          </Label>
+                          <Input
+                            id="nationality"
+                            name="nationalityId"
+                            className="form-control"
+                            type="select"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.nationalityId || ""}
+                            invalid={
+                              validation.touched.nationalityId &&
+                              validation.errors.nationalityId
+                                ? true
+                                : false
+                            }
+                          >
+                            <option value="">Select your nationality</option>
+                            {nations &&
+                              nations.length > 0 &&
+                              nations.map((nation) => {
+                                return (
+                                  <option
+                                    key={nation._id}
+                                    value={nation._id}
+                                    className={
+                                      validation.values.nationalityId ===
+                                      nation._id
+                                        ? "active"
+                                        : ""
+                                    }
+                                  >
+                                    {nation.name}
+                                  </option>
+                                );
+                              })}
+                          </Input>
+                          {validation.touched.nationalityId &&
+                          validation.errors.nationalityId ? (
+                            <FormFeedback type="invalid">
+                              <div>{validation.errors.nationalityId}</div>
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="currency" className="form-label">
+                            Currency <span className="text-danger">*</span>
+                          </Label>
+                          <Input
+                            id="currency"
+                            name="currencyId"
+                            className="form-control"
+                            type="select"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.currencyId || ""}
+                            invalid={
+                              validation.touched.currencyId &&
+                              validation.errors.currencyId
+                                ? true
+                                : false
+                            }
+                          >
+                            <option value="">Select your currency</option>
+                            {currencies &&
+                              currencies.length > 0 &&
+                              currencies.map((currency) => {
+                                return (
+                                  <option
+                                    key={currency._id}
+                                    value={currency._id}
+                                    className={
+                                      validation.values.currencyId ===
+                                      currency._id
+                                        ? "active"
+                                        : ""
+                                    }
+                                  >
+                                    {currency.name}
+                                  </option>
+                                );
+                              })}
+                          </Input>
+                          {validation.touched.currencyId &&
+                          validation.errors.currencyId ? (
+                            <FormFeedback type="invalid">
+                              <div>{validation.errors.currencyId}</div>
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                        <div className="mb-3">
                           <Label htmlFor="dob" className="form-label">
                             Date of Birth <span className="text-danger">*</span>
                           </Label>
@@ -269,99 +361,6 @@ const Personal = () => {
                           validation.errors.experience ? (
                             <FormFeedback type="invalid">
                               <div>{validation.errors.experience}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-
-                        <div className="mb-3">
-                          <Label htmlFor="nationality" className="form-label">
-                            Nationality <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            id="nationality"
-                            name="nationalityId"
-                            className="form-control"
-                            type="select"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.nationalityId || ""}
-                            invalid={
-                              validation.touched.nationalityId &&
-                              validation.errors.nationalityId
-                                ? true
-                                : false
-                            }
-                          >
-                            <option value="">Select your nationality</option>
-                            {nations &&
-                              nations.length > 0 &&
-                              nations.map((nation) => {
-                                return (
-                                  <option
-                                    key={nation._id}
-                                    value={nation._id}
-                                    className={
-                                      validation.values.nationalityId ===
-                                      nation._id
-                                        ? "active"
-                                        : ""
-                                    }
-                                  >
-                                    {nation.name}
-                                  </option>
-                                );
-                              })}
-                          </Input>
-                          {validation.touched.nationalityId &&
-                          validation.errors.nationalityId ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.nationalityId}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                        <div className="mb-3">
-                          <Label htmlFor="currency" className="form-label">
-                            Currency <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            id="currency"
-                            name="currencyId"
-                            className="form-control"
-                            type="select"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.currencyId || ""}
-                            invalid={
-                              validation.touched.currencyId &&
-                              validation.errors.currencyId
-                                ? true
-                                : false
-                            }
-                          >
-                            <option value="">Select your currency</option>
-                            {currencies &&
-                              currencies.length > 0 &&
-                              currencies.map((currency) => {
-                                return (
-                                  <option
-                                    key={currency._id}
-                                    value={currency._id}
-                                    className={
-                                      validation.values.currencyId ===
-                                      currency._id
-                                        ? "active"
-                                        : ""
-                                    }
-                                  >
-                                    {currency.name}
-                                  </option>
-                                );
-                              })}
-                          </Input>
-                          {validation.touched.currencyId &&
-                          validation.errors.currencyId ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.currencyId}</div>
                             </FormFeedback>
                           ) : null}
                         </div>

@@ -95,8 +95,9 @@ const Security = ({ user }) => {
               <button
                 onClick={handleSubmit}
                 type="button"
-                className="btn btn-primary d-flex align-items-center"
+                className={`btn ${user?.accountStatus?.twoFaActivated ? "btn-danger" : "btn-primary"}  d-flex align-items-center`}
                 disabled={twoFactorMutation.isPending}
+                style={{ whiteSpace: "nowrap" }}
               >
                 {twoFactorMutation.isPending && <Spinner size={"sm"} />}
                 {user?.accountStatus?.twoFaActivated

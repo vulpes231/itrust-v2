@@ -68,16 +68,16 @@ const BuySell = () => {
               toggleTradeSection={setShowTradeSection}
             />
           </Row>
-          <Row className="px-3">
-            {showTradeSection ||
-              (preSelectedAsset && (
+          {(activeMarketTab === "trade" && showTradeSection) ||
+            (preSelectedAsset && activeMarketTab !== "asset" && (
+              <Row className="px-3">
                 <TradeSection
                   asset={selectedAsset || preSelectedAsset}
                   accounts={wallets}
                 />
-              ))}
-          </Row>
-          {activeMarketTab !== "trade" && (
+              </Row>
+            ))}
+          {activeMarketTab === "asset" && (
             <Row className="px-3">
               <Market />
             </Row>

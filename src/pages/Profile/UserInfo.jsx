@@ -45,7 +45,7 @@ const UserInfo = ({ user }) => {
             Complete Your Profile
           </h6>
           <small style={{ color: "#878A99", whiteSpace: "nowrap" }}>
-            {progress}% completed
+            {progress}%
           </small>
         </div>
 

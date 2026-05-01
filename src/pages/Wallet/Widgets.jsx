@@ -5,7 +5,7 @@ import { Card, CardBody, Col, Row } from "reactstrap";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactionAnalytics } from "../../services/user/transactions";
 import { formatCurrency, getAccessToken } from "../../constants";
-import { getWalletAnalytics } from "../../services/user/wallet";
+import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
 import { brief, cash } from "../../assets";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { format } from "date-fns";
@@ -25,24 +25,35 @@ const Widgets = () => {
     enabled: !!token,
   });
 
+  const { data: wallets } = useQuery({
+    queryFn: getUserWallets,
+    queryKey: ["wallets"],
+    enabled: !!token,
+  });
+
   const { data: trxAnalytics } = useQuery({
     queryFn: getTransactionAnalytics,
     queryKey: ["trxAnalytics"],
     enabled: !!token,
   });
 
+  const cashAccount =
+    wallets &&
+    wallets.length > 0 &&
+    wallets.find((wallet) => wallet.slug === "cash");
+
   const [wholePart, setWholePart] = useState(0);
   const [decimalPart, setDecimalPart] = useState("00");
   const [showBalance, setShowBalance] = useState(true);
-
+  // console.log(cashAccount);
   useEffect(() => {
-    if (walletAnalytics) {
-      const formatted = walletAnalytics.availableBalance.toFixed(2);
+    if (cashAccount) {
+      const formatted = cashAccount.availableBalance.toFixed(2);
       const [whole, decimal] = formatted.split(".");
       setWholePart(parseInt(whole));
       setDecimalPart(decimal);
     }
-  }, [walletAnalytics]);
+  }, [cashAccount]);
 
   return (
     <React.Fragment>

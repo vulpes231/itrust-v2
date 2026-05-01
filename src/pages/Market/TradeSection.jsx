@@ -266,7 +266,8 @@ const TradeSection = ({ asset, accounts }) => {
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                   <span>
-                    Transaction Fees <sub className="text-muted">(0.05%)</sub>{" "}
+                    Transaction Fees{" "}
+                    <sub className="text-muted">(0.05%)</sub>{" "}
                   </span>
                   <span>{numeral(0).format("$0,0.00")}</span>
                 </div>
@@ -380,7 +381,7 @@ const TradeSection = ({ asset, accounts }) => {
       )}
       {mutation.isSuccess && (
         <SuccessToast
-          successMsg={`${asset?.symbol} Position Opened.`}
+          successMsg={`You just bought ${qty} ${asset?.symbol}`}
           onClose={() => mutation.reset()}
           isOpen={mutation.isSuccess}
         />

@@ -27,7 +27,6 @@ const MyCurrencies = () => {
     type: assetFilter,
   };
 
-  // Fetch all assets (always fetch, but conditionally display)
   const {
     data: assets,
     isLoading: getAssetsLoading,
@@ -35,10 +34,9 @@ const MyCurrencies = () => {
   } = useQuery({
     queryFn: () => getAssets(queryData),
     queryKey: ["assets", assetFilter, sort],
-    enabled: !showWatchlistOnly, // Don't fetch when in watchlist mode (save bandwidth)
+    enabled: !showWatchlistOnly,
   });
 
-  // Fetch user's watchlist
   const {
     data: watchlistData,
     isLoading: getWatchlistLoading,
@@ -48,55 +46,47 @@ const MyCurrencies = () => {
     queryKey: ["watchlist"],
   });
 
-  // Fetch user info
   const { data: user, isLoading: getUserLoading } = useQuery({
     queryFn: () => getUserInfo(),
     queryKey: ["user"],
   });
 
-  // Create a Set of watchlist asset IDs for quick lookup
   const watchlistIds = new Set(
     user?.watchList?.map((asset) => asset.assetId) || [],
   );
 
   // console.log(watchlistIds);
 
-  // Filter assets to show only watchlist items if enabled
   const displayedAssets = showWatchlistOnly
-    ? watchlistData?.data || [] // Show watchlist assets directly
-    : assets?.data || []; // Show all assets
+    ? watchlistData || []
+    : assets?.data || [];
 
-  // Add to watchlist mutation
   const addAssetToWatchList = useMutation({
     mutationFn: addToWatchList,
     onError: (err) => setError(err.message),
     onSuccess: () => {
-      // Invalidate and refetch watchlist
       queryClient.invalidateQueries(["watchlist"]);
       queryClient.invalidateQueries(["user"]);
-      // If we're in watchlist mode, refresh the display
+
       if (showWatchlistOnly) {
         refetchWatchlist();
       }
     },
   });
 
-  // Remove from watchlist mutation
   const removeAssetFromWatchList = useMutation({
     mutationFn: removeFromWatchList,
     onError: (err) => setError(err.message),
     onSuccess: () => {
-      // Invalidate and refetch watchlist
       queryClient.invalidateQueries(["watchlist"]);
       queryClient.invalidateQueries(["user"]);
-      // If we're in watchlist mode, refresh the display
+
       if (showWatchlistOnly) {
         refetchWatchlist();
       }
     },
   });
 
-  // Handle watchlist toggle
   const handleWatchlistToggle = (assetId, isInWatchlist) => {
     if (isInWatchlist) {
       removeAssetFromWatchList.mutate(assetId);
@@ -105,32 +95,27 @@ const MyCurrencies = () => {
     }
   };
 
-  // Handle watchlist filter button - Toggle between watchlist and all assets
   const handleWatchlistFilter = () => {
     if (showWatchlistOnly) {
-      // Exiting watchlist mode - re-enable regular view
       setShowWatchlistOnly(false);
-      // Refresh assets with current filters
+
       refetchAssets();
     } else {
-      // Entering watchlist mode
       setShowWatchlistOnly(true);
       // Reset sort when showing watchlist (optional)
       // setSort("");
     }
   };
 
-  // Handle filter changes - always exit watchlist mode
   const handleAssetFilterChange = (value) => {
     setAssetFilter(value);
-    setShowWatchlistOnly(false); // Exit watchlist mode
-    setSort("volume"); // Reset sort
+    setShowWatchlistOnly(false);
+    setSort("volume");
   };
 
-  // Handle sort changes - always exit watchlist mode
   const handleSortChange = (sortType) => {
     setSort(sortType);
-    setShowWatchlistOnly(false); // Exit watchlist mode when sorting
+    setShowWatchlistOnly(false);
   };
 
   const isLoading = getAssetsLoading || getWatchlistLoading || getUserLoading;
@@ -181,7 +166,7 @@ const MyCurrencies = () => {
                   showWatchlistOnly ? "btn-primary" : "btn-soft-primary"
                 }`}
               >
-                {showWatchlistOnly ? "All Assets" : "Watchlist"}
+                Watchlist
               </button>
 
               {/* Top Gainers Button */}

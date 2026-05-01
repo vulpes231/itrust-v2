@@ -178,7 +178,7 @@ const Contact = () => {
 
                         <div className="mb-3">
                           <Label htmlFor="street" className="form-label">
-                            Street <span className="text-danger">*</span>
+                            Home Address <span className="text-danger">*</span>
                           </Label>
                           <Input
                             name="street"
