@@ -27,7 +27,7 @@ async function confirmResetCode(formData) {
 async function changeAccountPassword(formData) {
   try {
     const response = await api.update("/resetaccountpass", formData);
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error) {
     const errMsg = error || "Failed to update password!.";

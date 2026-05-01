@@ -40,7 +40,9 @@ const ForgetPasswordPage = (props) => {
     mutationFn: sendResetCode,
     onError: (err) => setError(err.message),
     onSuccess: () => {
-      handleStep(2);
+      setTimeout(() => {
+        handleStep(2);
+      }, 2000);
     },
   });
 
@@ -106,13 +108,20 @@ const ForgetPasswordPage = (props) => {
                       ></lord-icon>
                     </div>
 
-                    <Alert
-                      className="border-0 alert-warning text-center mb-2 mx-2"
-                      role="alert"
-                    >
-                      Enter your registered email and instructions will be sent
-                      to you!
-                    </Alert>
+                    {sendPasswordResetCode.isSuccess && (
+                      <Alert color="success">Code Sent.</Alert>
+                    )}
+
+                    {!sendPasswordResetCode.isSuccess ||
+                      (!error && (
+                        <Alert
+                          className="border-0 alert-warning text-center mb-2 mx-2"
+                          role="alert"
+                        >
+                          Enter your registered email and instructions will be
+                          sent to you!
+                        </Alert>
+                      ))}
                     <div className="p-2">
                       <Form
                         onSubmit={(e) => {

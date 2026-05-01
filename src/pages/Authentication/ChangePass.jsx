@@ -23,8 +23,11 @@ const ChangePass = ({ handleStep }) => {
     mutationFn: changeAccountPassword,
     onError: (err) => setError(err.message || "Something went wrong"),
     onSuccess: () => {
+      sessionStorage.removeItem("token");
       sessionStorage.removeItem("email_registered");
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     },
   });
 
@@ -46,7 +49,7 @@ const ChangePass = ({ handleStep }) => {
     }),
 
     onSubmit: (values) => {
-      console.log(values);
+      //   console.log(values);
       changePassWord.mutate(values);
     },
   });

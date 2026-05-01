@@ -16,7 +16,9 @@ const ForgetPassOtp = ({ handleStep }) => {
     onError: (err) => setError(err.message),
     onSuccess: (data) => {
       sessionStorage.setItem("token", data.token);
-      handleStep(3);
+      setTimeout(() => {
+        handleStep(3);
+      }, 2000);
     },
   });
 
@@ -58,7 +60,7 @@ const ForgetPassOtp = ({ handleStep }) => {
       return;
     }
 
-    console.log(code);
+    // console.log(code);
 
     confirmPasswordResetCode.mutate({ code, email: sessionEmail });
   };
