@@ -5,7 +5,6 @@ import { searchAsset } from "../../services/asset/asset";
 import { useDebounce } from "../../hooks/userHooks";
 import numeral from "numeral";
 import ErrorToast from "../../components/Common/ErrorToast";
-import TradeSection from "./TradeSection";
 import { useNavigate } from "react-router-dom";
 
 const AssetManager = ({
@@ -17,7 +16,6 @@ const AssetManager = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
-
   const [showResult, setShowResult] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -26,8 +24,6 @@ const AssetManager = ({
     queryFn: () => searchAsset({ query: debouncedSearchTerm }),
     enabled: debouncedSearchTerm.length > 3,
   });
-
-  // console.log(assetName);
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
@@ -43,14 +39,14 @@ const AssetManager = ({
     handleChange("trade");
     setSearchTerm("");
     setShowResult(false);
-    toggleTradeSection(true);
-    // console.log("toggled");
+    toggleTradeSection(true); // This will show the trade section
   };
 
   useEffect(() => {
     if (searchResults && searchResults.length > 0) {
-      // console.log(searchResults);
       setShowResult(true);
+    } else {
+      setShowResult(false);
     }
   }, [searchResults]);
 
@@ -87,7 +83,9 @@ const AssetManager = ({
             </button>
             <button
               type="button"
-              onClick={() => handleChange("trade")}
+              onClick={() => {
+                handleChange("trade");
+              }}
               className={`btn text-capitalize ${
                 activeTab === "trade"
                   ? "btn-secondary"
@@ -121,7 +119,6 @@ const AssetManager = ({
               >
                 <div className="d-flex gap-2 align-items-center">
                   <figure className="border rounded-circle p-1">
-                    {" "}
                     <img src={item?.imageUrl} alt="" width={25} />
                   </figure>
                   <div>
@@ -130,7 +127,7 @@ const AssetManager = ({
                   </div>
                 </div>
                 <div className="d-flex flex-column gap-2 align-items-end">
-                  <h5> {numeral(item.priceData?.current).format("$0,0.00")}</h5>
+                  <h5>{numeral(item.priceData?.current).format("$0,0.00")}</h5>
                   <div
                     className={`${
                       item.priceData?.changePercent < 0

@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Col } from "reactstrap";
 import { avatar1 } from "../../assets";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const UserInfo = ({ user }) => {
   const isProfileComplete = user?.accountStatus?.isProfileComplete;
@@ -32,7 +33,12 @@ const UserInfo = ({ user }) => {
         <img src={avatar1} alt="user" width={50} className="rounded-circle" />
         <span className="d-flex flex-column align-items-center justify-content-center">
           <h4 className="lh-sm text-capitalize">
-            {user?.personalInfo?.firstName} {user?.personalInfo?.lastName}
+            {user?.personalInfo?.firstName} {user?.personalInfo?.lastName}{" "}
+            {user?.identityVerification?.kycStatus === "approved" && (
+              <span>
+                <RiVerifiedBadgeFill style={{ color: "#387CF8" }} size={16} />
+              </span>
+            )}
           </h4>
           <span style={{ color: "#878A99" }} className="fw-light">
             @{user?.personalInfo?.username}
@@ -61,29 +67,12 @@ const UserInfo = ({ user }) => {
         >
           <div
             style={{
-              backgroundColor: getColor(),
+              backgroundColor: "#F17171",
               width: `${progress}%`,
               height: "3px",
               transition: "all 0.5s ease-in-out",
             }}
           />
-        </div>
-
-        <div className="d-flex flex-column gap-2">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className="d-flex align-items-center justify-content-between"
-            >
-              <span
-                style={{
-                  color: step.done ? "#5162be" : "#878A99",
-                }}
-              >
-                {step.label}
-              </span>
-            </div>
-          ))}
         </div>
       </Col>
     </Card>

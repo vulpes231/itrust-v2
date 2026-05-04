@@ -21,10 +21,13 @@ const BuySell = () => {
 
   const [activeMarketTab, setActiveMarketTab] = useState("asset");
   const [showTradeSection, setShowTradeSection] = useState(false);
-  const [selectedAsset, setSelectedAsset] = useState("");
+  const [selectedAsset, setSelectedAsset] = useState(null);
 
   const handleTabChange = (tabName) => {
     setActiveMarketTab(tabName);
+    if (tabName === "asset") {
+      setShowTradeSection(false);
+    }
   };
 
   const { data: wallets } = useQuery({
@@ -44,11 +47,25 @@ const BuySell = () => {
     queryKey: ["walletAnalytics"],
   });
 
+  // Handle pre-selected asset from URL params
   useEffect(() => {
     if (preSelectedAsset) {
+      setSelectedAsset(preSelectedAsset);
       setActiveMarketTab("trade");
+      setShowTradeSection(true);
     }
   }, [preSelectedAsset]);
+
+  // Determine if trade section should be visible
+  const shouldShowTradeSection = () => {
+    if (activeMarketTab === "trade" && showTradeSection && selectedAsset) {
+      return true;
+    }
+    if (activeMarketTab !== "asset" && preSelectedAsset && !selectedAsset) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <React.Fragment>
@@ -68,20 +85,24 @@ const BuySell = () => {
               toggleTradeSection={setShowTradeSection}
             />
           </Row>
-          {(activeMarketTab === "trade" && showTradeSection) ||
-            (preSelectedAsset && activeMarketTab !== "asset" && (
-              <Row className="px-3">
-                <TradeSection
-                  asset={selectedAsset || preSelectedAsset}
-                  accounts={wallets}
-                />
-              </Row>
-            ))}
-          {activeMarketTab === "asset" && (
+
+          {/* Trade Section - Only show when conditions are met */}
+          {shouldShowTradeSection() && (
+            <Row className="px-3">
+              <TradeSection
+                asset={selectedAsset || preSelectedAsset}
+                accounts={wallets}
+              />
+            </Row>
+          )}
+
+          {/* Market Section - Only show on asset tab */}
+          {activeMarketTab === "asset" && !showTradeSection && (
             <Row className="px-3">
               <Market />
             </Row>
           )}
+
           <Row className="px-3">
             <OrderHistory />
           </Row>

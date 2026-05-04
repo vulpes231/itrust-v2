@@ -36,8 +36,8 @@ const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
           <div className="d-flex align-items-center justify-content-between">
             <h3>
               {" "}
-              {activeWallet?.availableBalance
-                ? formatCurrency(activeWallet.availableBalance)
+              {activeWallet?.totalBalance
+                ? formatCurrency(activeWallet.totalBalance)
                 : formatCurrency(0)}
             </h3>
             <span

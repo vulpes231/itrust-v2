@@ -255,15 +255,6 @@ const TradeCard = () => {
                   </span>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu dropdown-menu-end">
-                  {/* Add "All" option */}
-                  {/* <DropdownItem
-                    onClick={() =>
-                      handleTypeChange({ id: "all", label: "all" })
-                    }
-                    className={tradeType.id === "market" ? "active" : ""}
-                  >
-                    All
-                  </DropdownItem> */}
                   {allowedTypes.map((type) => {
                     return (
                       <DropdownItem
@@ -286,11 +277,14 @@ const TradeCard = () => {
             {" "}
             <button
               className={`${
-                activeTab === "buy" ? "btn btn-success" : "btn btn-light"
+                activeTab === "buy"
+                  ? "btn btn-success"
+                  : "btn btn-light text-muted"
               } w-100 text-capitalize`}
               onClick={() => {
                 toggleTab("buy");
               }}
+              style={{ height: "45px" }}
             >
               buy
             </button>
@@ -298,11 +292,14 @@ const TradeCard = () => {
           <Col>
             <button
               className={`${
-                activeTab === "sell" ? "btn btn-danger" : " btn bg-light"
+                activeTab === "sell"
+                  ? "btn btn-danger"
+                  : " btn bg-light text-muted"
               } w-100 text-capitalize`}
               onClick={() => {
                 toggleTab("sell");
               }}
+              style={{ height: "45px" }}
             >
               sell
             </button>

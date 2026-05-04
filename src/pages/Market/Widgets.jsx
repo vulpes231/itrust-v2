@@ -1,6 +1,7 @@
 import React from "react";
 import CountUp from "react-countup";
 import { Card, CardBody, Col } from "reactstrap";
+import { LuCircleDollarSign } from "react-icons/lu";
 
 const Widgets = ({ analytics }) => {
   const marketWidgets = analytics && [
@@ -25,15 +26,15 @@ const Widgets = ({ analytics }) => {
       title: "Cost Basis (Amount Invested)",
       counter: analytics.totalInvested.toFixed(2).split(".")[0] || 0,
       decimal: analytics.totalInvested.toFixed(2).split(".")[1],
-      icon: "ri-arrow-left-down-fill",
-      iconClass: "warning",
+      icon: "ri-arrow-right-up-fill",
+      iconClass: "success",
     },
     {
       id: 4,
       title: "Available to Invest",
       counter: analytics.availableBalance.toFixed(2).split(".")[0] || 0,
       decimal: analytics.availableBalance.toFixed(2).split(".")[1],
-      icon: "ri-arrow-right-up-fill",
+      icon: <LuCircleDollarSign />,
       iconClass: "success",
     },
   ];
@@ -64,7 +65,11 @@ const Widgets = ({ analytics }) => {
                     <div
                       className={`avatar-title fs-22 rounded bg-${item.iconClass}-subtle text-${item.iconClass}`}
                     >
-                      <i className={item.icon}></i>
+                      {item.id === 4 ? (
+                        <span>{item.icon}</span>
+                      ) : (
+                        <i className={item.icon}></i>
+                      )}
                     </div>
                   </div>
                 </div>

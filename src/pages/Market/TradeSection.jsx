@@ -10,12 +10,17 @@ import {
   Label,
   Row,
   Spinner,
+  UncontrolledDropdown,
+  DropdownMenu,
+  DropdownToggle,
+  DropdownItem,
 } from "reactstrap";
 import { formatMarketCap } from "../../constants";
 import { useMutation } from "@tanstack/react-query";
 import { openPosition } from "../../services/user/trade";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
+import { capitalize } from "lodash";
 
 const amountButtons = [
   {
@@ -70,15 +75,25 @@ const execTypes = [
 
 const TradeSection = ({ asset, accounts }) => {
   const [activeOrder, setActiveOrder] = useState("buy");
-  const [tradeType, setTradeType] = useState("market");
+  // const [tradeType, setTradeType] = useState("market");
   const [selectedAcct, setSelectedAcct] = useState("");
   const [error, setError] = useState("");
   const [qty, setQty] = useState(0);
+  const [tradeType, setTradeType] = useState({
+    id: "market",
+    label: "Market Order",
+  });
 
   const mutation = useMutation({
     mutationFn: openPosition,
     onError: (err) => setError(err.message),
   });
+
+  const tradeAccounts =
+    (accounts &&
+      accounts.length > 0 &&
+      accounts.filter((acct) => acct.slug === "brokerage")) ||
+    [];
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -90,11 +105,12 @@ const TradeSection = ({ asset, accounts }) => {
       entry: asset?.priceData?.current || "",
       stoploss: "",
       takeprofit: "",
-      leverage: tradeType === "leverage" || tradeType === "stoploss" ? "5" : "",
-      executionType: tradeType,
+      leverage:
+        tradeType.id === "leverage" || tradeType.id === "stoploss" ? "5" : "",
+      executionType: tradeType.id,
     },
     onSubmit: (values) => {
-      // console.log(values);
+      console.log(values);
       mutation.mutate(values);
     },
   });
@@ -103,8 +119,8 @@ const TradeSection = ({ asset, accounts }) => {
     setActiveOrder(type);
   };
 
-  const handleTradeType = (e) => {
-    setTradeType(e.target.value);
+  const handleTradeType = (type) => {
+    setTradeType(type);
   };
 
   const handleAccountChange = (e) => {
@@ -152,40 +168,50 @@ const TradeSection = ({ asset, accounts }) => {
             <h5 className="py-2 px-4 mt-2">Place Trade</h5>
             <div className="bg-secondary-subtle w-100 py-2">
               <Col xs={3}>
-                <span>
-                  <Input
-                    type="select"
-                    className="border-0 text-secondary bg-secondary-subtle shadow-none px-4"
-                    onChange={handleTradeType}
-                    name="tradeType"
-                    value={tradeType}
-                  >
-                    <option value="">Select Order Type</option>
-                    {execTypes.map((type) => {
-                      return (
-                        <option value={type.id} key={type.id}>
-                          {type.label}
-                        </option>
-                      );
-                    })}
-                  </Input>
-                </span>
+                <div>
+                  <UncontrolledDropdown direction="start">
+                    <DropdownToggle
+                      tag="button"
+                      className="btn btn-soft-primary btn-sm"
+                    >
+                      <span className="text-uppercase">
+                        {tradeType.label}
+                        <i className="mdi mdi-chevron-down align-middle ms-1"></i>
+                      </span>
+                    </DropdownToggle>
+                    <DropdownMenu className="dropdown-menu dropdown-menu-end">
+                      {execTypes.map((type) => {
+                        return (
+                          <DropdownItem
+                            key={type.id}
+                            onClick={() => handleTradeType(type)}
+                            className={tradeType.id === type.id ? "active" : ""}
+                          >
+                            {capitalize(type.label)}
+                          </DropdownItem>
+                        );
+                      })}
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
               </Col>
             </div>
             <Col className="p-4 d-flex gap-2">
               <button
                 onClick={() => toggleActiveOrder("buy")}
                 className={`btn w-100 text-capitalize fw-bold ${
-                  activeOrder === "buy" ? "btn-success" : "btn-light"
+                  activeOrder === "buy" ? "btn-success" : "btn-light text-muted"
                 }`}
+                style={{ height: "45px" }}
               >
                 buy
               </button>
               <button
                 onClick={() => toggleActiveOrder("sell")}
                 className={`btn w-100 text-capitalize fw-bold ${
-                  activeOrder === "sell" ? "btn-danger" : "btn-light"
+                  activeOrder === "sell" ? "btn-danger" : "btn-light text-muted"
                 }`}
+                style={{ height: "45px" }}
               >
                 sell
               </button>
@@ -211,7 +237,7 @@ const TradeSection = ({ asset, accounts }) => {
                   value={validation.values.walletId}
                 >
                   <option value="">Select Account</option>
-                  {(accounts || []).map((acct) => {
+                  {(tradeAccounts || []).map((acct) => {
                     return (
                       <option value={acct._id} key={acct._id}>
                         {acct.name}
@@ -381,7 +407,7 @@ const TradeSection = ({ asset, accounts }) => {
       )}
       {mutation.isSuccess && (
         <SuccessToast
-          successMsg={`You just bought ${qty} ${asset?.symbol}`}
+          successMsg={`You just bought ${qty.toFixed(6)} ${asset?.symbol}`}
           onClose={() => mutation.reset()}
           isOpen={mutation.isSuccess}
         />

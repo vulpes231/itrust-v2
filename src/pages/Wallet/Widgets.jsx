@@ -9,6 +9,8 @@ import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
 import { brief, cash } from "../../assets";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { format } from "date-fns";
+import { FaArrowUpFromBracket } from "react-icons/fa6";
+import { HiMiniArrowDownTray, HiMiniArrowUpTray } from "react-icons/hi2";
 
 const Widgets = () => {
   const token = getAccessToken();
@@ -60,22 +62,12 @@ const Widgets = () => {
       <Card className="p-4">
         <Row className="align-items-end">
           <Col md={4} className="d-flex align-items-center gap-3">
-            <img src={brief} alt="" width={40} />
-
-            <div>
-              <span className="text-muted text-uppercase fs-13 d-flex align-items-center justify-content-between gap-5">
-                Cash Balance
-                <span
-                  onClick={() => setShowBalance(!showBalance)}
-                  className="px-3 bg-light rounded-1"
-                  style={{
-                    cursor: "pointer",
-                  }}
-                >
-                  {showBalance ? <FaEye size={16} /> : <FaEyeSlash size={16} />}
-                </span>
+            <div className="d-flex flex-column">
+              <span className="text-muted fs-11">
+                Updated at {`${format(Date.now(), "dd/MM/yyyy")}`}
               </span>
-              <div className="d-flex align-items-center justify-content-between">
+              <img src={brief} alt="" width={40} />
+              <span className="text-muted text-uppercase fs-13 d-flex align-items-center justify-content-between gap-5">
                 <div>
                   <div
                     style={{
@@ -141,6 +133,18 @@ const Widgets = () => {
                   </div>
                 </div>
                 <span
+                  onClick={() => setShowBalance(!showBalance)}
+                  className="px-3 bg-light rounded-1"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                >
+                  {showBalance ? <FaEye size={16} /> : <FaEyeSlash size={16} />}
+                </span>
+              </span>
+              <div className="d-flex align-items-center justify-content-between">
+                Cash Balance
+                {/* <span
                   className={`${
                     walletAnalytics?.totalProfitPercent < 0
                       ? "bg-danger-subtle text-danger"
@@ -148,14 +152,14 @@ const Widgets = () => {
                   } fs-10 fw-light px-2 py-1 rounded-1`}
                 >
                   {walletAnalytics?.totalProfitPercent || 0}%
-                </span>
+                </span> */}
               </div>
-              <span className="text-muted fs-11">
-                Updated at {`${format(Date.now(), "dd/MM/yyyy")}`}
-              </span>
             </div>
           </Col>
-          <Col md={4} className="bg-light p-2 rounded-1">
+          <Col
+            md={4}
+            className="bg-light py-2 px-3 rounded-2 d-flex flex-column gap-3"
+          >
             <span
               className="text-muted"
               style={{
@@ -168,8 +172,8 @@ const Widgets = () => {
               <span>
                 <img src={cash} alt="" /> Total Deposited:
               </span>
-              <span>
-                <i class="ri-corner-right-down-line text-success"></i>{" "}
+              <span className="d-flex align-items-center gap-1">
+                <HiMiniArrowDownTray className="text-success" />
                 {trxAnalytics
                   ? formatCurrency(trxAnalytics.totalDeposit)
                   : formatCurrency(0)}
@@ -187,8 +191,8 @@ const Widgets = () => {
               <span>
                 <img src={cash} alt="" /> Total Withdrawals:
               </span>
-              <span>
-                <i class="ri-corner-right-up-line text-danger"></i>{" "}
+              <span className="d-flex align-items-center gap-1">
+                <HiMiniArrowUpTray className="text-danger" />
                 {trxAnalytics
                   ? formatCurrency(trxAnalytics.totalWithdrawal)
                   : formatCurrency(0)}

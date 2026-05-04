@@ -284,14 +284,14 @@ const MyCurrencies = () => {
                           </td>
                           <td>
                             <span className="d-flex align-items-center">
-                              <span className="me-2">
+                              <span className="me-2 bg-light p-2 rounded-circle">
                                 <img
                                   src={
                                     asset.imageUrl ||
                                     "https://via.placeholder.com/32"
                                   }
-                                  alt=""
-                                  className="avatar-xxs"
+                                  alt="HS"
+                                  className="avatar-xxs rounded-circle"
                                   style={{ width: "24px", height: "24px" }}
                                   onError={(e) => {
                                     e.target.src =

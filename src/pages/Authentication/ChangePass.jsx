@@ -35,11 +35,11 @@ const ChangePass = ({ handleStep }) => {
     enableReinitialize: true,
     initialValues: {
       newPass: "",
-      oldPass: "",
+      // oldPass: "",
       confirmPass: "",
     },
     validationSchema: Yup.object({
-      oldPass: Yup.string().required("Please enter your old password"),
+      // oldPass: Yup.string().required("Please enter your old password"),
       newPass: Yup.string()
         .min(6, "Password must be at least 6 characters")
         .required("Please enter your new password"),
@@ -67,8 +67,8 @@ const ChangePass = ({ handleStep }) => {
       <Card className="mt-4">
         <CardBody className="p-4">
           <div className="text-center mt-2">
-            <h5 className="text-primary">Update Account Password?</h5>
-            <p className="text-muted">Reset password with itrust</p>
+            <h5 className="text-primary">Update Account Password</h5>
+            <p className="text-muted">Reset your Password</p>
 
             <lord-icon
               src="https://cdn.lordicon.com/rhvddzym.json"
@@ -90,7 +90,7 @@ const ChangePass = ({ handleStep }) => {
                 return false;
               }}
             >
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <Label className="form-label">Old Password</Label>
                 <Input
                   name="oldPass"
@@ -112,13 +112,13 @@ const ChangePass = ({ handleStep }) => {
                     <div>{validation.errors.oldPass}</div>
                   </FormFeedback>
                 ) : null}
-              </div>
+              </div> */}
               <div className="mb-4">
                 <Label className="form-label">New Password</Label>
                 <Input
                   name="newPass"
                   className="form-control"
-                  placeholder="Enter newPass"
+                  placeholder="Enter New Password"
                   type="password"
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
@@ -140,7 +140,7 @@ const ChangePass = ({ handleStep }) => {
                 <Input
                   name="confirmPass"
                   className="form-control"
-                  placeholder="Enter Password"
+                  placeholder="Re-enter New Password"
                   type="password"
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}

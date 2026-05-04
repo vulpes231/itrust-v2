@@ -24,7 +24,7 @@ const Widgets1 = () => {
   const queryData = {
     limit: 10,
     sortBy: "marketCap",
-    type: "crypto",
+    type: "stock",
   };
 
   const { data: assets } = useQuery({

@@ -224,15 +224,19 @@ const Market = () => {
         accessorKey: "name",
         enableColumnFilter: false,
         cell: (cell) => (
-          <div className="d-flex align-items-center fw-medium">
-            <img
-              src={cell.row.original.img}
-              alt={cell.getValue()}
-              className="avatar-xxs me-2"
-              onError={(e) => {
-                e.target.src = "/default-coin.png";
-              }}
-            />
+          <div className="d-flex align-items-center fw-medium gap-2">
+            <span className="bg-light p-2 rounded-circle">
+              <img
+                src={cell.row.original.img || "https://via.placeholder.com/32"}
+                alt={cell.getValue()}
+                className="avatar-xxs rounded-circle"
+                style={{ width: "24px", height: "24px" }}
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/32";
+                }}
+              />
+            </span>
+
             <Link to="#" className="currency_name d-flex flex-column ">
               <span className="fw-medium"> {cell.getValue()}</span>
               <span className="fs-13"> {cell.row.original.symbol}</span>

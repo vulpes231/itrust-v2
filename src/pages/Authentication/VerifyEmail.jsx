@@ -18,6 +18,7 @@ import { verifyEmail } from "../../services/user/verification";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { Loader } from "feather-icons-react";
+import { CiMail } from "react-icons/ci";
 
 const VerifyEmail = () => {
   document.title = "Verify Your Email - Itrust Investments";
@@ -132,11 +133,21 @@ const VerifyEmail = () => {
               <Col md={8} lg={6} xl={5}>
                 <Card className="mt-4">
                   <CardBody className="p-4">
-                    <div className="text-center mb-4">
+                    <div className="text-center mb-4 d-flex align-items-center justify-content-center flex-column gap-2">
+                      <div
+                        className="bg-secondary-subtle d-flex align-items-center justify-content-center"
+                        style={{
+                          height: "100px",
+                          width: "100px",
+                          borderRadius: "50%",
+                        }}
+                      >
+                        <CiMail size={70} className="text-secondary" />
+                      </div>
                       <h4>Verify Your Email</h4>
-                      <p>
-                        Enter the 4-digit code sent to{" "}
-                        <strong>{sessionEmail}</strong>
+                      <p className="d-flex align-items-center gap-2 text-muted fw-light">
+                        Please enter the 4 digit code sent to
+                        <strong>{sessionEmail || "email@email.com"}</strong>
                       </p>
                     </div>
 
@@ -174,10 +185,16 @@ const VerifyEmail = () => {
                 </Card>
 
                 <div className="mt-4 text-center">
+                  <span>Didn't receive a code?</span>
                   <button
                     disabled={disableResend || resendMutation.isPending}
                     onClick={handleCodeResend}
-                    className="btn btn-secondary"
+                    style={{
+                      background: "transparent",
+                      border: "none",
+                      textDecoration: "underline",
+                    }}
+                    className="text-secondary"
                   >
                     {resendMutation.isPending ? "Sending..." : "Resend Code"}
                   </button>
