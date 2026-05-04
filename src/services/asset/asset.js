@@ -6,7 +6,7 @@ async function getAssets(queryData) {
   const { limit, page, sortBy, type } = queryData;
   try {
     const response = await api.get(
-      `/asset/?limit=${limit}&sortBy=${sortBy}&page=${page}&type=${type}`
+      `/asset/?limit=${limit}&sortBy=${sortBy}&page=${page}&type=${type}`,
     );
 
     return { data: response.data, pagination: response.pagination };
@@ -20,7 +20,7 @@ async function getAssetInfo(queryParam) {
   const { assetId, name, symbol } = queryParam;
   try {
     const response = await api.get(
-      `/asset/${assetId}` //?assetId=${assetId}&symbol=${symbol}&name=${name}
+      `/asset/${assetId}`, //?assetId=${assetId}&symbol=${symbol}&name=${name}
     );
     return response.data;
   } catch (error) {
@@ -29,9 +29,10 @@ async function getAssetInfo(queryParam) {
   }
 }
 
-async function searchAsset(query) {
+async function searchAsset(formData) {
+  const { query } = formData;
   try {
-    const response = await api.get(`/asset/?query=${query}`);
+    const response = await api.get(`/asset/search/?query=${query}`);
     return response.data;
   } catch (error) {
     const errMsg = error.response?.data?.message;

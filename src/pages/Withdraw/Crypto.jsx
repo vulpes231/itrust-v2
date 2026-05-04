@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
+import { Col, FormFeedback, Input, Label, Row, Spinner } from "reactstrap";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
-  depositFunds,
   disconnectWallet,
+  withdrawFund,
 } from "../../services/user/transactions";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -20,9 +20,11 @@ import ConnectForm from "./ConnectForm";
 import ConnectWait from "./ConnectWait";
 import { getUserSettings } from "../../services/user/user";
 import { BiCoin } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const Crypto = ({ settings }) => {
   const token = getAccessToken();
+  const navigate = useNavigate();
 
   const [error, setError] = useState("");
   const [selectedMode, setSelectedMode] = useState("");
@@ -50,7 +52,7 @@ const Crypto = ({ settings }) => {
   };
 
   const cryptoMutation = useMutation({
-    mutationFn: () => depositFunds(cryptoValidation.values),
+    mutationFn: () => withdrawFund(cryptoValidation.values),
     onError: (err) => setError(err.message),
   });
 
@@ -117,7 +119,7 @@ const Crypto = ({ settings }) => {
     if (cryptoMutation.isSuccess) {
       const timeout = setTimeout(() => {
         cryptoMutation.reset();
-        window.location.reload();
+        navigate("/cash");
       }, 3000);
       return () => clearTimeout(timeout);
     }
@@ -497,9 +499,10 @@ const Crypto = ({ settings }) => {
             }}
             type="submit"
             disabled={cryptoMutation.isPending}
-            className="btn btn-primary"
+            className="btn btn-primary d-flex align-items-center gap-2 justify-content-center"
           >
-            Confirm Withdrawal
+            {cryptoMutation.isPending && <Spinner size={"sm"} />} Confirm
+            Withdrawal
           </button>
           <small
             className="pb-3"

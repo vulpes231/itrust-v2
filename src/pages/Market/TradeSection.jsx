@@ -351,13 +351,13 @@ const TradeSection = ({ asset, accounts }) => {
               <span className="d-flex flex-column">
                 <Label className="text-muted fw-light">Market Cap</Label>
                 <span className="fw-medium fs-15 text-capitalize">
-                  {formatMarketCap(asset?.fundamentals?.marketCap)}
+                  {formatMarketCap(asset?.fundamentals?.marketCap) || "-"}
                 </span>
               </span>
               <span className="d-flex flex-column align-items-end">
                 <Label className="text-muted fw-light">Volume</Label>
                 <span className="fw-medium fs-15">
-                  {formatMarketCap(asset?.priceData?.volume)}
+                  {formatMarketCap(asset?.priceData?.volume) || "-"}
                 </span>
               </span>
             </div>

@@ -22,13 +22,16 @@ const Type = (cell) => {
 const AssetName = ({ name, symbol, image }) => {
   return (
     <div className="d-flex align-items-center gap-2">
-      <img
-        src={image}
-        alt={symbol}
-        width={28}
-        height={28}
-        style={{ borderRadius: "50%" }}
-      />
+      <span
+        className="p-1 rounded-circle bg-light"
+        // style={{ width: "27px", height: "27px" }}
+      >
+        <img
+          src={image}
+          alt={"HS"}
+          style={{ borderRadius: "50%", width: "25px", height: "25px" }}
+        />
+      </span>
       <div>
         <div>{name}</div>
         <small className="text-muted">{symbol}</small>

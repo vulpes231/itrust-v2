@@ -48,22 +48,20 @@ const AllTransactions = () => {
   const handleFilter = (e) => {
     setFilter(e.target.value);
   };
-
+  // console.log(transactions);
   const transformedData = useMemo(() => {
     if (!transactions) return [];
 
     const filteredTrnxs =
       filter === "all"
         ? transactions
-        : filter === "deposit" ||
-          filter === "withdrawal" ||
-          filter === "transfer"
-        ? transactions.filter((trx) => trx.type === filter)
-        : filter === "processed" ||
-          filter === "pending" ||
-          filter === "cancelled"
-        ? transactions.filter((trx) => trx.status === filter)
-        : transactions.filter((trx) => trx.account === filter);
+        : filter === "deposit" || filter === "withdraw" || filter === "transfer"
+          ? transactions.filter((trx) => trx.type === filter)
+          : filter === "processed" ||
+              filter === "pending" ||
+              filter === "cancelled"
+            ? transactions.filter((trx) => trx.status === filter)
+            : transactions.filter((trx) => trx.account === filter);
 
     return filteredTrnxs.map((transaction, index) => {
       let icon, iconClass, amountColor;
@@ -74,7 +72,7 @@ const AllTransactions = () => {
           iconClass = "success";
           amountColor = "success";
           break;
-        case "withdrawal":
+        case "withdraw":
           icon = "ri-arrow-right-down-fill";
           iconClass = "danger";
           amountColor = "danger";
@@ -219,7 +217,7 @@ const AllTransactions = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -232,14 +230,6 @@ const AllTransactions = () => {
             </Col>
             <div className="col-md-auto ms-auto">
               <div className="d-flex gap-2">
-                {/* <div className="search-box">
-                  <input
-                    type="text"
-                    className="form-control search"
-                    placeholder="Search for transactions..."
-                  />
-                  <i className="ri-search-line search-icon"></i>
-                </div> */}
                 <button
                   type="button"
                   onClick={() => setShowFilter(!showFilter)}
@@ -288,9 +278,9 @@ const AllTransactions = () => {
                   deposit
                 </button>
                 <button
-                  onClick={() => setFilter("withdrawal")}
+                  onClick={() => setFilter("withdraw")}
                   className={`btn text-capitalize ${
-                    filter === "withdrawal"
+                    filter === "withdraw"
                       ? "btn-secondary"
                       : "bg-secondary-subtle text-secondary"
                   }`}

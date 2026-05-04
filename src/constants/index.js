@@ -19,6 +19,7 @@ function formatCurrency(amount, currency = "USD", locale = "en-US") {
 }
 
 const formatMarketCap = (marketCap) => {
+  if (!marketCap) return;
   if (marketCap >= 1e12) {
     return (marketCap / 1e12).toFixed(1) + " trillion";
   } else if (marketCap >= 1e9) {

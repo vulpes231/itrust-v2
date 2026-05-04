@@ -86,7 +86,6 @@ const BuySell = () => {
             />
           </Row>
 
-          {/* Trade Section - Only show when conditions are met */}
           {shouldShowTradeSection() && (
             <Row className="px-3">
               <TradeSection
@@ -96,7 +95,6 @@ const BuySell = () => {
             </Row>
           )}
 
-          {/* Market Section - Only show on asset tab */}
           {activeMarketTab === "asset" && !showTradeSection && (
             <Row className="px-3">
               <Market />

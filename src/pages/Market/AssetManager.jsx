@@ -39,7 +39,7 @@ const AssetManager = ({
     handleChange("trade");
     setSearchTerm("");
     setShowResult(false);
-    toggleTradeSection(true); // This will show the trade section
+    toggleTradeSection(true);
   };
 
   useEffect(() => {
@@ -113,27 +113,36 @@ const AssetManager = ({
             return (
               <Col
                 key={item._id}
-                className="d-flex justify-content-between align-items-center mb-3 border px-5 py-3 rounded-1"
+                className="d-flex justify-content-between align-items-center mb-3 border px-3 py-2 rounded-1"
                 style={{ cursor: "pointer" }}
                 onClick={() => handleSelectAsset(item)}
               >
                 <div className="d-flex gap-2 align-items-center">
-                  <figure className="border rounded-circle p-1">
-                    <img src={item?.imageUrl} alt="" width={25} />
+                  <figure className="border rounded-circle p-1 bg-light">
+                    <img
+                      src={item?.imageUrl}
+                      alt=""
+                      width={25}
+                      className="rounded-circle"
+                    />
                   </figure>
                   <div>
-                    <h4>{item?.symbol}</h4>
-                    <span>{item?.name}</span>
+                    <h4 className="fs-14 fw-semibold">{item?.symbol}</h4>
+                    <span className="fs-12 fw-normal text-muted">
+                      {item?.name}
+                    </span>
                   </div>
                 </div>
                 <div className="d-flex flex-column gap-2 align-items-end">
-                  <h5>{numeral(item.priceData?.current).format("$0,0.00")}</h5>
+                  <h4 className="fs-14 fw-semibold">
+                    {numeral(item.priceData?.current).format("$0,0.00")}
+                  </h4>
                   <div
                     className={`${
                       item.priceData?.changePercent < 0
                         ? "text-danger"
                         : "text-success"
-                    } d-flex gap-2 align-items-center`}
+                    } d-flex gap-2 align-items-center fs-12 fw-normal`}
                   >
                     <span>
                       {parseFloat(item?.priceData?.change).toFixed(2)}%

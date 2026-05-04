@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import { Card } from "reactstrap";
-import { cancelDeposit } from "../../services/user/transactions";
+import { cancelTransaction } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import Loader from "../../components/Common/Loader";
@@ -12,7 +12,7 @@ const PendingDropDown = ({ id }) => {
   const [error, setError] = useState("");
 
   const mutation = useMutation({
-    mutationFn: cancelDeposit,
+    mutationFn: cancelTransaction,
     onError: (err) => setError(err.message),
     onSuccess: () => {
       setTimeout(() => {

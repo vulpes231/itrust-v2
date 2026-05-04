@@ -29,6 +29,9 @@ const OrderHistory = () => {
   const tk = getAccessToken();
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilter, setShowFilter] = useState(true);
+  const [filter, setFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [activeOrderTab, setActiveOrderTab] = useState("trades");
 
   const queryData = { limit: 7 };
   const { data: trades } = useQuery({
@@ -41,10 +44,23 @@ const OrderHistory = () => {
     setCurrentPage(newPage);
   };
 
-  const transformedData = useMemo(() => {
+  const filteredTrades = useMemo(() => {
     if (!trades) return [];
 
-    return trades.map((trade) => ({
+    return trades.filter((trade) => {
+      const accountMatches = filter === "all" || trade.wallet.name === filter;
+
+      const statusMatches =
+        statusFilter === "all" || trade.status === statusFilter;
+
+      return accountMatches && statusMatches;
+    });
+  }, [trades, filter, statusFilter]);
+
+  const transformedData = useMemo(() => {
+    if (!filteredTrades) return [];
+
+    return filteredTrades.map((trade) => ({
       ...trade,
       date: format(trade?.createdAt, "MMM dd, yyyy"),
       type: trade?.orderType,
@@ -72,7 +88,7 @@ const OrderHistory = () => {
           ? "ri-arrow-up-line"
           : "ri-arrow-down-line",
     }));
-  }, [trades]);
+  }, [filteredTrades]);
 
   const columns = useMemo(
     () => [
@@ -176,12 +192,6 @@ const OrderHistory = () => {
     [],
   );
 
-  // useEffect(() => {
-  //   if (trades) console.log(trades);
-  // }, [trades]);
-
-  const [activeOrderTab, setActiveOrderTab] = useState("trades");
-
   return (
     <React.Fragment>
       <Card>
@@ -207,13 +217,32 @@ const OrderHistory = () => {
         <CardBody>
           {showFilter && (
             <Col className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-2">
+              <div className="d-flex align-items-center gap-2 w-full">
                 <span style={{ whiteSpace: "nowrap" }}>Sort by:</span>
-                <Input type="select">
-                  <option value="">All Account</option>
+                <Input
+                  type="select"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  name={"filter"}
+                  style={{ minWidth: "190px", width: "auto" }}
+                >
+                  <option value="all">All Account</option>
+                  <option value="individual brokerage">
+                    Individual Brokerage
+                  </option>
+                  <option value="automated investing">
+                    Automated Investing
+                  </option>
                 </Input>
-                <Input type="select">
-                  <option value="">Status</option>
+                <Input
+                  type="select"
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  name={"statusFilter"}
+                >
+                  <option value="all">All Status</option>
+                  <option value="open">Open</option>
+                  <option value="close">Close</option>
                 </Input>
               </div>
               <div className="d-flex gap-2">

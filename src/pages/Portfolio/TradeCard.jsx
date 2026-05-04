@@ -77,7 +77,7 @@ const TradeCard = () => {
   });
 
   const { data: assetResults } = useQuery({
-    queryFn: () => searchAsset(debouncedQuery),
+    queryFn: () => searchAsset({ query: debouncedQuery }),
     queryKey: ["searchAsset", debouncedQuery],
     enabled: debouncedQuery.length > 0,
   });
@@ -237,6 +237,8 @@ const TradeCard = () => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+
+  // console.log(assetResults);
 
   return (
     <Card>
