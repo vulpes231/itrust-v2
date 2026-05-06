@@ -7,7 +7,11 @@ import VerifyAccountNotify from "../VerifyAccountNotify";
 import AssetManager from "./AssetManager";
 import OrderHistory from "./OrderHistory";
 import TradeSection from "./TradeSection";
-import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
+import {
+  getUserWallets,
+  getWalletAnalytics,
+  getWalletInvestData,
+} from "../../services/user/wallet";
 import { useQuery } from "@tanstack/react-query";
 import { getAccessToken } from "../../constants";
 import { useParams } from "react-router-dom";
@@ -36,6 +40,12 @@ const BuySell = () => {
     enabled: !!tk,
   });
 
+  const { data: walletData } = useQuery({
+    queryKey: ["walletdata"],
+    queryFn: getWalletInvestData,
+    enabled: !!tk,
+  });
+
   const { data: preSelectedAsset } = useQuery({
     queryFn: () => getAssetInfo({ assetId }),
     queryKey: ["preSelectedAsset"],
@@ -56,8 +66,10 @@ const BuySell = () => {
     }
   }, [preSelectedAsset]);
 
-  // Determine if trade section should be visible
   const shouldShowTradeSection = () => {
+    if (activeMarketTab === "trade") {
+      return true;
+    }
     if (activeMarketTab === "trade" && showTradeSection && selectedAsset) {
       return true;
     }
@@ -91,6 +103,7 @@ const BuySell = () => {
               <TradeSection
                 asset={selectedAsset || preSelectedAsset}
                 accounts={wallets}
+                walletData={walletData}
               />
             </Row>
           )}

@@ -406,12 +406,12 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
                 : false
             }
           />
-          <div className="align-items-center gap-2 d-flex fs-12">
+          <div className="align-items-center gap-2 d-flex fs-11">
             {units.map((ut) => {
               return (
                 <span
                   style={{ cursor: "default" }}
-                  className="bg-light rounded-1 px-4 py-1"
+                  className="bg-light rounded-1 px-3 py-1"
                   onClick={() =>
                     validation.setFieldValue("percentToClose", ut.amount)
                   }

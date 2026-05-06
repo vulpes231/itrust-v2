@@ -14,6 +14,7 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 import Loader from "../../components/Common/Loader";
 import { PiCopyLight } from "react-icons/pi";
 import Barcode from "./Barcode";
+import { useNavigate } from "react-router-dom";
 
 const methods = [
   { id: "btc", label: "Bitcoin", network: "BTC", img: btc, symbol: "BTC" },
@@ -38,6 +39,7 @@ const Crypto = ({ settings, user }) => {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const [selectedMode, setSelectedMode] = useState("");
+  const navigate = useNavigate();
 
   const handleMode = (asset) => {
     setSelectedMode(asset);
@@ -109,7 +111,7 @@ const Crypto = ({ settings, user }) => {
     if (cryptoMutation.isSuccess) {
       const timeout = setTimeout(() => {
         cryptoMutation.reset();
-        window.location.reload();
+        navigate("/cash");
       }, 3000);
       return () => clearTimeout(timeout);
     }

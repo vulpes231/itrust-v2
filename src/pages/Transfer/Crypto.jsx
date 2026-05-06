@@ -23,6 +23,7 @@ import Loader from "../../components/Common/Loader";
 import CashAccounts from "./CashAccounts";
 import OtherAccounts from "./OtherAccounts";
 import ChoseAccount from "./ChosenAccount";
+import { useNavigate } from "react-router-dom";
 
 const buttons = [
   "100",
@@ -41,6 +42,7 @@ const Crypto = () => {
   const [accountSelected, setAccountSelected] = useState(false);
   const [toAccount, setToAccount] = useState("");
   const [amt, setAmt] = useState("");
+  const navigate = useNavigate();
 
   const { data: wallets } = useQuery({
     queryFn: getUserWallets,
@@ -87,7 +89,7 @@ const Crypto = () => {
     if (mutation.isSuccess) {
       const timeout = setTimeout(() => {
         mutation.reset();
-        window.location.reload();
+        navigate("/cash");
       }, 3000);
       return () => clearTimeout(timeout);
     }

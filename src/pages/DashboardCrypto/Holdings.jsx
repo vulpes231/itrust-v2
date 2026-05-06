@@ -60,8 +60,14 @@ const Holdings = ({ trades, analytics }) => {
                       </figure>
                       <span className="d-flex flex-column gap-0 lh-1">
                         <h6>{trade.asset.symbol}</h6>
-                        <span style={{ color: "#868A99" }} className="fs-13">
-                          {parseFloat(trade.execution.quantity).toFixed(4)}{" "}
+                        <span
+                          style={{ color: "#868A99", whiteSpace: "nowrap" }}
+                          className="fs-13 d-flex gap-1"
+                        >
+                          <span>
+                            {" "}
+                            {parseFloat(trade.execution.quantity).toFixed(4)}
+                          </span>
                           shares
                         </span>
                       </span>
@@ -82,7 +88,7 @@ const Holdings = ({ trades, analytics }) => {
                           {" "}
                           ({" "}
                           {parseFloat(
-                            trade.performance.totalReturnPercent
+                            trade.performance.totalReturnPercent,
                           ).toFixed(2)}
                           %)
                         </span>

@@ -22,12 +22,14 @@ import { BsBank } from "react-icons/bs";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import { PiCopyLight } from "react-icons/pi";
 import Dropzone from "react-dropzone";
+import { useNavigate } from "react-router-dom";
 
 const Bank = ({ settings, userBank }) => {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
   const [fileError, setFileError] = useState("");
   const [proof, setProof] = useState(null);
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: depositFunds,
@@ -87,7 +89,7 @@ const Bank = ({ settings, userBank }) => {
     if (mutation.isSuccess) {
       const timeout = setTimeout(() => {
         mutation.reset();
-        window.location.reload();
+        navigate("/cash");
       }, 3000);
       return () => clearTimeout(timeout);
     }

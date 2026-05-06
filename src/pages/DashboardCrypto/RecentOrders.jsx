@@ -8,7 +8,7 @@ import numeral from "numeral";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 
 const RecentOrders = ({ trades }) => {
-  const filteredTrades = trades && trades.length && trades.slice(0, 6);
+  const filteredTrades = trades && trades.length && trades.slice(0, 5);
 
   // console.log(filteredTrades);
   return (
@@ -35,8 +35,8 @@ const RecentOrders = ({ trades }) => {
                           trade.orderType === "buy"
                             ? "bg-success-subtle text-success"
                             : trade.orderType === "sell"
-                            ? "bg-danger-subtle text-danger"
-                            : null
+                              ? "bg-danger-subtle text-danger"
+                              : null
                         } bg-success-subtle rounded-circle d-flex align-items-center justify-content-center`}
                         style={{ width: "30px", height: "30px" }}
                       >
@@ -57,16 +57,16 @@ const RecentOrders = ({ trades }) => {
                             {trade.orderType === "buy"
                               ? `Buy`
                               : trade.orderType === "sell"
-                              ? `Sell`
-                              : null}
+                                ? `Sell`
+                                : null}
                           </span>
                           <span
                             className={`fs-10 px-2 py-1 rounded-1 text-capitalize d-flex align-items-center gap-1 ${
                               trade.status === "open"
                                 ? `bg-success text-light`
-                                : trade.status === "close"
-                                ? `bg-danger text-light`
-                                : null
+                                : trade.status === "closed"
+                                  ? `bg-danger text-light`
+                                  : null
                             }`}
                           >
                             {trade.status}
@@ -76,13 +76,19 @@ const RecentOrders = ({ trades }) => {
                           style={{ color: "#495057" }}
                           className=" fs-13 mb-0 d-flex align-items-center gap-2 "
                         >
-                          <span className="fw-normal fs-12">
+                          <span
+                            style={{ whiteSpace: "nowrap" }}
+                            className="fw-normal fs-10"
+                          >
                             {trade.asset.symbol}
                           </span>
                           <span>
                             <GoArrowRight />
                           </span>
-                          <span className="fw-normal fs-12 text-capitalize">
+                          <span
+                            style={{ whiteSpace: "nowrap" }}
+                            className="fw-normal fs-10 text-capitalize"
+                          >
                             {" "}
                             {trade.wallet.name}
                           </span>
@@ -104,15 +110,15 @@ const RecentOrders = ({ trades }) => {
                             trade.orderType === "buy"
                               ? `text-success`
                               : trade.orderType === "sell"
-                              ? `text-danger`
-                              : null
+                                ? `text-danger`
+                                : null
                           } d-flex align-items-center gap-1`}
                         >
                           {trade.orderType === "buy"
                             ? `+`
                             : trade.orderType === "sell"
-                            ? `-`
-                            : null}
+                              ? `-`
+                              : null}
                           {numeral(safeValue).format("$0,0.00")}
                         </span>
                       </div>

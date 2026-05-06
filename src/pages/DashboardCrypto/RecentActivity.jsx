@@ -18,7 +18,7 @@ const RecentActivity = () => {
     queryFn: () => getTransactions(),
   });
 
-  const filteredtrnxs = trnxs && trnxs.length && trnxs.slice(0, 6);
+  const filteredtrnxs = trnxs && trnxs.length && trnxs.slice(0, 5);
 
   // console.log(filteredtrnxs);
   return (
@@ -43,10 +43,10 @@ const RecentActivity = () => {
                           trx.type === "deposit"
                             ? "bg-success-subtle"
                             : trx.type === "transfer"
-                            ? "bg-warning-subtle"
-                            : trx.type === "withdrawal"
-                            ? "bg-danger-subtle"
-                            : null
+                              ? "bg-warning-subtle"
+                              : trx.type === "withdrawal"
+                                ? "bg-danger-subtle"
+                                : null
                         } bg-success-subtle rounded-circle d-flex align-items-center justify-content-center`}
                         style={{ width: "30px", height: "30px" }}
                       >
@@ -73,20 +73,20 @@ const RecentActivity = () => {
                             {trx.type === "deposit"
                               ? `Deposit`
                               : trx.type === "transfer"
-                              ? `Transfer`
-                              : trx.type === "withdraw"
-                              ? `Withdraw`
-                              : null}
+                                ? `Transfer`
+                                : trx.type === "withdraw"
+                                  ? `Withdraw`
+                                  : null}
                           </span>
                           <span
                             className={`fs-10 px-2 py-1 rounded-1 text-capitalize d-flex align-items-center gap-1 ${
                               trx.status === "processed"
                                 ? `bg-success-subtle text-success`
                                 : trx.status === "pending"
-                                ? `bg-warning-subtle text-warning`
-                                : trx.status === "cancelled"
-                                ? `bg-danger-subtle text-danger`
-                                : null
+                                  ? `bg-warning-subtle text-warning`
+                                  : trx.status === "cancelled"
+                                    ? `bg-danger-subtle text-danger`
+                                    : null
                             }`}
                           >
                             {trx.status === "processed" ? (
@@ -103,20 +103,26 @@ const RecentActivity = () => {
                           style={{ color: "#495057" }}
                           className=" fs-13 mb-0 d-flex align-items-center gap-2 "
                         >
-                          <span className="fw-normal fs-12">
+                          <span
+                            style={{ whiteSpace: "nowrap" }}
+                            className="fw-normal fs-10"
+                          >
                             {" "}
                             {trx.method.mode === "BTC"
                               ? "Bitcoin"
                               : trx.method.mode === "USDT"
-                              ? "USDT"
-                              : trx.method.mode === "ETH"
-                              ? "Ethereum"
-                              : capitalize(trx?.method?.mode)}
+                                ? "USDT"
+                                : trx.method.mode === "ETH"
+                                  ? "Ethereum"
+                                  : capitalize(trx?.method?.mode)}
                           </span>
                           <span>
                             <GoArrowRight />
                           </span>
-                          <span className="fw-normal fs-12 text-capitalize">
+                          <span
+                            style={{ whiteSpace: "nowrap" }}
+                            className="fw-normal fs-10 text-capitalize"
+                          >
                             {trx?.account}
                           </span>
                         </p>
@@ -132,17 +138,17 @@ const RecentActivity = () => {
                             trx.type === "deposit"
                               ? `text-success`
                               : trx.type === "transfer"
-                              ? `text-warning`
-                              : trx.type === "withdraw"
-                              ? `text-danger`
-                              : null
+                                ? `text-warning`
+                                : trx.type === "withdraw"
+                                  ? `text-danger`
+                                  : null
                           }`}
                         >
                           {trx.type === "deposit"
                             ? `+`
                             : trx.type === "withdraw"
-                            ? `-`
-                            : null}
+                              ? `-`
+                              : null}
                           {trx?.amount
                             ? numeral(trx.amount).format("$0,0.00")
                             : formatCurrency(0)}

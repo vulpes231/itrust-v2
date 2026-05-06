@@ -12,9 +12,11 @@ import { CenterSpan, CustomSpan, FlexRow } from "../Deposit/DepositUtils";
 import Loader from "../../components/Common/Loader";
 import { BsBank } from "react-icons/bs";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Bank = ({ settings }) => {
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: () => depositFunds(validation.values),
@@ -55,7 +57,7 @@ const Bank = ({ settings }) => {
     if (mutation.isSuccess) {
       const timeout = setTimeout(() => {
         mutation.reset();
-        window.location.reload();
+        navigate("/cash");
       }, 3000);
       return () => clearTimeout(timeout);
     }
