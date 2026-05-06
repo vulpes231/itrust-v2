@@ -27,6 +27,8 @@ import ErrorToast from "../../components/Common/ErrorToast";
 const Register = () => {
   const history = useNavigate();
   const [error, setError] = useState("");
+  const [passwordShow, setPasswordShow] = useState(false);
+  const [confirmPasswordShow, setConfirmPasswordShoww] = useState(false);
 
   const mutation = useMutation({
     mutationFn: registerUser,
@@ -91,30 +93,20 @@ const Register = () => {
       <ParticlesAuth>
         <div className="auth-page-content">
           <Container>
-            <Row>
-              <Col lg={12}>
-                <div className="text-center mt-sm-5 mb-4 text-white-50">
-                  <div>
-                    <Link to="/" className="d-inline-block auth-logo">
-                      <img src={logo} alt="" height="20" />
-                    </Link>
-                  </div>
-                  <p className="mt-3 fs-15 fw-medium">
-                    Smart Wealth Management
-                  </p>
-                </div>
-              </Col>
-            </Row>
-
             <Row className="justify-content-center">
               <Col md={8} lg={6} xl={5}>
                 <Card className="mt-4">
                   <CardBody className="p-4">
-                    <div className="text-center mt-2">
-                      <h5 className="text-primary">Create New Account</h5>
-                      <p className="text-muted">
-                        Get your free itrust account now
-                      </p>
+                    <div className="d-flex flex-column gap-4 align-items-center justify-content-center mt-2">
+                      <div>
+                        <Link to="/" className="d-inline-block auth-logo">
+                          <img src={logo} alt="" height="40" width={"130"} />
+                        </Link>
+                      </div>
+                      <div className="d-flex flex-column align-items-center justify-content-center">
+                        <h5 className="text-primary">Get Started</h5>
+                        <p className="text-muted">Create a new account</p>
+                      </div>
                     </div>
                     <div className="p-2 mt-4">
                       <Form
@@ -238,14 +230,14 @@ const Register = () => {
                           ) : null}
                         </div>
 
-                        <div className="mb-3">
+                        <div className="mb-3 position-relative auth-pass-inputgroup">
                           <Label htmlFor="userpassword" className="form-label">
                             Password <span className="text-danger">*</span>
                           </Label>
                           <Input
                             autoComplete="new-password"
                             name="password"
-                            type="password"
+                            type={passwordShow ? "text" : "password"}
                             placeholder="Enter Password"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
@@ -263,9 +255,22 @@ const Register = () => {
                               <div>{validation.errors.password}</div>
                             </FormFeedback>
                           ) : null}
+                          <button
+                            className="btn btn-link text-decoration-none text-muted"
+                            type="button"
+                            id="password-addon"
+                            onClick={() => setPasswordShow(!passwordShow)}
+                            style={{
+                              position: "absolute",
+                              top: 28,
+                              right: 0,
+                            }}
+                          >
+                            <i className="ri-eye-fill align-middle"></i>
+                          </button>
                         </div>
 
-                        <div className="mb-2">
+                        <div className="mb-2 position-relative auth-pass-inputgroup">
                           <Label
                             htmlFor="confirmPassword"
                             className="form-label"
@@ -276,7 +281,7 @@ const Register = () => {
                           <Input
                             autoComplete="new-password"
                             name="confirm_password"
-                            type="password"
+                            type={confirmPasswordShow ? "text" : "password"}
                             placeholder="Confirm Password"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
@@ -294,6 +299,21 @@ const Register = () => {
                               <div>{validation.errors.confirm_password}</div>
                             </FormFeedback>
                           ) : null}
+                          <button
+                            className="btn btn-link text-decoration-none text-muted"
+                            type="button"
+                            id="password-addon"
+                            onClick={() =>
+                              setConfirmPasswordShoww(!confirmPasswordShow)
+                            }
+                            style={{
+                              position: "absolute",
+                              top: 28,
+                              right: 0,
+                            }}
+                          >
+                            <i className="ri-eye-fill align-middle"></i>
+                          </button>
                         </div>
 
                         <div className="mb-4">
@@ -310,7 +330,7 @@ const Register = () => {
 
                         <div className="mt-4">
                           <button
-                            className="btn btn-primary w-100"
+                            className="btn btn-secondary w-100"
                             type="submit"
                             disabled={mutation.isPending}
                           >
@@ -324,7 +344,7 @@ const Register = () => {
                   </CardBody>
                 </Card>
                 <div className="mt-4 text-center">
-                  <p className="mb-0 d-flex align-itesm-center gap-2 justify-content-center">
+                  <p className="mb-0 d-flex align-itesm-center gap-4 justify-content-center">
                     Already have an account?{" "}
                     <Link
                       to="/login"

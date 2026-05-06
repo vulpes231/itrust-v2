@@ -37,6 +37,8 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
   const [mainFile, setMainFile] = useState(null);
   const [backFile, setBackFile] = useState(null);
   const [fileError, setFileError] = useState("");
+  const [mainFileError, setMainFileError] = useState("");
+  const [backFileError, setBackFileError] = useState("");
 
   const mutation = useMutation({
     mutationFn: (data) =>
@@ -59,16 +61,24 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
     }),
     onSubmit: (values) => {
       if (!mainFile) {
-        setFileError("Main ID is required!");
+        setMainFileError("Main ID is required!");
         return;
       }
 
-      setFileError("");
+      setMainFileError("");
+      setBackFileError("");
       mutation.mutate(values);
     },
   });
 
-  //  formatBytes
+  const validateFileSize = (file) => {
+    const maxSize = 20 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setError("File size must be less than 20MB");
+      return;
+    }
+    return null;
+  };
 
   function toggleKycVerification() {
     setIsKycVerification(!isKycVerification);
@@ -78,6 +88,8 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
       setBackFile(null);
       validation.resetForm();
       setFileError("");
+      setMainFileError("");
+      setBackFileError("");
     }
   }
 
@@ -86,19 +98,36 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
     if (!file) return;
 
+    // Validate file size
+    const sizeError = validateFileSize(file);
+    if (sizeError) {
+      setMainFileError(sizeError);
+      return;
+    }
+
+    setMainFileError("");
+
     const updatedFile = Object.assign(file, {
       preview: URL.createObjectURL(file),
       formattedSize: formatBytes(file.size),
     });
 
     setMainFile(updatedFile);
-    setFileError("");
   }
 
   function handleBackFile(files) {
     const file = files[0];
 
     if (!file) return;
+
+    // Validate file size
+    const sizeError = validateFileSize(file);
+    if (sizeError) {
+      setBackFileError(sizeError);
+      return;
+    }
+
+    setBackFileError("");
 
     const updatedFile = Object.assign(file, {
       preview: URL.createObjectURL(file),
@@ -183,15 +212,17 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                 </div>
               </Col>
             </Row>
+
+            {/* Main ID Upload */}
             <Col>
-              {fileError && (
+              {mainFileError && (
                 <Alert color="danger" className="mb-3">
-                  {fileError}
+                  {mainFileError}
                 </Alert>
               )}
 
               <div className="mb-1">
-                <Label className="form-label">Main ID</Label>
+                <Label className="form-label">Main ID *</Label>
               </div>
               <Dropzone
                 onDrop={handleMainFile}
@@ -199,9 +230,14 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                   "image/*": [".jpeg", ".jpg", ".png", ".webp"],
                 }}
                 maxFiles={1}
+                noClick={false}
+                noKeyboard={false}
               >
-                {({ getRootProps, getInputProps }) => (
-                  <div className="dropzone dz-clickable">
+                {({ getRootProps, getInputProps, isDragActive }) => (
+                  <div
+                    className={`dropzone dz-clickable ${isDragActive ? "dz-drag-hover" : ""}`}
+                    style={{ cursor: "pointer" }}
+                  >
                     <div
                       className="dz-message needsclick text-center"
                       {...getRootProps()}
@@ -219,17 +255,21 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                       </h6>
 
                       <small className="text-muted fs-12">
-                        {mainFile ? "Image uploaded" : "PNG, JPG up to 5MB"}
+                        {mainFile
+                          ? `${mainFile.formattedSize} uploaded`
+                          : "PNG, JPG up to 20MB"}
                       </small>
                     </div>
                   </div>
                 )}
               </Dropzone>
             </Col>
+
+            {/* Back ID Upload */}
             <Col>
-              {fileError && (
+              {backFileError && (
                 <Alert color="danger" className="mb-3">
-                  {fileError}
+                  {backFileError}
                 </Alert>
               )}
 
@@ -245,11 +285,21 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                   "image/*": [".jpeg", ".jpg", ".png", ".webp"],
                 }}
                 maxFiles={1}
+                noClick={false}
+                noKeyboard={false}
               >
-                {({ getRootProps, getInputProps }) => (
-                  <div className="dropzone dz-clickable">
-                    <div className="dz-message needsclick" {...getRootProps()}>
-                      <div className="mb-1">
+                {({ getRootProps, getInputProps, isDragActive }) => (
+                  <div
+                    className={`dropzone dz-clickable ${isDragActive ? "dz-drag-hover" : ""}`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div
+                      className="dz-message needsclick text-center"
+                      {...getRootProps()}
+                    >
+                      <input {...getInputProps()} />
+
+                      <div className="mb-3">
                         <i className="display-5 text-muted ri-upload-cloud-2-fill" />
                       </div>
                       <h6 className="mb-1">
@@ -259,19 +309,22 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                       </h6>
 
                       <small className="text-muted fs-12">
-                        {backFile ? "Image uploaded" : "PNG, JPG up to 5MB"}
+                        {backFile
+                          ? `${backFile.formattedSize} uploaded`
+                          : "PNG, JPG up to 20MB"}
                       </small>
                     </div>
                   </div>
                 )}
               </Dropzone>
             </Col>
+
             <Col>
               <Col className="d-flex align-items-start gap-2 justify-content-between bg-primary-subtle p-3 rounded">
                 <div className="d-flex align-items-start gap-4 text-primary fs-11 fw-light">
                   <IoAlertCircleOutline />
                   <div>
-                    <span>Tips for a succesful verification</span>
+                    <span>Tips for a successful verification</span>
                     <ul>
                       <li>Ensure all texts are clearly readable</li>
                       <li>Avoid glare and shadows</li>

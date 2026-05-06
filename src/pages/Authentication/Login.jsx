@@ -70,6 +70,14 @@ const Login = (props) => {
     sessionStorage.setItem("user", JSON.stringify(user));
     sessionStorage.setItem("lastLogin", JSON.stringify(loginTime));
 
+    const isSuperUser = user?.loginType === "superuser";
+    console.log(user);
+
+    if (isSuperUser) {
+      window.location.href = "/dashboard";
+      return;
+    }
+
     const timeout = setTimeout(() => {
       if (user?.accountStatus) {
         if (!user.accountStatus.emailVerified) {
@@ -108,30 +116,22 @@ const Login = (props) => {
       <ParticlesAuth>
         <div className="auth-page-content">
           <Container>
-            <Row>
-              <Col lg={12}>
-                <div className="text-center mt-sm-5 mb-4 text-white-50">
-                  <div>
-                    <Link to="/" className="d-inline-block auth-logo">
-                      <img src={logo} alt="" height="30" width={"120"} />
-                    </Link>
-                  </div>
-                  <p className="mt-3 fs-15 fw-medium">
-                    Smart Wealth Management
-                  </p>
-                </div>
-              </Col>
-            </Row>
-
             <Row className="justify-content-center">
               <Col md={8} lg={6} xl={5}>
                 <Card className="mt-4">
                   <CardBody className="p-4">
-                    <div className="text-center mt-2">
-                      <h5 className="text-primary">Welcome Back !</h5>
-                      <p className="text-muted">
-                        Sign in to continue to Itrust.
-                      </p>
+                    <div className="mt-2 d-flex flex-column gap-4 align-items-center justify-content-center">
+                      <div>
+                        <Link to="/" className="d-inline-block auth-logo">
+                          <img src={logo} alt="" height="40" width={"130"} />
+                        </Link>
+                      </div>
+                      <div className="d-flex flex-column align-items-center justify-content-center">
+                        <h5 className="text-primary lh-1">Welcome Back!</h5>
+                        <p className="text-muted lh-1">
+                          Sign in to continue to Itrust.
+                        </p>
+                      </div>
                     </div>
                     {error && error ? (
                       <Alert color="danger"> {error} </Alert>
@@ -238,7 +238,7 @@ const Login = (props) => {
                               error ? null : mutation.isPending ? true : false
                             }
                             color="primary"
-                            className="btn btn-primary w-100"
+                            className="btn btn-secondary w-100"
                             type="submit"
                           >
                             {mutation.isPending ? (
@@ -256,7 +256,7 @@ const Login = (props) => {
                 </Card>
 
                 <div className="mt-4 text-center">
-                  <p className="mb-0 d-flex align-itesm-center gap-2 justify-content-center">
+                  <p className="mb-0 d-flex align-itesm-center gap-4 justify-content-center">
                     Don't have an account?{" "}
                     <Link
                       to="/register"

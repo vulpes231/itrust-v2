@@ -155,12 +155,22 @@ const Navdata = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   if (user) console.log(user);
-  // });
+  const savedUser = getLoggedinUser();
+
+  const isSuperUser = savedUser?.loginType === "superuser";
+
+  // console.log(savedUser);
+
+  const isTwoFaRequirementMet = isSuperUser
+    ? true
+    : user?.accountStatus?.twoFaActivated
+      ? user?.accountStatus?.twoFaVerified
+      : true;
+
+  const isProfileComplete = user?.accountStatus?.isProfileComplete;
   return (
     <React.Fragment>
-      {user && user?.accountStatus?.isProfileComplete ? menuItems : []}
+      {user && isProfileComplete && isTwoFaRequirementMet ? menuItems : []}
     </React.Fragment>
   );
 };

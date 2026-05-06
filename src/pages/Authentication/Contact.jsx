@@ -67,270 +67,270 @@ const Contact = () => {
 
   return (
     <React.Fragment>
-      <ParticlesAuth>
-        <div className="auth-page-content">
-          <Container>
-            <Row>
-              <Col lg={12}>
-                <div className="text-center mt-sm-5 mb-4 text-white-50">
-                  <div>
-                    <Link to="#" className="d-inline-block auth-logo">
-                      <img src={logo} alt="" height="20" />
-                    </Link>
-                  </div>
-                  <p className="mt-3 fs-15 fw-medium">
-                    Smart Wealth Management
-                  </p>
+      {/* <ParticlesAuth> */}
+      <div className="auth-page-content">
+        <Container>
+          <Row>
+            <Col lg={12}>
+              <div className="text-center mt-sm-5 mb-4 text-white-50">
+                <div>
+                  <Link to="#" className="d-inline-block auth-logo">
+                    <img src={logo} alt="" height="20" />
+                  </Link>
                 </div>
-              </Col>
-            </Row>
+                <p className="mt-3 fs-15 fw-medium">Smart Wealth Management</p>
+              </div>
+            </Col>
+          </Row>
 
-            <Row className="justify-content-center">
-              <Col md={8} lg={6} xl={5}>
-                <Card className="mt-4">
-                  <CardBody className="p-4">
-                    <div className="text-center mt-2">
-                      <h5 className="text-primary">Complete Account</h5>
-                      <p className="text-muted">Contact Information</p>
+          <Row className="justify-content-center">
+            <Col md={8} lg={6} xl={5}>
+              <Card className="mt-4">
+                <CardBody className="p-4">
+                  <div className="d-flex flex-column gap-2 align-items-center justify-content-center mt-2">
+                    <div>
+                      <Link to="/" className="d-inline-block auth-logo">
+                        <img src={logo} alt="" height="40" width={"130"} />
+                      </Link>
                     </div>
-                    <div className="p-2 mt-4">
-                      <Form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          validation.submitForm();
-                        }}
-                        className="needs-validation"
-                        action="#"
-                      >
-                        <div className="mb-3">
-                          <Label htmlFor="country" className="form-label">
-                            Country <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            id="country"
-                            name="countryId"
-                            className="form-control"
-                            placeholder="Enter country"
-                            type="select"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.countryId || ""}
-                            invalid={
-                              validation.touched.countryId &&
-                              validation.errors.countryId
-                                ? true
-                                : false
-                            }
+                    <h5 className="text-primary">Complete Account</h5>
+                    <p className="text-muted">Contact Information</p>
+                  </div>
+                  <div className="p-2 mt-4">
+                    <Form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        validation.submitForm();
+                      }}
+                      className="needs-validation"
+                      action="#"
+                    >
+                      <div className="mb-3">
+                        <Label htmlFor="country" className="form-label">
+                          Country <span className="text-danger">*</span>
+                        </Label>
+                        <Input
+                          id="country"
+                          name="countryId"
+                          className="form-control"
+                          placeholder="Enter country"
+                          type="select"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.countryId || ""}
+                          invalid={
+                            validation.touched.countryId &&
+                            validation.errors.countryId
+                              ? true
+                              : false
+                          }
+                        >
+                          <option value="">Select your country</option>
+                          {countries &&
+                            countries.length > 0 &&
+                            countries.map((country) => {
+                              return (
+                                <option
+                                  key={country._id}
+                                  value={country._id}
+                                  className={
+                                    validation.values.countryId === country._id
+                                      ? "active"
+                                      : ""
+                                  }
+                                >
+                                  {country.name}
+                                </option>
+                              );
+                            })}
+                        </Input>
+                        {validation.touched.countryId &&
+                        validation.errors.countryId ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.countryId}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label htmlFor="phone" className="form-label">
+                          Phone <span className="text-danger">*</span>
+                        </Label>
+                        <Input
+                          name="phone"
+                          type="text"
+                          placeholder="Enter phone"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.phone || ""}
+                          invalid={
+                            validation.touched.phone && validation.errors.phone
+                              ? true
+                              : false
+                          }
+                          autoComplete="off"
+                        />
+                        {validation.touched.phone && validation.errors.phone ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.phone}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="mb-3">
+                        <Label htmlFor="street" className="form-label">
+                          Home Address <span className="text-danger">*</span>
+                        </Label>
+                        <Input
+                          name="street"
+                          type="text"
+                          placeholder="Enter street"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.street || ""}
+                          invalid={
+                            validation.touched.street &&
+                            validation.errors.street
+                              ? true
+                              : false
+                          }
+                          autoComplete="off"
+                        />
+                        {validation.touched.street &&
+                        validation.errors.street ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.street}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-3">
+                        <Label htmlFor="state" className="form-label">
+                          State <span className="text-danger">*</span>
+                        </Label>
+                        <Input
+                          id="state"
+                          name="stateId"
+                          className="form-control"
+                          placeholder="Enter state"
+                          type="select"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.stateId || ""}
+                          invalid={
+                            validation.touched.stateId &&
+                            validation.errors.stateId
+                              ? true
+                              : false
+                          }
+                        >
+                          <option value="">Select your state</option>
+                          {states &&
+                            states.length > 0 &&
+                            states.map((state) => {
+                              return (
+                                <option
+                                  key={state._id}
+                                  value={state._id}
+                                  className={
+                                    validation.values.stateId === state._id
+                                      ? "active"
+                                      : ""
+                                  }
+                                >
+                                  {state.name}
+                                </option>
+                              );
+                            })}
+                        </Input>
+                        {validation.touched.stateId &&
+                        validation.errors.stateId ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.stateId}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="mb-2">
+                        <Label htmlFor="city" className="form-label">
+                          City
+                          <span className="text-danger">*</span>
+                        </Label>
+                        <Input
+                          name="city"
+                          type="text"
+                          placeholder="Enter City"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.city || ""}
+                          invalid={
+                            validation.touched.city && validation.errors.city
+                              ? true
+                              : false
+                          }
+                          autoComplete="off"
+                        />
+                        {validation.touched.city && validation.errors.city ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.city}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+                      <div className="mb-2">
+                        <Label htmlFor="zipcode" className="form-label">
+                          Zip
+                          <span className="text-danger">*</span>
+                        </Label>
+                        <Input
+                          name="zipCode"
+                          type="text"
+                          placeholder="Enter zipcode"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.zipCode || ""}
+                          invalid={
+                            validation.touched.zipCode &&
+                            validation.errors.zipCode
+                              ? true
+                              : false
+                          }
+                          autoComplete="off"
+                        />
+                        {validation.touched.zipCode &&
+                        validation.errors.zipCode ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.zipCode}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="mb-4">
+                        <p className="mb-0 fs-12 text-muted fst-italic d-flex gap-1">
+                          By registering you agree to the Itrust
+                          <Link
+                            to="#"
+                            className="text-primary text-decoration-underline fst-normal fw-medium"
                           >
-                            <option value="">Select your country</option>
-                            {countries &&
-                              countries.length > 0 &&
-                              countries.map((country) => {
-                                return (
-                                  <option
-                                    key={country._id}
-                                    value={country._id}
-                                    className={
-                                      validation.values.countryId ===
-                                      country._id
-                                        ? "active"
-                                        : ""
-                                    }
-                                  >
-                                    {country.name}
-                                  </option>
-                                );
-                              })}
-                          </Input>
-                          {validation.touched.countryId &&
-                          validation.errors.countryId ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.countryId}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                        <div className="mb-3">
-                          <Label htmlFor="phone" className="form-label">
-                            Phone <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            name="phone"
-                            type="text"
-                            placeholder="Enter phone"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.phone || ""}
-                            invalid={
-                              validation.touched.phone &&
-                              validation.errors.phone
-                                ? true
-                                : false
-                            }
-                            autoComplete="off"
-                          />
-                          {validation.touched.phone &&
-                          validation.errors.phone ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.phone}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
+                            Terms of Use
+                          </Link>
+                        </p>
+                      </div>
 
-                        <div className="mb-3">
-                          <Label htmlFor="street" className="form-label">
-                            Home Address <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            name="street"
-                            type="text"
-                            placeholder="Enter street"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.street || ""}
-                            invalid={
-                              validation.touched.street &&
-                              validation.errors.street
-                                ? true
-                                : false
-                            }
-                            autoComplete="off"
-                          />
-                          {validation.touched.street &&
-                          validation.errors.street ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.street}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                        <div className="mb-3">
-                          <Label htmlFor="state" className="form-label">
-                            State <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            id="state"
-                            name="stateId"
-                            className="form-control"
-                            placeholder="Enter state"
-                            type="select"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.stateId || ""}
-                            invalid={
-                              validation.touched.stateId &&
-                              validation.errors.stateId
-                                ? true
-                                : false
-                            }
-                          >
-                            <option value="">Select your state</option>
-                            {states &&
-                              states.length > 0 &&
-                              states.map((state) => {
-                                return (
-                                  <option
-                                    key={state._id}
-                                    value={state._id}
-                                    className={
-                                      validation.values.stateId === state._id
-                                        ? "active"
-                                        : ""
-                                    }
-                                  >
-                                    {state.name}
-                                  </option>
-                                );
-                              })}
-                          </Input>
-                          {validation.touched.stateId &&
-                          validation.errors.stateId ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.stateId}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-
-                        <div className="mb-2">
-                          <Label htmlFor="city" className="form-label">
-                            City
-                            <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            name="city"
-                            type="text"
-                            placeholder="Enter City"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.city || ""}
-                            invalid={
-                              validation.touched.city && validation.errors.city
-                                ? true
-                                : false
-                            }
-                            autoComplete="off"
-                          />
-                          {validation.touched.city && validation.errors.city ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.city}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                        <div className="mb-2">
-                          <Label htmlFor="zipcode" className="form-label">
-                            Zip
-                            <span className="text-danger">*</span>
-                          </Label>
-                          <Input
-                            name="zipCode"
-                            type="text"
-                            placeholder="Enter zipcode"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.zipCode || ""}
-                            invalid={
-                              validation.touched.zipCode &&
-                              validation.errors.zipCode
-                                ? true
-                                : false
-                            }
-                            autoComplete="off"
-                          />
-                          {validation.touched.zipCode &&
-                          validation.errors.zipCode ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.zipCode}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-
-                        <div className="mb-4">
-                          <p className="mb-0 fs-12 text-muted fst-italic d-flex gap-1">
-                            By registering you agree to the Itrust
-                            <Link
-                              to="#"
-                              className="text-primary text-decoration-underline fst-normal fw-medium"
-                            >
-                              Terms of Use
-                            </Link>
-                          </p>
-                        </div>
-
-                        <div className="mt-4">
-                          <button
-                            className="btn btn-primary w-100"
-                            type="submit"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      </Form>
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      </ParticlesAuth>
+                      <div className="mt-4">
+                        <button
+                          className="btn btn-secondary w-100"
+                          type="submit"
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </Form>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      {/* </ParticlesAuth> */}
     </React.Fragment>
   );
 };

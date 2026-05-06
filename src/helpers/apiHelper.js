@@ -1,7 +1,7 @@
 import axios from "axios";
 import { devUrl, getAccessToken, liveUrl } from "../constants";
 
-axios.defaults.baseURL = liveUrl;
+axios.defaults.baseURL = devUrl;
 
 const token = getAccessToken();
 if (token) axios.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -147,7 +147,7 @@ class APIClient {
 
 const getLoggedinUser = () => {
   const user = sessionStorage.getItem("user");
-  return user;
+  return JSON.parse(user);
 };
 
 export { APIClient, setAuthorization, getLoggedinUser };

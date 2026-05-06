@@ -39,13 +39,11 @@ const authProtectedRoutes = [
   },
   { path: "/contact", component: <Contact /> },
   { path: "/personal", component: <Personal /> },
-  // { path: "*", component: <Navigate to="/dashboard" /> },
+  { path: "/twofactor", component: <TwoFa /> },
   { path: "/trade/:assetId?", component: <Market /> },
-  // { path: "/trade", component: <Market /> },
   { path: "/savings", component: <Savings /> },
   { path: "/portfolio", component: <Portfolio /> },
   { path: "/cash", component: <Wallet /> },
-  // { path: "/verifyaccount", component: <KYCVerification /> },
   { path: "/deposit", component: <Deposit /> },
   { path: "/withdraw", component: <Withdraw /> },
   { path: "/transfer", component: <Transfer /> },
@@ -62,7 +60,6 @@ const publicRoutes = [
   { path: "/forgot-password", component: <ForgetPassword /> },
   { path: "/register", component: <Register /> },
   { path: "/verifyemail", component: <VerifyEmail /> },
-  { path: "/twofactor", component: <TwoFa /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

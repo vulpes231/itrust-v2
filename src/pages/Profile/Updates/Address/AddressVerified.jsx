@@ -1,15 +1,14 @@
 import React from "react";
 import { Col } from "reactstrap";
-import { IoAlertCircleOutline } from "react-icons/io5";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const AddressVerified = () => {
   return (
-    <Col className="d-flex align-items-start gap-2 justify-content-between bg-success-subtle p-3 rounded">
-      <div className="d-flex align-items-start gap-4 text-warning">
-        <IoAlertCircleOutline />
-        <span>
-          <h6 className="text-success fs-16 fw-medium">Address Verified</h6>
-        </span>
+    <Col className="d-flex align-items-center gap-2 justify-content-between bg-success-subtle p-3 rounded">
+      <div className="d-flex align-items-center gap-4 text-success">
+        <RiVerifiedBadgeFill />
+
+        <span className="text-success fs-16 fw-medium">Address Verified</span>
       </div>
     </Col>
   );

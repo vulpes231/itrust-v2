@@ -18,9 +18,10 @@ import { verifyEmail, verifyTwoFa } from "../../services/user/verification";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { Loader } from "feather-icons-react";
+import { CiMail } from "react-icons/ci";
 
 const TwoFa = () => {
-  document.title = "Aunthenticate Login - Itrust Investments";
+  document.title = "Two Factor - Itrust Investments";
 
   const [disableResend, setDisableResend] = useState(true);
   const [error, setError] = useState("");
@@ -97,16 +98,6 @@ const TwoFa = () => {
     resendMutation.mutate({ email: sessionEmail });
   };
 
-  // useEffect(() => {
-  //   if (verifyTwoFaMutation.isSuccess) {
-  //     const tmt = setTimeout(() => {
-  //       sessionStorage.setItem("accessToken", verifyTwoFaMutation.data.token);
-  //       sessionStorage.setItem("user", verifyTwoFaMutation.data.user);
-  //       window.location.href = "/dashboard";
-  //     }, 3000);
-  //   }
-  // });
-
   useEffect(() => {
     if (error) {
       const t = setTimeout(() => setError(""), 3000);
@@ -123,86 +114,104 @@ const TwoFa = () => {
 
   return (
     <div className="auth-page-wrapper">
-      <ParticlesAuth>
-        <div className="auth-page-content">
-          <Container>
-            <Row>
-              <Col lg={12}>
-                <div className="text-center mt-sm-5 mb-4 text-white-50">
-                  <Link to="/dashboard" className="auth-logo">
-                    <img src={logo} alt="" height="20" />
-                  </Link>
-                  <p className="mt-3 fs-16 fw-semibold">Authenticate Login</p>
-                </div>
-              </Col>
-            </Row>
+      {/* <ParticlesAuth> */}
+      <div className="auth-page-content">
+        <Container>
+          <Row>
+            <Col lg={12}>
+              <div className="text-center mt-sm-5 mb-4 text-white-50">
+                <Link to="/dashboard" className="auth-logo">
+                  <img src={logo} alt="" height="20" />
+                </Link>
+                <p className="mt-3 fs-16 fw-semibold">Authenticate Login</p>
+              </div>
+            </Col>
+          </Row>
 
-            <Row className="justify-content-center">
-              <Col md={8} lg={6} xl={5}>
-                <Card className="mt-4">
-                  <CardBody className="p-4">
-                    <div className="text-center mb-4">
-                      <h4>Verify Your Login</h4>
-                      <p>
-                        Enter the 4-digit code sent to{" "}
-                        <strong>{sessionEmail}</strong>
-                      </p>
+          <Row className="justify-content-center">
+            <Col md={8} lg={6} xl={5}>
+              <Card className="mt-4">
+                <CardBody className="p-4">
+                  <div className="text-center mb-4 d-flex align-items-center justify-content-center flex-column gap-2">
+                    <Link to="/dashboard" className="auth-logo mb-4">
+                      <img src={logo} alt="" height="30" width={"120"} />
+                    </Link>
+                    <div
+                      className="bg-secondary-subtle d-flex align-items-center justify-content-center"
+                      style={{
+                        height: "80px",
+                        width: "80px",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <CiMail size={50} className="text-secondary" />
                     </div>
+                    <h4>2FA</h4>
+                    <p className="d-flex align-items-center gap-2 text-muted fw-light">
+                      Please enter the 4 digit code sent to
+                      <strong>{sessionEmail || "email@email.com"}</strong>
+                    </p>
+                  </div>
 
-                    <form onSubmit={handleSubmit}>
-                      <Row>
-                        {otp.map((digit, index) => (
-                          <Col key={index} className="col-3">
-                            <input
-                              id={`digit${index + 1}-input`}
-                              type="text"
-                              value={digit}
-                              maxLength="1"
-                              className="form-control text-center"
-                              onChange={(e) =>
-                                handleChange(e.target.value, index)
-                              }
-                              onKeyDown={(e) => handleKeyDown(e, index)}
-                            />
-                          </Col>
-                        ))}
-                      </Row>
+                  <form onSubmit={handleSubmit}>
+                    <Row>
+                      {otp.map((digit, index) => (
+                        <Col key={index} className="col-3">
+                          <input
+                            id={`digit${index + 1}-input`}
+                            type="text"
+                            value={digit}
+                            maxLength="1"
+                            className="form-control text-center border-0 bg-light"
+                            onChange={(e) =>
+                              handleChange(e.target.value, index)
+                            }
+                            onKeyDown={(e) => handleKeyDown(e, index)}
+                          />
+                        </Col>
+                      ))}
+                    </Row>
 
-                      <button
-                        type="submit"
-                        className="w-100 mt-3 btn btn-secondary"
-                        disabled={verifyTwoFaMutation.isPending}
-                      >
-                        {verifyTwoFaMutation.isPending && <Spinner size="sm" />}{" "}
-                        Submit
-                      </button>
-                    </form>
-                  </CardBody>
-                </Card>
+                    <button
+                      type="submit"
+                      className="w-100 mt-3 btn btn-secondary"
+                      disabled={verifyTwoFaMutation.isPending}
+                    >
+                      {verifyTwoFaMutation.isPending && <Spinner size="sm" />}{" "}
+                      Confirm
+                    </button>
+                  </form>
+                </CardBody>
+              </Card>
 
-                <div className="mt-4 text-center d-flex align-items-center gap-2 justify-content-center">
-                  <span
-                    onClick={() => {
-                      sessionStorage.clear();
-                      window.location.href = "/login";
-                    }}
-                    className="text-decoration-underline text-secondary"
-                  >
-                    Go Back
-                  </span>
-                  <button
-                    disabled={disableResend || resendMutation.isPending}
-                    onClick={handleCodeResend}
-                    className="btn btn-secondary"
-                  >
-                    {resendMutation.isPending ? "Sending..." : "Resend Code"}
-                  </button>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      </ParticlesAuth>
+              <div className="mt-4 text-center d-flex align-items-center gap-2 justify-content-center">
+                <span
+                  onClick={() => {
+                    sessionStorage.clear();
+                    window.location.href = "/login";
+                  }}
+                  className="text-decoration-underline text-secondary"
+                >
+                  Go Back
+                </span>
+                <button
+                  disabled={disableResend || resendMutation.isPending}
+                  onClick={handleCodeResend}
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    textDecoration: "underline",
+                  }}
+                  className="text-secondary"
+                >
+                  {resendMutation.isPending ? "Sending..." : "Resend Code"}
+                </button>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      {/* </ParticlesAuth> */}
       {error && <ErrorToast errorMsg={error} onClose={() => setError("")} />}
       {verifyTwoFaMutation.isSuccess && (
         <SuccessToast

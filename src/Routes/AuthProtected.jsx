@@ -39,10 +39,10 @@ const AuthProtected = ({ children }) => {
         !token &&
         !publicRoutes.includes(location.pathname)
       ) {
-        return <Navigate to="/login" replace />;
+        navigate("/login", { replace: true });
       }
     }
-  }, [loading, token, userProfile, mutation]);
+  }, [loading, token, userProfile, location.pathname, navigate]);
 
   const isAuthenticated = !loading && token;
   const isKycApproved = kycStatus === "approved";

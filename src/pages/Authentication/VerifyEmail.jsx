@@ -116,33 +116,23 @@ const VerifyEmail = () => {
       <ParticlesAuth>
         <div className="auth-page-content">
           <Container>
-            <Row>
-              <Col lg={12}>
-                <div className="text-center mt-sm-5 mb-4 text-white-50">
-                  <Link to="/dashboard" className="auth-logo">
-                    <img src={logo} alt="" height="20" />
-                  </Link>
-                  <p className="mt-3 fs-16 fw-semibold">
-                    Verify Your Email Address
-                  </p>
-                </div>
-              </Col>
-            </Row>
-
             <Row className="justify-content-center">
               <Col md={8} lg={6} xl={5}>
                 <Card className="mt-4">
                   <CardBody className="p-4">
                     <div className="text-center mb-4 d-flex align-items-center justify-content-center flex-column gap-2">
+                      <Link to="/dashboard" className="auth-logo mb-4">
+                        <img src={logo} alt="" height="30" width={"120"} />
+                      </Link>
                       <div
                         className="bg-secondary-subtle d-flex align-items-center justify-content-center"
                         style={{
-                          height: "100px",
-                          width: "100px",
+                          height: "80px",
+                          width: "80px",
                           borderRadius: "50%",
                         }}
                       >
-                        <CiMail size={70} className="text-secondary" />
+                        <CiMail size={50} className="text-secondary" />
                       </div>
                       <h4>Verify Your Email</h4>
                       <p className="d-flex align-items-center gap-2 text-muted fw-light">
@@ -159,7 +149,7 @@ const VerifyEmail = () => {
                             type="text"
                             value={digit}
                             maxLength="1"
-                            className="form-control text-center"
+                            className="form-control text-center border-0 bg-light"
                             onChange={(e) =>
                               handleChange(e.target.value, index)
                             }
@@ -179,12 +169,12 @@ const VerifyEmail = () => {
                       disabled={verifyMutation.isPending}
                     >
                       {verifyMutation.isPending && <Spinner size="sm" />}{" "}
-                      Confirm Email
+                      Confirm
                     </Button>
                   </CardBody>
                 </Card>
 
-                <div className="mt-4 text-center">
+                <div className="mt-4 text-center d-flex align-items-center gap-4 justify-content-center">
                   <span>Didn't receive a code?</span>
                   <button
                     disabled={disableResend || resendMutation.isPending}
@@ -196,7 +186,7 @@ const VerifyEmail = () => {
                     }}
                     className="text-secondary"
                   >
-                    {resendMutation.isPending ? "Sending..." : "Resend Code"}
+                    {resendMutation.isPending ? "Sending..." : "Resend"}
                   </button>
                 </div>
               </Col>
