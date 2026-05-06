@@ -7,25 +7,25 @@ const Widgets = ({ analytics }) => {
   const marketWidgets = analytics && [
     {
       id: 1,
-      title: "Total Investments",
-      counter: analytics.totalInvested.toFixed(2).split(".")[0],
-      decimal: analytics.totalInvested.toFixed(2).split(".")[1],
+      title: "Assets Owned",
+      counter: analytics?.assetsOwned,
+      // decimal: 0,
       icon: "ri-shopping-bag-line",
       iconClass: "danger",
     },
     {
       id: 2,
-      title: "Total P&L",
-      counter: analytics.totalProfit.toFixed(2).split(".")[0] || 0,
-      decimal: analytics.totalProfit.toFixed(2).split(".")[1],
+      title: "Total Investments",
+      counter: analytics.totalInvested.toFixed(2).split(".")[0],
+      decimal: analytics.totalInvested.toFixed(2).split(".")[1],
       icon: "ri-funds-line",
       iconClass: "info",
     },
     {
       id: 3,
-      title: "Cost Basis (Amount Invested)",
-      counter: analytics.totalInvested.toFixed(2).split(".")[0] || 0,
-      decimal: analytics.totalInvested.toFixed(2).split(".")[1],
+      title: "Today's P&L",
+      counter: analytics.totalProfit.toFixed(2).split(".")[0] || 0,
+      decimal: analytics.totalProfit.toFixed(2).split(".")[1],
       icon: "ri-arrow-right-up-fill",
       iconClass: "success",
     },
@@ -52,12 +52,13 @@ const Widgets = ({ analytics }) => {
                   <div className="flex-grow-1">
                     <h6 className="text-muted mb-3">{item.title}</h6>
                     <h2 className="mb-0">
-                      $
+                      {item.id !== 1 && "$"}
                       <span className="counter-value">
                         <CountUp start={0} end={item.counter} duration={3} />
                       </span>
                       <small className="text-muted fs-14">
-                        .{item.decimal}k
+                        .{item.decimal}
+                        {item.decimal && "k"}
                       </small>
                     </h2>
                   </div>

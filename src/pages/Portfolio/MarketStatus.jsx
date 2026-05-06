@@ -7,7 +7,7 @@ import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
 const MarketStatus = ({ activeWallet, trades }) => {
-  const [currentAccount, setCurrentAccount] = useState("all");
+  const [currentAccount, setCurrentAccount] = useState("investing");
 
   const handleAccountChange = (e) => {
     setCurrentAccount(e.target.value);
@@ -17,7 +17,7 @@ const MarketStatus = ({ activeWallet, trades }) => {
     if (!trades) return [];
 
     const filteredTrades =
-      currentAccount === "all"
+      currentAccount === "investing"
         ? trades
         : trades.filter((trd) => trd.wallet.name === currentAccount);
 
@@ -128,8 +128,8 @@ const MarketStatus = ({ activeWallet, trades }) => {
               cell.getValue() === "open"
                 ? "bg-success"
                 : cell.getValue() === "closed"
-                ? "bg-secondary"
-                : "bg-warning"
+                  ? "bg-secondary"
+                  : "bg-warning"
             }`}
           >
             {cell.getValue().charAt(0).toUpperCase() + cell.getValue().slice(1)}
@@ -137,7 +137,7 @@ const MarketStatus = ({ activeWallet, trades }) => {
         ),
       },
     ],
-    []
+    [],
   );
 
   useEffect(() => {
@@ -156,7 +156,7 @@ const MarketStatus = ({ activeWallet, trades }) => {
               onChange={handleAccountChange}
               value={currentAccount}
             >
-              <option value="all">All</option>
+              <option value="investing">All</option>
               <option value="individual brokerage">Brokerage</option>
               <option value="automated investing">Automated Investing</option>
             </Input>

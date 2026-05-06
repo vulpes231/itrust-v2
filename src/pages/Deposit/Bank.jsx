@@ -189,7 +189,7 @@ const Bank = ({ settings, userBank }) => {
               onClick={() =>
                 handleCopy(
                   userBank?.bankName || settings?.bankDetails?.bankName,
-                  1
+                  1,
                 )
               }
               type="button"
@@ -225,7 +225,7 @@ const Bank = ({ settings, userBank }) => {
               onClick={() =>
                 handleCopy(
                   userBank?.accountName || settings?.bankDetails?.accountName,
-                  2
+                  2,
                 )
               }
               type="button"
@@ -262,7 +262,7 @@ const Bank = ({ settings, userBank }) => {
                 handleCopy(
                   userBank?.accountNumber ||
                     settings?.bankDetails?.accountNumber,
-                  3
+                  3,
                 )
               }
               type="button"
@@ -296,7 +296,7 @@ const Bank = ({ settings, userBank }) => {
               onClick={() =>
                 handleCopy(
                   userBank?.routing || settings?.bankDetails?.routing,
-                  4
+                  4,
                 )
               }
               type="button"
@@ -358,7 +358,7 @@ const Bank = ({ settings, userBank }) => {
               onClick={() =>
                 handleCopy(
                   userBank?.address || settings?.bankDetails?.address,
-                  6
+                  6,
                 )
               }
               type="button"
@@ -392,7 +392,7 @@ const Bank = ({ settings, userBank }) => {
               onClick={() =>
                 handleCopy(
                   userBank?.reference || settings?.bankDetails?.reference,
-                  7
+                  7,
                 )
               }
               type="button"
@@ -485,18 +485,30 @@ const Bank = ({ settings, userBank }) => {
           }}
           maxFiles={1}
         >
-          {({ getRootProps, getInputProps }) => (
-            <div className="dropzone dz-clickable bg-light-subtle">
-              <div className="dz-message needsclick pt-4" {...getRootProps()}>
+          {({ getRootProps, getInputProps, isDragActive }) => (
+            <div
+              {...getRootProps()}
+              className={`dropzone dz-clickable bg-light-subtle ${
+                isDragActive ? "border-primary bg-primary-subtle" : ""
+              }`}
+              style={{ cursor: "pointer" }}
+            >
+              <input {...getInputProps()} />
+              <div className="dz-message needsclick pt-4">
                 <div className="mb-1">
                   <i className="display-4 text-muted ri-upload-cloud-2-fill" />
                 </div>
                 <h6 className="mb-1">
-                  {proof ? proof.name : "Click to upload or drag and drop"}
+                  {isDragActive
+                    ? "Drop the file here..."
+                    : proof
+                      ? proof.name
+                      : "Click to upload or drag and drop"}
                 </h6>
-
                 <small className="text-muted fs-12">
-                  {proof ? "Image uploaded" : "PNG, JPG up to 5MB"}
+                  {proof
+                    ? `${proof.formattedSize} uploaded`
+                    : "PNG, JPG up to 5MB"}
                 </small>
               </div>
             </div>

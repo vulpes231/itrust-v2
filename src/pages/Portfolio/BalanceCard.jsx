@@ -6,7 +6,28 @@ import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { formatCurrency } from "../../constants";
 
 const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
-  // console.log(wallets);
+  // Show placeholder if no active wallet
+  if (!activeWallet || !wallets || wallets.length === 0) {
+    return (
+      <Card>
+        <Row className="p-3">
+          <Col md={3}>
+            <div className="d-flex align-items-start justify-content-between">
+              <select
+                className="border-0 bg-transparent fs-13 text-uppercase"
+                disabled
+              >
+                <option>Loading...</option>
+              </select>
+            </div>
+            <h3>$0.00</h3>
+            <span className="fs-11 fw-light">Loading...</span>
+          </Col>
+        </Row>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <Row className="p-3">
@@ -18,10 +39,7 @@ const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
               style={{ color: "#878A99" }}
               value={activeWallet?._id || ""}
             >
-              {wallets && wallets.length === 0 && (
-                <option value="">Account</option>
-              )}
-              {(wallets || []).map((wallet) => {
+              {wallets.map((wallet) => {
                 return (
                   <option key={wallet._id} value={wallet._id}>
                     {wallet.name}
@@ -35,13 +53,12 @@ const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
           </div>
           <div className="d-flex align-items-center justify-content-between">
             <h3>
-              {" "}
               {activeWallet?.totalBalance
                 ? formatCurrency(activeWallet.totalBalance)
                 : formatCurrency(0)}
             </h3>
             <span
-              className={`px-3 py-1  fs-10 fw-light rounded-1 ${
+              className={`px-3 py-1 fs-10 fw-light rounded-1 ${
                 activeWallet?.dailyProfitPercent &&
                 activeWallet?.dailyProfitPercent < 0
                   ? "bg-danger-subtle text-danger"
@@ -61,7 +78,7 @@ const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
             </span>
           </div>
           <span style={{ color: "#878A99" }} className="fs-11 fw-light">
-            Update at {`${format(Date.now(), "dd/MM/yyyy")}`}
+            Update at {`${format(Date.now(), "dd/MM/yyyy hh:mm a")}`}
           </span>
         </Col>
       </Row>

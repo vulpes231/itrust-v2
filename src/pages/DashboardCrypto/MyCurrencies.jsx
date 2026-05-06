@@ -140,9 +140,9 @@ const MyCurrencies = () => {
                 onChange={(e) => handleAssetFilterChange(e.target.value)}
                 value={assetFilter}
               >
-                <option value="stock">Stock</option>
-                <option value="crypto">Crypto</option>
-                <option value="etf">ETF</option>
+                <option value="stock">Stocks</option>
+                <option value="crypto">Cryptos</option>
+                <option value="etf">ETFs</option>
               </select>
 
               {/* 24H Change Button */}
@@ -228,7 +228,7 @@ const MyCurrencies = () => {
                 <thead className="text-muted bg-light-subtle">
                   <tr>
                     <th>Watchlist</th>
-                    <th>Asset</th>
+                    <th>Assets</th>
                     <th>Price</th>
                     <th>24 High</th>
                     <th>24 Low</th>
@@ -321,7 +321,7 @@ const MyCurrencies = () => {
                           </td>
                           <td>
                             {numeral(asset.priceData?.volume || 0)
-                              .format("$0.00a")
+                              .format("0.00a")
                               .toUpperCase()}
                           </td>
                           <td>

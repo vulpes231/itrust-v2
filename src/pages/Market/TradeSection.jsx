@@ -199,7 +199,7 @@ const TradeSection = ({ asset, accounts }) => {
             <Col className="p-4 d-flex gap-2">
               <button
                 onClick={() => toggleActiveOrder("buy")}
-                className={`btn w-100 text-capitalize fw-bold ${
+                className={`btn w-100 text-capitalize ${
                   activeOrder === "buy" ? "btn-success" : "btn-light text-muted"
                 }`}
                 style={{ height: "45px" }}
@@ -208,7 +208,7 @@ const TradeSection = ({ asset, accounts }) => {
               </button>
               <button
                 onClick={() => toggleActiveOrder("sell")}
-                className={`btn w-100 text-capitalize fw-bold ${
+                className={`btn w-100 text-capitalize ${
                   activeOrder === "sell" ? "btn-danger" : "btn-light text-muted"
                 }`}
                 style={{ height: "45px" }}

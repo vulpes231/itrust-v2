@@ -12,12 +12,33 @@ async function openPosition(formData) {
   }
 }
 
+async function closePosition(formData) {
+  try {
+    const response = await api.create("/trade/sell", formData);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.message?.data;
+    throw new Error(errMsg);
+  }
+}
+
 async function getUserTrades() {
   try {
     const response = await api.get("/trade");
     return response.data;
   } catch (error) {
     const errMsg = error.response?.message?.data;
+    throw new Error(errMsg);
+  }
+}
+
+async function searchTrades(formData) {
+  const { query } = formData;
+  try {
+    const response = await api.get(`/trade/search/?query=${query}`);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.data?.message;
     throw new Error(errMsg);
   }
 }
@@ -32,4 +53,10 @@ async function getTradeAnalytics() {
   }
 }
 
-export { openPosition, getUserTrades, getTradeAnalytics };
+export {
+  openPosition,
+  getUserTrades,
+  getTradeAnalytics,
+  closePosition,
+  searchTrades,
+};

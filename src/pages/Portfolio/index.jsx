@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Col, Container, Row } from "reactstrap";
-
 import PortfolioStatistics from "./PortfolioStatistics";
 import MarketStatus from "./MarketStatus";
-
 import BreadCrumb from "../../Components/Common/BreadCrumb";
-
 import VerifyAccountNotify from "../VerifyAccountNotify";
 import BalanceCard from "./BalanceCard";
 import { getAccessToken } from "../../constants";
-import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
+import {
+  getUserWallets,
+  getWalletAnalytics,
+  getWalletInvestData,
+} from "../../services/user/wallet";
 import { useQuery } from "@tanstack/react-query";
 import TradeCard from "./TradeCard";
 import AssetAllocation from "./AssetAllocation";
@@ -22,19 +23,21 @@ const Portfolio = () => {
 
   const tk = getAccessToken();
 
-  const [activeWallet, setActiveWallet] = useState(null);
-
   const { data: wallets, isLoading: getWalletLoading } = useQuery({
     queryFn: getUserWallets,
     queryKey: ["userWallets"],
     enabled: !!tk,
   });
 
-  // console.log(wallets);
-
   const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
     queryFn: getWalletAnalytics,
     queryKey: ["walletAnalytics"],
+    enabled: !!tk,
+  });
+
+  const { data: walletData } = useQuery({
+    queryKey: ["walletdata"],
+    queryFn: getWalletInvestData,
     enabled: !!tk,
   });
 
@@ -45,52 +48,84 @@ const Portfolio = () => {
     enabled: !!tk,
   });
 
-  const result = (wallets || []).reduce(
-    (acc, wallet) => {
-      const isCashWallet = wallet.slug === "cash";
+  const filteredWallets = useMemo(() => {
+    if (!wallets || wallets.length === 0) {
+      return [];
+    }
 
-      if (!isCashWallet) {
-        acc.defaultWallets.push(wallet);
-        acc.totalBalance += wallet.totalBalance;
-        acc.availableBalance += wallet.availableBalance;
-      }
+    const result = wallets.reduce(
+      (acc, wallet) => {
+        const isCashWallet = wallet.slug === "cash";
 
-      return acc;
-    },
-    {
-      defaultWallets: [],
-      totalBalance: 0,
-      availableBalance: 0,
-    },
-  );
+        if (!isCashWallet) {
+          acc.defaultWallets.push(wallet);
+          acc.totalBalance += wallet.totalBalance || 0;
+          acc.availableBalance += wallet.availableBalance || 0;
+        }
 
-  const investing = {
-    totalBalance: result.totalBalance,
-    availableBalance: result.availableBalance,
-    slug: "default",
-    name: "investing",
-    _id: "default",
-  };
+        return acc;
+      },
+      {
+        defaultWallets: [],
+        totalBalance: 0,
+        availableBalance: 0,
+      },
+    );
 
-  const filteredWallets = [investing, ...result.defaultWallets];
+    const investing = {
+      totalBalance: result.totalBalance,
+      availableBalance: result.availableBalance,
+      slug: "default",
+      name: "investing",
+      _id: "default",
+      dailyProfitPercent:
+        result.defaultWallets.reduce(
+          (acc, wallet) => acc + (wallet.dailyProfitPercent || 0),
+          0,
+        ) / (result.defaultWallets.length || 1),
+    };
 
-  // console.log(filteredWallets);
+    return [investing, ...result.defaultWallets];
+  }, [wallets]);
+
+  const [activeWallet, setActiveWallet] = useState(null);
+
+  useEffect(() => {
+    if (
+      filteredWallets.length > 0 &&
+      (!activeWallet || activeWallet._id === "default")
+    ) {
+      setActiveWallet(filteredWallets[0]);
+    }
+  }, [filteredWallets, activeWallet]);
 
   const handleChange = (e) => {
     const walletId = e.target.value;
-
     const selectedWallet = filteredWallets.find(
       (wallet) => wallet._id === walletId,
     );
 
-    setActiveWallet(selectedWallet || null);
+    if (!selectedWallet) {
+      return;
+    }
+
+    setActiveWallet(selectedWallet);
   };
 
-  useEffect(() => {
-    if (!activeWallet && filteredWallets.length > 0) {
-      setActiveWallet(filteredWallets[0]);
-    }
-  }, [filteredWallets, activeWallet]);
+  if (getWalletLoading || !wallets) {
+    return (
+      <div className="page-content">
+        <Container fluid>
+          <BreadCrumb title="Portfolio" pageTitle="History" />
+          <div className="text-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <React.Fragment>
@@ -108,12 +143,13 @@ const Portfolio = () => {
               <PortfolioStatistics
                 dataColors='["--vz-info"]'
                 activeWallet={activeWallet}
+                walletData={walletData}
               />
 
               <MarketStatus activeWallet={activeWallet} trades={trades} />
             </Col>
             <Col xxl={3}>
-              <TradeCard />
+              <TradeCard walletData={walletData} />
               <AssetGraph
                 count={trades?.length}
                 walletAnalytics={walletAnalytics}

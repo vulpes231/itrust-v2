@@ -220,7 +220,7 @@ const Market = () => {
         },
       },
       {
-        header: "Asset",
+        header: "Assets",
         accessorKey: "name",
         enableColumnFilter: false,
         cell: (cell) => (
@@ -348,9 +348,9 @@ const Market = () => {
                   onChange={(e) => handleAssetFilterChange(e.target.value)}
                   value={assetFilter}
                 >
-                  <option value="stock">Stock</option>
-                  <option value="crypto">Crypto</option>
-                  <option value="etf">ETF</option>
+                  <option value="stock">Stocks</option>
+                  <option value="crypto">Cryptos</option>
+                  <option value="etf">ETFs</option>
                 </select>
 
                 {/* 24H Change Button */}

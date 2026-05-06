@@ -64,7 +64,7 @@ const Widgets = () => {
           <Col md={4} className="d-flex align-items-center gap-3">
             <div className="d-flex flex-column">
               <span className="text-muted fs-11">
-                Updated at {`${format(Date.now(), "dd/MM/yyyy")}`}
+                Updated at {`${format(Date.now(), "dd/MM/yyyy hh:mm a")}`}
               </span>
               <img src={brief} alt="" width={40} />
               <span className="text-muted text-uppercase fs-13 d-flex align-items-center justify-content-between gap-5">

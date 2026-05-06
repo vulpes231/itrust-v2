@@ -23,5 +23,15 @@ async function getWalletAnalytics() {
     throw new Error(errMsg);
   }
 }
+async function getWalletInvestData() {
+  try {
+    const response = await api.get("/wallet/invest-data");
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.data?.message;
+    throw new Error(errMsg);
+  }
+}
 
-export { getUserWallets, getWalletAnalytics };
+export { getUserWallets, getWalletAnalytics, getWalletInvestData };
