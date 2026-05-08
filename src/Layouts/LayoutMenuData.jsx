@@ -155,11 +155,11 @@ const Navdata = () => {
     },
   ];
 
-  const savedUser = getLoggedinUser();
+  const loginType = sessionStorage.getItem("loginType");
 
-  const isSuperUser = savedUser?.loginType === "superuser";
+  const isSuperUser = loginType === "superuser";
 
-  // console.log(savedUser);
+  // console.log(loginType);
 
   const isTwoFaRequirementMet = isSuperUser
     ? true
@@ -175,3 +175,5 @@ const Navdata = () => {
   );
 };
 export default Navdata;
+
+// user:"{"credentials":{"email":"newitrust@mbox.re"},"identityVerification":{"kycStatus":"not verified"},"accountStatus":{"status":"active","banned":false,"emailVerified":true,"twoFaActivated":true,"twoFaVerified":true}}"

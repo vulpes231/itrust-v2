@@ -57,8 +57,9 @@ const Widgets = ({ analytics }) => {
                         <CountUp start={0} end={item.counter} duration={3} />
                       </span>
                       <small className="text-muted fs-14">
-                        .{item.decimal}
-                        {item.decimal && "k"}
+                        {item.id !== 1 && "."}
+                        {item.decimal}
+                        {/* {item.decimal && "k"} */}
                       </small>
                     </h2>
                   </div>

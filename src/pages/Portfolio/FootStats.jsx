@@ -4,8 +4,12 @@ import { Col, Row } from "reactstrap";
 import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
-const FootStats = ({ activeWallet, walletData }) => {
+const FootStats = ({ activeWallet, walletData, cashAccount }) => {
   // console.log(walletData);
+  const totalInv = walletData
+    ? walletData[activeWallet?.slug]?.totalInvested +
+      walletData[activeWallet?.slug]?.totalProfitLoss
+    : 0;
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <Row className="px-3">
@@ -16,9 +20,7 @@ const FootStats = ({ activeWallet, walletData }) => {
         >
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
-              {walletData
-                ? formatCurrency(walletData[activeWallet?.slug]?.totalInvested)
-                : formatCurrency(0)}
+              {walletData ? formatCurrency(totalInv) : formatCurrency(0)}
             </span>
             <span
               style={{ color: "#878A99" }}
@@ -78,8 +80,8 @@ const FootStats = ({ activeWallet, walletData }) => {
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
               {" "}
-              {activeWallet?.totalBalance
-                ? formatCurrency(activeWallet.totalBalance)
+              {cashAccount?.totalBalance
+                ? formatCurrency(cashAccount.totalBalance)
                 : formatCurrency(0)}
             </span>
             <span

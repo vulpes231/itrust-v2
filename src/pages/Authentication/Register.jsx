@@ -92,7 +92,7 @@ const Register = () => {
     <React.Fragment>
       <ParticlesAuth>
         <div className="auth-page-content">
-          <Container>
+          <Container style={{ marginTop: "100px", marginBottom: "100px" }}>
             <Row className="justify-content-center">
               <Col md={8} lg={6} xl={5}>
                 <Card className="mt-4">

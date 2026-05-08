@@ -11,14 +11,18 @@ import {
   Row,
   Spinner,
 } from "reactstrap";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, getAccessToken } from "../../constants";
 import { useFormik } from "formik";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import numeral from "numeral";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import * as Yup from "yup";
-import { closePosition, searchTrades } from "../../services/user/trade";
+import {
+  closePosition,
+  getUserTrades,
+  searchTrades,
+} from "../../services/user/trade";
 
 const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
   const units = [
@@ -34,7 +38,7 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAcct, setSelectedAcct] = useState("");
-  const [selectedTrade, setSelectedTrade] = useState("");
+  const [selectedTrade, setSelectedTrade] = useState(null);
   const [error, setError] = useState("");
 
   const [form, setForm] = useState({
@@ -49,15 +53,19 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
     leverage: "",
   });
 
-  const { data: tradeResults } = useQuery({
-    queryFn: () => searchTrades({ query: debouncedQuery }),
-    queryKey: ["searchTrade", debouncedQuery],
-    enabled: debouncedQuery.length > 0,
+  const tk = getAccessToken();
+
+  const { data: trades, isLoading: tradesLoading } = useQuery({
+    queryFn: () => getUserTrades(),
+    queryKey: ["trades"],
+    enabled: !!selectedAcct,
   });
 
   const mutation = useMutation({
     mutationFn: closePosition,
-    onError: (err) => setError(err.message),
+    onError: (err) => {
+      setError(err.message || "Failed to close position");
+    },
     onSuccess: () => {
       mutation.reset();
       setTimeout(() => {
@@ -66,28 +74,27 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
     },
   });
 
-  const availableWallets =
-    wallets && wallets.filter((w) => w.slug === "brokerage");
+  const availableWallets = wallets?.filter((w) => w.slug === "brokerage") || [];
   const defaultWalletId = form.walletId || availableWallets?.[0]?._id || "";
 
   const transformedData = useMemo(() => {
-    if (!tradeResults) return;
+    if (!trades || !selectedAcct) return [];
 
-    const filteredTrades = tradeResults.filter(
-      (trd) => trd.wallet.id === selectedAcct._id,
+    const filteredTrades = trades.filter(
+      (trd) => trd.wallet?.id === selectedAcct._id,
     );
 
     return filteredTrades.map((trade) => ({
       ...trade,
-      img: trade.asset.img,
-      assetName: trade.asset.name,
-      assetSymbol: trade.asset.symbol,
-      currentValue: trade.performance.currentValue,
-      totalReturn: trade.performance.totalReturn,
-      totalReturnPercent: trade.performance.totalReturnPercent,
-      currentPrice: trade.performance.currentPrice,
+      img: trade.asset?.img,
+      assetName: trade.asset?.name,
+      assetSymbol: trade.asset?.symbol,
+      currentValue: trade.performance?.currentValue,
+      totalReturn: trade.performance?.totalReturn,
+      totalReturnPercent: trade.performance?.totalReturnPercent,
+      currentPrice: trade.performance?.currentPrice,
     }));
-  }, [tradeResults, selectedAcct]);
+  }, [trades, selectedAcct]);
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -101,11 +108,22 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
       stoploss: "",
       takeprofit: "",
       leverage:
-        tradeType.id === "leverage" || tradeType.id === "stoploss" ? "2" : "",
-      executionType: tradeType.id,
+        tradeType?.id === "leverage" || tradeType?.id === "stoploss" ? "2" : "",
+      executionType: tradeType?.id || "",
     },
     validationSchema: Yup.object({
-      percentToClose: Yup.string().required("Please Enter Amount"),
+      percentToClose: Yup.string()
+        .required("Please enter amount")
+        .test(
+          "is-valid-percentage",
+          "Amount must be between 1 and 100",
+          (value) => {
+            if (!value) return false;
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 1 && num <= 100;
+          },
+        ),
+      tradeId: Yup.string().required("Please select an asset"),
       leverage: Yup.string().when("executionType", {
         is: (value) => value === "leverage" || value === "stoploss",
         then: (schema) => schema.required("Please select leverage"),
@@ -114,8 +132,19 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
     }),
 
     onSubmit: (values) => {
-      console.log(values);
-      mutation.mutate(values);
+      if (!selectedTrade) {
+        setError("Please select an asset");
+        return;
+      }
+
+      const submitData = {
+        ...values,
+        tradeId: selectedTrade._id,
+        assetSymbol: selectedTrade.asset?.symbol,
+      };
+
+      console.log(submitData);
+      mutation.mutate(submitData);
     },
   });
 
@@ -126,58 +155,28 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
     maximumFractionDigits: 2,
   });
 
-  const toggleDropdown = () => setIsDropdownOpen((prevState) => !prevState);
+  const handleTradeSelect = (e) => {
+    const tradeId = e.target.value;
+    const trade = transformedData.find((t) => t._id === tradeId);
 
-  const handleTradeSearch = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-
-    if (value.length > 0) {
-      setIsDropdownOpen(true);
-    } else {
-      setIsDropdownOpen(false);
-    }
-  };
-
-  const handleTradeSelect = (trade) => {
-    setIsDropdownOpen(false);
-    setForm((prev) => ({
-      ...prev,
-      tradeId: trade._id,
-      selectedTrade: trade,
-    }));
-    setSelectedTrade(trade);
-    setSearchQuery(trade.asset.name);
-
-    validation.setFieldValue("tradeId", trade._id);
-  };
-
-  useEffect(() => {
-    if (searchQuery.length === 0) {
+    if (trade) {
       setForm((prev) => ({
         ...prev,
-        tradeId: "",
-        selectedTrade: null,
+        tradeId: trade._id,
+        selectedTrade: trade,
       }));
+      setSelectedTrade(trade);
+      setSearchQuery(trade.asset?.name || "");
+      validation.setFieldValue("tradeId", trade._id);
+    } else {
+      setSelectedTrade(null);
       validation.setFieldValue("tradeId", "");
     }
-  }, [searchQuery]);
+  };
 
-  useEffect(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      setDebouncedQuery(searchQuery);
-    }, 300);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [searchQuery]);
+  const handlePercentageClick = (percentage) => {
+    validation.setFieldValue("percentToClose", percentage.toString());
+  };
 
   useEffect(() => {
     if (error) {
@@ -187,161 +186,59 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
       }, 3000);
       return () => clearTimeout(timeout);
     }
-  }, [error]);
+  }, [error, mutation]);
 
   useEffect(() => {
     if (availableWallets?.length && !validation.values.walletId) {
       validation.setFieldValue("walletId", availableWallets[0]._id);
       setSelectedAcct(availableWallets[0]);
     }
-  }, [availableWallets]);
+  }, [availableWallets, validation]);
 
   useEffect(() => {
-    if (validation.values.walletId) {
+    if (validation.values.walletId && wallets?.length) {
       const wallet = wallets.find(
         (wallet) => wallet._id === validation.values.walletId,
       );
-      setSelectedAcct(wallet);
+      if (wallet) {
+        setSelectedAcct(wallet);
+      }
     }
-  }, [validation.values.walletId]);
+  }, [validation.values.walletId, wallets]);
 
   useEffect(() => {
-    if (selectedTrade) {
-      const parsedAmt = parseFloat(selectedTrade.performance.currentValue);
-      const assetQty = parsedAmt / selectedTrade.performance.currentPrice;
-      setQty(assetQty);
+    if (selectedTrade && selectedTrade.performance) {
+      const parsedAmt = parseFloat(selectedTrade.performance.currentValue || 0);
+      const currentPrice = selectedTrade.performance.currentPrice || 1;
+      const assetQty = parsedAmt / currentPrice;
+      setQty(isNaN(assetQty) ? 0 : assetQty);
+    } else {
+      setQty(0);
     }
   }, [selectedTrade]);
+
+  // Calculate fee and total
+  const calculatedAmount = useMemo(() => {
+    if (!selectedTrade || !validation.values.percentToClose) {
+      return { fee: 0, totalAmount: 0 };
+    }
+
+    const percent = parseFloat(validation.values.percentToClose) / 100;
+    const totalValue = selectedTrade.performance?.totalReturn || 0;
+    const amountToSell = totalValue * percent;
+    const fee = amountToSell * 0.0005; // 0.05% fee
+
+    return {
+      fee,
+      totalAmount: amountToSell,
+      percentAmount: validation.values.percentToClose,
+    };
+  }, [selectedTrade, validation.values.percentToClose]);
 
   return (
     <div className="p-3">
       <Col>
-        <div className="mb-3">
-          <Label htmlFor="tradeId" className="form-label">
-            Asset <span className="text-danger">*</span>
-          </Label>
-          <Dropdown
-            isOpen={isDropdownOpen}
-            toggle={toggleDropdown}
-            className="w-100"
-          >
-            <DropdownToggle
-              tag="div"
-              className="p-0 border-0"
-              style={{ cursor: "pointer" }}
-            >
-              <Input
-                name="tradeId"
-                type="text"
-                placeholder="Search Assets"
-                onChange={handleTradeSearch}
-                onBlur={validation.handleBlur}
-                value={searchQuery}
-                invalid={
-                  validation.touched.tradeId && validation.errors.tradeId
-                    ? true
-                    : false
-                }
-                autoComplete="off"
-              />
-            </DropdownToggle>
-            <DropdownMenu
-              className="w-100"
-              style={{ maxHeight: "200px", overflowY: "auto" }}
-            >
-              {transformedData && transformedData.length > 0 ? (
-                transformedData.map((trade) => (
-                  <DropdownItem
-                    toggle
-                    key={trade._id}
-                    onClick={() => {
-                      handleTradeSelect(trade);
-                      setIsDropdownOpen(false);
-                    }}
-                    className="d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <img src={trade.img} alt="" width={"20px"} />{" "}
-                      <strong>{trade.assetSymbol}</strong> - {trade.assetName}
-                    </div>
-                    {trade.currentValue && (
-                      <small className="text-muted">
-                        {formatCurrency(trade.currentValue)}
-                      </small>
-                    )}
-                  </DropdownItem>
-                ))
-              ) : debouncedQuery.length > 0 ? (
-                <DropdownItem disabled>
-                  No assets found for "{debouncedQuery}"
-                </DropdownItem>
-              ) : (
-                <DropdownItem disabled>
-                  Start typing to search assets...
-                </DropdownItem>
-              )}
-            </DropdownMenu>
-          </Dropdown>
-          {validation.touched.tradeId && validation.errors.tradeId ? (
-            <FormFeedback type="invalid">
-              {validation.errors.tradeId}
-            </FormFeedback>
-          ) : null}
-
-          <Col className="px-2 mt-3 mx-1">
-            {selectedTrade && (
-              <Row className="border border-1 px-1 py-3 rounded-1">
-                <Col className="d-flex align-items-start gap-2">
-                  <img
-                    src={selectedTrade.asset.img}
-                    alt="coin"
-                    width={40}
-                    className="rounded-circle bg-light p-1"
-                  />
-                  <div className="lh-1">
-                    <h5 className="fs-15 fw-bold">
-                      {selectedTrade.asset.symbol}
-                    </h5>
-                    <span
-                      className="fs-14 fw-normal"
-                      style={{ color: "#878A99" }}
-                    >
-                      {selectedTrade.asset.name}
-                    </span>
-                  </div>
-                </Col>
-                <Col className="d-flex flex-column align-items-end">
-                  <h5 className="fs-15 fw-semibold">
-                    {formatter.format(selectedTrade.performance?.totalReturn)}
-                  </h5>
-                  <span
-                    className={`${
-                      selectedTrade.performance?.totalReturn < 0
-                        ? "text-danger"
-                        : "text-success"
-                    } fs-12`}
-                  >
-                    {formatter.format(selectedTrade.performance?.totalReturn)}{" "}
-                    {`(${parseFloat(
-                      selectedTrade.performance?.totalReturnPercent,
-                    ).toFixed(2)}%)`}
-                  </span>
-                </Col>
-              </Row>
-            )}
-          </Col>
-
-          {/* Hidden input for formik to track the actual asset ID */}
-          <input
-            type="hidden"
-            name="tradeId"
-            value={form.tradeId}
-            onChange={validation.handleChange}
-          />
-        </div>
-      </Col>
-      <Col>
-        <Label htmlFor="country" className="form-label">
+        <Label htmlFor="walletId" className="form-label">
           Account <span className="text-danger">*</span>
         </Label>
         <Input
@@ -359,43 +256,131 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
           }
         >
           <option value="">Select Account</option>
-          {availableWallets &&
-            availableWallets.length > 0 &&
-            availableWallets.map((wallet) => {
-              return (
-                <option key={wallet._id} value={wallet._id}>
-                  {wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)}
-                </option>
-              );
-            })}
+          {availableWallets.map((wallet) => (
+            <option key={wallet._id} value={wallet._id}>
+              {wallet.name
+                ? wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)
+                : "Account"}
+            </option>
+          ))}
         </Input>
-        {selectedAcct && (
-          <div className="mt-2">
-            Asset Value:{" "}
-            {(selectedTrade &&
-              numeral(selectedTrade.performance.totalReturn).format(
-                "$0,0.00",
-              )) ||
-              0}
-          </div>
-        )}
-        {validation.touched.walletId && validation.errors.walletId ? (
+
+        {validation.touched.walletId && validation.errors.walletId && (
           <FormFeedback type="invalid">
             {validation.errors.walletId}
           </FormFeedback>
-        ) : null}
+        )}
+      </Col>
+
+      <Col>
+        <div className="mb-3">
+          <Label htmlFor="tradeId" className="form-label">
+            Asset <span className="text-danger">*</span>
+          </Label>
+          <Input
+            name="tradeId"
+            type="select"
+            onChange={handleTradeSelect}
+            onBlur={validation.handleBlur}
+            value={validation.values.tradeId || ""}
+            invalid={
+              validation.touched.tradeId && validation.errors.tradeId
+                ? true
+                : false
+            }
+            autoComplete="off"
+            disabled={!selectedAcct}
+          >
+            <option value="">Select Asset</option>
+            {transformedData.map((trd) => (
+              <option key={trd._id} value={trd._id}>
+                {trd.assetName} ({trd.assetSymbol})
+              </option>
+            ))}
+          </Input>
+
+          {selectedAcct && !transformedData.length && !tradesLoading && (
+            <div className="mt-2 text-muted">
+              No assets found in this account
+            </div>
+          )}
+
+          {selectedTrade && (
+            <div className="mt-2">
+              Current Value:{" "}
+              {numeral(selectedTrade.performance?.totalReturn).format(
+                "$0,0.00",
+              )}
+            </div>
+          )}
+
+          {validation.touched.tradeId && validation.errors.tradeId && (
+            <FormFeedback type="invalid">
+              {validation.errors.tradeId}
+            </FormFeedback>
+          )}
+
+          {selectedTrade && (
+            <Col className="px-2 mt-3 mx-1">
+              <Row className="border border-1 px-1 py-3 rounded-1">
+                <Col className="d-flex align-items-start gap-2">
+                  <img
+                    src={selectedTrade.asset?.img || "/default-avatar.png"}
+                    alt="coin"
+                    width={40}
+                    className="rounded-circle bg-light p-1"
+                    onError={(e) => {
+                      e.target.src = "/default-avatar.png";
+                    }}
+                  />
+                  <div className="lh-1">
+                    <h5 className="fs-15 fw-bold">
+                      {selectedTrade.asset?.symbol || "N/A"}
+                    </h5>
+                    <span
+                      className="fs-14 fw-normal"
+                      style={{ color: "#878A99" }}
+                    >
+                      {selectedTrade.asset?.name || "Unknown"}
+                    </span>
+                  </div>
+                </Col>
+                <Col className="d-flex flex-column align-items-end">
+                  <h5 className="fs-15 fw-semibold">
+                    {formatter.format(
+                      selectedTrade.performance?.totalReturn || 0,
+                    )}
+                  </h5>
+                  <span
+                    className={`${
+                      (selectedTrade.performance?.totalReturn || 0) < 0
+                        ? "text-danger"
+                        : "text-success"
+                    } fs-12`}
+                  >
+                    {formatter.format(
+                      selectedTrade.performance?.totalReturn || 0,
+                    )}{" "}
+                    {selectedTrade.performance?.totalReturnPercent &&
+                      `(${parseFloat(selectedTrade.performance.totalReturnPercent).toFixed(2)}%)`}
+                  </span>
+                </Col>
+              </Row>
+            </Col>
+          )}
+        </div>
       </Col>
 
       <Col className="mb-3 mt-3">
-        <Label htmlFor="amount" className="form-label">
+        <Label htmlFor="percentToClose" className="form-label">
           Amount (%) <span className="text-danger">*</span>
         </Label>
 
         <div className="d-flex flex-column gap-2">
           <Input
             name="percentToClose"
-            type="text"
-            placeholder=""
+            type="number"
+            placeholder="Enter percentage (1-100)"
             onChange={validation.handleChange}
             onBlur={validation.handleBlur}
             value={validation.values.percentToClose || ""}
@@ -405,139 +390,140 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
                 ? true
                 : false
             }
+            min="1"
+            max="100"
           />
           <div className="align-items-center gap-2 d-flex fs-11">
-            {units.map((ut) => {
-              return (
-                <span
-                  style={{ cursor: "default" }}
-                  className="bg-light rounded-1 px-3 py-1"
-                  onClick={() =>
-                    validation.setFieldValue("percentToClose", ut.amount)
-                  }
-                  key={ut.id}
-                >
-                  {ut.label}
-                  {ut.label !== "Max" && "%"}
-                </span>
-              );
-            })}
+            {units.map((ut) => (
+              <span
+                key={ut.id}
+                style={{ cursor: "pointer" }}
+                className="bg-light rounded-1 px-3 py-1"
+                onClick={() => handlePercentageClick(ut.amount)}
+              >
+                {ut.label}
+                {ut.label !== "Max" && "%"}
+              </span>
+            ))}
           </div>
         </div>
 
         {validation.touched.percentToClose &&
-        validation.errors.percentToClose ? (
-          <FormFeedback type="invalid">
-            {validation.errors.percentToClose}
-          </FormFeedback>
-        ) : null}
+          validation.errors.percentToClose && (
+            <FormFeedback type="invalid">
+              {validation.errors.percentToClose}
+            </FormFeedback>
+          )}
       </Col>
 
-      <Row style={{ display: tradeType === "limit" ? "flex" : "none" }}>
-        <div className="input-group mb-3">
-          <label className="input-group-text">Entry Point</label>
-          <Input
-            name="entry"
-            type="text"
-            placeholder="0.00"
-            onChange={validation.handleChange}
-            onBlur={validation.handleBlur}
-            value={validation.values.entry || ""}
-          />
-        </div>
-      </Row>
-      <Row
-        style={{
-          display: tradeType === "stoploss" ? "flex" : "none",
-        }}
-      >
-        <Col xl={12}>
+      {(tradeType?.id === "limit" || tradeType === "limit") && (
+        <Row>
           <div className="input-group mb-3">
-            <label className="input-group-text">Leverage</label>
+            <label className="input-group-text">Entry Point</label>
             <Input
-              name="leverage"
-              type="select"
-              onChange={validation.handleChange}
-              onBlur={validation.handleBlur}
-              value={validation.values.leverage}
-            >
-              <option value="">Select Leverage</option>
-              <option value="5">5x</option>
-              <option value="10">10x</option>
-              <option value="20">20X</option>
-              <option value="30">30X</option>
-              <option value="50">50X</option>
-            </Input>
-            {validation.touched.leverage && validation.errors.leverage ? (
-              <div className="invalid-feedback d-block">
-                {validation.errors.leverage}
-              </div>
-            ) : null}
-          </div>
-        </Col>
-        <Col xl={12}>
-          <div className="input-group mb-3">
-            <label className="input-group-text">Stop Loss</label>
-            <Input
-              name="stoploss"
-              type="text"
+              name="entry"
+              type="number"
+              step="0.01"
               placeholder="0.00"
               onChange={validation.handleChange}
               onBlur={validation.handleBlur}
-              value={validation.values.stoploss || ""}
+              value={validation.values.entry || ""}
             />
           </div>
-        </Col>
-      </Row>
-      <Row
-        style={{
-          display: tradeType === "takeprofit" ? "flex" : "none",
-        }}
-      >
-        <div className="input-group mb-3">
-          <label className="input-group-text">Take Profit</label>
-          <Input
-            name="takeprofit"
-            type="text"
-            placeholder="0.00"
-            onChange={validation.handleChange}
-            onBlur={validation.handleBlur}
-            value={validation.values.takeprofit || ""}
-          />
-        </div>
-      </Row>
-      <Row
-        style={{
-          display: tradeType === "leverage" ? "flex" : "none",
-        }}
-      >
-        <Col xl={12}>
+        </Row>
+      )}
+
+      {(tradeType?.id === "stoploss" || tradeType === "stoploss") && (
+        <Row>
+          <Col xl={12}>
+            <div className="input-group mb-3">
+              <label className="input-group-text">Leverage</label>
+              <Input
+                name="leverage"
+                type="select"
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values.leverage}
+              >
+                <option value="">Select Leverage</option>
+                <option value="5">5x</option>
+                <option value="10">10x</option>
+                <option value="20">20X</option>
+                <option value="30">30X</option>
+                <option value="50">50X</option>
+              </Input>
+              {validation.touched.leverage && validation.errors.leverage && (
+                <div className="invalid-feedback d-block">
+                  {validation.errors.leverage}
+                </div>
+              )}
+            </div>
+          </Col>
+          <Col xl={12}>
+            <div className="input-group mb-3">
+              <label className="input-group-text">Stop Loss</label>
+              <Input
+                name="stoploss"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values.stoploss || ""}
+              />
+            </div>
+          </Col>
+        </Row>
+      )}
+
+      {(tradeType?.id === "takeprofit" || tradeType === "takeprofit") && (
+        <Row>
           <div className="input-group mb-3">
-            <label className="input-group-text">Leverage</label>
+            <label className="input-group-text">Take Profit</label>
             <Input
-              name="leverage"
-              type="select"
+              name="takeprofit"
+              type="number"
+              step="0.01"
+              placeholder="0.00"
               onChange={validation.handleChange}
               onBlur={validation.handleBlur}
-              value={validation.values.leverage}
-            >
-              <option value="">Select Leverage</option>
-              <option value="5">5x</option>
-              <option value="10">10x</option>
-              <option value="20">20X</option>
-              <option value="30">30X</option>
-              <option value="50">50X</option>
-            </Input>
-            {validation.touched.leverage && validation.errors.leverage ? (
-              <div className="invalid-feedback d-block">
-                {validation.errors.leverage}
-              </div>
-            ) : null}
+              value={validation.values.takeprofit || ""}
+            />
           </div>
-        </Col>
-      </Row>
+        </Row>
+      )}
+
+      {(tradeType?.id === "leverage" || tradeType === "leverage") && (
+        <Row>
+          <Col xl={12}>
+            <div className="input-group mb-3">
+              <label className="input-group-text">Leverage</label>
+              <Input
+                name="leverage"
+                type="select"
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                value={validation.values.leverage}
+              >
+                <option value="">Select Leverage</option>
+                <option value="5">5x</option>
+                <option value="10">10x</option>
+                <option value="20">20X</option>
+                <option value="30">30X</option>
+                <option value="50">50X</option>
+              </Input>
+              {validation.touched.leverage && validation.errors.leverage && (
+                <div className="invalid-feedback d-block">
+                  {validation.errors.leverage}
+                </div>
+              )}
+            </div>
+          </Col>
+        </Row>
+      )}
+
       <Col>
-        <div className="mt-3 p-3">
+        <div className="mt-3 py-3 px-4">
           <div className="d-flex mb-2">
             <div className="flex-grow-1">
               <p className="mb-0">Quantity</p>
@@ -552,8 +538,8 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
             </div>
             <div className="flex-shrink-0">
               <h6 className="mb-0">
-                {selectedTrade?.priceData?.current
-                  ? formatter.format(selectedTrade?.priceData?.current)
+                {selectedTrade?.performance?.currentPrice
+                  ? formatter.format(selectedTrade.performance.currentPrice)
                   : numeral(0).format("$0,0.00")}
               </h6>
             </div>
@@ -566,52 +552,63 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
               </p>
             </div>
             <div className="flex-shrink-0">
-              <h6 className="mb-0">$1.08</h6>
+              <h6 className="mb-0">{formatter.format(calculatedAmount.fee)}</h6>
             </div>
           </div>
           <div className="d-flex">
             <div className="flex-grow-1">
-              <p className="mb-0">Total</p>
+              <p className="mb-0">Percentage to Sell</p>
             </div>
             <div className="flex-shrink-0">
               <h6 className="mb-0">{validation.values.percentToClose || 0}%</h6>
             </div>
           </div>
+          <div className="d-flex mt-2 pt-2 border-top">
+            <div className="flex-grow-1">
+              <p className="mb-0 fw-bold">Estimated Total</p>
+            </div>
+            <div className="flex-shrink-0">
+              <h6 className="mb-0 fw-bold">
+                {formatter.format(calculatedAmount.totalAmount)}
+              </h6>
+            </div>
+          </div>
         </div>
+
         <div className="p-3">
           <button
             onClick={() => {
-              console.log("clicked sell");
+              if (!selectedTrade) {
+                setError("Please select an asset");
+                return;
+              }
               validation.handleSubmit();
             }}
             type="button"
-            className={`btn w-100 btn-danger d-flex align-items-center justify-content-center gap-2`}
-            disabled={mutation.isPending}
+            className="btn w-100 btn-danger d-flex align-items-center justify-content-center gap-2"
+            disabled={mutation.isPending || !selectedTrade}
           >
+            {mutation.isPending && <Spinner className="mr-1" size={"sm"} />}
             <span>
-              {" "}
-              {mutation.isPending && <Spinner className="mr-1" size={"sm"} />}
+              {mutation.isPending ? "Processing..." : "Place Sell Order"}
             </span>
-            <span> {`Place Sell Order`}</span>
           </button>
         </div>
       </Col>
+
       {error && (
         <ErrorToast
-          isOpen={error}
-          onClose={() => {
-            setError("");
-          }}
+          isOpen={!!error}
+          onClose={() => setError("")}
           errorMsg={error}
         />
       )}
+
       {mutation.isSuccess && (
         <SuccessToast
           isOpen={mutation.isSuccess}
-          onClose={() => {
-            mutation.reset();
-          }}
-          successMsg={`You just sold ${qty.toFixed(6)} ${selectedTrade?.asset?.symbol}`}
+          onClose={() => mutation.reset()}
+          successMsg={`You sold ${parseFloat(qty).toFixed(6)} ${selectedTrade?.asset?.symbol || "assets"}`}
         />
       )}
     </div>

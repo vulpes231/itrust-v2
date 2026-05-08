@@ -105,8 +105,20 @@ const getIconBg = (name) => {
   }
 };
 
+const allowedRoutesIfNotVerified = [
+  "/dashboard",
+  "/cash",
+  "/deposit",
+  "/transfer",
+  "/withdraw",
+  "/profile",
+  "/contact",
+  "/personal",
+];
+
 export {
   getAccessToken,
+  allowedRoutesIfNotVerified,
   liveUrl,
   devUrl,
   capitalizeWords,

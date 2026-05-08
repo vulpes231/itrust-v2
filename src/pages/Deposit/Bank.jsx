@@ -529,7 +529,7 @@ const Bank = ({ settings, userBank }) => {
             }}
             type="submit"
             disabled={mutation.isPending}
-            className="btn btn-primary"
+            className="btn btn-primary d-flex align-items-cenetr justify-content-center gap-2"
           >
             {mutation.isPending && <Spinner size={"sm"} />}I have made payment
           </button>

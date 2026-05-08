@@ -19,6 +19,7 @@ import ErrorToast from "../../components/Common/ErrorToast";
 const Security = ({ user }) => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [error, setError] = useState("");
+  const [action, setAction] = useState("");
 
   const twoFactorMutation = useMutation({
     mutationFn: updateTwoFactor,
@@ -32,8 +33,24 @@ const Security = ({ user }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    twoFactorMutation.mutate();
+    if (!action) {
+      return;
+    }
+
+    console.log(action);
+
+    twoFactorMutation.mutate({ action });
   };
+
+  useEffect(() => {
+    if (user) {
+      const currentAction = user?.accountStatus?.twoFaActivated
+        ? "disable"
+        : "enable";
+
+      setAction(currentAction);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (error) {
@@ -95,14 +112,12 @@ const Security = ({ user }) => {
               <button
                 onClick={handleSubmit}
                 type="button"
-                className={`btn ${user?.accountStatus?.twoFaActivated ? "btn-danger" : "btn-primary"}  d-flex align-items-center`}
+                className={`btn ${user?.accountStatus?.twoFaActivated ? "btn-danger" : "btn-primary"}  d-flex align-items-center gap-2`}
                 disabled={twoFactorMutation.isPending}
                 style={{ whiteSpace: "nowrap" }}
               >
                 {twoFactorMutation.isPending && <Spinner size={"sm"} />}
-                {user?.accountStatus?.twoFaActivated
-                  ? "Disable"
-                  : "Enable"}{" "}
+                {user?.accountStatus?.twoFaActivated ? "Disable" : "Enable"}
                 Two-Factor Authentication
               </button>
             </div>

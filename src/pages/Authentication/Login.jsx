@@ -69,9 +69,9 @@ const Login = (props) => {
     sessionStorage.setItem("token", token);
     sessionStorage.setItem("user", JSON.stringify(user));
     sessionStorage.setItem("lastLogin", JSON.stringify(loginTime));
+    localStorage.setItem("loginType", JSON.stringify(user?.loginType));
 
     const isSuperUser = user?.loginType === "superuser";
-    console.log(user);
 
     if (isSuperUser) {
       window.location.href = "/dashboard";
@@ -123,14 +123,12 @@ const Login = (props) => {
                     <div className="mt-2 d-flex flex-column gap-4 align-items-center justify-content-center">
                       <div>
                         <Link to="/" className="d-inline-block auth-logo">
-                          <img src={logo} alt="" height="40" width={"130"} />
+                          <img src={logo} alt="" height="36" width={"112"} />
                         </Link>
                       </div>
                       <div className="d-flex flex-column align-items-center justify-content-center">
                         <h5 className="text-primary lh-1">Welcome Back!</h5>
-                        <p className="text-muted lh-1">
-                          Sign in to continue to Itrust.
-                        </p>
+                        <p className="text-muted lh-1">Sign in to continue</p>
                       </div>
                     </div>
                     {error && error ? (

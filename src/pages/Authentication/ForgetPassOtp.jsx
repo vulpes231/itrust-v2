@@ -5,6 +5,8 @@ import {
   confirmResetCode,
   sendResetCode,
 } from "../../services/resetAccountPass";
+import { logo } from "../../assets";
+import { Link } from "react-router-dom";
 
 const ForgetPassOtp = ({ handleStep }) => {
   const [disableResend, setDisableResend] = useState(true);
@@ -102,11 +104,19 @@ const ForgetPassOtp = ({ handleStep }) => {
     <Col>
       <Card className="mt-4">
         <CardBody className="p-4">
-          <div className="text-center mb-4">
-            <h4>Confirm Reset Code</h4>
-            <p>
-              Enter the 4-digit code sent to <strong>{sessionEmail}</strong>
-            </p>
+          <div className="text-center mt-2 d-flex flex-column gap-4 align-items-center justify-content-center">
+            <div>
+              <Link to="/" className="d-inline-block auth-logo">
+                <img src={logo} alt="" height="36" width={"112"} />
+              </Link>
+            </div>
+            <div className="d-flex flex-column align-items-center justify-content-center">
+              <h5 className="text-primary">Confirm Reset Password Code</h5>
+              <p className="text-muted">
+                {" "}
+                Enter the 4-digit code sent to <strong>{sessionEmail}</strong>
+              </p>
+            </div>
           </div>
 
           {confirmPasswordResetCode.isSuccess && (
@@ -116,7 +126,7 @@ const ForgetPassOtp = ({ handleStep }) => {
             <Alert color="success">Code resent.</Alert>
           )}
 
-          <Row>
+          <Row className="mt-4">
             {otp.map((digit, index) => (
               <Col key={index} className="col-3">
                 <input
@@ -124,7 +134,7 @@ const ForgetPassOtp = ({ handleStep }) => {
                   type="text"
                   value={digit}
                   maxLength="1"
-                  className="form-control text-center"
+                  className="form-control text-center border-0 bg-light"
                   onChange={(e) => handleChange(e.target.value, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
                 />
@@ -140,16 +150,22 @@ const ForgetPassOtp = ({ handleStep }) => {
             disabled={confirmPasswordResetCode.isPending}
           >
             {confirmPasswordResetCode.isPending && <Spinner size="sm" />}{" "}
-            Confirm Code
+            Confirm
           </Button>
         </CardBody>
       </Card>
 
-      <div className="mt-4 text-center">
+      <div className="mt-4 text-center d-flex align-items-center justify-content-center">
+        <span>Didn't receive a code?</span>{" "}
         <button
           disabled={disableResend || resendPasswordResetCode.isPending}
           onClick={handleCodeResend}
-          className="btn btn-secondary"
+          className="btn text-secondary"
+          style={{
+            background: "transparent",
+            border: "none",
+            textDecoration: "underline",
+          }}
         >
           {resendPasswordResetCode.isPending ? "Sending..." : "Resend Code"}
         </button>

@@ -7,19 +7,14 @@ import {
 } from "reactstrap";
 import { avatar1 } from "../../assets";
 import { useQuery } from "@tanstack/react-query";
-import { getWalletAnalytics } from "../../services/user/wallet";
-import { formatCurrency, getAccessToken } from "../../constants";
+import { getAccessToken } from "../../constants";
 import { getUserInfo } from "../../services/user/user";
 import { capitalize } from "lodash";
+import { Link } from "react-router-dom";
 
 const ProfileDropdown = () => {
   const token = getAccessToken();
 
-  const { data: walletAnalytics } = useQuery({
-    queryKey: ["walletAnalytics"],
-    queryFn: getWalletAnalytics,
-    enabled: !!token,
-  });
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: getUserInfo,
@@ -55,14 +50,18 @@ const ProfileDropdown = () => {
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <h6 className="dropdown-header">Welcome</h6>
-          <DropdownItem href="/profile">
-            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-            <span className="align-middle">Profile</span>
+          <DropdownItem>
+            <Link to={"/profile"} className="text-dark">
+              <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
+              <span className="align-middle">Profile</span>
+            </Link>
           </DropdownItem>
 
-          <DropdownItem href="/history">
-            <i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-            <span className="align-middle">History</span>
+          <DropdownItem>
+            <Link to={"/history"} className="text-dark">
+              <i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+              <span className="align-middle">History</span>
+            </Link>
           </DropdownItem>
 
           <div className="dropdown-divider"></div>

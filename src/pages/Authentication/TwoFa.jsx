@@ -133,9 +133,6 @@ const TwoFa = () => {
               <Card className="mt-4">
                 <CardBody className="p-4">
                   <div className="text-center mb-4 d-flex align-items-center justify-content-center flex-column gap-2">
-                    <Link to="/dashboard" className="auth-logo mb-4">
-                      <img src={logo} alt="" height="30" width={"120"} />
-                    </Link>
                     <div
                       className="bg-secondary-subtle d-flex align-items-center justify-content-center"
                       style={{
@@ -185,15 +182,7 @@ const TwoFa = () => {
               </Card>
 
               <div className="mt-4 text-center d-flex align-items-center gap-2 justify-content-center">
-                <span
-                  onClick={() => {
-                    sessionStorage.clear();
-                    window.location.href = "/login";
-                  }}
-                  className="text-decoration-underline text-secondary"
-                >
-                  Go Back
-                </span>
+                <span>Didn't receive a code?</span>
                 <button
                   disabled={disableResend || resendMutation.isPending}
                   onClick={handleCodeResend}

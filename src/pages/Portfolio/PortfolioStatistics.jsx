@@ -6,7 +6,12 @@ import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 import { getChartData } from "../../services/user/chart";
 import FootStats from "./FootStats";
 
-const PortfolioStatistics = ({ dataColors, activeWallet, walletData }) => {
+const PortfolioStatistics = ({
+  dataColors,
+  activeWallet,
+  walletData,
+  cash,
+}) => {
   const [range, setRange] = React.useState("ALL");
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
 
@@ -190,7 +195,11 @@ const PortfolioStatistics = ({ dataColors, activeWallet, walletData }) => {
               />
             </div>
           </CardBody>
-          <FootStats activeWallet={activeWallet} walletData={walletData} />
+          <FootStats
+            activeWallet={activeWallet}
+            walletData={walletData}
+            cashAccount={cash}
+          />
         </Card>
       </Col>
     </React.Fragment>

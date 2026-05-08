@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Col, Collapse, Row } from "reactstrap";
 import withRouter from "../../Components/Common/withRouter";
 
@@ -9,8 +9,9 @@ import navdata from "../LayoutMenuData";
 //i18n
 import { withTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { getAccessToken } from "../../constants";
+import { allowedRoutesIfNotVerified, getAccessToken } from "../../constants";
 import { getUserInfo } from "../../services/user/user";
+import ErrorToast from "../../components/Common/ErrorToast";
 
 const HorizontalLayout = (props) => {
   const [isMoreMenu, setIsMoreMenu] = useState(false);
@@ -88,7 +89,7 @@ const HorizontalLayout = (props) => {
           .classList.add("show");
         var parentElementDiv =
           parentCollapseDiv.parentElement.closest(
-            ".collapse"
+            ".collapse",
           ).previousElementSibling;
 
         if (parentElementDiv) {
@@ -132,6 +133,22 @@ const HorizontalLayout = (props) => {
   const isMenuItemActive = (itemLink) => {
     return activeMenu === itemLink || activeMenu.startsWith(itemLink + "/");
   };
+
+  const navigate = useNavigate();
+  const kycStatus = user?.identityVerification?.kycStatus;
+  const isKycApproved = kycStatus === "approved";
+
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (error) {
+      const tmt = setTimeout(() => {
+        setError("");
+        window.location.href = "/dashboard";
+      }, 2000);
+      return () => clearTimeout(tmt);
+    }
+  }, [error]);
 
   return (
     <React.Fragment>
@@ -178,7 +195,7 @@ const HorizontalLayout = (props) => {
                                           to={item.subItems[key].link}
                                           className={`nav-link ${
                                             isMenuItemActive(
-                                              item.subItems[key].link
+                                              item.subItems[key].link,
                                             )
                                               ? "active"
                                               : ""
@@ -197,7 +214,7 @@ const HorizontalLayout = (props) => {
                                           to={item.subItems[key].link}
                                           className={`nav-link ${
                                             isMenuItemActive(
-                                              item.subItems[key].link
+                                              item.subItems[key].link,
                                             )
                                               ? "active"
                                               : ""
@@ -218,7 +235,7 @@ const HorizontalLayout = (props) => {
                         {item.subItems &&
                           (item.subItems || []).map((subItem, key) => {
                             const isSubItemActive = isMenuItemActive(
-                              subItem.link
+                              subItem.link,
                             );
                             return (
                               <React.Fragment key={key}>
@@ -258,7 +275,7 @@ const HorizontalLayout = (props) => {
                                             (subChildItem, key) => {
                                               const isChildItemActive =
                                                 isMenuItemActive(
-                                                  subChildItem.link
+                                                  subChildItem.link,
                                                 );
                                               return (
                                                 <React.Fragment key={key}>
@@ -277,7 +294,7 @@ const HorizontalLayout = (props) => {
                                                         }`}
                                                       >
                                                         {props.t(
-                                                          subChildItem.label
+                                                          subChildItem.label,
                                                         )}
                                                       </Link>
                                                     </li>
@@ -297,7 +314,7 @@ const HorizontalLayout = (props) => {
                                                       >
                                                         {" "}
                                                         {props.t(
-                                                          subChildItem.label
+                                                          subChildItem.label,
                                                         )}
                                                       </Link>
                                                       {/* Nested collapse remains the same */}
@@ -305,7 +322,7 @@ const HorizontalLayout = (props) => {
                                                   )}
                                                 </React.Fragment>
                                               );
-                                            }
+                                            },
                                           )}
                                       </ul>
                                     </Collapse>
@@ -322,7 +339,21 @@ const HorizontalLayout = (props) => {
                 <li className="nav-item">
                   <Link
                     className={`nav-link menu-link ${isActive ? "active" : ""}`}
-                    to={item.link ? item.link : "/#"}
+                    onClick={(e) => {
+                      e.preventDefault();
+
+                      if (
+                        !allowedRoutesIfNotVerified.includes(item.link) &&
+                        !isKycApproved
+                      ) {
+                        setError("Profile Verification Required!");
+                        return;
+                      }
+
+                      item.click(e);
+                      navigate(item.link);
+                    }}
+                    // to={}
                   >
                     <i className={item.icon}></i>{" "}
                     <span>{props.t(item.label)}</span>
@@ -338,6 +369,7 @@ const HorizontalLayout = (props) => {
           </React.Fragment>
         );
       })}
+      {error && <ErrorToast errorMsg={error} onClose={() => setError("")} />}
     </React.Fragment>
   );
 };

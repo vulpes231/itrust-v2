@@ -127,6 +127,8 @@ const Portfolio = () => {
     );
   }
 
+  const cashAccount = wallets.find((wall) => wall.slug === "cash");
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -144,6 +146,7 @@ const Portfolio = () => {
                 dataColors='["--vz-info"]'
                 activeWallet={activeWallet}
                 walletData={walletData}
+                cash={cashAccount}
               />
 
               <MarketStatus activeWallet={activeWallet} trades={trades} />

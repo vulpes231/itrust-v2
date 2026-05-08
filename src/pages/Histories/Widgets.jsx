@@ -38,7 +38,7 @@ const Widgets = ({ analytics, tradeInfo }) => {
   return (
     <React.Fragment>
       <Row>
-        {historyWidgets.map((item, idx) => {
+        {(historyWidgets || []).map((item, idx) => {
           const isCurrency =
             item.title === "Total Deposited" ||
             item.title === "Total Withdrawn";

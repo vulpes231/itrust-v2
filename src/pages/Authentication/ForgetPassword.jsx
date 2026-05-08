@@ -78,34 +78,21 @@ const ForgetPasswordPage = (props) => {
     <ParticlesAuth>
       <div className="auth-page-content">
         <Container>
-          <Row>
-            <Col lg={12}>
-              <div className="text-center mt-sm-5 mb-4 text-white-50">
-                <div>
-                  <Link to="/" className="d-inline-block auth-logo">
-                    <img src={logo} alt="" height="30" width="120" />
-                  </Link>
-                </div>
-              </div>
-            </Col>
-          </Row>
-
           {step === 1 && (
             <Row className="justify-content-center">
               <Col md={8} lg={6} xl={5}>
                 <Card className="mt-4">
                   <CardBody className="p-4">
-                    <div className="text-center mt-2">
-                      <h5 className="text-primary">Forgot Password?</h5>
-                      <p className="text-muted">Reset password with itrust</p>
-
-                      <lord-icon
-                        src="https://cdn.lordicon.com/rhvddzym.json"
-                        trigger="loop"
-                        colors="primary:#0ab39c"
-                        className="avatar-xl"
-                        style={{ width: "120px", height: "120px" }}
-                      ></lord-icon>
+                    <div className="text-center mt-2 d-flex flex-column gap-4 align-items-center justify-content-center">
+                      <div>
+                        <Link to="/" className="d-inline-block auth-logo">
+                          <img src={logo} alt="" height="36" width={"112"} />
+                        </Link>
+                      </div>
+                      <div className="d-flex flex-column align-items-center justify-content-center">
+                        <h5 className="text-primary">Forgot Password?</h5>
+                        <p className="text-muted">Reset password with itrust</p>
+                      </div>
                     </div>
 
                     {sendPasswordResetCode.isSuccess && (

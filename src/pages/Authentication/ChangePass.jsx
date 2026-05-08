@@ -13,7 +13,8 @@ import {
 } from "reactstrap";
 import * as Yup from "yup";
 import { changeAccountPassword } from "../../services/resetAccountPass";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logo } from "../../assets";
 
 const ChangePass = ({ handleStep }) => {
   const [error, setError] = useState("");
@@ -66,18 +67,18 @@ const ChangePass = ({ handleStep }) => {
     <div>
       <Card className="mt-4">
         <CardBody className="p-4">
-          <div className="text-center mt-2">
-            <h5 className="text-primary">Update Account Password</h5>
-            <p className="text-muted">Reset your Password</p>
-
-            <lord-icon
-              src="https://cdn.lordicon.com/rhvddzym.json"
-              trigger="loop"
-              colors="primary:#0ab39c"
-              className="avatar-xl"
-              style={{ width: "120px", height: "120px" }}
-            ></lord-icon>
+          <div className="text-center mt-2 d-flex flex-column gap-4 align-items-center justify-content-center">
+            <div>
+              <Link to="/" className="d-inline-block auth-logo">
+                <img src={logo} alt="" height="36" width={"112"} />
+              </Link>
+            </div>
+            <div className="d-flex flex-column align-items-center justify-content-center">
+              <h5 className="text-primary">Update Account Password</h5>
+              <p className="text-muted">Reset your Password</p>
+            </div>
           </div>
+
           {error && <Alert color="danger">{error}</Alert>}
           {changePassWord.isSuccess && (
             <Alert color="success">Password updated.</Alert>
