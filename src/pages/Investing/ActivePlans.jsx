@@ -11,7 +11,7 @@ const ActivePlans = ({ plans, style }) => {
         {plans &&
           plans.length > 0 &&
           plans.map((plan) => {
-            // console.log(plan);
+            console.log(plan);
             return (
               <Col key={plan.planId} lg={4}>
                 <Card className="d-flex flex-column gap-3 py-3">
@@ -121,20 +121,20 @@ const ActivePlans = ({ plans, style }) => {
                           plan.type === "conservative"
                             ? "bg-primary-subtle"
                             : plan.type === "aggressive"
-                            ? "bg-danger-subtle"
-                            : plan.type === "moderate"
-                            ? "bg-warning-subtle"
-                            : null
+                              ? "bg-danger-subtle"
+                              : plan.type === "moderate"
+                                ? "bg-warning-subtle"
+                                : null
                         }`}
                         style={{
                           color:
                             plan.type === "conservative"
                               ? "#5162be"
                               : plan.type === "aggressive"
-                              ? "#F17171"
-                              : plan.type === "moderate"
-                              ? "#FFC84B"
-                              : null,
+                                ? "#F17171"
+                                : plan.type === "moderate"
+                                  ? "#FFC84B"
+                                  : null,
                           width: "98px",
                         }}
                       >

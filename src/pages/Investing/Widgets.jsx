@@ -3,14 +3,89 @@ import { Card, CardBody, Col, Row } from "reactstrap";
 import CountUp from "react-countup";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "../../services/user/user";
+import { BiSolidBadgeDollar } from "react-icons/bi";
+import { TbCircleArrowUpRight } from "react-icons/tb";
+import { PiArrowUpRightFill } from "react-icons/pi";
+import { IoFlashSharp } from "react-icons/io5";
+import {
+  getUserWallets,
+  getWalletInvestData,
+} from "../../services/user/wallet";
+import { getAccessToken } from "../../constants";
 
 const Widgets = () => {
+  const tk = getAccessToken();
+
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: getUserInfo,
+    enabled: !!tk,
   });
 
+  const { data: wallets } = useQuery({
+    queryKey: ["wallets"],
+    queryFn: getUserWallets,
+    enabled: !!tk,
+  });
+
+  const { data: walletData } = useQuery({
+    queryKey: ["walletData"],
+    queryFn: getWalletInvestData,
+    enabled: !!tk,
+  });
+
+  const investAccount =
+    wallets &&
+    wallets.length > 0 &&
+    wallets.find((wallet) => wallet.slug === "auto");
+
+  // console.log(walletData);
+
   const userPlans = user && user.activePlans;
+
+  function convertToWidgetsData() {
+    if (!investAccount || !walletData) return [];
+
+    const totalAutoBalance =
+      investAccount.totalBalance + walletData["auto"].totalProfitLoss;
+
+    return [
+      {
+        id: 1,
+        label: "Auto Investing Balance",
+        counter: totalAutoBalance,
+        decimal: "2",
+        prefix: "$",
+        separator: ",",
+        icon: <TbCircleArrowUpRight />,
+      },
+      {
+        id: 2,
+        label: "Today's P&L",
+        counter: investAccount.dailyProfit,
+        decimal: "2",
+        prefix: "$",
+        separator: ",",
+        icon: <PiArrowUpRightFill />,
+      },
+      {
+        id: 3,
+        label: "Active Plans",
+        counter: userPlans?.length || 0,
+        icon: <IoFlashSharp />,
+      },
+      {
+        id: 4,
+        label: "Amount Invested",
+        counter: walletData[investAccount.slug].totalInvested,
+        decimal: "2",
+        prefix: "$",
+        separator: ",",
+        icon: <BiSolidBadgeDollar />,
+      },
+    ];
+  }
+
   const getIcon = (id) => {
     switch (id) {
       case 1:
@@ -39,7 +114,7 @@ const Widgets = () => {
       case 3:
         return "#E8F3EA";
       case 4:
-        return "#E8F3EA";
+        return "#FDEAEA";
       case 5:
         return "#DFF5FA";
       case 6:
@@ -58,7 +133,7 @@ const Widgets = () => {
       case 3:
         return "#67B173";
       case 4:
-        return "#67B173";
+        return "#F17171";
       case 5:
         return "#29BADB";
       case 6:
@@ -67,52 +142,6 @@ const Widgets = () => {
         return null;
     }
   };
-
-  function convertToWidgetsData() {
-    // if (!investData) return [];
-
-    return [
-      {
-        id: 1,
-        label: "Auto Investing Balance",
-        counter: 1000 || 0,
-        decimal: "2",
-        prefix: "$",
-        separator: ",",
-      },
-      {
-        id: 2,
-        label: "Today's P&L",
-        counter: 40 || 0,
-        decimal: "2",
-        prefix: "$",
-        separator: ",",
-      },
-      {
-        id: 3,
-        label: "Active Plans",
-        counter: userPlans?.length || 0,
-      },
-      {
-        id: 4,
-        label: "Amount Invested",
-        counter: 200 || 0,
-        decimal: "2",
-        prefix: "$",
-        separator: ",",
-      },
-      // {
-      //   id: 5,
-      //   label: "Cost Basis",
-      //   counter: 354,
-      // },
-      // {
-      //   id: 6,
-      //   label: "Funded ICOs",
-      //   counter: 2762,
-      // },
-    ];
-  }
 
   const widgetsData = convertToWidgetsData();
   return (
@@ -127,7 +156,7 @@ const Widgets = () => {
                   <div className="d-flex align-items-center">
                     <div className="flex-grow-1 ms-3">
                       <p
-                        className="text-uppercase fw-bold fs-13 text-muted mb-1"
+                        className="fw-semibold fs-14 text-muted mb-2"
                         style={{ whiteSpace: "nowrap" }}
                       >
                         {item.label}
@@ -151,7 +180,8 @@ const Widgets = () => {
                         }}
                         className="avatar-title fs-3"
                       >
-                        <i className={getIcon(item.id)}></i>
+                        {/* <i className={getIcon(item.id)}></i> */}
+                        {item.icon}
                       </span>
                     </div>
                   </div>

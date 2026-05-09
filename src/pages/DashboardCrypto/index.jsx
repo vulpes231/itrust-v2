@@ -10,7 +10,11 @@ import VerifyAccountNotify from "../VerifyAccountNotify";
 import Holdings from "./Holdings";
 import RecentOrders from "./RecentOrders";
 import { useQuery } from "@tanstack/react-query";
-import { getWalletAnalytics } from "../../services/user/wallet";
+import {
+  getUserWallets,
+  getWalletAnalytics,
+  getWalletInvestData,
+} from "../../services/user/wallet";
 import AssetGraph from "../Portfolio/AssetGraph";
 import { getUserTrades } from "../../services/user/trade";
 import { getAccessToken } from "../../constants";
@@ -35,6 +39,17 @@ const DashboardCrypto = () => {
     enabled: !!tk,
   });
 
+  const { data: walletData } = useQuery({
+    queryKey: ["walletdata"],
+    queryFn: getWalletInvestData,
+    enabled: !!tk,
+  });
+
+  const { data: wallets, loading: isWalletLoading } = useQuery({
+    queryFn: getUserWallets,
+    queryKey: ["wallet"],
+  });
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -52,7 +67,7 @@ const DashboardCrypto = () => {
               <MyCurrencies />
             </Col>
             <Col md={3}>
-              <MyPortfolio />
+              <MyPortfolio wallets={wallets} walletData={walletData} />
               <Holdings trades={trades} analytics={walletAnalytics} />
               <AssetGraph
                 count={trades?.length}

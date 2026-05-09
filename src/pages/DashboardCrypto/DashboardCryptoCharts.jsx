@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, getTotalProfit } from "../../constants";
 import { capitalize } from "lodash";
 
 const PortfolioCharts = ({
@@ -11,6 +11,7 @@ const PortfolioCharts = ({
   selectedWallet,
   chartData,
   chartLabels,
+  walletData,
 }) => {
   const getChartData = () => {
     if (!chartData || chartData.length === 0) return [100];
@@ -36,15 +37,34 @@ const PortfolioCharts = ({
     if (!series || series.length === 0) return 0;
 
     if (selectedWallet === "All") {
-      return series.reduce((sum, wallet) => sum + wallet.totalBalance, 0);
+      return series.reduce((sum, wallet) => {
+        let total = sum + wallet.totalBalance;
+
+        if (
+          wallet.slug !== "cash" &&
+          walletData[wallet.slug]?.totalProfitLoss
+        ) {
+          total += walletData[wallet.slug].totalProfitLoss;
+        }
+
+        return total;
+      }, 0);
     } else {
-      return series.length > 0 ? series[0].totalBalance : 0;
+      const wallet = series[0];
+      if (!wallet) return 0;
+
+      if (wallet.slug === "cash") {
+        return wallet.totalBalance;
+      }
+
+      return (
+        wallet.totalBalance + (walletData[wallet.slug]?.totalProfitLoss || 0)
+      );
     }
   };
 
   var donutchartportfolioColors = getChartColorsArray(dataColors);
 
-  // Ensure we have at least one color for the chart
   const chartColors =
     donutchartportfolioColors.length > 0
       ? donutchartportfolioColors
@@ -224,7 +244,7 @@ const WidgetsCharts = ({ seriesData }) => {
           p.prevClose ||
           p.previousDayClose ||
           p.yesterdayClose ||
-          current
+          current,
       );
 
       const isUp = current >= previousClose * 1.00001;

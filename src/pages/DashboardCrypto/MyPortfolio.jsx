@@ -10,25 +10,17 @@ import {
 
 import { PortfolioCharts } from "./DashboardCryptoCharts";
 import { auto, broke, btc, cash, dash, eth, ltc } from "../../assets";
-import { useQuery } from "@tanstack/react-query";
-import { getUserWallets } from "../../services/user/wallet";
+
 import { capitalize } from "lodash";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, getTotalProfit } from "../../constants";
 
-const MyPortfolio = () => {
-  const { data: wallets, loading: isWalletLoading } = useQuery({
-    queryFn: getUserWallets,
-    queryKey: ["wallet"],
-  });
-
-  // Add "All" as default selection
+const MyPortfolio = ({ wallets, walletData }) => {
   const [selectedWallet, setSelectedWallet] = useState("All");
 
   const onWalletChange = (wallet) => {
     setSelectedWallet(wallet);
   };
 
-  // Filter wallets based on selection
   const getFilteredWallets = () => {
     if (!wallets || wallets.length === 0) return [];
 
@@ -61,6 +53,7 @@ const MyPortfolio = () => {
     }
   };
 
+  // getTotalProfit
   return (
     <React.Fragment>
       <Col>
@@ -108,6 +101,7 @@ const MyPortfolio = () => {
           <div className="card-body">
             <div id="portfolio_donut_charts" className="apex-charts" dir="ltr">
               <PortfolioCharts
+                walletData={walletData}
                 series={getFilteredWallets()}
                 selectedWallet={selectedWallet}
                 chartData={getChartData()}
@@ -131,6 +125,8 @@ const MyPortfolio = () => {
               {wallets &&
                 wallets.length > 0 &&
                 getFilteredWallets().map((wallet, index) => {
+                  const totalAccountBalance =
+                    wallet.totalBalance + getTotalProfit(wallet, walletData);
                   return (
                     <div
                       key={wallet._id}
@@ -146,8 +142,8 @@ const MyPortfolio = () => {
                                 wallet.slug === "cash"
                                   ? cash
                                   : wallet.slug === "brokerage"
-                                  ? broke
-                                  : auto
+                                    ? broke
+                                    : auto
                               }
                               className="img-fluid"
                               alt=""
@@ -164,8 +160,8 @@ const MyPortfolio = () => {
                                 wallet.slug === "cash"
                                   ? "text-primary"
                                   : wallet.slug === "brokerage"
-                                  ? "text-warning"
-                                  : "text-info"
+                                    ? "text-warning"
+                                    : "text-info"
                               }  me-1`}
                             ></i>
                             {wallet.slug}
@@ -173,7 +169,7 @@ const MyPortfolio = () => {
                         </div>
                         <div className="flex-shrink-0 text-end">
                           <h6 className="mb-1">
-                            {formatCurrency(wallet.totalBalance)}
+                            {formatCurrency(totalAccountBalance)}
                           </h6>
                           <p className="text-success fs-13 mb-0">
                             {formatCurrency(wallet.availableBalance)}

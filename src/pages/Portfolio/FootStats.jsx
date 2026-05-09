@@ -105,7 +105,8 @@ const FootStats = ({ activeWallet, walletData, cashAccount }) => {
                   className="fs-17 fw-semibold"
                   style={{ color: "#495057" }}
                 >
-                  {formatCurrency(activeWallet?.buyPower) || formatCurrency(0)}
+                  {formatCurrency(activeWallet?.availableBalance) ||
+                    formatCurrency(0)}
                 </span>
                 <span
                   style={{ color: "#878A99" }}

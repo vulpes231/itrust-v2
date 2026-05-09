@@ -141,6 +141,7 @@ const Portfolio = () => {
                 activeWallet={activeWallet}
                 handleChange={handleChange}
                 wallets={filteredWallets}
+                walletData={walletData}
               />
               <PortfolioStatistics
                 dataColors='["--vz-info"]'

@@ -105,6 +105,16 @@ const getIconBg = (name) => {
   }
 };
 
+const getTotalProfit = (wallet, walletData) => {
+  if (!walletData) return 0;
+  const slug = wallet.slug;
+
+  if (walletData[slug] && walletData[slug].totalProfitLoss !== undefined) {
+    return walletData[slug].totalProfitLoss;
+  }
+  return wallet.totalBalance;
+};
+
 const allowedRoutesIfNotVerified = [
   "/dashboard",
   "/cash",
@@ -130,4 +140,5 @@ export {
   getIconColor,
   getIconBg,
   formatBytes,
+  getTotalProfit,
 };

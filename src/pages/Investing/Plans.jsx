@@ -6,6 +6,7 @@ import ClosedPlans from "./ClosedPlans";
 import { useQuery } from "@tanstack/react-query";
 import { getAutoPlans } from "../../services/user/invest";
 import { getUserInfo } from "../../services/user/user";
+
 const tabs = [
   {
     id: "plans",
@@ -31,42 +32,58 @@ const style = {
   green: "#67B173",
 };
 
-const Plans = () => {
+const Plans = ({ status = "all", risk = "all" }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
-  const { data: plans } = useQuery({
+  const { data: plans = [] } = useQuery({
     queryKey: ["autoplans"],
     queryFn: getAutoPlans,
   });
+
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: getUserInfo,
   });
 
-  const activePlans = user && user.activePlans;
+  const activePlans = user?.activePlans || [];
 
-  const closedPlans =
-    activePlans &&
-    activePlans.length > 0 &&
-    activePlans.filter((plan) => plan.status === "closed");
+  const closedPlans = activePlans.filter((plan) => plan?.status === "closed");
 
-  const activePlanLength = activePlans?.length;
-  const closedPlanLength = closedPlans?.length;
+  const activePlanLength = activePlans?.length || 0;
+  const closedPlanLength = closedPlans?.length || 0;
 
   const activeAll = tabs.filter((tb) => tb.id !== "closed");
   const all = tabs.filter((tb) => tb.id === "plans");
 
-  const tabsToshow =
+  const tabsToShow =
     activePlanLength > 0 && closedPlanLength > 0
       ? tabs
       : activePlanLength > 0 && closedPlanLength === 0
-      ? activeAll
-      : all;
+        ? activeAll
+        : all;
+
+  const getFilteredPlans = () => {
+    if (status === "all") return activePlans;
+    if (status === "active") return activePlans;
+    if (status === "closed") return closedPlans;
+    return [];
+  };
+
+  const filteredPlans = getFilteredPlans();
+
+  // Fix: Filter plans based on risk prop
+  const getFilteredByRiskPlans = () => {
+    if (!plans || plans.length === 0) return [];
+    if (risk === "all") return plans;
+    return plans.filter((plan) => plan?.planType === risk);
+  };
+
+  const filteredByRiskPlans = getFilteredByRiskPlans();
 
   return (
     <React.Fragment>
       <div className="d-flex align-items-center gap-2">
-        {tabsToshow.map((tb) => {
+        {tabsToShow.map((tb) => {
           return (
             <button
               className={`btn ${
@@ -84,13 +101,13 @@ const Plans = () => {
       </div>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="plans">
-          <AllPlans style={style} plans={plans || []} />
+          <AllPlans style={style} plans={filteredByRiskPlans} />
         </TabPane>
         <TabPane tabId="active">
-          <ActivePlans style={style} plans={activePlans || []} />
+          <ActivePlans style={style} plans={filteredPlans} />
         </TabPane>
         <TabPane tabId="closed">
-          <ClosedPlans style={style} plans={closedPlans || []} />
+          <ClosedPlans style={style} plans={filteredPlans} />
         </TabPane>
       </TabContent>
     </React.Fragment>

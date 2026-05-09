@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { formatCurrency } from "../../constants";
 
-const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
+const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
   // Show placeholder if no active wallet
   if (!activeWallet || !wallets || wallets.length === 0) {
     return (
@@ -27,6 +27,12 @@ const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
       </Card>
     );
   }
+
+  const totalWalletBalance =
+    walletData && activeWallet
+      ? activeWallet?.totalBalance +
+        walletData[activeWallet?.slug].totalProfitLoss
+      : 0;
 
   return (
     <Card>
@@ -54,7 +60,7 @@ const BalanceCard = ({ activeWallet, handleChange, wallets }) => {
           <div className="d-flex align-items-center justify-content-between">
             <h3>
               {activeWallet?.totalBalance
-                ? formatCurrency(activeWallet.totalBalance)
+                ? formatCurrency(totalWalletBalance)
                 : formatCurrency(0)}
             </h3>
             <span
