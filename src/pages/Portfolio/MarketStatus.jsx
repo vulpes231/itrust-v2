@@ -13,6 +13,8 @@ const MarketStatus = ({ activeWallet, trades }) => {
     setCurrentAccount(e.target.value);
   };
 
+  // console.log(trades);
+
   const transformedData = useMemo(() => {
     if (!trades) return [];
 
@@ -28,6 +30,7 @@ const MarketStatus = ({ activeWallet, trades }) => {
       quantity: trade.execution?.quantity || 0,
       avgPrice: formatCurrency(trade.execution?.amount) || 0,
       value: formatCurrency(trade.performance?.currentValue) || 0,
+      todayReturn: formatCurrency(trade.performance?.todayReturn) || 0,
       returns: formatCurrency(trade.performance?.totalReturn) || 0,
       percentage: trade.performance?.totalReturnPercent || 0,
       percentageClass:
@@ -88,7 +91,7 @@ const MarketStatus = ({ activeWallet, trades }) => {
       },
       {
         header: "24h P&L",
-        accessorKey: "performance.todayReturn",
+        accessorKey: "todayReturn",
         enableColumnFilter: false,
         cell: (cell) => {
           return <Returns {...cell} />;

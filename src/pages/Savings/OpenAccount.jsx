@@ -40,21 +40,28 @@ const OpenAccount = () => {
     onError: (err) => setError(err.message),
   });
 
-  const savingsAccts =
+  const filteredAccounts =
     savingAccounts &&
     savingAccounts.length > 0 &&
-    savingAccounts.filter((acct) => acct.tag !== "retirement");
+    savingAccounts.filter((acct) =>
+      acct.eligibleCountries?.includes(user?.contactInfo?.country?.countryId),
+    );
+
+  const savingsAccts =
+    filteredAccounts &&
+    filteredAccounts.length > 0 &&
+    filteredAccounts.filter((acct) => acct.tag !== "retirement");
 
   const retirementAccts =
-    savingAccounts &&
-    savingAccounts.length > 0 &&
-    savingAccounts.filter((acct) => acct.tag !== "savings");
+    filteredAccounts &&
+    filteredAccounts.length > 0 &&
+    filteredAccounts.filter((acct) => acct.tag !== "savings");
 
   const handleSelection = (acct) => {
     if (!user || !acct) {
       return;
     }
-    const userCountryId = user?.locationDetails?.country?.countryId;
+    const userCountryId = user?.contactInfo?.country?.countryId;
 
     if (!acct.eligibleCountries.includes(userCountryId)) {
       setError("Account not available in your country!");
@@ -118,24 +125,24 @@ const OpenAccount = () => {
               </div>
               {!selectedAcct && (
                 <div>
-                  <div className="mt-4 d-flex flex-column gap-3">
-                    <span
-                      style={{ color: "#495057" }}
-                      className="fw-semibold fs-18 "
-                    >
-                      RETIREMENT ACCOUNTS
-                    </span>
-                    <Row>
-                      {retirementAccts &&
-                        retirementAccts.length > 0 &&
-                        retirementAccts.map((acct) => {
+                  {/* RETIREMENT ACCOUNTS SECTION */}
+                  {retirementAccts && retirementAccts.length > 0 && (
+                    <div className="mt-4 d-flex flex-column gap-3">
+                      <span
+                        style={{ color: "#495057" }}
+                        className="fw-semibold fs-18 "
+                      >
+                        RETIREMENT ACCOUNTS
+                      </span>
+                      <Row>
+                        {retirementAccts.map((acct) => {
                           return (
                             <Col
                               xl={4}
-                              // lg={6}
                               key={acct._id}
                               className="p-3 border rounded-2 d-flex flex-column gap-1"
                               onClick={() => handleSelection(acct)}
+                              style={{ cursor: "pointer" }}
                             >
                               <div className="d-flex align-items-start gap-2">
                                 <span className="bg-success-subtle rounded-2 py-2 px-3">
@@ -147,7 +154,7 @@ const OpenAccount = () => {
                                     className="fw-bold fs-13"
                                   >
                                     {`${acct.name.slice(0, 1)}${acct.name.slice(
-                                      1
+                                      1,
                                     )}`}
                                   </span>
                                   <span
@@ -185,30 +192,32 @@ const OpenAccount = () => {
                             </Col>
                           );
                         })}
-                    </Row>
-                  </div>
-                  <div className="mt-4 d-flex flex-column gap-3">
-                    <span
-                      style={{ color: "#495057" }}
-                      className="fw-semibold fs-18 "
-                    >
-                      SAVINGS ACCOUNTS
-                    </span>
-                    <Row>
-                      {savingsAccts &&
-                        savingsAccts.length > 0 &&
-                        savingsAccts.map((acct) => {
+                      </Row>
+                    </div>
+                  )}
+
+                  {/* SAVINGS ACCOUNTS SECTION */}
+                  {savingsAccts && savingsAccts.length > 0 && (
+                    <div className="mt-4 d-flex flex-column gap-3">
+                      <span
+                        style={{ color: "#495057" }}
+                        className="fw-semibold fs-18 "
+                      >
+                        SAVINGS ACCOUNTS
+                      </span>
+                      <Row>
+                        {savingsAccts.map((acct) => {
                           return (
                             <Col
                               xl={4}
-                              // md={6}
                               key={acct._id}
                               className="p-3 border rounded-2 d-flex flex-column gap-1 mx-2"
                               onClick={() => handleSelection(acct)}
+                              style={{ cursor: "pointer" }}
                             >
                               <div className="d-flex align-items-start gap-2">
                                 <span className="bg-success-subtle rounded-2 py-2 px-3">
-                                  <i class="ri-hand-coin-line fs-22 text-success"></i>
+                                  <i className="ri-hand-coin-line fs-22 text-success"></i>
                                 </span>
                                 <span className="d-flex flex-column">
                                   <span
@@ -216,7 +225,7 @@ const OpenAccount = () => {
                                     className="fw-bold fs-13 text-capitalize"
                                   >
                                     {`${acct.name.slice(0, 1)}${acct.name.slice(
-                                      1
+                                      1,
                                     )}`}
                                   </span>
                                   <span
@@ -254,8 +263,18 @@ const OpenAccount = () => {
                             </Col>
                           );
                         })}
-                    </Row>
-                  </div>
+                      </Row>
+                    </div>
+                  )}
+
+                  {(!retirementAccts || retirementAccts.length === 0) &&
+                    (!savingsAccts || savingsAccts.length === 0) && (
+                      <div className="mt-4 text-center py-5">
+                        <div className="alert alert-secondary">
+                          No accounts available in your country at this time.
+                        </div>
+                      </div>
+                    )}
                 </div>
               )}
 
@@ -272,7 +291,7 @@ const OpenAccount = () => {
                     <Col className="p-3 border rounded-2 d-flex flex-column gap-1">
                       <div className="d-flex align-items-start gap-2">
                         <span className="bg-success-subtle rounded-2 py-2 px-3">
-                          <i class="ri-hand-coin-line fs-22 text-success"></i>
+                          <i className="ri-hand-coin-line fs-22 text-success"></i>
                         </span>
                         <span className="d-flex flex-column">
                           <span
@@ -281,7 +300,7 @@ const OpenAccount = () => {
                           >
                             {`${selectedAcct?.name.slice(
                               0,
-                              1
+                              1,
                             )}${selectedAcct?.name.slice(1)}`}
                           </span>
                           <span
