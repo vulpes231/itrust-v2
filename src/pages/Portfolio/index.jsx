@@ -17,6 +17,7 @@ import AssetAllocation from "./AssetAllocation";
 import AssetGraph from "./AssetGraph";
 import RecentOrders from "../DashboardCrypto/RecentOrders";
 import { getUserTrades } from "../../services/user/trade";
+import Positions from "./Positions";
 
 const Portfolio = () => {
   document.title = "Portfolio - Itrust Investments";
@@ -138,7 +139,7 @@ const Portfolio = () => {
           <BreadCrumb title="Portfolio" pageTitle="History" />
           <VerifyAccountNotify />
           <Row>
-            <Col xxl={9}>
+            <Col lg={9}>
               <BalanceCard
                 activeWallet={activeWallet}
                 handleChange={handleChange}
@@ -153,8 +154,9 @@ const Portfolio = () => {
               />
 
               <MarketStatus activeWallet={activeWallet} trades={trades} />
+              <Positions />
             </Col>
-            <Col xxl={3}>
+            <Col lg={3}>
               <TradeCard walletData={walletData} />
               <AssetGraph
                 count={trades?.length}

@@ -128,24 +128,24 @@ const MarketStatus = ({ activeWallet, trades }) => {
           );
         },
       },
-      {
-        header: "Status",
-        accessorKey: "status",
-        enableColumnFilter: false,
-        cell: (cell) => (
-          <span
-            className={`badge ${
-              cell.getValue() === "open"
-                ? "bg-success"
-                : cell.getValue() === "closed"
-                  ? "bg-secondary"
-                  : "bg-warning"
-            }`}
-          >
-            {cell.getValue().charAt(0).toUpperCase() + cell.getValue().slice(1)}
-          </span>
-        ),
-      },
+      // {
+      //   header: "Status",
+      //   accessorKey: "status",
+      //   enableColumnFilter: false,
+      //   cell: (cell) => (
+      //     <span
+      //       className={`badge ${
+      //         cell.getValue() === "open"
+      //           ? "bg-success"
+      //           : cell.getValue() === "closed"
+      //             ? "bg-danger"
+      //             : "bg-warning"
+      //       }`}
+      //     >
+      //       {cell.getValue().charAt(0).toUpperCase() + cell.getValue().slice(1)}
+      //     </span>
+      //   ),
+      // },
     ],
     [],
   );

@@ -44,7 +44,7 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
   const [error, setError] = useState("");
 
   const [form, setForm] = useState({
-    tradeId: "",
+    positionId: "",
     walletId: "",
     amount: "",
     orderType: "",
@@ -63,11 +63,13 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
     enabled: !!tk,
   });
 
-  // const { data: assetInfo } = useQuery({
-  //   queryKey: ["assetInfo", selectedTrade?.asset?.assetId],
-  //   queryFn: () => getAssetInfo({ assetId: selectedTrade?.asset?.assetId }),
-  //   enabled: !!selectedTrade?.asset?.assetId,
-  // });
+  const asstId = selectedTrade?.asset?.assetId?._id;
+
+  const { data: assetInfo } = useQuery({
+    queryKey: ["assetInfo", asstId],
+    queryFn: () => getAssetInfo({ assetId: asstId }),
+    enabled: !!asstId,
+  });
 
   const mutation = useMutation({
     mutationFn: closePosition,
@@ -75,7 +77,6 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
       setError(err.message || "Failed to close position");
     },
     onSuccess: () => {
-      mutation.reset();
       setTimeout(() => {
         window.location.reload();
       }, 3000);
@@ -111,8 +112,8 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      tradeId: "",
-      percentToClose: "",
+      positionId: "",
+      amount: "",
       walletId: defaultWalletId,
       orderType: activeTab || "",
       assetType: "",
@@ -124,18 +125,9 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
       executionType: tradeType?.id || "",
     },
     validationSchema: Yup.object({
-      percentToClose: Yup.string()
-        .required("Please enter amount")
-        .test(
-          "is-valid-percentage",
-          "Amount must be between 1 and 100",
-          (value) => {
-            if (!value) return false;
-            const num = parseFloat(value);
-            return !isNaN(num) && num >= 1 && num <= 100;
-          },
-        ),
-      tradeId: Yup.string().required("Please select an asset"),
+      amount: Yup.string().required("Please enter amount"),
+
+      positionId: Yup.string().required("Please select an asset"),
       leverage: Yup.string().when("executionType", {
         is: (value) => value === "leverage" || value === "stoploss",
         then: (schema) => schema.required("Please select leverage"),
@@ -145,14 +137,13 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
 
     onSubmit: (values) => {
       if (!selectedTrade) {
-        setError("Please select an asset");
+        setError("Please select a position");
         return;
       }
 
       const submitData = {
         ...values,
-        tradeId: selectedTrade._id,
-        assetSymbol: selectedTrade.asset?.symbol,
+        positionId: selectedTrade._id,
       };
 
       console.log(submitData);
@@ -168,26 +159,22 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
   });
 
   const handleTradeSelect = (e) => {
-    const tradeId = e.target.value;
-    const trade = transformedData.find((t) => t._id === tradeId);
+    const positionId = e.target.value;
+    const trade = transformedData.find((t) => t._id === positionId);
 
     if (trade) {
       setForm((prev) => ({
         ...prev,
-        tradeId: trade._id,
+        positionId: trade._id,
         selectedTrade: trade,
       }));
       setSelectedTrade(trade);
       setSearchQuery(trade.asset?.name || "");
-      validation.setFieldValue("tradeId", trade._id);
+      validation.setFieldValue("positionId", trade._id);
     } else {
       setSelectedTrade(null);
-      validation.setFieldValue("tradeId", "");
+      validation.setFieldValue("positionId", "");
     }
-  };
-
-  const handlePercentageClick = (percentage) => {
-    validation.setFieldValue("percentToClose", percentage.toString());
   };
 
   useEffect(() => {
@@ -219,22 +206,22 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
   }, [validation.values.walletId, wallets]);
 
   useEffect(() => {
-    if (selectedTrade && selectedTrade.performance) {
-      const parsedAmt = parseFloat(selectedTrade.currentValue || 0);
-      const currentPrice = selectedTrade.currentPrice || 1;
+    if (selectedTrade && validation.values.amount) {
+      const parsedAmt = parseFloat(validation.values.amount || 0);
+      const currentPrice = assetInfo?.priceData?.current || 1;
       const assetQty = parsedAmt / currentPrice;
       setQty(isNaN(assetQty) ? 0 : assetQty);
     } else {
       setQty(0);
     }
-  }, [selectedTrade]);
+  }, [selectedTrade, validation.values.amount]);
 
   const calculatedAmount = useMemo(() => {
-    if (!selectedTrade || !validation.values.percentToClose) {
+    if (!selectedTrade || !validation.values.amount) {
       return { fee: 0, totalAmount: 0 };
     }
 
-    const percent = parseFloat(validation.values.percentToClose) / 100;
+    const percent = parseFloat(validation.values.amount) / 100;
     const totalValue = selectedTrade.performance?.totalReturn || 0;
     const amountToSell = totalValue * percent;
     const fee = amountToSell * 0.0005;
@@ -242,9 +229,15 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
     return {
       fee,
       totalAmount: amountToSell,
-      percentAmount: validation.values.percentToClose,
+      percentAmount: validation.values.amount,
     };
-  }, [selectedTrade, validation.values.percentToClose]);
+  }, [selectedTrade, validation.values.amount]);
+
+  const handlePercentageClick = () => {
+    validation.setFieldValue("amount", calculatedAmount.totalAmount.toString());
+  };
+
+  // console.log(selectedTrade);
 
   return (
     <div className="p-3">
@@ -285,17 +278,17 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
 
       <Col>
         <div className="mb-3">
-          <Label htmlFor="tradeId" className="form-label">
+          <Label htmlFor="positionId" className="form-label">
             Asset <span className="text-danger">*</span>
           </Label>
           <Input
-            name="tradeId"
+            name="positionId"
             type="select"
             onChange={handleTradeSelect}
             onBlur={validation.handleBlur}
-            value={validation.values.tradeId || ""}
+            value={validation.values.positionId || ""}
             invalid={
-              validation.touched.tradeId && validation.errors.tradeId
+              validation.touched.positionId && validation.errors.positionId
                 ? true
                 : false
             }
@@ -323,9 +316,9 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
             </div>
           )}
 
-          {validation.touched.tradeId && validation.errors.tradeId && (
+          {validation.touched.positionId && validation.errors.positionId && (
             <FormFeedback type="invalid">
-              {validation.errors.tradeId}
+              {validation.errors.positionId}
             </FormFeedback>
           )}
 
@@ -377,28 +370,28 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
       </Col>
 
       <Col className="mb-3 mt-3">
-        <Label htmlFor="percentToClose" className="form-label">
-          Amount (%) <span className="text-danger">*</span>
+        <Label htmlFor="amount" className="form-label">
+          Amount <span className="text-danger">*</span>
         </Label>
 
         <div className="d-flex flex-column gap-2">
           <Input
-            name="percentToClose"
+            name="amount"
             type="number"
-            placeholder="Enter percentage (1-100)"
+            placeholder="$0.00"
             onChange={validation.handleChange}
             onBlur={validation.handleBlur}
-            value={validation.values.percentToClose || ""}
+            value={validation.values.amount || ""}
             invalid={
-              validation.touched.percentToClose &&
-              validation.errors.percentToClose
+              validation.touched.amount && validation.errors.amount
                 ? true
                 : false
             }
             min="1"
             max="100"
+            autoComplete="off"
           />
-          <div className="align-items-center gap-2 d-flex fs-11">
+          {/* <div className="align-items-center gap-2 d-flex fs-11">
             {units.map((ut) => (
               <span
                 key={ut.id}
@@ -410,15 +403,12 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
                 {ut.label !== "Max" && "%"}
               </span>
             ))}
-          </div>
+          </div> */}
         </div>
 
-        {validation.touched.percentToClose &&
-          validation.errors.percentToClose && (
-            <FormFeedback type="invalid">
-              {validation.errors.percentToClose}
-            </FormFeedback>
-          )}
+        {validation.touched.amount && validation.errors.amount && (
+          <FormFeedback type="invalid">{validation.errors.amount}</FormFeedback>
+        )}
       </Col>
 
       {(tradeType?.id === "limit" || tradeType === "limit") && (
@@ -543,8 +533,8 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
             </div>
             <div className="flex-shrink-0">
               <h6 className="mb-0">
-                {selectedTrade?.performance?.currentPrice
-                  ? formatter.format(selectedTrade.performance.currentPrice)
+                {selectedTrade
+                  ? formatter.format(assetInfo?.priceData?.current)
                   : numeral(0).format("$0,0.00")}
               </h6>
             </div>
@@ -560,21 +550,14 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
               <h6 className="mb-0">{formatter.format(calculatedAmount.fee)}</h6>
             </div>
           </div>
-          <div className="d-flex">
-            <div className="flex-grow-1">
-              <p className="mb-0">Percentage to Sell</p>
-            </div>
-            <div className="flex-shrink-0">
-              <h6 className="mb-0">{validation.values.percentToClose || 0}%</h6>
-            </div>
-          </div>
+
           <div className="d-flex mt-2 pt-2 border-top">
             <div className="flex-grow-1">
               <p className="mb-0 fw-bold">Estimated Total</p>
             </div>
             <div className="flex-shrink-0">
               <h6 className="mb-0 fw-bold">
-                {formatter.format(calculatedAmount.totalAmount)}
+                {formatter.format(validation.values.amount)}
               </h6>
             </div>
           </div>
