@@ -35,12 +35,12 @@ const ChoseAccount = ({
             <div className={`d-flex align-items-center gap-3`}>
               <figure
                 style={{
-                  backgroundColor: getWalletBg(wallet.name),
+                  backgroundColor: getWalletBg(wallet.slug),
                   // color: getWalletColor(wallet.name),
                 }}
                 className="p-1 d-flex align-items-center justify-content-center rounded"
               >
-                <img src={getWalletIcon(wallet.name)} alt="" width={20} />
+                <img src={getWalletIcon(wallet.slug)} alt="" width={20} />
               </figure>
               <div className="d-flex flex-column gap-1">
                 <span
@@ -60,7 +60,7 @@ const ChoseAccount = ({
                     fontSize: "14px",
                   }}
                 >
-                  Balance: {formatCurrency(wallet.availableBalance)}
+                  Balance: {formatCurrency(wallet.balance.available)}
                 </span>
               </div>
             </div>

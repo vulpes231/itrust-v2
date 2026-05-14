@@ -193,13 +193,13 @@ const Crypto = () => {
                     <div className={`d-flex align-items-center gap-3`}>
                       <figure
                         style={{
-                          backgroundColor: getWalletBg(wallet.name),
+                          backgroundColor: getWalletBg(wallet.slug),
                           // color: getWalletColor(wallet.name),
                         }}
                         className="p-1 d-flex align-items-center justify-content-center rounded"
                       >
                         <img
-                          src={getWalletIcon(wallet.name)}
+                          src={getWalletIcon(wallet.slug)}
                           alt=""
                           width={20}
                         />
@@ -222,7 +222,7 @@ const Crypto = () => {
                             fontSize: "14px",
                           }}
                         >
-                          Balance: {formatCurrency(wallet.availableBalance)}
+                          Balance: {formatCurrency(wallet.balance.available)}
                         </span>
                       </div>
                     </div>

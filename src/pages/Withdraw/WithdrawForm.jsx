@@ -65,7 +65,12 @@ const WithdrawForm = () => {
         <Col lg={9}>
           <Card>
             {activeView === "default" ? (
-              <WithForm handleView={handleView} settings={settings} />
+              <WithForm
+                handleView={handleView}
+                settings={settings}
+                limits={user?.settings?.limits?.withdrawal}
+                currency={user?.currency}
+              />
             ) : activeView === "crypto" ? (
               <Crypto settings={settings} user={user} />
             ) : activeView === "bank" ? (

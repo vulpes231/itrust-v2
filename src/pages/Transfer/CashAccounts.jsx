@@ -49,7 +49,7 @@ const CashAccounts = ({ cashAccts, setToAccount, toAccount }) => {
                     fontSize: "14px",
                   }}
                 >
-                  Balance: {formatCurrency(wallet.availableBalance)}
+                  Balance: {formatCurrency(wallet.balance.available)}
                 </span>
               </div>
             </div>

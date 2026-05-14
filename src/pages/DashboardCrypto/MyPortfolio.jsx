@@ -36,7 +36,7 @@ const MyPortfolio = ({ wallets, walletData }) => {
     if (!filteredWallets || filteredWallets.length === 0) return [100];
 
     if (selectedWallet === "All") {
-      return filteredWallets.map((wallet) => wallet.totalBalance);
+      return filteredWallets.map((wallet) => wallet.balance.total);
     } else {
       return [100];
     }
@@ -53,7 +53,7 @@ const MyPortfolio = ({ wallets, walletData }) => {
     }
   };
 
-  // getTotalProfit
+  // console.log(wallets);
   return (
     <React.Fragment>
       <Col>
@@ -126,7 +126,7 @@ const MyPortfolio = ({ wallets, walletData }) => {
                 wallets.length > 0 &&
                 getFilteredWallets().map((wallet, index) => {
                   const totalAccountBalance =
-                    wallet.totalBalance + getTotalProfit(wallet, walletData);
+                    wallet.balance.total + getTotalProfit(wallet, walletData);
                   return (
                     <div
                       key={wallet._id}
@@ -172,7 +172,7 @@ const MyPortfolio = ({ wallets, walletData }) => {
                             {formatCurrency(totalAccountBalance)}
                           </h6>
                           <p className="text-success fs-13 mb-0">
-                            {formatCurrency(wallet.availableBalance)}
+                            {formatCurrency(wallet.balance.available)}
                           </p>
                         </div>
                       </div>

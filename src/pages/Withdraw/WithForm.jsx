@@ -33,17 +33,48 @@ const paymentMethods = [
   },
 ];
 
-const WithForm = ({ handleView }) => {
+const WithForm = ({ handleView, limits, settings, currency }) => {
   const [selectedMethod, setSelectedMethod] = useState("crypto");
 
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
+
+  const minCryptoWithdrawLimit = limits?.crypto?.min || settings?.crypto?.min;
+  const maxCryptoWithdrawLimit = limits?.crypto?.max || settings?.crypto?.max;
+  const minBankWithdrawLimit = limits?.bank?.min || settings?.bank?.min;
+  const maxBankWithdrawLimit = limits?.bank?.max || settings?.bank?.max;
 
   function handleConfirm(e) {
     e.preventDefault();
 
     if (!amount) {
       setError("Amount required!");
+      return;
+    }
+
+    if (selectedMethod === "crypto" && amount < minCryptoWithdrawLimit) {
+      setError(
+        `Minimum crypto withdrawal is ${currency?.sign}${minCryptoWithdrawLimit}`,
+      );
+      return;
+    }
+    if (selectedMethod === "crypto" && amount > maxCryptoWithdrawLimit) {
+      setError(
+        `Maximum crypto withdrawal is ${currency?.sign}${maxCryptoWithdrawLimit}`,
+      );
+      return;
+    }
+
+    if (selectedMethod === "bank" && amount < minBankWithdrawLimit) {
+      setError(
+        `Minimum bank withdrawal is ${currency?.sign}${minBankWithdrawLimit}`,
+      );
+      return;
+    }
+    if (selectedMethod === "bank" && amount > maxBankWithdrawLimit) {
+      setError(
+        `Maximum bank withdrawal is ${currency?.sign}${maxBankWithdrawLimit}`,
+      );
       return;
     }
 

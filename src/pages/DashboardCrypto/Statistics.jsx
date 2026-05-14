@@ -13,15 +13,20 @@ const Statistics = ({ dataColors, analytics }) => {
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
 
   const { data: chartData } = useQuery({
-    queryFn: getChartData,
+    queryFn: () => getChartData({ timeframe: range }),
     queryKey: ["chart"],
   });
 
   const filteredData = React.useMemo(() => {
     if (!chartData?.data) return [];
-    const now = new Date();
 
+    const sortedData = [...chartData.data].sort(
+      (a, b) => new Date(a.date) - new Date(b.date),
+    );
+
+    const now = new Date();
     let cutoffDate;
+
     switch (range) {
       case "1D":
         cutoffDate = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000);
@@ -43,10 +48,14 @@ const Statistics = ({ dataColors, analytics }) => {
     }
 
     let filtered = cutoffDate
-      ? chartData.data.filter((item) => new Date(item.date) >= cutoffDate)
-      : [...chartData.data];
+      ? sortedData.filter((item) => new Date(item.date) >= cutoffDate)
+      : sortedData;
 
-    return filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+    console.log(`Range: ${range}, Filtered points: ${filtered.length}`);
+    console.log("First point:", filtered[0]);
+    console.log("Last point:", filtered[filtered.length - 1]);
+
+    return filtered;
   }, [chartData, range]);
 
   const series = [
@@ -58,6 +67,8 @@ const Statistics = ({ dataColors, analytics }) => {
       })),
     },
   ];
+
+  console.log(filteredData);
 
   const options = {
     chart: {
@@ -107,7 +118,7 @@ const Statistics = ({ dataColors, analytics }) => {
       },
     },
     stroke: {
-      curve: "stepline",
+      curve: "smooth",
       width: 2,
     },
     xaxis: {

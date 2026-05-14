@@ -59,8 +59,8 @@ const Portfolio = () => {
 
         if (!isCashWallet) {
           acc.defaultWallets.push(wallet);
-          acc.totalBalance += wallet.totalBalance || 0;
-          acc.availableBalance += wallet.availableBalance || 0;
+          acc.totalBalance += wallet.balance.total || 0;
+          acc.availableBalance += wallet.balance.available || 0;
         }
 
         return acc;
@@ -73,8 +73,10 @@ const Portfolio = () => {
     );
 
     const investing = {
-      totalBalance: result.totalBalance,
-      availableBalance: result.availableBalance,
+      balance: {
+        total: result.totalBalance,
+        available: result.availableBalance,
+      },
       slug: "default",
       name: "investing",
       _id: "default",

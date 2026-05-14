@@ -45,7 +45,7 @@ const DashboardCrypto = () => {
     enabled: !!tk,
   });
 
-  const { data: wallets, loading: isWalletLoading } = useQuery({
+  const { data: wallets = [], loading: isWalletLoading } = useQuery({
     queryFn: getUserWallets,
     queryKey: ["wallet"],
   });

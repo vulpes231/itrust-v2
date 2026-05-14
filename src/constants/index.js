@@ -109,10 +109,12 @@ const getTotalProfit = (wallet, walletData) => {
   if (!walletData) return 0;
   const slug = wallet.slug;
 
+  // console.log(walletData);
+
   if (walletData[slug] && walletData[slug].totalProfitLoss !== undefined) {
     return walletData[slug].totalProfitLoss;
   }
-  return wallet.totalBalance;
+  return 0;
 };
 
 const allowedRoutesIfNotVerified = [

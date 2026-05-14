@@ -8,6 +8,7 @@ import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import numeral from "numeral";
 
 const TopStats = ({ walletAnalytics }) => {
+  // console.log(walletAnalytics);
   return (
     <Row className="p-3">
       <Col md={3} style={{ color: "#495057" }}>

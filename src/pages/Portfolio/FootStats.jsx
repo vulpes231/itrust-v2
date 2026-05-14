@@ -60,8 +60,8 @@ const FootStats = ({ activeWallet, walletData, cashAccount }) => {
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
               {" "}
-              {activeWallet?.availableBalance
-                ? formatCurrency(activeWallet.availableBalance)
+              {activeWallet?.balance?.available
+                ? formatCurrency(activeWallet.balance?.available)
                 : formatCurrency(0)}
             </span>
             <span
@@ -80,8 +80,8 @@ const FootStats = ({ activeWallet, walletData, cashAccount }) => {
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold" style={{ color: "#495057" }}>
               {" "}
-              {cashAccount?.totalBalance
-                ? formatCurrency(cashAccount.totalBalance)
+              {cashAccount?.balance?.total
+                ? formatCurrency(cashAccount.balance?.total)
                 : formatCurrency(0)}
             </span>
             <span
@@ -105,7 +105,7 @@ const FootStats = ({ activeWallet, walletData, cashAccount }) => {
                   className="fs-17 fw-semibold"
                   style={{ color: "#495057" }}
                 >
-                  {formatCurrency(activeWallet?.availableBalance) ||
+                  {formatCurrency(activeWallet?.balance?.available) ||
                     formatCurrency(0)}
                 </span>
                 <span

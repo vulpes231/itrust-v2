@@ -22,6 +22,8 @@ const PortfolioCharts = ({
     return chartData;
   };
 
+  // console.log(walletData);
+
   const getChartLabels = () => {
     if (!chartLabels || chartLabels.length === 0) return ["No Data"];
 
@@ -35,10 +37,11 @@ const PortfolioCharts = ({
 
   const getTotalBalance = () => {
     if (!series || series.length === 0) return 0;
+    if (!walletData) return 0;
 
     if (selectedWallet === "All") {
       return series.reduce((sum, wallet) => {
-        let total = sum + wallet.totalBalance;
+        let total = sum + wallet.balance.total;
 
         if (
           wallet.slug !== "cash" &&
@@ -54,11 +57,11 @@ const PortfolioCharts = ({
       if (!wallet) return 0;
 
       if (wallet.slug === "cash") {
-        return wallet.totalBalance;
+        return wallet.balance.total;
       }
 
       return (
-        wallet.totalBalance + (walletData[wallet.slug]?.totalProfitLoss || 0)
+        wallet.balance.total + (walletData[wallet.slug]?.totalProfitLoss || 0)
       );
     }
   };

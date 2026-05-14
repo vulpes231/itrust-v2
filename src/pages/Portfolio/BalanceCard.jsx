@@ -30,9 +30,11 @@ const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
 
   const totalWalletBalance =
     walletData && activeWallet
-      ? activeWallet?.totalBalance +
+      ? activeWallet?.balance?.total +
         walletData[activeWallet?.slug].totalProfitLoss
       : 0;
+
+  // console.log(activeWallet);
 
   return (
     <Card>
@@ -59,7 +61,7 @@ const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
           </div>
           <div className="d-flex align-items-center justify-content-between">
             <h3>
-              {activeWallet?.totalBalance
+              {activeWallet?.balance?.total
                 ? formatCurrency(totalWalletBalance)
                 : formatCurrency(0)}
             </h3>

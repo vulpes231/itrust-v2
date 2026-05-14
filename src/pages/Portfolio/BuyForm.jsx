@@ -197,6 +197,8 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
     }
   }, [selectedAsset, validation.values.amount]);
 
+  // console.log(selectedAsset);
+
   return (
     <div className="p-3">
       <Col>
@@ -353,7 +355,7 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
         </Input>
         {selectedAcct && (
           <div className="mt-2">
-            Buy Power: {formatCurrency(selectedAcct.availableBalance)}
+            Buy Power: {formatCurrency(selectedAcct.balance.available)}
           </div>
         )}
         {validation.touched.walletId && validation.errors.walletId ? (
@@ -381,6 +383,7 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
                 ? true
                 : false
             }
+            autoComplete="off"
           />
           <div className="align-items-center gap-2 d-flex fs-10">
             {units.map((ut) => {
@@ -555,7 +558,7 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
           <button
             onClick={() => validation.handleSubmit()}
             type="button"
-            className={`btn w-100 btn-success d-flex align-items-center justify-content-center`}
+            className={`btn w-100 btn-success d-flex align-items-center justify-content-center gap-2`}
             disabled={mutation.isPending}
           >
             <span>

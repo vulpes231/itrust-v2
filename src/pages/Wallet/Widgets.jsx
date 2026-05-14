@@ -50,7 +50,7 @@ const Widgets = () => {
   // console.log(cashAccount);
   useEffect(() => {
     if (cashAccount) {
-      const formatted = cashAccount.availableBalance.toFixed(2);
+      const formatted = cashAccount.balance.available.toFixed(2);
       const [whole, decimal] = formatted.split(".");
       setWholePart(parseInt(whole));
       setDecimalPart(decimal);

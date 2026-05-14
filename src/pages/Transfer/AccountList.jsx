@@ -53,6 +53,7 @@ const AccountList = () => {
                           color: "#495057",
                           fontWeight: 600,
                           fontSize: "14px",
+                          whiteSpace: "nowrap",
                         }}
                       >
                         {capitalize(wallet.name)}
@@ -79,7 +80,7 @@ const AccountList = () => {
                       fontSize: "14px",
                     }}
                   >
-                    {formatCurrency(wallet.availableBalance)}
+                    {formatCurrency(wallet.balance.available)}
                   </span>
                 </div>
               );

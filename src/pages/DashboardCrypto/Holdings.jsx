@@ -1,10 +1,14 @@
 import numeral from "numeral";
 import React, { useEffect, useState } from "react";
 import { Card, CardBody, CardHeader, Col, Input, Row } from "reactstrap";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, getAccessToken } from "../../constants";
+import { useQuery } from "@tanstack/react-query";
+import { getUserPositions } from "../../services/user/position";
 
 const Holdings = ({ trades, analytics }) => {
   const [totalHoldings, setTotalHoldings] = useState(0);
+
+  const tk = getAccessToken();
 
   useEffect(() => {
     if (analytics) {
@@ -13,7 +17,15 @@ const Holdings = ({ trades, analytics }) => {
     }
   }, [analytics]);
 
-  // console.log(trades);
+  const { data: positionData } = useQuery({
+    queryKey: ["positionData"],
+    queryFn: getUserPositions,
+    enabled: !!tk,
+  });
+
+  useEffect(() => {
+    if (positionData) console.log(positionData);
+  }, [positionData]);
 
   return (
     <React.Fragment>
@@ -38,10 +50,11 @@ const Holdings = ({ trades, analytics }) => {
             </Col>
           )}
           <Col className="d-flex flex-column gap-3">
-            {trades &&
-              trades.length > 0 &&
-              trades.map((trade) => {
-                const value = Number(trade?.performance?.totalReturn) || 0;
+            {positionData &&
+              positionData.positions &&
+              positionData.positions.length > 0 &&
+              positionData.positions.map((trade) => {
+                const value = Number(trade?.return) || 0;
 
                 const safeValue = Math.abs(value) < 0.005 ? 0 : value;
                 return (
@@ -66,7 +79,8 @@ const Holdings = ({ trades, analytics }) => {
                         >
                           <span>
                             {" "}
-                            {parseFloat(trade.execution.quantity).toFixed(4)}
+                            {/* {parseFloat(trade.execution.quantity).toFixed(4)} */}
+                            0
                           </span>
                           shares
                         </span>
@@ -74,11 +88,11 @@ const Holdings = ({ trades, analytics }) => {
                     </Col>
                     <Col className="d-flex flex-column align-items-end">
                       <h6 className="fs-15">
-                        {numeral(trade.execution.amount).format("$0,0.00")}
+                        {numeral(trade.currentValue).format("$0,0.00")}
                       </h6>
                       <div
                         className={`d-flex align-items-center gap-1 fs-12 ${
-                          trade.performance.totalReturnPercent < 0
+                          trade.returnPercent < 0
                             ? "text-danger"
                             : "text-success"
                         }`}
@@ -86,10 +100,7 @@ const Holdings = ({ trades, analytics }) => {
                         <span> {numeral(safeValue).format("$0,0.00")}</span>
                         <span>
                           {" "}
-                          ({" "}
-                          {parseFloat(
-                            trade.performance.totalReturnPercent,
-                          ).toFixed(2)}
+                          ( {parseFloat(trade.returnPercent).toFixed(2)}
                           %)
                         </span>
                       </div>
@@ -99,7 +110,7 @@ const Holdings = ({ trades, analytics }) => {
               })}
           </Col>
           <button className="btn w-100 btn-success mt-3">
-            {numeral(Math.floor(totalHoldings * 100) / 100).format("$0,0.00")}
+            {numeral(positionData?.totalInvested).format("$0,0.00")}
           </button>
         </CardBody>
       </Card>
