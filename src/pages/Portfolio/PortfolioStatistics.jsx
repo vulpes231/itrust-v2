@@ -16,51 +16,70 @@ const PortfolioStatistics = ({
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
 
   const { data: chartData } = useQuery({
-    queryFn: getChartData,
-    queryKey: ["chart"],
+    queryFn: () => getChartData({ timeframe: range.toLowerCase() }),
+    queryKey: ["chart", range],
   });
 
   const filteredData = React.useMemo(() => {
-    if (!chartData?.data) return [];
-    const now = new Date();
+    if (!chartData?.length) return [];
 
-    let cutoffDate;
+    const sorted = [...chartData].sort(
+      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
+    );
+
+    const withBalance = sorted.map((item) => ({
+      x: new Date(item.x), // Ensure it's a Date object
+      y: item.y, // Directly use the portfolio value
+      reason: item.reason,
+    }));
+
+    // Date filtering
+    const now = new Date();
+    let cutoffDate = null;
+
     switch (range) {
+      case "1H":
+        cutoffDate = new Date(now.getTime() - 60 * 60 * 1000);
+        break;
       case "1D":
-        cutoffDate = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000);
+        cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
         break;
       case "1W":
         cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         break;
       case "1M":
-        cutoffDate = new Date(now.setMonth(now.getMonth() - 1));
-        break;
-      case "6M":
-        cutoffDate = new Date(now.setMonth(now.getMonth() - 6));
+        cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
         break;
       case "1Y":
-        cutoffDate = new Date(now.setFullYear(now.getFullYear() - 1));
+        cutoffDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+        break;
+      case "ALL":
+        cutoffDate = null;
         break;
       default:
         cutoffDate = null;
     }
 
-    let filtered = cutoffDate
-      ? chartData.data.filter((item) => new Date(item.date) >= cutoffDate)
-      : [...chartData.data];
+    const filtered = cutoffDate
+      ? withBalance.filter((item) => item.x >= cutoffDate)
+      : withBalance;
 
-    return filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+    // console.log(`Range: ${range}, Points: ${filtered.length}`, filtered);
+    return filtered;
   }, [chartData, range]);
 
-  const series = [
-    {
-      name: "Balance",
-      data: filteredData.map((item) => ({
-        x: new Date(item.date).getTime(),
-        y: item.balance,
-      })),
-    },
-  ];
+  const series = React.useMemo(
+    () => [
+      {
+        name: "Portfolio Balance",
+        data: filteredData.map((item) => ({
+          x: item.x.getTime(),
+          y: Math.max(0, item.y),
+        })),
+      },
+    ],
+    [filteredData],
+  );
 
   const options = {
     chart: {
@@ -110,7 +129,7 @@ const PortfolioStatistics = ({
       },
     },
     stroke: {
-      curve: "stepline",
+      curve: "smooth",
       width: 2,
     },
     xaxis: {
@@ -119,21 +138,32 @@ const PortfolioStatistics = ({
         datetimeUTC: false,
         formatter: (val) => {
           const date = new Date(val);
+
+          if (isNaN(date.getTime())) return "";
+
           switch (range) {
+            case "1H":
+              return date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
             case "1D":
               return date.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               });
             case "1W":
-            case "1M":
               return date.toLocaleDateString([], {
                 month: "short",
                 day: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
               });
-            case "6M":
+            case "1M":
+              return date.toLocaleDateString([], {
+                month: "short",
+                day: "numeric",
+              });
             case "1Y":
             case "ALL":
             default:
@@ -145,10 +175,8 @@ const PortfolioStatistics = ({
           }
         },
       },
-      tickAmount: undefined,
     },
     yaxis: {
-      min: 0,
       labels: {
         formatter: (val) => {
           if (val >= 1000000) return `$${(val / 1000000).toFixed(1)}M`;
@@ -169,7 +197,7 @@ const PortfolioStatistics = ({
                 <h5 className="card-title mb-0">Statistics</h5>
               </div>
               <div className="toolbar d-flex align-items-start justify-content-center flex-wrap gap-2">
-                {["1D", "1W", "1M", "6M", "1Y", "ALL"].map((r) => (
+                {["1H", "1D", "1W", "1M", "1Y", "ALL"].map((r) => (
                   <button
                     key={r}
                     type="button"

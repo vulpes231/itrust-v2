@@ -23,6 +23,8 @@ import {
   getUserTrades,
   searchTrades,
 } from "../../services/user/trade";
+import { getUserPositions } from "../../services/user/position";
+import { getAssetInfo } from "../../services/asset/asset";
 
 const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
   const units = [
@@ -55,11 +57,17 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
 
   const tk = getAccessToken();
 
-  const { data: trades, isLoading: tradesLoading } = useQuery({
-    queryFn: () => getUserTrades(),
-    queryKey: ["trades"],
-    enabled: !!selectedAcct,
+  const { data: positionData, loading: positionLoading } = useQuery({
+    queryKey: ["positionData"],
+    queryFn: getUserPositions,
+    enabled: !!tk,
   });
+
+  // const { data: assetInfo } = useQuery({
+  //   queryKey: ["assetInfo", selectedTrade?.asset?.assetId],
+  //   queryFn: () => getAssetInfo({ assetId: selectedTrade?.asset?.assetId }),
+  //   enabled: !!selectedTrade?.asset?.assetId,
+  // });
 
   const mutation = useMutation({
     mutationFn: closePosition,
@@ -77,10 +85,12 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
   const availableWallets = wallets?.filter((w) => w.slug === "brokerage") || [];
   const defaultWalletId = form.walletId || availableWallets?.[0]?._id || "";
 
-  const transformedData = useMemo(() => {
-    if (!trades || !selectedAcct) return [];
+  const positions = positionData?.positions || [];
 
-    const filteredTrades = trades.filter(
+  const transformedData = useMemo(() => {
+    if (!positions || !selectedAcct) return [];
+
+    const filteredTrades = positions.filter(
       (trd) => trd.wallet?.id === selectedAcct._id,
     );
 
@@ -89,12 +99,14 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
       img: trade.asset?.img,
       assetName: trade.asset?.name,
       assetSymbol: trade.asset?.symbol,
-      currentValue: trade.performance?.currentValue,
-      totalReturn: trade.performance?.totalReturn,
+      currentValue: trade.currentValue,
+      totalReturn: trade.retru,
       totalReturnPercent: trade.performance?.totalReturnPercent,
       currentPrice: trade.performance?.currentPrice,
     }));
-  }, [trades, selectedAcct]);
+  }, [positions, selectedAcct]);
+
+  // console.log(positions);
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -208,8 +220,8 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
 
   useEffect(() => {
     if (selectedTrade && selectedTrade.performance) {
-      const parsedAmt = parseFloat(selectedTrade.performance.currentValue || 0);
-      const currentPrice = selectedTrade.performance.currentPrice || 1;
+      const parsedAmt = parseFloat(selectedTrade.currentValue || 0);
+      const currentPrice = selectedTrade.currentPrice || 1;
       const assetQty = parsedAmt / currentPrice;
       setQty(isNaN(assetQty) ? 0 : assetQty);
     } else {
@@ -217,7 +229,6 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
     }
   }, [selectedTrade]);
 
-  // Calculate fee and total
   const calculatedAmount = useMemo(() => {
     if (!selectedTrade || !validation.values.percentToClose) {
       return { fee: 0, totalAmount: 0 };
@@ -226,7 +237,7 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
     const percent = parseFloat(validation.values.percentToClose) / 100;
     const totalValue = selectedTrade.performance?.totalReturn || 0;
     const amountToSell = totalValue * percent;
-    const fee = amountToSell * 0.0005; // 0.05% fee
+    const fee = amountToSell * 0.0005;
 
     return {
       fee,
@@ -299,7 +310,7 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
             ))}
           </Input>
 
-          {selectedAcct && !transformedData.length && !tradesLoading && (
+          {selectedAcct && !transformedData.length && !positionLoading && (
             <div className="mt-2 text-muted">
               No assets found in this account
             </div>
@@ -308,9 +319,7 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
           {selectedTrade && (
             <div className="mt-2">
               Current Value:{" "}
-              {numeral(selectedTrade.performance?.totalReturn).format(
-                "$0,0.00",
-              )}
+              {numeral(selectedTrade?.currentValue).format("$0,0.00")}
             </div>
           )}
 
@@ -347,22 +356,18 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
                 </Col>
                 <Col className="d-flex flex-column align-items-end">
                   <h5 className="fs-15 fw-semibold">
-                    {formatter.format(
-                      selectedTrade.performance?.totalReturn || 0,
-                    )}
+                    {formatter.format(selectedTrade?.currentValue || 0)}
                   </h5>
                   <span
                     className={`${
-                      (selectedTrade.performance?.totalReturn || 0) < 0
+                      (selectedTrade.return || 0) < 0
                         ? "text-danger"
                         : "text-success"
                     } fs-12`}
                   >
-                    {formatter.format(
-                      selectedTrade.performance?.totalReturn || 0,
-                    )}{" "}
-                    {selectedTrade.performance?.totalReturnPercent &&
-                      `(${parseFloat(selectedTrade.performance.totalReturnPercent).toFixed(2)}%)`}
+                    {formatter.format(selectedTrade?.return || 0)}{" "}
+                    {selectedTrade?.returnPercent &&
+                      `(${parseFloat(selectedTrade.returnPercent).toFixed(2)}%)`}
                   </span>
                 </Col>
               </Row>

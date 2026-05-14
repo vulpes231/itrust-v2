@@ -5,27 +5,14 @@ import { formatCurrency, getAccessToken } from "../../constants";
 import { useQuery } from "@tanstack/react-query";
 import { getUserPositions } from "../../services/user/position";
 
-const Holdings = ({ trades, analytics }) => {
-  const [totalHoldings, setTotalHoldings] = useState(0);
-
+const Holdings = () => {
   const tk = getAccessToken();
-
-  useEffect(() => {
-    if (analytics) {
-      // console.log(analytics);
-      setTotalHoldings(analytics.totalInvested);
-    }
-  }, [analytics]);
 
   const { data: positionData } = useQuery({
     queryKey: ["positionData"],
     queryFn: getUserPositions,
     enabled: !!tk,
   });
-
-  useEffect(() => {
-    if (positionData) console.log(positionData);
-  }, [positionData]);
 
   return (
     <React.Fragment>
@@ -44,11 +31,13 @@ const Holdings = ({ trades, analytics }) => {
           </div>
         </CardHeader>
         <CardBody>
-          {trades && trades.length === 0 && (
-            <Col className="p-4">
-              <span style={{ color: "#878A99" }}>You have no holdings</span>
-            </Col>
-          )}
+          {positionData &&
+            positionData.positions &&
+            positionData.positions.length === 0 && (
+              <Col className="p-4">
+                <span style={{ color: "#878A99" }}>You have no holdings</span>
+              </Col>
+            )}
           <Col className="d-flex flex-column gap-3">
             {positionData &&
               positionData.positions &&
@@ -77,11 +66,7 @@ const Holdings = ({ trades, analytics }) => {
                           style={{ color: "#868A99", whiteSpace: "nowrap" }}
                           className="fs-13 d-flex gap-1"
                         >
-                          <span>
-                            {" "}
-                            {/* {parseFloat(trade.execution.quantity).toFixed(4)} */}
-                            0
-                          </span>
+                          <span> {parseFloat(trade.quantity).toFixed(4)}</span>
                           shares
                         </span>
                       </span>

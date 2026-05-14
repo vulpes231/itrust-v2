@@ -60,7 +60,6 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
     mutationFn: openPosition,
     onError: (err) => setError(err.message),
     onSuccess: () => {
-      mutation.reset();
       setTimeout(() => {
         window.location.reload();
       }, 3000);

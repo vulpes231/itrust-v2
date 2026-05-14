@@ -50,11 +50,18 @@ const MarketStatus = ({ activeWallet, trades }) => {
         accessorKey: "coinName",
         enableColumnFilter: false,
         cell: (cell) => (
-          <div className="d-flex align-items-center fw-medium">
+          <div className="d-flex align-items-center gap-2 fw-medium">
+            {/* <span
+              className="p-2 bg-light rounded-circle d-flex align-items-center justify-content-center"
+              style={{ width: "23px", height: "23px" }}
+            >
+             
+            </span> */}
             <img
               src={cell.row.original.img}
               alt={cell.getValue()}
-              className="avatar-xxs me-2"
+              style={{ width: "30px", height: "30px" }}
+              className="p-1 bg-light rounded-circle d-flex align-items-center justify-content-center"
               onError={(e) => {
                 e.target.src = "/default-coin.png";
               }}
