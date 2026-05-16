@@ -13,16 +13,19 @@ const AssetManager = ({
   toggleTradeSection,
   setSelectedAsset,
   selectedAsset,
+  showPreview,
+  setShowPreview,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
   const [showResult, setShowResult] = useState(false);
+
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const { data: searchResults, isFetching } = useQuery({
     queryKey: ["searchAsset", debouncedSearchTerm],
     queryFn: () => searchAsset({ query: debouncedSearchTerm }),
-    enabled: debouncedSearchTerm.length > 3,
+    enabled: debouncedSearchTerm.length > 1,
   });
 
   const handleInputChange = (e) => {
@@ -36,10 +39,10 @@ const AssetManager = ({
     }
 
     setSelectedAsset(asset);
-    handleChange("trade");
+    // handleChange("trade");
     setSearchTerm("");
     setShowResult(false);
-    toggleTradeSection(true);
+    setShowPreview(true);
   };
 
   useEffect(() => {

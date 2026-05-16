@@ -14,6 +14,12 @@ const Holdings = () => {
     enabled: !!tk,
   });
 
+  // useEffect(() => {
+  //   if (positionData) console.log(positionData);
+  // }, [positionData]);
+
+  const overall = positionData?.totalInvested + positionData?.totalExtra;
+
   return (
     <React.Fragment>
       <Card>
@@ -95,7 +101,7 @@ const Holdings = () => {
               })}
           </Col>
           <button className="btn w-100 btn-success mt-3">
-            {numeral(positionData?.totalInvested).format("$0,0.00")}
+            {numeral(overall).format("$0,0.00")}
           </button>
         </CardBody>
       </Card>

@@ -75,7 +75,7 @@ const MarketBuy = ({ accounts, activeOrder, asset, tradeType }) => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      assetId: asset._id || "",
+      assetId: asset?._id || "",
       walletId: "",
       amount: "",
       orderType: activeOrder || "",
@@ -168,7 +168,7 @@ const MarketBuy = ({ accounts, activeOrder, asset, tradeType }) => {
           {amountButtons.map((btn) => {
             return (
               <span
-                className="bg-light px-4 py-2 rounded-2 fs-13 text-muted"
+                className="bg-light px-3 py-2 rounded-2 fs-10 text-muted"
                 style={{ cursor: "default" }}
                 onClick={() => validation.setFieldValue("amount", btn.value)}
                 key={btn.id}

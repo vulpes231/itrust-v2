@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAccessToken } from "../../constants";
 import { useParams } from "react-router-dom";
 import { getAssetInfo } from "../../services/asset/asset";
+import AssetPreview from "./AssetPreview";
 
 const BuySell = () => {
   document.title = "Market - Itrust Investments";
@@ -26,6 +27,7 @@ const BuySell = () => {
   const [activeMarketTab, setActiveMarketTab] = useState("asset");
   const [showTradeSection, setShowTradeSection] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleTabChange = (tabName) => {
     setActiveMarketTab(tabName);
@@ -57,7 +59,6 @@ const BuySell = () => {
     queryKey: ["walletAnalytics"],
   });
 
-  // Handle pre-selected asset from URL params
   useEffect(() => {
     if (preSelectedAsset) {
       setSelectedAsset(preSelectedAsset);
@@ -67,7 +68,7 @@ const BuySell = () => {
   }, [preSelectedAsset]);
 
   const shouldShowTradeSection = () => {
-    if (activeMarketTab === "trade") {
+    if (activeMarketTab === "trade" && selectedAsset) {
       return true;
     }
     if (activeMarketTab === "trade" && showTradeSection && selectedAsset) {
@@ -95,17 +96,27 @@ const BuySell = () => {
               selectedAsset={selectedAsset}
               setSelectedAsset={setSelectedAsset}
               toggleTradeSection={setShowTradeSection}
+              showPreview={showPreview}
+              setShowPreview={setShowPreview}
             />
           </Row>
 
+          {showPreview && (
+            <AssetPreview
+              asset={selectedAsset}
+              handleSubmit={() => {
+                setShowPreview(false);
+                handleTabChange("trade");
+              }}
+            />
+          )}
+
           {shouldShowTradeSection() && (
-            <Row className="px-3">
-              <TradeSection
-                asset={selectedAsset || preSelectedAsset}
-                accounts={wallets}
-                walletData={walletData}
-              />
-            </Row>
+            <TradeSection
+              asset={selectedAsset || preSelectedAsset}
+              accounts={wallets}
+              walletData={walletData}
+            />
           )}
 
           {activeMarketTab === "asset" && !showTradeSection && (

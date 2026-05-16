@@ -242,7 +242,7 @@ const OrderHistory = () => {
                 >
                   <option value="all">All Status</option>
                   <option value="open">Open</option>
-                  <option value="close">Close</option>
+                  <option value="close">Closed</option>
                 </Input>
               </div>
               <div className="d-flex gap-2">

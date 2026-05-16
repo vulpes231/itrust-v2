@@ -16,13 +16,14 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { formatMarketCap } from "../../constants";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { openPosition } from "../../services/user/trade";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { capitalize } from "lodash";
 import MarketBuy from "./MarketBuy";
 import SellForm from "../Portfolio/SellForm";
+import { getAssetInfo } from "../../services/asset/asset";
 
 const execTypes = [
   { id: "market", label: "Market Order" },
@@ -49,10 +50,16 @@ const TradeSection = ({ asset, accounts, walletData }) => {
     setTradeType(type);
   };
 
+  const { data: assetInfo } = useQuery({
+    queryFn: () => getAssetInfo({ assetId: asset?._id }),
+    queryKey: ["assetInfo", asset?._id],
+    enabled: !!asset?._id,
+  });
+
   return (
-    <Card className="">
-      <Row>
-        <Col md={9} className="p-3">
+    <Row>
+      <Col md={8}>
+        <Card>
           <Col className="border rounded-2">
             <h5 className="py-2 px-4 mt-2">Place Trade</h5>
             <div className="bg-secondary-subtle w-100 py-2">
@@ -85,7 +92,7 @@ const TradeSection = ({ asset, accounts, walletData }) => {
                 </div>
               </Col>
             </div>
-            <Col className="p-4 d-flex gap-2">
+            <Col className="p-3 d-flex gap-2">
               <button
                 onClick={() => toggleActiveOrder("buy")}
                 className={`btn w-100 text-capitalize ${
@@ -125,32 +132,37 @@ const TradeSection = ({ asset, accounts, walletData }) => {
               )}
             </Col>
           </Col>
-        </Col>
-        <Col md={3} className="p-3">
+        </Card>
+      </Col>
+      <Col md={4}>
+        <Card>
           <div className="d-flex flex-column gap-4 border rounded-2 p-4">
             <div className="d-flex align-items-center justify-content-between">
               <span>
-                <h5>{asset?.symbol}</h5>
-                <span>{asset?.name}</span>
+                <h5>{assetInfo?.symbol}</h5>
+                <span>{assetInfo?.name}</span>
               </span>
               <span className="bg-light p-1 rounded-circle">
-                <img src={asset?.imageUrl} alt="" width={30} />
+                <img src={assetInfo?.imageUrl} alt="" width={30} />
               </span>
             </div>
             <div className="d-flex flex-column">
-              <h5>{numeral(asset?.priceData?.current).format("$0,0.00")}</h5>
+              <h5>
+                {numeral(assetInfo?.priceData?.current).format("$0,0.00")}
+              </h5>
               <span
                 className={`d-flex align-items-center gap-1 fs-12 ${
-                  asset?.priceData?.changePercent < 0
+                  assetInfo?.priceData?.changePercent < 0
                     ? "text-danger"
                     : "text-success"
                 }`}
               >
                 <span>
-                  {numeral(asset?.priceData?.change).format("$0,0.00")}
+                  {numeral(assetInfo?.priceData?.change).format("$0,0.00")}
                 </span>
                 <span>
-                  ({parseFloat(asset?.priceData?.changePercent).toFixed(2)}%)
+                  ({parseFloat(assetInfo?.priceData?.changePercent).toFixed(2)}
+                  %)
                 </span>
               </span>
             </div>
@@ -158,13 +170,13 @@ const TradeSection = ({ asset, accounts, walletData }) => {
               <span className="d-flex flex-column">
                 <Label className="text-muted fw-light">Market Cap</Label>
                 <span className="fw-medium fs-15 text-capitalize">
-                  {formatMarketCap(asset?.fundamentals?.marketCap) || "-"}
+                  {formatMarketCap(assetInfo?.fundamentals?.marketCap) || "-"}
                 </span>
               </span>
               <span className="d-flex flex-column align-items-end">
                 <Label className="text-muted fw-light">Volume</Label>
                 <span className="fw-medium fs-15">
-                  {formatMarketCap(asset?.priceData?.volume) || "-"}
+                  {formatMarketCap(assetInfo?.priceData?.volume) || "-"}
                 </span>
               </span>
             </div>
@@ -172,13 +184,13 @@ const TradeSection = ({ asset, accounts, walletData }) => {
               <span className="d-flex flex-column">
                 <Label className="text-muted fw-light">24 High</Label>
                 <span className="fw-medium fs-15">
-                  {numeral(asset?.priceData?.dayHigh).format("$0,0.00")}
+                  {numeral(assetInfo?.priceData?.dayHigh).format("$0,0.00")}
                 </span>
               </span>
               <span className="d-flex flex-column align-items-end">
                 <Label className="text-muted fw-light">24 Low</Label>
                 <span className="fw-medium fs-15">
-                  {numeral(asset?.priceData?.dayLow).format("$0,0.00")}
+                  {numeral(assetInfo?.priceData?.dayLow).format("$0,0.00")}
                 </span>
               </span>
             </div>
@@ -186,14 +198,14 @@ const TradeSection = ({ asset, accounts, walletData }) => {
               <span className="d-flex flex-column">
                 <Label className="text-muted fw-light">P/E Ratio</Label>
                 <span className="fw-medium fs-15">
-                  {asset?.fundamentals?.pe || "-"}
+                  {assetInfo?.fundamentals?.pe || "-"}
                 </span>
               </span>
               <span className="d-flex flex-column align-items-end">
                 <Label className="text-muted fw-light">52 Weeks Range</Label>
                 <span className="fw-medium fs-15">
-                  {numeral(asset?.historical?.yearHigh).format("$0,0.00")} -{" "}
-                  {numeral(asset?.historical?.yearLow).format("$0,0.00")}
+                  {numeral(assetInfo?.historical?.yearHigh).format("$0,0.00")} -{" "}
+                  {numeral(assetInfo?.historical?.yearLow).format("$0,0.00")}
                 </span>
               </span>
             </div>
@@ -203,9 +215,9 @@ const TradeSection = ({ asset, accounts, walletData }) => {
               </button>
             </div>
           </div>
-        </Col>
-      </Row>
-    </Card>
+        </Card>
+      </Col>
+    </Row>
   );
 };
 

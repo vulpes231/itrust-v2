@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { getUserPositions } from "../../services/user/position";
 import { getAccessToken } from "../../constants";
 import { Card, CardBody, CardHeader, Col, Input } from "reactstrap";
@@ -12,6 +12,22 @@ const Positions = () => {
     queryFn: getUserPositions,
   });
 
+  const [filter, setFilter] = useState("all");
+  const myPositions = positionData?.positions;
+
+  const filteredPositions = useMemo(() => {
+    if (!myPositions) return [];
+
+    const positions =
+      filter === "all"
+        ? myPositions
+        : myPositions.filter(
+            (ps) => ps.wallet.name.toLowerCase() === filter.toLowerCase(),
+          );
+
+    return positions;
+  }, [myPositions, filter]);
+
   return (
     <React.Fragment>
       <Card className="">
@@ -21,18 +37,22 @@ const Positions = () => {
           </div>
 
           <span>
-            <Input type="select">
-              <option value="">Account</option>
-              <option value="">Status</option>
+            <Input
+              type="select"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="individual brokerage">Individual Brokerage</option>
+              <option value="automated investing">Automated Investing</option>
             </Input>
           </span>
         </CardHeader>
         <CardBody>
           <Col className="d-flex flex-column gap-3">
-            {positionData &&
-              positionData.positions &&
-              positionData.positions.length > 0 &&
-              positionData.positions.map((pos) => {
+            {filteredPositions &&
+              filteredPositions.length > 0 &&
+              filteredPositions.map((pos) => {
                 return <PositionTab key={pos._id} position={pos} />;
               })}
           </Col>

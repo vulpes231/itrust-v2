@@ -35,7 +35,7 @@ const PositionTab = ({ position }) => {
       <hr className="text-muted" />
       <Col className="px-3 d-flex flex-column gap-2">
         <Row className="text-capitalize">
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               ordertype
             </Label>
@@ -43,15 +43,15 @@ const PositionTab = ({ position }) => {
               buy
             </p>
           </Col>
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               quantity
             </Label>
             <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
-              {position?.quantity}
+              {parseFloat(position?.quantity).toFixed(6)}
             </p>
           </Col>
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               cost
             </Label>
@@ -59,9 +59,7 @@ const PositionTab = ({ position }) => {
               {numeral(position?.amountInvested).format("$0,0.00")}
             </p>
           </Col>
-        </Row>
-        <Row className="text-capitalize">
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               today's return
             </Label>
@@ -69,7 +67,7 @@ const PositionTab = ({ position }) => {
               {numeral(position?.todayReturn).format("$0,0.00")}
             </p>
           </Col>
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               unrealized P&L
             </Label>
@@ -77,7 +75,7 @@ const PositionTab = ({ position }) => {
               {numeral(position?.return).format("$0,0.00")}
             </p>
           </Col>
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               current value
             </Label>
@@ -85,9 +83,7 @@ const PositionTab = ({ position }) => {
               {numeral(position?.currentValue).format("$0,0.00")}
             </p>
           </Col>
-        </Row>
-        <Row className="text-capitalize">
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               average cost
             </Label>
@@ -95,7 +91,7 @@ const PositionTab = ({ position }) => {
               {numeral(position?.currentPrice).format("$0,0.00")}
             </p>
           </Col>
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               Leverage
             </Label>
@@ -103,7 +99,7 @@ const PositionTab = ({ position }) => {
               {position?.leverage || "-"}
             </p>
           </Col>
-          <Col>
+          <Col xs={6} sm={4}>
             <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
               realized P&L
             </Label>

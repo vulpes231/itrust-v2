@@ -114,11 +114,7 @@ const RecentOrders = ({ trades }) => {
                                 : null
                           } d-flex align-items-center gap-1`}
                         >
-                          {trade.orderType === "buy"
-                            ? `+`
-                            : trade.orderType === "sell"
-                              ? `-`
-                              : null}
+                          {trade.orderType === "buy" ? `+` : null}
                           {numeral(safeValue).format("$0,0.00")}
                         </span>
                       </div>
