@@ -15,7 +15,7 @@ const SideFund = ({ accts, handleIcon }) => {
     accts && accts.length > 0 && accts.filter((acct) => acct.tag === "savings");
 
   const [selectedAcct, setSelectedAcct] = useState(
-    saveAccts ? saveAccts[0] : ""
+    saveAccts ? saveAccts[0] : "",
   );
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
@@ -73,67 +73,65 @@ const SideFund = ({ accts, handleIcon }) => {
       {saveAccts && saveAccts.length > 0 && (
         <Card className="p-3 d-flex flex-column gap-4">
           <Col key={selectedAcct?._id} style={{ position: "relative" }}>
-            <div className="d-flex align-items-end justify-content-between shadow py-2 px-3 rounded">
-              <span className="d-flex align-items-center gap-3">
-                <span
-                  style={{ backgroundColor: getIconBg(selectedAcct?.name) }}
-                  className=" px-1 rounded d-flex align-items-center justify-content-center"
-                >
-                  {handleIcon(selectedAcct?.name)}{" "}
-                </span>
-                <span
-                  className="d-flex flex-column"
-                  // style={{  }}
-                >
+            <Card>
+              <div className="d-flex align-items-end justify-content-between shadow py-2 px-3 rounded border-2 border">
+                <span className="d-flex align-items-center gap-3">
                   <span
-                    style={{ color: "#878A99" }}
-                    className="fw-bold fs-13 d-flex align-items-center gap-2"
+                    style={{ backgroundColor: getIconBg(selectedAcct?.name) }}
+                    className=" px-1 rounded d-flex align-items-center justify-content-center"
                   >
-                    {selectedAcct?.name}{" "}
-                    <span onClick={handleShowAccount}>
-                      {showAccounts ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                    {handleIcon(selectedAcct?.name)}{" "}
+                  </span>
+                  <span
+                    className="d-flex flex-column"
+                    // style={{  }}
+                  >
+                    <span className="fw-bold fs-13 d-flex align-items-center gap-2 text-muted text-capitalize">
+                      {selectedAcct?.name}{" "}
+                      <span onClick={handleShowAccount}>
+                        {showAccounts ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                      </span>
+                      <Col
+                        className="py-2 px-4"
+                        style={{
+                          display: showAccounts ? "block" : "none",
+                          position: "absolute",
+                          top: "0px",
+                          left: "200px",
+                        }}
+                      >
+                        {saveAccts &&
+                          saveAccts.length > 0 &&
+                          saveAccts.map((acct) => {
+                            return (
+                              <div
+                                onClick={() => {
+                                  setSelectedAcct(acct);
+                                  handleShowAccount();
+                                }}
+                                key={acct._id}
+                              >
+                                {acct.name}
+                              </div>
+                            );
+                          })}
+                      </Col>
                     </span>
-                    <Card
-                      className="py-2 px-4"
-                      style={{
-                        display: showAccounts ? "block" : "none",
-                        position: "absolute",
-                        top: "0px",
-                        left: "200px",
-                      }}
-                    >
-                      {saveAccts &&
-                        saveAccts.length > 0 &&
-                        saveAccts.map((acct) => {
-                          return (
-                            <div
-                              onClick={() => {
-                                setSelectedAcct(acct);
-                                handleShowAccount();
-                              }}
-                              key={acct._id}
-                            >
-                              {acct.name}
-                            </div>
-                          );
-                        })}
-                    </Card>
-                  </span>
-                  <span
-                    style={{ color: "#495057" }}
-                    className="fw-semibold fs-21"
-                  >
-                    {formatCurrency(selectedAcct?.analytics?.balance || 0)}
+                    <span className="fw-semibold fs-21">
+                      {formatCurrency(
+                        selectedAcct?.analytics?.balance.available || 0,
+                      )}
+                    </span>
                   </span>
                 </span>
-              </span>
-              <span
-                style={{ color: "#3AB67A" }}
-                className="fw-semibold fs-9 bg-success-subtle py-1 px-2 rounded"
-              >
-                {selectedAcct?.analytics?.dailyChange}%
-              </span>
-            </div>
+                <span
+                  style={{ color: "#3AB67A" }}
+                  className="fw-semibold fs-9 bg-success-subtle py-1 px-2 rounded"
+                >
+                  {selectedAcct?.analytics?.dailyChangePercent}%
+                </span>
+              </div>
+            </Card>
             <div className="d-flex flex-column gap-2 mt-4">
               <span className="d-flex align-items-center justify-content-between gap-4">
                 <span className="fs-14 fw-semibold">
@@ -171,17 +169,17 @@ const SideFund = ({ accts, handleIcon }) => {
                     onClick={() =>
                       validation.setFieldValue(
                         "amount",
-                        btn === "Max" ? "100000" : btn
+                        btn === "Max" ? "100000" : btn,
                       )
                     }
                   >
                     {btn === "1000"
                       ? "$1k"
                       : btn === "2000"
-                      ? "$2k"
-                      : btn === "5000"
-                      ? "$5k"
-                      : btn}
+                        ? "$2k"
+                        : btn === "5000"
+                          ? "$5k"
+                          : btn}
                   </button>
                 );
               })}
@@ -200,7 +198,7 @@ const SideFund = ({ accts, handleIcon }) => {
               </button>
               <span
                 className="fw-medium fs-14 py-1"
-                style={{ color: "#000000", textAlign: "center" }}
+                style={{ textAlign: "center" }}
               >
                 Interest calculated daily, paid monthly. FDIC insured up to
                 $250,000.

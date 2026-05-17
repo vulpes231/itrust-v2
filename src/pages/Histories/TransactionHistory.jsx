@@ -46,12 +46,15 @@ const TransactionHistory = ({ filter }) => {
       filter === "all"
         ? transactions
         : filter === "deposit" ||
-          filter === "withdrawal" ||
-          filter === "transfer"
-        ? transactions.filter((trx) => trx.type === filter)
-        : filter === "completed" || filter === "pending" || filter === "failed"
-        ? transactions.filter((trx) => trx.status === filter)
-        : transactions.filter((trx) => trx.account === filter);
+            filter === "withdrawal" ||
+            filter === "transfer" ||
+            filter === "savings"
+          ? transactions.filter((trx) => trx.type === filter)
+          : filter === "completed" ||
+              filter === "pending" ||
+              filter === "failed"
+            ? transactions.filter((trx) => trx.status === filter)
+            : transactions.filter((trx) => trx.account === filter);
 
     return filteredTrnxs.map((transaction, index) => {
       let icon, iconClass, amountColor;
@@ -112,8 +115,8 @@ const TransactionHistory = ({ filter }) => {
       bank: ltc,
       brokerage: broke,
       "automated investing": auto,
-      "Traditional ira": auto,
-      "Health savings": auto,
+      "traditional ira": auto,
+      "health savings": auto,
     };
     return images[currency?.toLowerCase()] || "/images/currencies/default.png";
   }
@@ -189,7 +192,7 @@ const TransactionHistory = ({ filter }) => {
         },
       },
     ],
-    []
+    [],
   );
 
   return (

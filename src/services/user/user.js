@@ -5,7 +5,7 @@ const api = new APIClient();
 async function getUserInfo() {
   try {
     const response = await api.get("/user");
-    return response.data;
+    return response.data || null;
   } catch (error) {
     const errMsg = error;
     throw new Error(errMsg);

@@ -149,7 +149,8 @@ const MarketBuy = ({ accounts, activeOrder, asset, tradeType }) => {
           })}
         </Input>
         <h6 className="fw-semibold py-1">
-          Buy Power: {numeral(selectedAcct?.availableBalance).format("$0,0.00")}
+          Buy Power:{" "}
+          {numeral(selectedAcct?.balance?.available).format("$0,0.00")}
         </h6>
       </Col>
       <Col>

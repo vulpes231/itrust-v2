@@ -46,7 +46,7 @@ const RecentActivity = () => {
                               ? "bg-warning-subtle"
                               : trx.type === "withdrawal"
                                 ? "bg-danger-subtle"
-                                : null
+                                : "bg-info-subtle"
                         } bg-success-subtle rounded-circle d-flex align-items-center justify-content-center`}
                         style={{ width: "30px", height: "30px" }}
                       >
@@ -60,14 +60,13 @@ const RecentActivity = () => {
                           />
                         ) : trx.type === "withdraw" ? (
                           <i class="ri-arrow-right-up-fill text-danger fs-18"></i>
-                        ) : null}
+                        ) : (
+                          <i class="ri-exchange-line text-info fs-18"></i>
+                        )}{" "}
                       </div>
 
                       <div className="flex-grow-1 ms-3">
-                        <h6
-                          className="fs-15 mb-1 d-flex align-items-center gap-2"
-                          style={{ color: "#495057" }}
-                        >
+                        <h6 className="fs-15 mb-1 d-flex align-items-center gap-2">
                           <span>
                             {" "}
                             {trx.type === "deposit"
@@ -76,7 +75,7 @@ const RecentActivity = () => {
                                 ? `Transfer`
                                 : trx.type === "withdraw"
                                   ? `Withdraw`
-                                  : null}
+                                  : "Savings"}
                           </span>
                           <span
                             className={`fs-10 px-2 py-1 rounded-1 text-capitalize d-flex align-items-center gap-1 ${
@@ -99,10 +98,7 @@ const RecentActivity = () => {
                             {trx.status}
                           </span>
                         </h6>
-                        <p
-                          style={{ color: "#495057" }}
-                          className=" fs-13 mb-0 d-flex align-items-center gap-2 "
-                        >
+                        <p className=" fs-13 mb-0 d-flex align-items-center gap-2 text-muted">
                           <span
                             style={{ whiteSpace: "nowrap" }}
                             className="fw-normal fs-10"
@@ -141,7 +137,7 @@ const RecentActivity = () => {
                                 ? `text-warning`
                                 : trx.type === "withdraw"
                                   ? `text-danger`
-                                  : null
+                                  : "text-info"
                           }`}
                         >
                           {trx.type === "deposit"

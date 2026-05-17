@@ -6,24 +6,29 @@ import { formatCurrency, getIconBg, getIconColor } from "../../constants";
 import { GiReceiveMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import AddFunds from "./AddFunds";
+import { useMutation } from "@tanstack/react-query";
+import { deleteSavingsAccount } from "../../services/user/savings";
 
 const SavingsAccounts = ({ analytics, accts }) => {
   const [show, setShow] = useState(false);
   const [fund, setFund] = useState(false);
   const [goals, setGoals] = useState(false);
 
+  // console.log(accts);
+
   const savingsAccts =
     accts && accts.length > 0 && accts.filter((acct) => acct.tag === "savings");
+  // console.log(analytics);
 
   const getIcon = (name) => {
     switch (name) {
-      case "Traditional IRA":
+      case "traditional IRA":
         return (
           <i style={{ color: "#261CB6" }} className="ri-shield-line fs-22"></i>
         );
-      case "Health Savings":
+      case "health savings":
         return (
-          <i style={{ color: "#F17171" }} className="ri-service-line fs-22"></i>
+          <i style={{ color: "#F17171" }} className="ri-service-line fs-16"></i>
         );
 
       default:
@@ -40,6 +45,7 @@ const SavingsAccounts = ({ analytics, accts }) => {
   function handleGoals() {
     setGoals(!goals);
   }
+
   return (
     <React.Fragment>
       <Col className="">
@@ -60,13 +66,8 @@ const SavingsAccounts = ({ analytics, accts }) => {
                   {/* <GiReceiveMoney className="text-light" size={20} /> */}
                 </span>
                 <span className="d-flex flex-column">
-                  <span className="fw-bold fs-15" style={{ color: "#495057" }}>
-                    Savings Accounts
-                  </span>
-                  <span
-                    className="fw-regular fs-15"
-                    style={{ color: "#212529" }}
-                  >
+                  <span className="fw-bold fs-15">Savings Accounts</span>
+                  <span className="fw-regular fs-15">
                     {analytics?.savingAcctLength || 0} Accounts <GoDotFill />{" "}
                     {formatCurrency(analytics?.savingBalance || 0)}
                   </span>
@@ -78,51 +79,51 @@ const SavingsAccounts = ({ analytics, accts }) => {
             </div>
 
             <div style={{ display: show ? "block" : "none" }}>
-              {savingsAccts && savingsAccts.length > 0 ? (
-                <Row className="px-4 my-4">
-                  {savingsAccts.map((acct) => {
+              {accts && accts.length > 0 ? (
+                <Row className="p-4 my-4 ">
+                  {accts.map((acct) => {
                     return (
                       <Col lg={6} key={acct._id} className="">
-                        <div className="d-flex align-items-end justify-content-between shadow py-2 px-3 rounded">
-                          <span className="d-flex align-items-center gap-3">
+                        <Card>
+                          <div className="d-flex align-items-end justify-content-between shadow py-3 px-4 rounded border border-1">
+                            <span className="d-flex align-items-center gap-3">
+                              <div
+                                className={`p-2 rounded d-flex align-items-center justify-content-center bg-danger-subtle`}
+                              >
+                                {getIcon(acct.name)}
+                              </div>
+                              <span className="d-flex flex-column">
+                                <span className="fw-bold fs-13 text-uppercase text-muted">
+                                  {acct.name}
+                                </span>
+                                <span
+                                  style={{ color: "#495057" }}
+                                  className="fw-semibold fs-21"
+                                >
+                                  {formatCurrency(
+                                    acct.analytics.balance.available,
+                                  )}
+                                </span>
+                              </span>
+                            </span>
                             <span
-                              style={{ backgroundColor: getIconBg(acct.name) }}
-                              className=" px-1 rounded d-flex align-items-center justify-content-center"
+                              style={{ color: "#3AB67A" }}
+                              className="fw-semibold fs-9 bg-success-subtle py-1 px-2 rounded"
                             >
-                              {getIcon(acct.name)}
+                              {acct.analytics.dailyChangePercent}%
                             </span>
-                            <span className="d-flex flex-column">
-                              <span
-                                style={{ color: "#878A99" }}
-                                className="fw-bold fs-13"
-                              >
-                                {acct.name}
-                              </span>
-                              <span
-                                style={{ color: "#495057" }}
-                                className="fw-semibold fs-21"
-                              >
-                                {formatCurrency(acct.analytics.balance)}
-                              </span>
-                            </span>
-                          </span>
-                          <span
-                            style={{ color: "#3AB67A" }}
-                            className="fw-semibold fs-9 bg-success-subtle py-1 px-2 rounded"
-                          >
-                            {acct.analytics.dailyChange}%
-                          </span>
-                        </div>
+                          </div>
+                        </Card>
                         <div className="d-flex flex-column gap-2 mt-4">
-                          <span className="d-flex align-items-center justify-content-between gap-4">
-                            <span className="fs-14 fw-semibold">
+                          <span className="d-flex align-items-center justify-content-between gap-4 px-2">
+                            <span className="fs-14 fw-semibold text-body">
                               Estimated Monthly Interest
                             </span>
                             <span
                               className="fs-14 fw-semibold"
                               style={{ color: "#3AB67A" }}
                             >
-                              {acct.rate}%
+                              {acct.rate || 0}%
                             </span>
                           </span>
                         </div>
@@ -156,16 +157,8 @@ const SavingsAccounts = ({ analytics, accts }) => {
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center gap-3">
                     <span className="d-flex flex-column">
-                      <span
-                        className="fw-bold fs-15"
-                        style={{ color: "#495057" }}
-                      >
-                        Add Funds
-                      </span>
-                      <span
-                        className="fw-regular fs-14"
-                        style={{ color: "#212529" }}
-                      >
+                      <span className="fw-bold fs-15">Add Funds</span>
+                      <span className="fw-regular fs-14 text-muted">
                         Add funds to your savings account.
                       </span>
                     </span>
@@ -182,16 +175,8 @@ const SavingsAccounts = ({ analytics, accts }) => {
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center gap-3">
                     <span className="d-flex flex-column">
-                      <span
-                        className="fw-bold fs-15"
-                        style={{ color: "#495057" }}
-                      >
-                        Saving Goals
-                      </span>
-                      <span
-                        className="fw-regular fs-14"
-                        style={{ color: "#212529" }}
-                      >
+                      <span className="fw-bold fs-15">Saving Goals</span>
+                      <span className="fw-regular fs-14 text-muted">
                         Create track and achieve your financial goals.
                       </span>
                     </span>

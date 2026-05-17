@@ -33,25 +33,15 @@ const Retirements = ({ analytics, accts }) => {
 
   const getIcon = (name) => {
     switch (name) {
-      case "Traditional IRA":
-        return (
-          <i style={{ color: "#261CB6" }} className="ri-shield-line fs-22"></i>
-        );
-      case "Health Savings":
-        return (
-          <i style={{ color: "#F17171" }} className="ri-service-line fs-22"></i>
-        );
+      case "traditional IRA":
+        return <i className="ri-shield-line fs-22 text-warning"></i>;
+      case "health savings":
+        return <i className="ri-service-line fs-22 text-danger"></i>;
 
       default:
         return null;
     }
   };
-
-  useEffect(() => {
-    if (accts.length) {
-      console.log(accts);
-    }
-  }, [accts]);
 
   return (
     <React.Fragment>
@@ -72,9 +62,7 @@ const Retirements = ({ analytics, accts }) => {
                   <i class="ri-shield-line fs-20 text-light"></i>
                 </span>
                 <span className="d-flex flex-column">
-                  <span className="fw-bold fs-15" style={{ color: "#495057" }}>
-                    Retirement Accounts
-                  </span>
+                  <span className="fw-bold fs-15">Retirement Accounts</span>
                   <span
                     className="fw-regular fs-15"
                     style={{ color: "#212529" }}
@@ -103,16 +91,10 @@ const Retirements = ({ analytics, accts }) => {
                               {getIcon(acct.name)}
                             </span>
                             <span className="d-flex flex-column">
-                              <span
-                                style={{ color: "#878A99" }}
-                                className="fw-bold fs-13"
-                              >
+                              <span className="fw-bold fs-13 text-muted">
                                 {acct.name}
                               </span>
-                              <span
-                                style={{ color: "#495057" }}
-                                className="fw-semibold fs-21"
-                              >
+                              <span className="fw-semibold fs-21">
                                 {formatCurrency(acct.analytics.balance)}
                               </span>
                             </span>
@@ -160,13 +142,8 @@ const Retirements = ({ analytics, accts }) => {
                 </Row>
               ) : (
                 <div className="d-flex align-items-center justify-content-center flex-column gap-2 p-4">
-                  <span className="fw-bold fs-16" style={{ color: "#495057" }}>
-                    No Accounts Found
-                  </span>
-                  <span
-                    className="fw-regular fs-14"
-                    style={{ color: "#878A99" }}
-                  >
+                  <span className="fw-bold fs-16">No Accounts Found</span>
+                  <span className="fw-regular fs-14 text-muted">
                     Open a new account and start building your retirement
                     portfolio
                   </span>

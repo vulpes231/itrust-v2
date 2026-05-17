@@ -17,7 +17,7 @@ const SideContribution = ({ accts, handleIcon }) => {
     accts.filter((acct) => acct.tag === "retirement");
 
   const [selectedAcct, setSelectedAcct] = useState(
-    retireAccts ? retireAccts[0] : ""
+    retireAccts ? retireAccts[0] : "",
   );
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
@@ -87,10 +87,7 @@ const SideContribution = ({ accts, handleIcon }) => {
                   className="d-flex flex-column"
                   // style={{  }}
                 >
-                  <span
-                    style={{ color: "#878A99" }}
-                    className="fw-bold fs-13 d-flex align-items-center gap-2"
-                  >
+                  <span className="fw-bold fs-13 d-flex align-items-center gap-2 text-muted">
                     {selectedAcct?.name}{" "}
                     <span onClick={handleShowAccount}>
                       {showAccounts ? <IoIosArrowUp /> : <IoIosArrowDown />}
@@ -121,11 +118,10 @@ const SideContribution = ({ accts, handleIcon }) => {
                         })}
                     </Card>
                   </span>
-                  <span
-                    style={{ color: "#495057" }}
-                    className="fw-semibold fs-21"
-                  >
-                    {formatCurrency(selectedAcct?.analytics?.balance || 0)}
+                  <span className="fw-semibold fs-21">
+                    {formatCurrency(
+                      selectedAcct?.analytics?.balance?.available || 0,
+                    )}
                   </span>
                 </span>
               </span>
@@ -133,7 +129,7 @@ const SideContribution = ({ accts, handleIcon }) => {
                 style={{ color: "#3AB67A" }}
                 className="fw-semibold fs-9 bg-success-subtle py-1 px-2 rounded"
               >
-                {selectedAcct?.analytics?.dailyChange}%
+                {selectedAcct?.analytics?.dailyChangePercent}%
               </span>
             </div>
             <div className="d-flex flex-column gap-2 mt-4">
@@ -190,17 +186,17 @@ const SideContribution = ({ accts, handleIcon }) => {
                     onClick={() =>
                       validation.setFieldValue(
                         "amount",
-                        btn === "Max" ? "100000" : btn
+                        btn === "Max" ? "100000" : btn,
                       )
                     }
                   >
                     {btn === "1000"
                       ? "$1k"
                       : btn === "2000"
-                      ? "$2k"
-                      : btn === "5000"
-                      ? "$5k"
-                      : btn}
+                        ? "$2k"
+                        : btn === "5000"
+                          ? "$5k"
+                          : btn}
                   </button>
                 );
               })}

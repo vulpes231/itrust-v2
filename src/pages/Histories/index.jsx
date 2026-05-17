@@ -11,7 +11,7 @@ import HistoryManager from "./HistoryManager";
 import TransactionHistory from "./TransactionHistory";
 import TradeHistory from "./TradeHistory";
 import DividendHistory from "./DividendHistory";
-import SavingHistory from "./SavingsHistory";
+// import SavingHistory from "./SavingsHistory";
 
 const Histories = () => {
   const token = getAccessToken();
@@ -68,7 +68,9 @@ const Histories = () => {
           {activeHistoryTab === "dividend" && (
             <DividendHistory dividends={[]} />
           )}
-          {activeHistoryTab === "savings" && <SavingHistory savings={[]} />}
+          {activeHistoryTab === "savings" && (
+            <TransactionHistory filter={activeHistoryTab} />
+          )}
         </Container>
       </div>
     </React.Fragment>

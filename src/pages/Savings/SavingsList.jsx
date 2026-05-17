@@ -6,14 +6,10 @@ import { GoDotFill } from "react-icons/go";
 const SavingsList = ({ accts }) => {
   const getIcon = (name) => {
     switch (name) {
-      case "Traditional IRA":
-        return (
-          <i style={{ color: "#495057" }} className="ri-shield-line fs-22"></i>
-        );
-      case "Health Savings":
-        return (
-          <i style={{ color: "#495057" }} className="ri-service-line fs-22"></i>
-        );
+      case "traditional IRA":
+        return <i className="ri-shield-line fs-16 "></i>;
+      case "health savings":
+        return <i className="ri-service-line fs-16"></i>;
 
       default:
         return null;
@@ -41,29 +37,23 @@ const SavingsList = ({ accts }) => {
                           {getIcon(acct.name)}
                         </span>
                         <span className="d-flex flex-column">
-                          <span
-                            className="fs-14 fw-semibold"
-                            style={{ color: "#495057" }}
-                          >
+                          <span className="fs-14 fw-semibold text-capitalize">
                             {acct.name}
                           </span>
                           <span
                             style={{ color: "#878A99" }}
-                            className="d-flex align-items-center gap-2"
+                            className="d-flex align-items-center gap-2 text-uppercase"
                           >
                             {" "}
                             <GoDotFill
                               style={{ color: getIconColor(acct.name) }}
                             />{" "}
-                            {acct.symbol}
+                            {acct.slug}
                           </span>
                         </span>
                       </span>
-                      <span
-                        className="fs-14 fw-semibold"
-                        style={{ color: "#495057" }}
-                      >
-                        {formatCurrency(acct.analytics.balance)}
+                      <span className="fs-14 fw-semibold">
+                        {formatCurrency(acct.analytics.balance.available)}
                       </span>
                     </div>
                   );

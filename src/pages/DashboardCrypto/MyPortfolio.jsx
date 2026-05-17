@@ -53,6 +53,23 @@ const MyPortfolio = ({ wallets, walletData }) => {
     }
   };
 
+  const getAccountIcon = (value) => {
+    switch (value) {
+      case "cash account":
+        return <i class="ri-wallet-line fs-22"></i>;
+      case "automated investing":
+        return <i class="ri-24-hours-line fs-22"></i>;
+      case "individual brokerage":
+        return <i className="ri-bar-chart-2-line fs-22"></i>;
+      case "traditional IRA":
+        return <i className="ri-shield-line fs-22"></i>;
+      case "health savings":
+        return <i className="ri-service-line fs-22"></i>;
+      default:
+        return null;
+    }
+  };
+
   // console.log(wallets);
   return (
     <React.Fragment>
@@ -136,18 +153,8 @@ const MyPortfolio = ({ wallets, walletData }) => {
                     >
                       <div className="d-flex">
                         <div className="flex-shrink-0 avatar-xs">
-                          <span className="avatar-title bg-light p-1 rounded-circle">
-                            <img
-                              src={
-                                wallet.slug === "cash"
-                                  ? cash
-                                  : wallet.slug === "brokerage"
-                                    ? broke
-                                    : auto
-                              }
-                              className="img-fluid"
-                              alt=""
-                            />
+                          <span className="avatar-title bg-light text-muted p-1 rounded-circle">
+                            {getAccountIcon(wallet.name)}
                           </span>
                         </div>
                         <div className="flex-grow-1 ms-2">

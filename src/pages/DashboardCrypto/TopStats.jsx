@@ -11,12 +11,9 @@ const TopStats = ({ walletAnalytics }) => {
   // console.log(walletAnalytics);
   return (
     <Row className="p-3">
-      <Col md={3} style={{ color: "#495057" }}>
+      <Col md={3}>
         <div className="d-flex align-items-start justify-content-between">
-          <h6
-            style={{ color: "#878a99" }}
-            className="text-uppercase fs-13 fw-bold"
-          >
+          <h6 className="text-uppercase fs-13 fw-bold text-muted">
             total net worth
           </h6>
           <div className="bg-secondary-subtle px-2 rounded-1">
@@ -50,7 +47,7 @@ const TopStats = ({ walletAnalytics }) => {
             %
           </span>
         </div>
-        <span style={{ color: "#878A99" }} className="fs-12 fw-semibold">
+        <span className="fs-12 fw-semibold text-muted">
           Updated at {`${format(Date.now(), "dd/MM/yyyy")}`}
         </span>
       </Col>

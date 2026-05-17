@@ -15,24 +15,15 @@ const ToCol = (cell) => {
   const getIcon = (value) => {
     switch (value) {
       case "cash account":
-        return cash;
+        return <i class="ri-wallet-line fs-22"></i>;
       case "automated investing":
-        return auto;
+        return <i class="ri-24-hours-line fs-22"></i>;
       case "individual brokerage":
-        return (
-          <i
-            style={{ color: "#C5CAD0" }}
-            className="ri-bar-chart-2-line fs-22"
-          ></i>
-        );
-      case "Traditional IRA":
-        return (
-          <i style={{ color: "#C5CAD0" }} className="ri-shield-line fs-22"></i>
-        );
-      case "Health Savings":
-        return (
-          <i style={{ color: "#C5CAD0" }} className="ri-service-line fs-22"></i>
-        );
+        return <i className="ri-bar-chart-2-line fs-22"></i>;
+      case "traditional IRA":
+        return <i className="ri-shield-line fs-22"></i>;
+      case "health savings":
+        return <i className="ri-service-line fs-22"></i>;
       default:
         return null;
     }
@@ -44,12 +35,7 @@ const ToCol = (cell) => {
   return (
     <React.Fragment>
       <div className="d-flex align-items-center gap-2">
-        {(icon && cellValue === "cash account") ||
-        cellValue === "automated investing" ? (
-          <img src={icon} alt="" width={20} />
-        ) : (
-          <span>{icon}</span>
-        )}
+        <span className="text-muted">{icon}</span>
         <span className="text-capitalize">{cellValue}</span>
       </div>
     </React.Fragment>
@@ -85,10 +71,10 @@ const Status = (cell) => {
           status === "pending"
             ? "bg-warning-subtle text-warning badge text-capitalize"
             : status === "processed"
-            ? "bg-success-subtle text-success badge text-capitalize"
-            : status === "cancelled"
-            ? "bg-danger-subtle text-danger badge text-capitalize"
-            : ""
+              ? "bg-success-subtle text-success badge text-capitalize"
+              : status === "cancelled"
+                ? "bg-danger-subtle text-danger badge text-capitalize"
+                : ""
         }`}
       >
         <span className="d-flex items-center gap-1 p-1 rounded-4">

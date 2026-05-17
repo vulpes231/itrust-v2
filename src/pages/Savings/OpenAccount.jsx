@@ -15,6 +15,7 @@ import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { getLoggedinUser } from "../../helpers/apiHelper";
 import { getUserInfo } from "../../services/user/user";
+import { Loader } from "feather-icons-react";
 
 const OpenAccount = () => {
   const token = getAccessToken();
@@ -23,7 +24,7 @@ const OpenAccount = () => {
   const [error, setError] = useState("");
   const [selectedAcct, setSelectedAcct] = useState("");
 
-  const { data: savingAccounts } = useQuery({
+  const { data: savingAccounts, isLoading: getAccountsLoading } = useQuery({
     queryKey: ["savings"],
     queryFn: getAvailableSavingsAccts,
     enabled: !!token,
@@ -34,6 +35,12 @@ const OpenAccount = () => {
     queryFn: getUserInfo,
     enabled: !!token,
   });
+
+  const ownedAccount = user?.savingsAccounts || [];
+
+  const existingAccountIds = new Set(
+    ownedAccount.map((acc) => acc.accountId || acc._id),
+  );
 
   const mutation = useMutation({
     mutationFn: () => openSavings({ accountId: selectedAcct._id }),
@@ -47,15 +54,20 @@ const OpenAccount = () => {
       acct.eligibleCountries?.includes(user?.contactInfo?.country?.countryId),
     );
 
+  const availableAccounts =
+    filteredAccounts && filteredAccounts.length > 0
+      ? filteredAccounts.filter((acct) => !existingAccountIds.has(acct._id))
+      : [];
+
   const savingsAccts =
-    filteredAccounts &&
-    filteredAccounts.length > 0 &&
-    filteredAccounts.filter((acct) => acct.tag !== "retirement");
+    availableAccounts &&
+    availableAccounts.length > 0 &&
+    availableAccounts.filter((acct) => acct.tag !== "retirement");
 
   const retirementAccts =
-    filteredAccounts &&
-    filteredAccounts.length > 0 &&
-    filteredAccounts.filter((acct) => acct.tag !== "savings");
+    availableAccounts &&
+    availableAccounts.length > 0 &&
+    availableAccounts.filter((acct) => acct.tag !== "savings");
 
   const handleSelection = (acct) => {
     if (!user || !acct) {
@@ -271,7 +283,9 @@ const OpenAccount = () => {
                     (!savingsAccts || savingsAccts.length === 0) && (
                       <div className="mt-4 text-center py-5">
                         <div className="alert alert-secondary">
-                          No accounts available in your country at this time.
+                          {savingAccounts && savingAccounts.length > 0
+                            ? "No new accounts are available in your country."
+                            : "No accounts available at this time."}
                         </div>
                       </div>
                     )}

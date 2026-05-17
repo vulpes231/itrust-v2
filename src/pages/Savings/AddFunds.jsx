@@ -15,7 +15,7 @@ const AddFunds = ({ accts, handleIcon }) => {
     accts && accts.length > 0 && accts.filter((acct) => acct.tag === "savings");
 
   const [selectedAcct, setSelectedAcct] = useState(
-    saveAccts ? saveAccts[0] : ""
+    saveAccts ? saveAccts[0] : "",
   );
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +28,11 @@ const AddFunds = ({ accts, handleIcon }) => {
   const mutation = useMutation({
     mutationFn: fundSavings,
     onError: (err) => setError(err.message),
+    onSuccess: () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    },
   });
 
   const validation = useFormik({
@@ -39,17 +44,6 @@ const AddFunds = ({ accts, handleIcon }) => {
       mutation.mutate(data);
     },
   });
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      const tmt = setTimeout(() => {
-        mutation.reset();
-        window.location.reload();
-      }, 3000);
-
-      return () => clearTimeout(tmt);
-    }
-  }, [mutation.isSuccess]);
 
   useEffect(() => {
     if (error) {
@@ -71,64 +65,62 @@ const AddFunds = ({ accts, handleIcon }) => {
   return (
     <div className="py-4 d-flex flex-column gap-4">
       <Col key={selectedAcct?._id} style={{ position: "relative" }}>
-        <div className="d-flex align-items-end justify-content-between shadow py-2 px-3 rounded">
-          <span className="d-flex align-items-center gap-3">
-            <span
-              style={{ backgroundColor: getIconBg(selectedAcct?.name) }}
-              className=" px-1 rounded d-flex align-items-center justify-content-center"
-            >
-              {handleIcon(selectedAcct?.name)}{" "}
-            </span>
-            <span
-              className="d-flex flex-column"
-              // style={{  }}
-            >
-              <span
-                style={{ color: "#878A99" }}
-                className="fw-bold fs-13 d-flex align-items-center gap-2"
-              >
-                {selectedAcct?.name}{" "}
-                <span onClick={handleShowAccount}>
-                  {showAccounts ? <IoIosArrowUp /> : <IoIosArrowDown />}
+        <Card>
+          <div className="d-flex align-items-end justify-content-between shadow p-3 rounded border border-1">
+            <span className="d-flex align-items-center gap-3">
+              <span className="py-2 px-3 rounded d-flex align-items-center justify-content-center bg-danger-subtle">
+                {handleIcon(selectedAcct?.name)}
+              </span>
+              <span className="d-flex flex-column">
+                <span className="fw-bold fs-13 d-flex align-items-center gap-2 text-uppercase text-muted">
+                  {selectedAcct?.name}
+                  <span onClick={handleShowAccount}>
+                    {showAccounts ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                  </span>
+                  <Col
+                    className="py-2 px-4"
+                    style={{
+                      display: showAccounts ? "block" : "none",
+                      position: "absolute",
+                      top: "0px",
+                      left: "200px",
+                    }}
+                  >
+                    {saveAccts &&
+                      saveAccts.length > 0 &&
+                      saveAccts.map((acct) => {
+                        return (
+                          <div
+                            onClick={() => {
+                              setSelectedAcct(acct);
+                              handleShowAccount();
+                            }}
+                            key={acct._id}
+                          >
+                            {acct.name}
+                          </div>
+                        );
+                      })}
+                  </Col>
                 </span>
-                <Card
-                  className="py-2 px-4"
-                  style={{
-                    display: showAccounts ? "block" : "none",
-                    position: "absolute",
-                    top: "0px",
-                    left: "200px",
-                  }}
+                <span
+                  style={{ color: "#495057" }}
+                  className="fw-semibold fs-21"
                 >
-                  {saveAccts &&
-                    saveAccts.length > 0 &&
-                    saveAccts.map((acct) => {
-                      return (
-                        <div
-                          onClick={() => {
-                            setSelectedAcct(acct);
-                            handleShowAccount();
-                          }}
-                          key={acct._id}
-                        >
-                          {acct.name}
-                        </div>
-                      );
-                    })}
-                </Card>
-              </span>
-              <span style={{ color: "#495057" }} className="fw-semibold fs-21">
-                {formatCurrency(selectedAcct?.analytics?.balance || 0)}
+                  {formatCurrency(
+                    selectedAcct?.analytics?.balance?.available || 0,
+                  )}
+                </span>
               </span>
             </span>
-          </span>
-          <span
-            style={{ color: "#3AB67A" }}
-            className="fw-semibold fs-9 bg-success-subtle py-1 px-2 rounded"
-          >
-            {selectedAcct?.analytics?.dailyChange}%
-          </span>
-        </div>
+            <span
+              style={{ color: "#3AB67A" }}
+              className="fw-semibold fs-9 bg-success-subtle py-1 px-2 rounded"
+            >
+              {selectedAcct?.analytics?.dailyChange}%
+            </span>
+          </div>
+        </Card>
         <div className="d-flex flex-column gap-2 mt-4">
           <span className="d-flex align-items-center justify-content-between gap-4">
             <span className="fs-14 fw-semibold">
@@ -163,7 +155,7 @@ const AddFunds = ({ accts, handleIcon }) => {
                 onClick={() =>
                   validation.setFieldValue(
                     "amount",
-                    btn === "Max" ? "100000" : btn
+                    btn === "Max" ? "100000" : btn,
                   )
                 }
               >

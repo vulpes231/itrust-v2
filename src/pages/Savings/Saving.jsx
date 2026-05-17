@@ -19,7 +19,7 @@ const Saving = () => {
     queryFn: getSavingsAnalytics,
     enabled: !!token,
   });
-  const { data: user } = useQuery({
+  const { data: user = null } = useQuery({
     queryKey: ["user"],
     queryFn: getUserInfo,
     enabled: !!token,
@@ -27,11 +27,11 @@ const Saving = () => {
 
   const getIcon = (name) => {
     switch (name) {
-      case "Traditional IRA":
+      case "traditional IRA":
         return (
           <i style={{ color: "#261CB6" }} className="ri-shield-line fs-22"></i>
         );
-      case "Health Savings":
+      case "health Savings":
         return (
           <i style={{ color: "#F17171" }} className="ri-service-line fs-22"></i>
         );
@@ -46,7 +46,7 @@ const Saving = () => {
         <Accounts analytics={savingAnalytics} />
       </Col>
       <Row className="mt-4">
-        <Col lg={9}>
+        <Col lg={8}>
           <Retirements
             analytics={savingAnalytics}
             accts={user?.savingsAccounts}
@@ -56,7 +56,7 @@ const Saving = () => {
             accts={user?.savingsAccounts}
           />
         </Col>
-        <Col lg={3}>
+        <Col lg={4}>
           <SavingsList accts={user?.savingsAccounts} />
           <SideContribution
             accts={user?.savingsAccounts}

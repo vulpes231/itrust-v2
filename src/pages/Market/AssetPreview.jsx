@@ -141,16 +141,78 @@ const AssetPreview = ({ asset, handleSubmit }) => {
             <CardHeader>
               <div className="d-flex align-items-center justify-content-between">
                 <h4 className="card-title">Market Statistics</h4>
-                <div>
-                  <button>1H</button>
-                  <button>1D</button>
-                  <button>7D</button>
-                  <button>1Y</button>
-                  <button>ALL</button>
+                <div className="d-flex align-items-center gap-2">
+                  <button className="btn bg-secondary-subtle text-secondary fs-12">
+                    1H
+                  </button>
+                  <button className="btn bg-secondary-subtle text-secondary fs-12">
+                    1D
+                  </button>
+                  <button className="btn bg-secondary-subtle text-secondary fs-12">
+                    7D
+                  </button>
+                  <button className="btn bg-secondary-subtle text-secondary fs-12">
+                    1Y
+                  </button>
+                  <button className="btn bg-secondary-subtle text-secondary fs-12">
+                    ALL
+                  </button>
                 </div>
               </div>
             </CardHeader>
-            <CardBody></CardBody>
+            <CardBody className="p-0">
+              <div className="d-flex align-items-center justify-content-between bg-light p-3">
+                <Col>
+                  <span className="fs-20 fw-semibold">
+                    {numeral(assetInfo?.priceData?.current).format("$0,0.0")}
+                  </span>
+                  <p className="d-flex align-items-center gap-1 text-muted">
+                    <span style={{ whiteSpace: "nowrap" }}>
+                      {" "}
+                      {assetInfo?.name}
+                    </span>{" "}
+                    <span>({assetInfo?.symbol})</span>
+                    <span
+                      className={`${assetInfo?.priceData?.changePercent < 0 ? "text-danger bg-danger-subtle" : "text-success bg-success-subtle"} fs-10 fw-normal px-2 rounded-2 py-1`}
+                    >
+                      {" "}
+                      {parseFloat(assetInfo?.priceData?.changePercent).toFixed(
+                        2,
+                      )}
+                      %
+                    </span>
+                  </p>
+                </Col>
+                <Col className="d-flex align-items-center">
+                  <Col>
+                    <Label className="fs-14 text-muted fw-semibold">High</Label>
+                    <p className="fs-17 text-success fw-semibold">
+                      {numeral(assetInfo?.priceData?.dayHigh).format("$0,0.0")}
+                    </p>
+                  </Col>
+                  <Col>
+                    <Label className="fs-14 text-muted fw-semibold">Low</Label>
+                    <p className="fs-17 text-danger fw-semibold">
+                      {numeral(assetInfo?.priceData?.dayLow).format("$0,0.0")}
+                    </p>
+                  </Col>
+                  <Col>
+                    <Label className="fs-14 text-muted fw-semibold">
+                      Market Cap
+                    </Label>
+                    <p className="fs-17 text-danger fw-semibold text-capitalize">
+                      {formatMarketCap(assetInfo?.fundamentals?.marketCap)}
+                    </p>
+                  </Col>
+                </Col>
+              </div>
+              <div className="p-5 d-flex align-items-center justify-content-center">
+                <small className="text-muted p-5">
+                  {" "}
+                  Unable to load chart data.
+                </small>
+              </div>
+            </CardBody>
           </Card>
         </Col>
       </Row>

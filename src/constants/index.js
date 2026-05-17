@@ -71,11 +71,11 @@ const getWalletIcon = (name) => {
 
 const getIconColor = (name) => {
   switch (name) {
-    case "Traditional IRA":
+    case "traditional IRA":
       return "#261CB6";
-    case "Health Savings":
+    case "health savings":
       return "#F17171";
-    case "High Yield Savings":
+    case "high yield savings":
       return "#3AB67A";
     default:
       return null;
@@ -94,11 +94,11 @@ function formatBytes(bytes, decimals = 2) {
 
 const getIconBg = (name) => {
   switch (name) {
-    case "Traditional IRA":
+    case "traditional IRA":
       return "#E4EDFF";
-    case "Health Savings":
+    case "health savings":
       return "#FDEAEA";
-    case "High Yield Savings":
+    case "high yield savings":
       return "#E8F3EA";
     default:
       return null;

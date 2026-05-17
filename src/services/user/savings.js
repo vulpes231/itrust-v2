@@ -25,7 +25,7 @@ async function getUserSavingsHistory() {
 async function getSavingsAnalytics() {
   try {
     const response = await api.get("/savings/analytics");
-    return response.data;
+    return response.data || null;
   } catch (error) {
     const errMsg = error.message;
     throw new Error(errMsg);
@@ -62,6 +62,17 @@ async function cashoutSavings(formData) {
   }
 }
 
+async function deleteSavingsAccount(formData) {
+  const { accountId } = formData;
+  try {
+    const response = await api.delete(`/savings/${accountId}`);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.message;
+    throw new Error(errMsg);
+  }
+}
+
 export {
   getAvailableSavingsAccts,
   getUserSavingsHistory,
@@ -69,4 +80,5 @@ export {
   cashoutSavings,
   openSavings,
   getSavingsAnalytics,
+  deleteSavingsAccount,
 };

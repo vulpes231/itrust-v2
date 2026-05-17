@@ -11,15 +11,12 @@ const Accounts = ({ analytics }) => {
     <React.Fragment>
       <Row>
         <Col md={6}>
-          <Card
-            className="p-4 d-flex flex-column gap-2"
-            style={{ color: "#495057" }}
-          >
+          <Card className="p-4 d-flex flex-column gap-2">
             <div className="d-flex align-items-center gap-3">
               <img src={brief} alt="" width={40} />
               <span className="d-flex flex-column">
                 <span className="fs-15 fw-bold">Retirement Accounts</span>
-                <span className="fs-14 fw-regular" style={{ color: "#878A99" }}>
+                <span className="fs-14 fw-regular text-muted">
                   {analytics?.retireAcctLength || 0} Active
                 </span>
               </span>
@@ -36,7 +33,6 @@ const Accounts = ({ analytics }) => {
                     style={{
                       fontSize: "29.4px",
                       fontWeight: 600,
-                      color: "#495057",
                     }}
                   >
                     ${" "}
@@ -51,20 +47,18 @@ const Accounts = ({ analytics }) => {
                     style={{
                       fontSize: "14px",
                       fontWeight: 300,
-                      color: "#878A99",
+
                       marginLeft: "2px",
                       alignSelf: "flex-end",
                       marginBottom: "4px",
                     }}
+                    className="text-muted"
                   >
                     .{"00"}k
                   </span>
                 </div>
 
-                <span
-                  className="fs-14 fw-semibold"
-                  style={{ color: "#878A99" }}
-                >
+                <span className="fs-14 fw-semibold text-muted">
                   Total Retirement Savings
                 </span>
               </div>
@@ -73,10 +67,7 @@ const Accounts = ({ analytics }) => {
                   <span className="fs-14 fw-semibold">
                     2025 IRA Contributions
                   </span>
-                  <span
-                    className="fs-14 fw-semibold"
-                    style={{ color: "#878A99" }}
-                  >
+                  <span className="fs-14 fw-semibold text-muted">
                     $0 / $7500
                   </span>
                 </span>
@@ -103,15 +94,12 @@ const Accounts = ({ analytics }) => {
         </Col>
 
         <Col md={6}>
-          <Card
-            className="p-4 d-flex flex-column gap-2 bg-warning-subtle"
-            style={{ color: "#495057" }}
-          >
+          <Card className="p-4 d-flex flex-column gap-2 bg-warning-subtle">
             <div className="d-flex align-items-center gap-3">
               <img src={savings} alt="" width={50} />
               <span className="d-flex flex-column">
                 <span className="fs-15 fw-bold">Savings Accounts</span>
-                <span className="fs-14 fw-regular" style={{ color: "#878A99" }}>
+                <span className="fs-14 fw-regular text-muted">
                   {analytics?.savingAcctLength || 0} Active
                 </span>
               </span>
@@ -128,7 +116,6 @@ const Accounts = ({ analytics }) => {
                     style={{
                       fontSize: "29.4px",
                       fontWeight: 600,
-                      color: "#495057",
                     }}
                   >
                     ${" "}
@@ -143,31 +130,24 @@ const Accounts = ({ analytics }) => {
                     style={{
                       fontSize: "14px",
                       fontWeight: 300,
-                      color: "#878A99",
+
                       marginLeft: "2px",
                       alignSelf: "flex-end",
                       marginBottom: "4px",
                     }}
+                    className="text-muted"
                   >
                     .{"00"}k
                   </span>
                 </div>
-                <span
-                  className="fs-14 fw-semibold"
-                  style={{ color: "#878A99" }}
-                >
+                <span className="fs-14 fw-semibold text-muted">
                   Total Savings Balance
                 </span>
               </div>
               <div className="d-flex flex-column gap-2">
-                <span className="d-flex align-items-center justify-content-between gap-4">
+                <span className="d-flex align-items-center justify-content-between gap-4 text-muted">
                   <span className="fs-14 fw-semibold">Active Goals</span>
-                  <span
-                    className="fs-14 fw-semibold"
-                    style={{ color: "#878A99" }}
-                  >
-                    0
-                  </span>
+                  <span className="fs-14 fw-semibold">0</span>
                 </span>
                 <div>
                   <span>
@@ -182,10 +162,8 @@ const Accounts = ({ analytics }) => {
       <Col>
         <div className="d-flex align-items-center justify-content-between">
           <div className="d-flex flex-column gap-1">
-            <span className="fs-15 fw-bold" style={{ color: "#495057" }}>
-              Open a new Account
-            </span>
-            <span className="fs-14 fw-regular" style={{ color: "#878A99" }}>
+            <span className="fs-15 fw-bold">Open a new Account</span>
+            <span className="fs-14 fw-regular text-muted">
               Start saving for retirement or build your emergency fund
             </span>
           </div>

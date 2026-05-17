@@ -48,10 +48,7 @@ const RecentOrders = ({ trades }) => {
                       </div>
 
                       <div className="flex-grow-1 ms-3">
-                        <h6
-                          className="fs-15 mb-1 d-flex align-items-center gap-2"
-                          style={{ color: "#495057" }}
-                        >
+                        <h6 className="fs-15 mb-1 d-flex align-items-center gap-2">
                           <span>
                             {" "}
                             {trade.orderType === "buy"
@@ -72,10 +69,7 @@ const RecentOrders = ({ trades }) => {
                             {trade.status}
                           </span>
                         </h6>
-                        <p
-                          style={{ color: "#495057" }}
-                          className=" fs-13 mb-0 d-flex align-items-center gap-2 "
-                        >
+                        <p className=" fs-13 mb-0 d-flex align-items-center gap-2 text-muted">
                           <span
                             style={{ whiteSpace: "nowrap" }}
                             className="fw-normal fs-10"
