@@ -45,27 +45,29 @@ const Plans = ({ status = "all", risk = "all" }) => {
     queryFn: getUserInfo,
   });
 
-  const activePlans = user?.activePlans || [];
+  const userActivePlans = user?.activePlans || [];
 
-  const closedPlans = activePlans.filter((plan) => plan?.status === "closed");
+  const userClosedPlans = userActivePlans.filter(
+    (plan) => plan?.status === "closed",
+  );
 
-  const activePlanLength = activePlans?.length || 0;
-  const closedPlanLength = closedPlans?.length || 0;
+  const userActivePlanLength = userActivePlans?.length || 0;
+  const userClosedPlanLength = userClosedPlans?.length || 0;
 
   const activeAll = tabs.filter((tb) => tb.id !== "closed");
   const all = tabs.filter((tb) => tb.id === "plans");
 
   const tabsToShow =
-    activePlanLength > 0 && closedPlanLength > 0
+    userActivePlanLength > 0 && userClosedPlanLength > 0
       ? tabs
-      : activePlanLength > 0 && closedPlanLength === 0
+      : userActivePlanLength > 0 && userClosedPlanLength === 0
         ? activeAll
         : all;
 
   const getFilteredPlans = () => {
-    if (status === "all") return activePlans;
-    if (status === "active") return activePlans;
-    if (status === "closed") return closedPlans;
+    if (status === "all") return userActivePlans;
+    if (status === "active") return userActivePlans;
+    if (status === "closed") return userClosedPlans;
     return [];
   };
 

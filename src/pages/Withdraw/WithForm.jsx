@@ -94,7 +94,7 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
 
   return (
     <React.Fragment>
-      <div className="px-4 py-2" style={{ color: "#495057" }}>
+      <div className="px-4 py-2">
         <div className="pb-4">
           <FlexRow>
             <span
@@ -115,7 +115,7 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
                 style={{
                   fontSize: "15px",
                   fontWeight: 600,
-                  color: "#495057",
+                  // color: "#495057",
                   lineHeight: 2,
                 }}
               >
@@ -125,9 +125,10 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
                 style={{
                   fontSize: "14px",
                   fontWeight: 300,
-                  color: "#878A99",
+                  // color: "#878A99",
                   // lineHeight: 2,
                 }}
+                className="text-muted"
               >
                 Transfer money from your Cash Account
               </span>
@@ -175,7 +176,7 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
             >
               Payment Method
             </Label>
-            <div className="pb-4">
+            <div className="pb-4 d-flex flex-column gap-2">
               {paymentMethods.map((method, idx) => {
                 return (
                   <div
@@ -186,30 +187,22 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
                       gap: "10px",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      border:
-                        selectedMethod === method.id
-                          ? "3px solid #5b71b9"
-                          : "none",
 
                       borderRadius: "5px",
                       cursor: "pointer",
-                      backgroundColor:
-                        selectedMethod === method.id ? "#E5E7F5" : "",
                     }}
                     onClick={() => setSelectedMethod(method.id)}
-                    className={`p-3 `}
+                    className={`p-3 border border-2 ${selectedMethod === method.id ? "bg-secondary-subtle border-secondary" : ""}`}
                   >
                     <FlexRow>
                       <span
                         style={{
-                          backgroundColor:
-                            idx === 0 ? "#FFF7E4" : idx === 1 ? "#DFF5FA" : "",
                           borderRadius: "5px",
                           display: "flex",
                           alignItems: "center",
                           justifyItems: "center",
                         }}
-                        className="p-2"
+                        className={`p-2 ${idx === 0 ? "bg-warning-subtle text-warning" : "bg-info-subtle text-info"}`}
                       >
                         {method.icon}
                       </span>
@@ -254,7 +247,7 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
             </button>
             <small
               className="pb-3"
-              style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
+              style={{ fontSize: "14px", fontWeight: 300 }}
             >
               Withdrawals are processed securely. Processing times vary by
               payment method.

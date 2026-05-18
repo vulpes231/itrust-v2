@@ -69,7 +69,8 @@ const AccountList = ({ getWalletIcon }) => {
                         className="d-flex align-items-center text-muted"
                       >
                         <GoDotFill
-                          style={{ color: getWalletColor(wallet.slug) }}
+                          className={`${getWalletColor(wallet.name)}`}
+                          // style={{ color: getWalletColor(wallet.slug) }}
                         />
                         {capitalize(wallet.name)}
                       </span>

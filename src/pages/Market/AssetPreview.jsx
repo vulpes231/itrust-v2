@@ -23,13 +23,8 @@ const AssetPreview = ({ asset, handleSubmit }) => {
             <div className="d-flex flex-column gap-3">
               <Col className="d-flex align-items-center justify-content-between">
                 <span>
-                  <span style={{ color: "#495057" }} className="fs-15 fw-bold">
-                    {assetInfo?.symbol}
-                  </span>
-                  <h4
-                    style={{ color: "#212529" }}
-                    className="fs-14 fw-normal text-capitalize"
-                  >
+                  <span className="fs-15 fw-bold">{assetInfo?.symbol}</span>
+                  <h4 className="fs-14 fw-normal text-capitalize text-muted">
                     {assetInfo?.name}
                   </h4>
                 </span>
@@ -38,10 +33,7 @@ const AssetPreview = ({ asset, handleSubmit }) => {
                 </span>
               </Col>
               <Col className="d-flex flex-column">
-                <span
-                  style={{ color: "#495057" }}
-                  className="fs-21 fw-semibold"
-                >
+                <span className="fs-21 fw-semibold">
                   {numeral(assetInfo?.priceData?.current).format("$0,0.0")}
                 </span>
                 <span
@@ -65,7 +57,7 @@ const AssetPreview = ({ asset, handleSubmit }) => {
                   >
                     MarketCap
                   </Label>
-                  <p className="fs-15 fw-semibold" style={{ color: "#495057" }}>
+                  <p className="fs-15 fw-semibold">
                     {formatMarketCap(assetInfo?.fundamentals?.marketCap)}
                   </p>
                 </Col>
@@ -76,7 +68,7 @@ const AssetPreview = ({ asset, handleSubmit }) => {
                   >
                     Volume
                   </Label>
-                  <p className="fs-15 fw-semibold" style={{ color: "#495057" }}>
+                  <p className="fs-15 fw-semibold">
                     {formatMarketCap(assetInfo?.priceData?.volume)}
                   </p>
                 </Col>
@@ -87,7 +79,7 @@ const AssetPreview = ({ asset, handleSubmit }) => {
                   >
                     24 High
                   </Label>
-                  <p className="fs-15 fw-semibold" style={{ color: "#495057" }}>
+                  <p className="fs-15 fw-semibold">
                     {numeral(assetInfo?.priceData?.dayHigh).format("$0,0.0")}
                   </p>
                 </Col>
@@ -98,7 +90,7 @@ const AssetPreview = ({ asset, handleSubmit }) => {
                   >
                     24 Low
                   </Label>
-                  <p className="fs-15 fw-semibold" style={{ color: "#495057" }}>
+                  <p className="fs-15 fw-semibold">
                     {numeral(assetInfo?.priceData?.dayLow).format("$0,0.0")}
                   </p>
                 </Col>
@@ -109,7 +101,7 @@ const AssetPreview = ({ asset, handleSubmit }) => {
                   >
                     P.E Ratio
                   </Label>
-                  <p className="fs-15 fw-semibold" style={{ color: "#495057" }}>
+                  <p className="fs-15 fw-semibold">
                     {assetInfo?.fundamentals?.pe || "-"}
                   </p>
                 </Col>
@@ -120,7 +112,7 @@ const AssetPreview = ({ asset, handleSubmit }) => {
                   >
                     52 Weeks Range
                   </Label>
-                  <p className="fs-15 fw-semibold" style={{ color: "#495057" }}>
+                  <p className="fs-15 fw-semibold">
                     {numeral(assetInfo?.historical?.yearHigh).format("$0,0.0")}{" "}
                     - {numeral(assetInfo?.historical?.yearLow).format("$0,0.0")}
                   </p>

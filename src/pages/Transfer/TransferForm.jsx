@@ -18,28 +18,28 @@ const TransferForm = () => {
       case "cash account":
         return (
           <span
-            className="bg-info-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
+            className="bg-secondary-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
             style={{ width: "35px", height: "35px" }}
           >
-            <i class="ri-wallet-line fs-20 text-info"></i>
+            <i class="ri-wallet-line fs-20 text-secondary"></i>
           </span>
         );
       case "automated investing":
         return (
           <span
-            className="bg-warning-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
+            className="bg-info-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
             style={{ width: "35px", height: "35px" }}
           >
-            <i class="ri-24-hours-line fs-20 text-warning"></i>
+            <i class="ri-24-hours-line fs-20 text-info"></i>
           </span>
         );
       case "individual brokerage":
         return (
           <span
-            className="bg-secondary-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
+            className="bg-warning-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
             style={{ width: "35px", height: "35px" }}
           >
-            <i className="ri-bar-chart-2-line fs-20 text-secondary"></i>
+            <i className="ri-bar-chart-2-line fs-20 text-warning"></i>
           </span>
         );
       case "traditional IRA":

@@ -168,7 +168,7 @@ const Crypto = ({ settings }) => {
               style={{
                 fontSize: "15px",
                 fontWeight: 600,
-                color: "#495057",
+
                 lineHeight: 2,
               }}
             >
@@ -178,9 +178,10 @@ const Crypto = ({ settings }) => {
               style={{
                 fontSize: "14px",
                 fontWeight: 300,
-                color: "#878A99",
+
                 // lineHeight: 2,
               }}
+              className="text-muted"
             >
               Choose your cryptocurrency and enter wallet address
             </span>
@@ -215,10 +216,7 @@ const Crypto = ({ settings }) => {
       </Col>
       <Col lg={12}>
         <div className="px-2">
-          <Label
-            className="pb-1"
-            style={{ fontSize: "16px", color: "#495057", fontWeight: 600 }}
-          >
+          <Label className="pb-1" style={{ fontSize: "16px", fontWeight: 600 }}>
             Select Cryptocurrency
           </Label>
           <div
@@ -234,15 +232,14 @@ const Crypto = ({ settings }) => {
                 <div
                   style={{
                     borderRadius: "5px",
-                    border:
-                      selectedMode.id === mtd.id
-                        ? "1px solid #5126be"
-                        : "1px solid #dedede",
+
                     cursor: "pointer",
                   }}
                   key={mtd.id}
-                  className={`d-flex align-items-center gap-3 py-1 px-2 ${
-                    selectedMode.id === mtd.id ? "bg-primary-subtle" : ""
+                  className={`d-flex align-items-center gap-3 py-1 px-2 border border-2 ${
+                    selectedMode.id === mtd.id
+                      ? "bg-primary-subtle border-secondary "
+                      : ""
                   }`}
                   onClick={() => handleMode(mtd)}
                 >
@@ -252,7 +249,7 @@ const Crypto = ({ settings }) => {
                       style={{
                         fontSize: "15px",
                         fontWeight: 600,
-                        color: "#495057",
+                        // color: "#495057",
                       }}
                     >
                       {mtd.label}
@@ -261,8 +258,9 @@ const Crypto = ({ settings }) => {
                       style={{
                         fontSize: "14px",
                         fontWeight: 300,
-                        color: "#212529",
+                        // color: "#212529",
                       }}
+                      className="text-muted"
                     >
                       {mtd.network}
                     </span>
@@ -309,11 +307,12 @@ const Crypto = ({ settings }) => {
             <span
               style={{
                 fontSize: "14px",
-                color: "#878A99",
+
                 alignItems: "center",
                 display: "flex",
                 justifyContent: "center",
               }}
+              className="text-muted"
             >
               or enter manually
             </span>
@@ -417,31 +416,30 @@ const Crypto = ({ settings }) => {
           <div className="d-flex flex-column gap-2 px-3">
             <span className="d-flex align-items-center justify-content-between">
               <span
-                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+                className="text-muted"
+                style={{ fontSize: "14px", fontWeight: 300 }}
               >
                 Amount to receive
               </span>
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
-              >
+              <span style={{ fontSize: "14px", fontWeight: 600 }}>
                 {formatCurrency(data?.amount)}
               </span>
             </span>
             <span className="d-flex align-items-center justify-content-between">
               <span
-                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+                className="text-muted"
+                style={{ fontSize: "14px", fontWeight: 300 }}
               >
                 {selectedMode?.symbol} Value
               </span>
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
-              >
+              <span style={{ fontSize: "14px", fontWeight: 600 }}>
                 0.0015647 {selectedMode?.symbol}
               </span>
             </span>
             <span className="d-flex align-items-center justify-content-between">
               <span
-                style={{ color: "#878A99", fontSize: "14px", fontWeight: 300 }}
+                className="text-muted"
+                style={{ fontSize: "14px", fontWeight: 300 }}
               >
                 Network Fee
               </span>
@@ -453,14 +451,10 @@ const Crypto = ({ settings }) => {
               </span>
             </span>
             <span className="d-flex align-items-center justify-content-between">
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 500 }}
-              >
+              <span style={{ fontSize: "14px", fontWeight: 500 }}>
                 You will receive
               </span>
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
-              >
+              <span style={{ fontSize: "14px", fontWeight: 600 }}>
                 {formatCurrency(data?.amount)}
               </span>
             </span>
@@ -504,10 +498,7 @@ const Crypto = ({ settings }) => {
             {cryptoMutation.isPending && <Spinner size={"sm"} />} Confirm
             Withdrawal
           </button>
-          <small
-            className="pb-3"
-            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
-          >
+          <small className="pb-3" style={{ fontSize: "14px", fontWeight: 300 }}>
             By confirming, you acknowledge that cryptocurrency transactions are
             irreversible and authorize the withdrawal.
           </small>

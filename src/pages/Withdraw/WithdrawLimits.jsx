@@ -51,21 +51,21 @@ const WithdrawalLimits = ({ userSettings, globalSettings, active }) => {
         }}
       >
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>
+          <b className="text-muted" style={{ fontWeight: 300 }}>
             Minimum Withdrawal
           </b>
-          <small style={{ color: "#495057", fontWeight: 500 }}>
+          <small style={{ fontWeight: 500 }}>
             {active === "crypto"
               ? formatCurrency(cryptoLimits?.min ?? 0)
               : formatCurrency(bankLimits?.min ?? 0)}
           </small>
         </CustomRow>
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>
+          <b className="text-muted" style={{ fontWeight: 300 }}>
             {" "}
             Maximum Withdrawal
           </b>
-          <small style={{ color: "#495057", fontWeight: 500 }}>
+          <small style={{ fontWeight: 500 }}>
             {active === "crypto"
               ? formatCurrency(cryptoLimits?.max ?? 0)
               : formatCurrency(bankLimits?.max ?? 0)}

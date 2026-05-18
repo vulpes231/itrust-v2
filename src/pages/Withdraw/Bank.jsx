@@ -96,7 +96,7 @@ const Bank = ({ settings }) => {
               style={{
                 fontSize: "15px",
                 fontWeight: 600,
-                color: "#495057",
+                // color: "#495057",
                 lineHeight: 2,
               }}
             >
@@ -335,9 +335,7 @@ const Bank = ({ settings }) => {
               >
                 Amount to Receive
               </span>
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
-              >
+              <span style={{ fontSize: "14px", fontWeight: 600 }}>
                 {formatCurrency(data?.amount)}
               </span>
             </span>
@@ -356,14 +354,10 @@ const Bank = ({ settings }) => {
               </span>
             </span>
             <span className="d-flex align-items-center justify-content-between">
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 500 }}
-              >
+              <span style={{ fontSize: "14px", fontWeight: 500 }}>
                 You will receive
               </span>
-              <span
-                style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
-              >
+              <span style={{ fontSize: "14px", fontWeight: 600 }}>
                 {formatCurrency(data?.amount)}
               </span>
             </span>

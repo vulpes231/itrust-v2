@@ -108,17 +108,14 @@ const Widgets = () => {
   const getColorBgColor = (id) => {
     switch (id) {
       case 1:
-        return "#DFF5FA";
+        return "bg-info-subtle";
       case 2:
-        return "#E8F3EA";
+        return "bg-success-subtle";
       case 3:
-        return "#E8F3EA";
+        return "bg-success-subtle";
       case 4:
-        return "#FDEAEA";
-      case 5:
-        return "#DFF5FA";
-      case 6:
-        return "#FDEAEA";
+        return "bg-danger-subtle";
+
       default:
         return null;
     }
@@ -127,17 +124,14 @@ const Widgets = () => {
   const getIconColor = (id) => {
     switch (id) {
       case 1:
-        return "#29BADB";
+        return "text-info";
       case 2:
-        return "#67B173";
+        return "text-success";
       case 3:
-        return "#67B173";
+        return "text-success";
       case 4:
-        return "#F17171";
-      case 5:
-        return "#29BADB";
-      case 6:
-        return "#F17171";
+        return "text-danger";
+
       default:
         return null;
     }
@@ -151,17 +145,17 @@ const Widgets = () => {
           widgetsData.length > 0 &&
           widgetsData.map((item, key) => (
             <Col lg={3} md={6} key={key}>
-              <Card>
+              <Card className="card-animate">
                 <CardBody>
                   <div className="d-flex align-items-center">
                     <div className="flex-grow-1 ms-3">
                       <p
-                        className="fw-semibold fs-14 text-muted mb-2"
+                        className="fw-semibold fs-14 text-muted mb-3"
                         style={{ whiteSpace: "nowrap" }}
                       >
                         {item.label}
                       </p>
-                      <h4 className=" mb-0">
+                      <h2 className="counter-value">
                         <CountUp
                           start={0}
                           end={item.counter}
@@ -170,17 +164,12 @@ const Widgets = () => {
                           prefix={item?.prefix}
                           duration={3}
                         />
-                      </h4>
+                      </h2>
                     </div>
                     <div className="avatar-sm flex-shrink-0">
                       <span
-                        style={{
-                          color: getIconColor(item.id),
-                          backgroundColor: getColorBgColor(item.id),
-                        }}
-                        className="avatar-title fs-3"
+                        className={`avatar-title fs-22 rounded ${getIconColor(item.id)} ${getColorBgColor(item.id)}`}
                       >
-                        {/* <i className={getIcon(item.id)}></i> */}
                         {item.icon}
                       </span>
                     </div>

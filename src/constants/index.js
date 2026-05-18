@@ -33,12 +33,12 @@ const formatMarketCap = (marketCap) => {
 
 const getWalletColor = (name) => {
   switch (name) {
-    case "brokerage":
-      return "#5126BE";
-    case "auto":
-      return "#F1CF24";
-    case "cash":
-      return "#29BADB";
+    case "individual brokerage":
+      return "text-warning";
+    case "automated investing":
+      return "text-info";
+    case "cash account":
+      return "text-secondary";
     default:
       return null;
   }

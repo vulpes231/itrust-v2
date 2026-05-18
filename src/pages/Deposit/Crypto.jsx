@@ -157,7 +157,7 @@ const Crypto = ({ settings, user }) => {
               style={{
                 fontSize: "15px",
                 fontWeight: 600,
-                color: "#495057",
+
                 lineHeight: 2,
               }}
             >
@@ -167,9 +167,10 @@ const Crypto = ({ settings, user }) => {
               style={{
                 fontSize: "14px",
                 fontWeight: 300,
-                color: "#878A99",
+                // color: "#878A99",
                 // lineHeight: 2,
               }}
+              className="text-muted"
             >
               Choose your preferred cryptocurrency
             </span>
@@ -178,10 +179,7 @@ const Crypto = ({ settings, user }) => {
       </div>
       <Col lg={12}>
         <div className="px-2">
-          <Label
-            className="pb-1"
-            style={{ fontSize: "16px", color: "#495057", fontWeight: 600 }}
-          >
+          <Label className="pb-1" style={{ fontSize: "16px", fontWeight: 600 }}>
             Select Cryptocurrencies
           </Label>
           <div
@@ -197,15 +195,14 @@ const Crypto = ({ settings, user }) => {
                 <div
                   style={{
                     borderRadius: "5px",
-                    border:
-                      selectedMode.id === mtd.id
-                        ? "1px solid #5126be"
-                        : "1px solid #dedede",
+
                     cursor: "pointer",
                   }}
                   key={mtd.id}
-                  className={`d-flex align-items-center gap-3 py-3 px-3 ${
-                    selectedMode.id === mtd.id ? "bg-primary-subtle" : ""
+                  className={`d-flex align-items-center gap-3 py-3 px-3 border border-1 ${
+                    selectedMode.id === mtd.id
+                      ? "bg-secondary-subtle border-secondary"
+                      : ""
                   }`}
                   onClick={() => handleMode(mtd)}
                 >
@@ -215,7 +212,6 @@ const Crypto = ({ settings, user }) => {
                       style={{
                         fontSize: "15px",
                         fontWeight: 600,
-                        color: "#495057",
                       }}
                     >
                       {mtd.label}
@@ -224,8 +220,9 @@ const Crypto = ({ settings, user }) => {
                       style={{
                         fontSize: "14px",
                         fontWeight: 300,
-                        color: "#212529",
+                        // color: "#212529",
                       }}
+                      className="text-muted"
                     >
                       {mtd.network}
                     </span>
@@ -370,7 +367,6 @@ const Crypto = ({ settings, user }) => {
                   </span>
                   <span
                     style={{
-                      color: "#495057",
                       fontSize: "14px",
                       fontWeight: 600,
                     }}
@@ -390,7 +386,6 @@ const Crypto = ({ settings, user }) => {
                   </span>
                   <span
                     style={{
-                      color: "#495057",
                       fontSize: "14px",
                       fontWeight: 600,
                     }}
@@ -418,7 +413,6 @@ const Crypto = ({ settings, user }) => {
                 <span className="d-flex align-items-center justify-content-between">
                   <span
                     style={{
-                      color: "#495057",
                       fontSize: "14px",
                       fontWeight: 500,
                     }}
@@ -427,7 +421,6 @@ const Crypto = ({ settings, user }) => {
                   </span>
                   <span
                     style={{
-                      color: "#495057",
                       fontSize: "14px",
                       fontWeight: 600,
                     }}
@@ -481,10 +474,7 @@ const Crypto = ({ settings, user }) => {
             {cryptoMutation.isPending && <Spinner size={"sm"} />}I have made
             payment
           </button>
-          <small
-            className="pb-3"
-            style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
-          >
+          <small className="pb-3" style={{ fontSize: "14px", fontWeight: 300 }}>
             After sending {selectedMode?.symbol}, click the button above. Your
             deposit will be credited after network confirmation.
           </small>
