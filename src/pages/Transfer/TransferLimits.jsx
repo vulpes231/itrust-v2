@@ -45,22 +45,22 @@ const TransferLimits = () => {
         }}
       >
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>Minimum Transfer</b>
-          <small style={{ color: "#495057", fontWeight: 500 }}>
-            {formatCurrency(50)}
-          </small>
+          <b className="text-muted" style={{ fontWeight: 300 }}>
+            Minimum Transfer
+          </b>
+          <small style={{ fontWeight: 500 }}>{formatCurrency(50)}</small>
         </CustomRow>
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>Daily Limit</b>
-          <small style={{ color: "#495057", fontWeight: 500 }}>
-            {formatCurrency(1000)}
-          </small>
+          <b className="text-muted" style={{ fontWeight: 300 }}>
+            Daily Limit
+          </b>
+          <small style={{ fontWeight: 500 }}>{formatCurrency(1000)}</small>
         </CustomRow>
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>Monthly Limit</b>
-          <small style={{ color: "#495057", fontWeight: 500 }}>
-            {formatCurrency(3000)}
-          </small>
+          <b className="text-muted" style={{ fontWeight: 300 }}>
+            Monthly Limit
+          </b>
+          <small style={{ fontWeight: 500 }}>{formatCurrency(3000)}</small>
         </CustomRow>
       </div>
     </div>

@@ -15,7 +15,7 @@ const TrxCrumb = ({ title, handleMove }) => {
               style={{
                 fontSize: "15px",
                 fontWeight: 600,
-                color: "#495057",
+                // color: "#495057",
                 textTransform: "uppercase",
               }}
             >

@@ -12,12 +12,14 @@ const CustomSpan = ({ children }) => {
   );
 };
 const Title = ({ children }) => {
-  return <b style={{ color: "#878A99", fontWeight: 300 }}>{children}</b>;
+  return (
+    <b className="text-muted" style={{ fontWeight: 300 }}>
+      {children}
+    </b>
+  );
 };
 const Small = ({ children }) => {
-  return (
-    <small style={{ color: "#495057", fontWeight: 500 }}>{children}</small>
-  );
+  return <small style={{ fontWeight: 500 }}>{children}</small>;
 };
 
 const CustomRow = ({ children }) => {
@@ -65,13 +67,13 @@ const AccountStat = ({ analytics }) => {
         <CustomRow>
           <span
             style={{
-              backgroundColor: "#E8F3EA",
+              // backgroundColor: "#E8F3EA",
               borderRadius: "5px",
               display: "flex",
               alignItems: "center",
               justifyItems: "center",
             }}
-            className="p-2"
+            className="p-2 bg-success-subtle"
           >
             <IoTrendingUpSharp className="text-success" size={22} />
           </span>
@@ -83,13 +85,13 @@ const AccountStat = ({ analytics }) => {
         <CustomRow>
           <span
             style={{
-              backgroundColor: "#DFF5FA",
+              // backgroundColor: "#DFF5FA",
               borderRadius: "5px",
               display: "flex",
               alignItems: "center",
               justifyItems: "center",
             }}
-            className="p-2"
+            className="p-2 bg-info-subtle"
           >
             <CiCalendar className="text-info" size={22} />
           </span>

@@ -61,13 +61,13 @@ const Widgets = () => {
     <React.Fragment>
       <Card className="p-4">
         <Row className="align-items-end">
-          <Col md={4} className="d-flex align-items-center gap-3">
+          <Col md={3} className="d-flex align-items-center gap-3">
             <div className="d-flex flex-column">
               <span className="text-muted fs-11">
                 Updated at {`${format(Date.now(), "dd/MM/yyyy hh:mm a")}`}
               </span>
               <img src={brief} alt="" width={40} />
-              <span className="text-muted text-uppercase fs-13 d-flex align-items-center justify-content-between gap-5">
+              <span className=" text-uppercase fs-13 d-flex align-items-center justify-content-between gap-5">
                 <div>
                   <div
                     style={{
@@ -79,7 +79,7 @@ const Widgets = () => {
                       style={{
                         fontSize: "24px",
                         fontWeight: 600,
-                        color: "#495057",
+                        // color: "#495057",
                       }}
                     >
                       ${" "}
@@ -94,11 +94,12 @@ const Widgets = () => {
                       style={{
                         fontSize: "14px",
                         fontWeight: 400,
-                        color: "#6c757d",
+                        // color: "#6c757d",
                         marginLeft: "2px",
                         alignSelf: "flex-end",
                         marginBottom: "4px",
                       }}
+                      className="text-muted"
                     >
                       .{decimalPart}k
                     </span>
@@ -113,7 +114,7 @@ const Widgets = () => {
                       style={{
                         fontSize: "24px",
                         fontWeight: 600,
-                        color: "#495057",
+                        // color: "#495057",
                       }}
                     >
                       $ ******
@@ -122,11 +123,12 @@ const Widgets = () => {
                       style={{
                         fontSize: "14px",
                         fontWeight: 400,
-                        color: "#6c757d",
+                        // color: "#6c757d",
                         marginLeft: "2px",
                         alignSelf: "flex-end",
                         marginBottom: "4px",
                       }}
+                      className="text-muted"
                     >
                       .**k
                     </span>
@@ -142,7 +144,7 @@ const Widgets = () => {
                   {showBalance ? <FaEye size={16} /> : <FaEyeSlash size={16} />}
                 </span>
               </span>
-              <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center justify-content-between text-muted">
                 Cash Balance
                 {/* <span
                   className={`${
@@ -157,11 +159,11 @@ const Widgets = () => {
             </div>
           </Col>
           <Col
-            md={4}
+            md={3}
             className="bg-light py-2 px-3 rounded-2 d-flex flex-column gap-3"
           >
             <span
-              className="text-muted"
+              // className="text-muted"
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -180,7 +182,7 @@ const Widgets = () => {
               </span>
             </span>
             <span
-              className="text-muted"
+              // className="text-muted"
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -199,7 +201,7 @@ const Widgets = () => {
               </span>
             </span>
           </Col>
-          <Col md={4} className="d-flex justify-content-end gap-2">
+          <Col md={6} className="d-flex justify-content-end gap-2">
             <Link className="btn btn-primary" to={"/deposit"}>
               Deposit
             </Link>

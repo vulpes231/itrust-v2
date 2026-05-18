@@ -5,13 +5,13 @@ import {
   formatCurrency,
   getAccessToken,
   getWalletColor,
-  getWalletIcon,
+  // getWalletIcon,
 } from "../../constants";
 import { Label } from "reactstrap";
 import { GoDotFill } from "react-icons/go";
 import { capitalize } from "lodash";
 
-const AccountList = () => {
+const AccountList = ({ getWalletIcon }) => {
   const token = getAccessToken();
 
   const { data: wallets } = useQuery({
@@ -46,11 +46,13 @@ const AccountList = () => {
                   key={wallet._id}
                 >
                   <div className="d-flex align-items-start gap-2">
-                    <img src={getWalletIcon(wallet.slug)} alt="" width={20} />
+                    <span className="text-muted">
+                      {getWalletIcon(wallet.name)}
+                    </span>
                     <span className="d-flex flex-column">
                       <span
                         style={{
-                          color: "#495057",
+                          // color: "#495057",
                           fontWeight: 600,
                           fontSize: "14px",
                           whiteSpace: "nowrap",
@@ -60,11 +62,11 @@ const AccountList = () => {
                       </span>
                       <span
                         style={{
-                          color: "#878A99",
+                          // color: "#878A99",
                           fontWeight: 300,
                           fontSize: "13px",
                         }}
-                        className="d-flex align-items-center"
+                        className="d-flex align-items-center text-muted"
                       >
                         <GoDotFill
                           style={{ color: getWalletColor(wallet.slug) }}
@@ -75,7 +77,7 @@ const AccountList = () => {
                   </div>
                   <span
                     style={{
-                      color: "#495057",
+                      // color: "#495057",
                       fontWeight: 600,
                       fontSize: "14px",
                     }}

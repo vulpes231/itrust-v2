@@ -108,7 +108,7 @@ const Form = ({
 
   return (
     <React.Fragment>
-      <div className="px-4 py-3" style={{ color: "#495057" }}>
+      <div className="px-4 py-3">
         <div className="pb-4">
           <FlexRow>
             <span
@@ -129,7 +129,7 @@ const Form = ({
                 style={{
                   fontSize: "15px",
                   fontWeight: 600,
-                  color: "#495057",
+                  // color: "#495057",
                   lineHeight: 2,
                 }}
               >
@@ -139,9 +139,10 @@ const Form = ({
                 style={{
                   fontSize: "14px",
                   fontWeight: 300,
-                  color: "#878A99",
+                  // color: "#878A99",
                   // lineHeight: 2,
                 }}
+                className="text-muted"
               >
                 Add Funds to your Cash Account
               </span>
@@ -165,12 +166,12 @@ const Form = ({
                   <button
                     style={{
                       fontSize: "10.5px",
-                      color: "#878A99",
+                      // color: "#878A99",
                       width: "90px",
                     }}
                     key={idx}
                     type="button"
-                    className="btn bg-light mt-2"
+                    className="btn bg-light mt-2 text-muted"
                     onClick={() => {
                       setAmount(btn);
                     }}
@@ -208,25 +209,23 @@ const Form = ({
 
                       borderRadius: "5px",
                       cursor: "pointer",
-                      backgroundColor:
-                        selectedMethod === method.id ? "#E5E7F5" : "", // selectedMethod === method.id ? "#E5E7F5" :
+                      // backgroundColor:
+                      //   selectedMethod === method.id ? "#E5E7F5" : "", // selectedMethod === method.id ? "#E5E7F5" :
                     }}
                     onClick={() => {
                       setSelectedMethod(method.id);
                     }}
-                    className={`p-3 mb-2`}
+                    className={`p-3 mb-2 ${selectedMethod === method.id ? "bg-secondary-subtle" : ""}`}
                   >
                     <FlexRow>
                       <span
                         style={{
-                          backgroundColor:
-                            idx === 0 ? "#FFF7E4" : idx === 1 ? "#DFF5FA" : "",
                           borderRadius: "5px",
                           display: "flex",
                           alignItems: "center",
                           justifyItems: "center",
                         }}
-                        className="p-2"
+                        className={`p-2 ${idx === 0 ? "bg-warning-subtle" : "bg-info-subtle"}`}
                       >
                         {method.icon}
                       </span>
@@ -272,7 +271,7 @@ const Form = ({
             </button>
             <small
               className="pb-3"
-              style={{ fontSize: "14px", color: "#000000", fontWeight: 300 }}
+              style={{ fontSize: "14px", fontWeight: 300 }}
             >
               Your deposit is secure and encrypted. Funds will be available
               according to the payment method processing time.

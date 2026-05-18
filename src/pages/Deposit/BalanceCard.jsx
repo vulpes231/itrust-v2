@@ -45,16 +45,14 @@ const BalanceCard = () => {
             alignItems: "baseline",
           }}
         >
-          <span
-            style={{ fontSize: "24.5px", fontWeight: "500", color: "#495057" }}
-          >
+          <span style={{ fontSize: "24.5px", fontWeight: "500" }}>
             $ <CountUp start={0} end={wholePart} duration={2} separator="," />
           </span>
           <span
             style={{
               fontSize: "14px",
               fontWeight: "400",
-              color: "#6c757d",
+              // color: "#6c757d",
               marginLeft: "2px",
               alignSelf: "flex-end",
               marginBottom: "4px",
@@ -69,14 +67,12 @@ const BalanceCard = () => {
             alignItems: "baseline",
           }}
         >
-          <span style={{ fontSize: "24px", fontWeight: 600, color: "#495057" }}>
-            $ ******
-          </span>
+          <span style={{ fontSize: "24px", fontWeight: 600 }}>$ ******</span>
           <span
             style={{
               fontSize: "14px",
               fontWeight: 400,
-              color: "#6c757d",
+              // color: "#6c757d",
               marginLeft: "2px",
               alignSelf: "flex-end",
               marginBottom: "4px",
@@ -89,7 +85,7 @@ const BalanceCard = () => {
           onClick={() => setShowBalance(!showBalance)}
           className="px-2 mx-2"
           style={{
-            backgroundColor: "whitesmoke",
+            // backgroundColor: "whitesmoke",
             padding: "2px",
             borderRadius: "5px",
             cursor: "pointer",

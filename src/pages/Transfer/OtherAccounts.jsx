@@ -1,40 +1,33 @@
 import React from "react";
-import { formatCurrency, getWalletBg, getWalletIcon } from "../../constants";
+import { formatCurrency, getWalletBg } from "../../constants";
 import { capitalize } from "lodash";
 import { GoDotFill } from "react-icons/go";
 
-const OtherAccounts = ({ otherAccts, setToAccount, toAccount }) => {
+const OtherAccounts = ({
+  otherAccts,
+  setToAccount,
+  toAccount,
+  getWalletIcon,
+}) => {
   return (
     <div className="d-flex flex-column gap-2">
       {otherAccts.map((wallet) => {
         return (
           <div
-            className={`d-flex align-items-center gap-2 justify-content-between px-4 py-2 rounded  ${
-              toAccount._id === wallet._id ? "bg-primary-subtle" : ""
+            className={`d-flex align-items-center gap-2 justify-content-between px-4 py-2 rounded border border-1  ${
+              toAccount._id === wallet._id
+                ? "bg-primary-subtle border-secondary"
+                : ""
             }`}
-            style={{
-              border:
-                toAccount._id === wallet._id
-                  ? "1px solid #5156be"
-                  : "1px solid #dedede",
-            }}
             key={wallet._id}
             onClick={() => setToAccount(wallet)}
           >
             <div className={`d-flex align-items-center gap-3`}>
-              <figure
-                style={{
-                  backgroundColor: getWalletBg(wallet.slug),
-                  // color: getWalletColor(wallet.name),
-                }}
-                className="p-1 d-flex align-items-center justify-content-center rounded"
-              >
-                <img src={getWalletIcon(wallet.slug)} alt="" width={20} />
-              </figure>
+              <span>{getWalletIcon(wallet.name)}</span>
               <div className="d-flex flex-column gap-1">
                 <span
                   style={{
-                    color: "#495057",
+                    // color: "#495057",
                     fontWeight: 600,
                     fontSize: "14px",
                   }}
@@ -44,10 +37,11 @@ const OtherAccounts = ({ otherAccts, setToAccount, toAccount }) => {
 
                 <span
                   style={{
-                    color: "#212529",
+                    // color: "#212529",
                     fontWeight: 300,
                     fontSize: "14px",
                   }}
+                  className="text-muted"
                 >
                   Balance: {formatCurrency(wallet.balance.available)}
                 </span>
@@ -55,15 +49,15 @@ const OtherAccounts = ({ otherAccts, setToAccount, toAccount }) => {
             </div>
             <div
               style={{
-                border:
-                  toAccount._id === wallet._id
-                    ? "3px solid #5156be"
-                    : "3px solid #505050",
-                borderRadius: "50%",
+                // border:
+                //   toAccount._id === wallet._id
+                //     ? "3px solid #5156be"
+                //     : "3px solid #505050",
+                // borderRadius: "50%",
                 width: "16px",
                 height: "16px",
               }}
-              className="d-flex align-items-center justify-content-center"
+              className={`d-flex align-items-center justify-content-center border border-1 ${toAccount._id === wallet._id ? "border-secondary" : ""}`}
             >
               <GoDotFill
                 style={{

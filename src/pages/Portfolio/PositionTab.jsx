@@ -27,7 +27,7 @@ const PositionTab = ({ position }) => {
           </span>
         </div>
         <div>
-          <span className="fs-12" style={{ color: "#878A99" }}>
+          <span className="fs-12 text-muted">
             as of {format(new Date(), "dd/mm/yyyy")}
           </span>
         </div>
@@ -36,74 +36,54 @@ const PositionTab = ({ position }) => {
       <Col className="px-3 d-flex flex-column gap-2">
         <Row className="text-capitalize">
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              ordertype
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
-              buy
-            </p>
+            <Label className="fw-semibold fs-15">ordertype</Label>
+            <p className="fw-normal fs-14 text-muted">buy</p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              quantity
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
+            <Label className="fw-semibold fs-15">quantity</Label>
+            <p className="fw-normal fs-14 text-muted">
               {parseFloat(position?.quantity).toFixed(6)}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              cost
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
+            <Label className="fw-semibold fs-15">cost</Label>
+            <p className="fw-normal fs-14 text-muted">
               {numeral(position?.amountInvested).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              today's return
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
+            <Label className="fw-semibold fs-15">today's return</Label>
+            <p className="fw-normal fs-14 text-muted">
               {numeral(position?.todayReturn).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              unrealized P&L
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
+            <Label className="fw-semibold fs-15">unrealized P&L</Label>
+            <p className="fw-normal fs-14 text-muted">
               {numeral(position?.return).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              current value
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
+            <Label className="fw-semibold fs-15">current value</Label>
+            <p className="fw-normal fs-14 text-muted">
               {numeral(position?.currentValue).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              average cost
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
+            <Label className="fw-semibold fs-15">average cost</Label>
+            <p className="fw-normal fs-14 text-muted">
               {numeral(position?.currentPrice).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              Leverage
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
+            <Label className="fw-semibold fs-15">Leverage</Label>
+            <p className="fw-normal fs-14 text-muted">
               {position?.leverage || "-"}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label style={{ color: "#495057" }} className="fw-semibold fs-15">
-              realized P&L
-            </Label>
-            <p className="fw-normal fs-14" style={{ color: "#878A99" }}>
+            <Label className="fw-semibold fs-15">realized P&L</Label>
+            <p className="fw-normal fs-14 text-muted">
               {numeral(position?.return).format("$0,0.00")}
             </p>
           </Col>

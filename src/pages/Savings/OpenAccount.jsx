@@ -125,10 +125,8 @@ const OpenAccount = () => {
           <Col>
             <Card className="p-4">
               <div className="d-flex flex-column gap-2">
-                <span style={{ color: "#495057" }} className="fw-bold fs-15">
-                  Choose Account
-                </span>
-                <span style={{ color: "#878A99" }} className="fw-regular fs-14">
+                <span className="fw-bold fs-15">Choose Account</span>
+                <span className="fw-regular text-muted fs-14">
                   It's easy to get started, whether you want to begin investing,
                   or are interested in savings and retirement accounts. Make
                   selections below to help us find the right investing
@@ -140,10 +138,7 @@ const OpenAccount = () => {
                   {/* RETIREMENT ACCOUNTS SECTION */}
                   {retirementAccts && retirementAccts.length > 0 && (
                     <div className="mt-4 d-flex flex-column gap-3">
-                      <span
-                        style={{ color: "#495057" }}
-                        className="fw-semibold fs-18 "
-                      >
+                      <span className="fw-semibold fs-18 ">
                         RETIREMENT ACCOUNTS
                       </span>
                       <Row>
@@ -161,40 +156,25 @@ const OpenAccount = () => {
                                   <i className="ri-hand-coin-line fs-22 text-success"></i>
                                 </span>
                                 <span className="d-flex flex-column">
-                                  <span
-                                    style={{ color: "#878A99" }}
-                                    className="fw-bold fs-13"
-                                  >
+                                  <span text-muted className="fw-bold fs-13">
                                     {`${acct.name.slice(0, 1)}${acct.name.slice(
                                       1,
                                     )}`}
                                   </span>
-                                  <span
-                                    style={{ color: "#495057" }}
-                                    className="fw-semibold fs-21"
-                                  >
+                                  <span className="fw-semibold fs-21">
                                     {acct.slug}
                                   </span>
                                 </span>
                               </div>
                               <hr className="border" />
                               <div className="d-flex flex-column gap-1">
-                                <span
-                                  style={{ color: "#495057" }}
-                                  className="fw-semibold fs-15"
-                                >
+                                <span className="fw-semibold fs-15">
                                   {acct.title}
                                 </span>
-                                <span
-                                  style={{ color: "#495057" }}
-                                  className="fw-regular fs-14"
-                                >
+                                <span className="fw-regular fs-14">
                                   {acct.information}
                                 </span>
-                                <ul
-                                  style={{ color: "#495057" }}
-                                  className="fw-regular fs-14"
-                                >
+                                <ul className="fw-regular fs-14">
                                   {acct.details.length > 0 &&
                                     acct.details.map((nt, idx) => {
                                       return <li key={idx}>{nt}</li>;
@@ -211,10 +191,7 @@ const OpenAccount = () => {
                   {/* SAVINGS ACCOUNTS SECTION */}
                   {savingsAccts && savingsAccts.length > 0 && (
                     <div className="mt-4 d-flex flex-column gap-3">
-                      <span
-                        style={{ color: "#495057" }}
-                        className="fw-semibold fs-18 "
-                      >
+                      <span className="fw-semibold fs-18 ">
                         SAVINGS ACCOUNTS
                       </span>
                       <Row>
@@ -233,39 +210,27 @@ const OpenAccount = () => {
                                 </span>
                                 <span className="d-flex flex-column">
                                   <span
-                                    style={{ color: "#878A99" }}
+                                    text-muted
                                     className="fw-bold fs-13 text-capitalize"
                                   >
                                     {`${acct.name.slice(0, 1)}${acct.name.slice(
                                       1,
                                     )}`}
                                   </span>
-                                  <span
-                                    style={{ color: "#495057" }}
-                                    className="fw-semibold fs-21 text-uppercase"
-                                  >
+                                  <span className="fw-semibold fs-21 text-uppercase">
                                     {acct.slug}
                                   </span>
                                 </span>
                               </div>
                               <hr className="border" />
                               <div className="d-flex flex-column gap-1">
-                                <span
-                                  style={{ color: "#495057" }}
-                                  className="fw-semibold fs-15 text-capitalize"
-                                >
+                                <span className="fw-semibold fs-15 text-capitalize">
                                   {acct.title}
                                 </span>
-                                <span
-                                  style={{ color: "#495057" }}
-                                  className="fw-regular fs-14 text-capitalize"
-                                >
+                                <span className="fw-regular fs-14 text-capitalize">
                                   {acct.information}
                                 </span>
-                                <ul
-                                  style={{ color: "#495057" }}
-                                  className="fw-regular fs-14 text-capitalize"
-                                >
+                                <ul className="fw-regular fs-14 text-capitalize">
                                   {acct.details.length > 0 &&
                                     acct.details.map((nt, idx) => {
                                       return <li key={idx}>{nt}</li>;
@@ -309,7 +274,7 @@ const OpenAccount = () => {
                         </span>
                         <span className="d-flex flex-column">
                           <span
-                            style={{ color: "#878A99" }}
+                            text-muted
                             className="fw-bold fs-13 text-capitalize"
                           >
                             {`${selectedAcct?.name.slice(
@@ -317,32 +282,20 @@ const OpenAccount = () => {
                               1,
                             )}${selectedAcct?.name.slice(1)}`}
                           </span>
-                          <span
-                            style={{ color: "#495057" }}
-                            className="fw-semibold fs-21 text-uppercase"
-                          >
+                          <span className="fw-semibold fs-21 text-uppercase">
                             {selectedAcct?.slug}
                           </span>
                         </span>
                       </div>
                       <hr className="border" />
                       <div className="d-flex flex-column gap-1">
-                        <span
-                          style={{ color: "#495057" }}
-                          className="fw-semibold fs-15 text-capitalize"
-                        >
+                        <span className="fw-semibold fs-15 text-capitalize">
                           {selectedAcct?.title}
                         </span>
-                        <span
-                          style={{ color: "#495057" }}
-                          className="fw-regular fs-14 text-capitalize"
-                        >
+                        <span className="fw-regular fs-14 text-capitalize">
                           {selectedAcct?.information}
                         </span>
-                        <ul
-                          style={{ color: "#495057" }}
-                          className="fw-regular fs-14 text-capitalize"
-                        >
+                        <ul className="fw-regular fs-14 text-capitalize">
                           {selectedAcct &&
                             selectedAcct.details.length > 0 &&
                             selectedAcct.details.map((nt, idx) => {

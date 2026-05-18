@@ -45,8 +45,10 @@ const DepositLimit = ({ userSettings, globalSettings, active }) => {
         }}
       >
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>Minimum Deposit</b>
-          <small style={{ color: "#495057", fontWeight: 500 }}>
+          <b style={{ fontWeight: 300 }} className="text-muted">
+            Minimum Deposit
+          </b>
+          <small style={{ fontWeight: 500 }}>
             {active === "crypto"
               ? formatCurrency(cryptoLimits?.min ?? 0)
               : formatCurrency(bankLimits?.min ?? 0)}
@@ -54,8 +56,10 @@ const DepositLimit = ({ userSettings, globalSettings, active }) => {
         </CustomRow>
 
         <CustomRow>
-          <b style={{ color: "#878A99", fontWeight: 300 }}>Maximum Deposit</b>
-          <small style={{ color: "#495057", fontWeight: 500 }}>
+          <b style={{ fontWeight: 300 }} className="text-muted">
+            Maximum Deposit
+          </b>
+          <small style={{ fontWeight: 500 }}>
             {active === "crypto"
               ? formatCurrency(cryptoLimits?.max ?? 0)
               : formatCurrency(bankLimits?.max ?? 0)}

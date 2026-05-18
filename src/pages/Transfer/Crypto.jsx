@@ -12,12 +12,7 @@ import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { CenterSpan, CustomSpan, FlexRow } from "../Deposit/DepositUtils";
 import { BsFillSendFill } from "react-icons/bs";
-import {
-  formatCurrency,
-  getWalletBg,
-  getWalletColor,
-  getWalletIcon,
-} from "../../constants";
+import { formatCurrency, getWalletBg, getWalletColor } from "../../constants";
 import { GoDotFill } from "react-icons/go";
 import Loader from "../../components/Common/Loader";
 import CashAccounts from "./CashAccounts";
@@ -36,7 +31,7 @@ const buttons = [
   "100000",
 ];
 
-const Crypto = () => {
+const Crypto = ({ getWalletIcon }) => {
   const [error, setError] = useState("");
   const [selectedAccount, setSelectedAccount] = useState("");
   const [accountSelected, setAccountSelected] = useState(false);
@@ -133,7 +128,7 @@ const Crypto = () => {
               style={{
                 fontSize: "15px",
                 fontWeight: 600,
-                color: "#495057",
+                // color: "#495057",
                 lineHeight: 2,
               }}
             >
@@ -143,9 +138,11 @@ const Crypto = () => {
               style={{
                 fontSize: "14px",
                 fontWeight: 300,
-                color: "#878A99",
+                // color: "#878A99",
+
                 // lineHeight: 2,
               }}
+              className="text-muted"
             >
               Move funds between your investment accounts
             </span>
@@ -166,6 +163,7 @@ const Crypto = () => {
                 setAccountSelected={setAccountSelected}
                 accountSelected={accountSelected}
                 setToAccount={setToAccount}
+                getWalletIcon={getWalletIcon}
               />
             ) : (
               wallets &&
@@ -173,17 +171,17 @@ const Crypto = () => {
               wallets.map((wallet) => {
                 return (
                   <div
-                    className={`d-flex align-items-center gap-2 justify-content-between px-4 py-2 rounded  ${
+                    className={`d-flex align-items-center gap-2 justify-content-between px-4 py-2 rounded border border-1  ${
                       selectedAccount._id === wallet._id
-                        ? "bg-primary-subtle"
+                        ? "bg-primary-subtle border-secondary"
                         : ""
                     }`}
-                    style={{
-                      border:
-                        selectedAccount._id === wallet._id
-                          ? "1px solid #5156be"
-                          : "1px solid #dedede",
-                    }}
+                    // style={{
+                    //   border:
+                    //     selectedAccount._id === wallet._id
+                    //       ? "1px solid #5156be"
+                    //       : "1px solid #dedede",
+                    // }}
                     key={wallet._id}
                     onClick={() => {
                       setAccountSelected(!accountSelected);
@@ -191,23 +189,11 @@ const Crypto = () => {
                     }}
                   >
                     <div className={`d-flex align-items-center gap-3`}>
-                      <figure
-                        style={{
-                          backgroundColor: getWalletBg(wallet.slug),
-                          // color: getWalletColor(wallet.name),
-                        }}
-                        className="p-1 d-flex align-items-center justify-content-center rounded"
-                      >
-                        <img
-                          src={getWalletIcon(wallet.slug)}
-                          alt=""
-                          width={20}
-                        />
-                      </figure>
+                      <span>{getWalletIcon(wallet.name)}</span>
                       <div className="d-flex flex-column gap-1">
                         <span
                           style={{
-                            color: "#495057",
+                            // color: "#495057",
                             fontWeight: 600,
                             fontSize: "14px",
                           }}
@@ -217,10 +203,11 @@ const Crypto = () => {
 
                         <span
                           style={{
-                            color: "#212529",
+                            // color: "#212529",
                             fontWeight: 300,
                             fontSize: "14px",
                           }}
+                          className="text-muted"
                         >
                           Balance: {formatCurrency(wallet.balance.available)}
                         </span>
@@ -228,15 +215,15 @@ const Crypto = () => {
                     </div>
                     <div
                       style={{
-                        border:
-                          selectedAccount._id === wallet._id
-                            ? "3px solid #5156be"
-                            : "3px solid #505050",
-                        borderRadius: "50%",
+                        // border:
+                        //   selectedAccount._id === wallet._id
+                        //     ? "3px solid #5156be"
+                        //     : "3px solid #505050",
+                        // borderRadius: "50%",
                         width: "16px",
                         height: "16px",
                       }}
-                      className="d-flex align-items-center justify-content-center"
+                      className={`d-flex align-items-center justify-content-center border border-1 ${selectedAccount._id === wallet._id ? "border-secondary" : ""}`}
                     >
                       <GoDotFill
                         style={{
@@ -307,12 +294,14 @@ const Crypto = () => {
                       otherAccts={otherAccounts}
                       toAccount={toAccount}
                       setToAccount={setToAccount}
+                      getWalletIcon={getWalletIcon}
                     />
                   ) : (
                     <CashAccounts
                       cashAccts={cashAccount}
                       toAccount={toAccount}
                       setToAccount={setToAccount}
+                      getWalletIcon={getWalletIcon}
                     />
                   )}
                 </div>

@@ -43,6 +43,7 @@ const getWalletColor = (name) => {
       return null;
   }
 };
+
 const getWalletBg = (name) => {
   switch (name) {
     case "brokerage":

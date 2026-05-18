@@ -39,12 +39,11 @@ const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
   return (
     <Card>
       <Row className="p-3">
-        <Col md={3} style={{ color: "#495057" }}>
+        <Col md={3}>
           <div className="d-flex align-items-start justify-content-between">
             <select
-              className="border-0 bg-transparent fs-13 text-uppercase"
+              className="border-0 bg-transparent fs-13 text-uppercase text-muted"
               onChange={handleChange}
-              style={{ color: "#878A99" }}
               value={activeWallet?._id || ""}
             >
               {wallets.map((wallet) => {
