@@ -2,7 +2,7 @@ import { capitalize } from "lodash";
 import React from "react";
 import { Card, Col, Row } from "reactstrap";
 import { cash } from "../../assets";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, liveUrl } from "../../constants";
 
 const ActivePlans = ({ plans, style }) => {
   // console.log(plans);
@@ -17,13 +17,10 @@ const ActivePlans = ({ plans, style }) => {
                 <Card className="d-flex flex-column gap-3 py-3">
                   <div className="d-flex align-items-center gap-3 px-4 py-2">
                     <span className="bg-light">
-                      <img src={plan.image} alt="" width={40} />
+                      <img src={`${liveUrl}${plan.image}`} alt="" width={40} />
                     </span>
                     <span className="d-flex flex-column">
-                      <span
-                        style={{ color: style.dark }}
-                        className="fs-16 fw-bold"
-                      >
+                      <span className="fs-16 fw-bold text-capitalize">
                         {plan.name}
                       </span>
                       <span
@@ -38,15 +35,12 @@ const ActivePlans = ({ plans, style }) => {
                     <Col xs={6} className="d-flex flex-column px-4">
                       <span
                         style={{ color: style.light }}
-                        className={style.slim}
+                        className={` text-nowrap ${style.slim}`}
                       >
-                        Min Investment
+                        Invested Amount
                       </span>
-                      <span
-                        style={{ color: style.dark }}
-                        className={style.medium}
-                      >
-                        {formatCurrency(plan.min)}
+                      <span className={style.medium}>
+                        {formatCurrency(plan?.balance?.total)}
                       </span>
                     </Col>
                     <Col xs={6} className="d-flex flex-column px-4">
@@ -56,10 +50,7 @@ const ActivePlans = ({ plans, style }) => {
                       >
                         Win Rate
                       </span>
-                      <span
-                        className={style.medium}
-                        style={{ color: style.dark }}
-                      >
+                      <span className={style.medium}>
                         {plan.analytics.winRate}%
                       </span>
                     </Col>
@@ -72,10 +63,7 @@ const ActivePlans = ({ plans, style }) => {
                       >
                         24H Returns
                       </span>
-                      <span
-                        className={style.medium}
-                        style={{ color: style.dark }}
-                      >
+                      <span className={style.medium}>
                         {plan.analytics.dailyReturn}%
                       </span>
                     </Col>
@@ -86,12 +74,7 @@ const ActivePlans = ({ plans, style }) => {
                       >
                         Duration
                       </span>
-                      <span
-                        className={style.medium}
-                        style={{ color: style.dark }}
-                      >
-                        {plan.duration}(s)
-                      </span>
+                      <span className={style.medium}>{plan.duration}(s)</span>
                     </Col>
                   </Row>
                   <Row className="px-4">
@@ -102,12 +85,7 @@ const ActivePlans = ({ plans, style }) => {
                       >
                         AUM(USD)
                       </span>
-                      <span
-                        className={style.medium}
-                        style={{ color: style.dark }}
-                      >
-                        {plan.aum}M
-                      </span>
+                      <span className={style.medium}>{plan.aum}M</span>
                     </Col>
                     <Col xs={6} className="d-flex flex-column px-4">
                       <span
@@ -118,27 +96,27 @@ const ActivePlans = ({ plans, style }) => {
                       </span>
                       <span
                         className={`d-flex align-items-center p-1 rounded justify-content-center fs-10 fw-semibold  ${
-                          plan.type === "conservative"
+                          plan?.risk === "conservative"
                             ? "bg-primary-subtle"
-                            : plan.type === "aggressive"
+                            : plan?.risk === "aggressive"
                               ? "bg-danger-subtle"
-                              : plan.type === "moderate"
+                              : plan?.risk === "moderate"
                                 ? "bg-warning-subtle"
                                 : null
                         }`}
                         style={{
                           color:
-                            plan.type === "conservative"
+                            plan?.risk === "conservative"
                               ? "#5162be"
-                              : plan.type === "aggressive"
+                              : plan?.risk === "aggressive"
                                 ? "#F17171"
-                                : plan.type === "moderate"
+                                : plan?.risk === "moderate"
                                   ? "#FFC84B"
                                   : null,
                           width: "98px",
                         }}
                       >
-                        {capitalize(plan.type)}{" "}
+                        {capitalize(plan?.risk)}{" "}
                         <i className="ri-arrow-right-up-line fs-10"></i>
                       </span>
                     </Col>
@@ -154,7 +132,7 @@ const ActivePlans = ({ plans, style }) => {
                       </span>
                       <span
                         style={{ color: style.light }}
-                        className={style.slim}
+                        className={`text-nowrap ${style.slim}`}
                       >
                         Expected returns
                       </span>

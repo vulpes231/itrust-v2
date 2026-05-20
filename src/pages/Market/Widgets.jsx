@@ -5,6 +5,7 @@ import { LuCircleDollarSign } from "react-icons/lu";
 
 const Widgets = ({ analytics, walletData, count }) => {
   const totalInv =
+    walletData &&
     walletData?.default?.totalInvested + walletData.default?.totalProfitLoss;
   const marketWidgets = analytics && [
     {
@@ -18,8 +19,8 @@ const Widgets = ({ analytics, walletData, count }) => {
     {
       id: 2,
       title: "Total Investments",
-      counter: totalInv.toFixed(2).split(".")[0],
-      decimal: totalInv.toFixed(2).split(".")[1],
+      counter: totalInv ? totalInv.toFixed(2).split(".")[0] : 0,
+      decimal: totalInv ? totalInv.toFixed(2).split(".")[1] : 0,
       icon: "ri-funds-line",
       iconClass: "info",
     },
@@ -56,7 +57,11 @@ const Widgets = ({ analytics, walletData, count }) => {
                     <h2 className="mb-0">
                       {item.id !== 1 && "$"}
                       <span className="counter-value">
-                        <CountUp start={0} end={item.counter} duration={3} />
+                        <CountUp
+                          start={0}
+                          end={item?.counter || 0}
+                          duration={3}
+                        />
                       </span>
                       <small className="text-muted fs-14">
                         {item.id !== 1 && "."}
