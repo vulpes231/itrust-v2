@@ -13,26 +13,8 @@ import {
 } from "../../services/user/wallet";
 import { getAccessToken } from "../../constants";
 
-const Widgets = () => {
+const Widgets = ({ wallets, user, walletData }) => {
   const tk = getAccessToken();
-
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: getUserInfo,
-    enabled: !!tk,
-  });
-
-  const { data: wallets } = useQuery({
-    queryKey: ["wallets"],
-    queryFn: getUserWallets,
-    enabled: !!tk,
-  });
-
-  const { data: walletData } = useQuery({
-    queryKey: ["walletData"],
-    queryFn: getWalletInvestData,
-    enabled: !!tk,
-  });
 
   const investAccount =
     wallets &&
@@ -47,7 +29,7 @@ const Widgets = () => {
     if (!investAccount || !walletData) return [];
 
     const totalAutoBalance =
-      investAccount.totalBalance + walletData["auto"].totalProfitLoss;
+      investAccount?.balance?.total + walletData["auto"].totalProfitLoss;
 
     return [
       {

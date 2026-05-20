@@ -4,11 +4,11 @@ import React, { useEffect } from "react";
 import { Col, Label, Row } from "reactstrap";
 
 const PositionTab = ({ position }) => {
-  useEffect(() => {
-    if (position) {
-      console.log(position, "data");
-    }
-  }, [position]);
+  // useEffect(() => {
+  //   if (position) {
+  //     console.log(position, "data");
+  //   }
+  // }, [position]);
 
   return (
     <div className="border-1 border px-4 py-2 rounded-3">

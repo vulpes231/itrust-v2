@@ -5,13 +5,13 @@ import { cash } from "../../assets";
 import { formatCurrency } from "../../constants";
 
 const ActivePlans = ({ plans, style }) => {
+  // console.log(plans);
   return (
     <React.Fragment>
       <Row className="g-4 py-3">
         {plans &&
           plans.length > 0 &&
           plans.map((plan) => {
-            console.log(plan);
             return (
               <Col key={plan.planId} lg={4}>
                 <Card className="d-flex flex-column gap-3 py-3">

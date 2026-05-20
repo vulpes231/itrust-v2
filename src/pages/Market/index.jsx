@@ -17,6 +17,7 @@ import { getAccessToken } from "../../constants";
 import { useParams } from "react-router-dom";
 import { getAssetInfo } from "../../services/asset/asset";
 import AssetPreview from "./AssetPreview";
+import { getUserPositions } from "../../services/user/position";
 
 const BuySell = () => {
   document.title = "Market - Itrust Investments";
@@ -80,6 +81,12 @@ const BuySell = () => {
     return false;
   };
 
+  const { data: positionData } = useQuery({
+    queryKey: ["positionData"],
+    queryFn: () => getUserPositions(),
+    enabled: !!tk,
+  });
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -87,7 +94,11 @@ const BuySell = () => {
           <BreadCrumb title="Market" pageTitle="Trade" />
           <VerifyAccountNotify />
           <Row>
-            <Widgets analytics={walletAnalytics} />
+            <Widgets
+              analytics={walletAnalytics}
+              walletData={walletData}
+              count={positionData?.positions?.length}
+            />
           </Row>
           <Row className="px-3">
             <AssetManager

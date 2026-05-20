@@ -3,12 +3,14 @@ import CountUp from "react-countup";
 import { Card, CardBody, Col } from "reactstrap";
 import { LuCircleDollarSign } from "react-icons/lu";
 
-const Widgets = ({ analytics }) => {
+const Widgets = ({ analytics, walletData, count }) => {
+  const totalInv =
+    walletData?.default?.totalInvested + walletData.default?.totalProfitLoss;
   const marketWidgets = analytics && [
     {
       id: 1,
       title: "Assets Owned",
-      counter: analytics?.assetsOwned,
+      counter: count,
       // decimal: 0,
       icon: "ri-shopping-bag-line",
       iconClass: "danger",
@@ -16,8 +18,8 @@ const Widgets = ({ analytics }) => {
     {
       id: 2,
       title: "Total Investments",
-      counter: analytics.totalInvested.toFixed(2).split(".")[0],
-      decimal: analytics.totalInvested.toFixed(2).split(".")[1],
+      counter: totalInv.toFixed(2).split(".")[0],
+      decimal: totalInv.toFixed(2).split(".")[1],
       icon: "ri-funds-line",
       iconClass: "info",
     },

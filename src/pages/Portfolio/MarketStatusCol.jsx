@@ -2,6 +2,7 @@ import React from "react";
 import { formatCurrency } from "../../constants";
 import { format } from "date-fns";
 import { capitalize } from "lodash";
+import numeral from "numeral";
 
 const Date = (cell) => {
   return (
@@ -25,7 +26,7 @@ const Date = (cell) => {
 };
 const Quantity = (cell) => {
   return (
-    <React.Fragment>{parseFloat(cell.getValue()).toFixed(4)}</React.Fragment>
+    <React.Fragment>{parseFloat(cell.getValue()).toFixed(6)}</React.Fragment>
   );
 };
 const OrderType = (cell) => {
@@ -41,16 +42,25 @@ const OrderType = (cell) => {
 };
 
 const AvgPrice = (cell) => {
-  return <React.Fragment>{cell.getValue()}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {" "}
+      {numeral(cell.getValue()).format("$0,0.00")}
+    </React.Fragment>
+  );
 };
 
 const CurrentValue = (cell) => {
-  return <React.Fragment>{cell.getValue()}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {numeral(cell.getValue()).format("$0,0.00")}
+    </React.Fragment>
+  );
 };
 
 const Returns = (cell) => {
-  const today = cell.row.original.performance.todayReturn;
-  const todayPercent = cell.row.original.performance.todayReturnPercent;
+  const today = cell.row.original.todayReturn;
+  const todayPercent = cell.row.original.todayReturnPercent;
   return (
     <React.Fragment>
       <div className="d-flex flex-column gap-1">

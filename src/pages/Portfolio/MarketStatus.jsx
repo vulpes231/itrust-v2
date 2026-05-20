@@ -27,16 +27,15 @@ const MarketStatus = ({ activeWallet, trades }) => {
       ...trade,
       coinName: trade.asset?.name || "Unknown",
       img: trade.asset?.img || "/default-coin.png",
-      quantity: trade.execution?.quantity || 0,
-      avgPrice: formatCurrency(trade.execution?.amount) || 0,
-      value: formatCurrency(trade.performance?.currentValue) || 0,
-      todayReturn: formatCurrency(trade.performance?.todayReturn) || 0,
-      returns: formatCurrency(trade.performance?.totalReturn) || 0,
-      percentage: trade.performance?.totalReturnPercent || 0,
-      percentageClass:
-        (trade.performance?.totalReturnPercent || 0) > 0 ? "success" : "danger",
+      quantity: trade?.quantity || 0,
+      avgPrice: formatCurrency(trade?.amountInvested) || 0,
+      value: trade?.currentValue || 0,
+      todayReturn: formatCurrency(trade?.todayReturn) || 0,
+      returns: formatCurrency(trade?.return) || 0,
+      percentage: trade?.returnPercent || 0,
+      percentageClass: (trade?.returnPercent || 0) > 0 ? "success" : "danger",
       icon:
-        (trade.performance?.totalReturnPercent || 0) > 0
+        (trade?.returnPercent || 0) > 0
           ? "ri-arrow-up-line"
           : "ri-arrow-down-line",
       status: trade.status || "open",
@@ -51,14 +50,8 @@ const MarketStatus = ({ activeWallet, trades }) => {
         enableColumnFilter: false,
         cell: (cell) => (
           <div className="d-flex align-items-center gap-2 fw-medium">
-            {/* <span
-              className="p-2 bg-light rounded-circle d-flex align-items-center justify-content-center"
-              style={{ width: "23px", height: "23px" }}
-            >
-             
-            </span> */}
             <img
-              src={cell.row.original.img}
+              src={cell.row.original.asset.img}
               alt={cell.getValue()}
               style={{ width: "30px", height: "30px" }}
               className="p-1 bg-light rounded-circle d-flex align-items-center justify-content-center"
@@ -90,7 +83,7 @@ const MarketStatus = ({ activeWallet, trades }) => {
       },
       {
         header: "Current Value",
-        accessorKey: "value",
+        accessorKey: "currentValue",
         enableColumnFilter: false,
         cell: (cell) => {
           return <CurrentValue {...cell} />;
@@ -101,19 +94,11 @@ const MarketStatus = ({ activeWallet, trades }) => {
         accessorKey: "todayReturn",
         enableColumnFilter: false,
         cell: (cell) => {
-          return <Returns {...cell} />;
-        },
-      },
-      {
-        header: "P&L",
-        accessorKey: "percentage",
-        enableColumnFilter: false,
-        cell: (cell) => {
-          const value = Number(cell.row.original.performance.totalReturn) || 0;
+          const value = Number(cell.row.original.todayReturn) || 0;
 
           const safeValue = Math.abs(value) < 0.005 ? 0 : value;
 
-          const totalPercent = cell.row.original.performance.totalReturnPercent;
+          const totalPercent = cell.row.original.todayReturnPercent;
           return (
             <div className="d-flex flex-column gap-1">
               <span>{numeral(safeValue).format("$0,0.00")}</span>
@@ -128,24 +113,48 @@ const MarketStatus = ({ activeWallet, trades }) => {
           );
         },
       },
-      // {
-      //   header: "Status",
-      //   accessorKey: "status",
-      //   enableColumnFilter: false,
-      //   cell: (cell) => (
-      //     <span
-      //       className={`badge ${
-      //         cell.getValue() === "open"
-      //           ? "bg-success"
-      //           : cell.getValue() === "closed"
-      //             ? "bg-danger"
-      //             : "bg-warning"
-      //       }`}
-      //     >
-      //       {cell.getValue().charAt(0).toUpperCase() + cell.getValue().slice(1)}
-      //     </span>
-      //   ),
-      // },
+      {
+        header: "P&L",
+        accessorKey: "percentage",
+        enableColumnFilter: false,
+        cell: (cell) => {
+          const value = Number(cell.row.original.return) || 0;
+
+          const safeValue = Math.abs(value) < 0.005 ? 0 : value;
+
+          const totalPercent = cell.row.original.percentage;
+          return (
+            <div className="d-flex flex-column gap-1">
+              <span>{numeral(safeValue).format("$0,0.00")}</span>
+              <span
+                className={`fs-12 ${
+                  totalPercent < 0 ? "text-danger" : "text-success"
+                }`}
+              >
+                {parseFloat(totalPercent).toFixed(2)}%
+              </span>
+            </div>
+          );
+        },
+      },
+      {
+        header: "Status",
+        accessorKey: "status",
+        enableColumnFilter: false,
+        cell: (cell) => (
+          <span
+            className={`badge ${
+              cell.getValue() === "open"
+                ? "bg-success"
+                : cell.getValue() === "closed"
+                  ? "bg-danger"
+                  : "bg-warning"
+            }`}
+          >
+            {cell.getValue().charAt(0).toUpperCase() + cell.getValue().slice(1)}
+          </span>
+        ),
+      },
     ],
     [],
   );

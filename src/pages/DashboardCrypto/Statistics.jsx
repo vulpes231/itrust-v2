@@ -8,7 +8,7 @@ import TopStats from "./TopStats";
 import BottomStats from "./BottomStats";
 import { getChartData } from "../../services/user/chart";
 
-const Statistics = ({ dataColors, analytics }) => {
+const Statistics = ({ dataColors, analytics, walletData }) => {
   const [range, setRange] = React.useState("ALL");
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
 
@@ -229,7 +229,7 @@ const Statistics = ({ dataColors, analytics }) => {
               />
             </div>
           </CardBody>
-          <BottomStats walletAnalytics={analytics} />
+          <BottomStats walletAnalytics={analytics} walletData={walletData} />
         </Card>
       </Col>
     </React.Fragment>

@@ -73,8 +73,8 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
     const data = { amount, planId: plan._id };
     console.log(data);
 
-    setError("Awaiting backend integration. Try again later.");
-    // mutation.mutate(data);
+    // setError("Awaiting backend integration. Try again later.");
+    mutation.mutate(data);
   };
 
   return (
@@ -106,7 +106,7 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
                 <Row className="px-4 mt-3 ">
                   <Col xs={6} md={4}>
                     <Label className="fs-13 fw-regular text-muted text-nowrap">
-                      Minimum Investment
+                      Min Investment
                     </Label>
                     <p className="fw-semibold fs-15">
                       {numeral(plan?.minInvestment).format("$0,0.0")}

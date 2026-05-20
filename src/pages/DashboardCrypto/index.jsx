@@ -20,6 +20,7 @@ import { getUserTrades } from "../../services/user/trade";
 import { getAccessToken } from "../../constants";
 import { useLocation } from "react-router-dom";
 import ErrorToast from "../../components/Common/ErrorToast";
+import { getUserPositions } from "../../services/user/position";
 
 const DashboardCrypto = () => {
   document.title = "Dashboard - Itrust Investments";
@@ -50,6 +51,12 @@ const DashboardCrypto = () => {
     queryKey: ["wallet"],
   });
 
+  const { data: positionData } = useQuery({
+    queryKey: ["positionData"],
+    queryFn: () => getUserPositions(),
+    enabled: !!tk,
+  });
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -62,6 +69,7 @@ const DashboardCrypto = () => {
               <Statistics
                 dataColors='["--vz-info"]'
                 analytics={walletAnalytics}
+                walletData={walletData}
               />
               <Widgets1 />
               <MyCurrencies />
@@ -70,8 +78,9 @@ const DashboardCrypto = () => {
               <MyPortfolio wallets={wallets} walletData={walletData} />
               <Holdings />
               <AssetGraph
-                count={trades?.length}
+                count={positionData?.positions?.length}
                 walletAnalytics={walletAnalytics}
+                walletData={walletData}
               />
               <RecentActivity />
               <RecentOrders trades={trades} />

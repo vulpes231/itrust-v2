@@ -30,7 +30,7 @@ const OpenAccount = () => {
     enabled: !!token,
   });
 
-  const { data: user } = useQuery({
+  const { data: user, isLoading: getUserLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUserInfo,
     enabled: !!token,
@@ -113,6 +113,28 @@ const OpenAccount = () => {
       return () => clearTimeout(tmt);
     }
   }, [error]);
+
+  // Check if data is still loading
+  if (getAccountsLoading || getUserLoading) {
+    return (
+      <div className="page-content">
+        <Container fluid>
+          <TrxCrumb
+            title={"Open Account"}
+            handleMove={() => history("/savings")}
+          />
+          <Col>
+            <Card className="p-4">
+              <div className="text-center py-5">
+                <Loader className="mx-auto" />
+                <span>Loading accounts...</span>
+              </div>
+            </Card>
+          </Col>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <React.Fragment>

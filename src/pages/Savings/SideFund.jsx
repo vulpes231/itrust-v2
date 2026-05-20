@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { fundSavings } from "../../services/user/savings";
 import SuccessToast from "../../components/Common/SuccessToast";
 import ErrorToast from "../../components/Common/ErrorToast";
+import numeral from "numeral";
 
 const btns = ["1000", "2000", "5000", "Max"];
 
@@ -35,6 +36,26 @@ const SideFund = ({ accts, handleIcon }) => {
       amount: amount || "",
     },
     onSubmit: (values) => {
+      const amount = parseFloat(values.amount);
+
+      if (!amount || amount < 0) {
+        setError("Enter amount to fund!");
+        return;
+      }
+
+      if (amount < selectedAcct?.depositLimit?.min) {
+        setError(
+          `Deposit limit is ${numeral(selectedAcct?.depositLimit?.min).format("$0,0.00")}`,
+        );
+        return;
+      }
+
+      if (amount > selectedAcct?.depositLimit?.max) {
+        setError(
+          `Deposit limit is ${numeral(selectedAcct?.depositLimit?.max).format("$0,0.00")}`,
+        );
+        return;
+      }
       const data = { amount: values.amount, accountId: selectedAcct.accountId };
       mutation.mutate(data);
     },

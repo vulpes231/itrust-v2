@@ -18,6 +18,7 @@ import AssetGraph from "./AssetGraph";
 import RecentOrders from "../DashboardCrypto/RecentOrders";
 import { getUserTrades } from "../../services/user/trade";
 import Positions from "./Positions";
+import { getUserPositions } from "../../services/user/position";
 
 const Portfolio = () => {
   document.title = "Portfolio - Itrust Investments";
@@ -46,6 +47,11 @@ const Portfolio = () => {
   const { data: trades } = useQuery({
     queryKey: ["recentTrades"],
     queryFn: () => getUserTrades(),
+    enabled: !!tk,
+  });
+  const { data: positionData } = useQuery({
+    queryKey: ["positionData"],
+    queryFn: () => getUserPositions(),
     enabled: !!tk,
   });
 
@@ -153,14 +159,18 @@ const Portfolio = () => {
                 cash={cashAccount}
               />
 
-              <MarketStatus activeWallet={activeWallet} trades={trades} />
+              <MarketStatus
+                activeWallet={activeWallet}
+                trades={positionData?.positions}
+              />
               <Positions />
             </Col>
             <Col lg={3}>
               <TradeCard walletData={walletData} />
               <AssetGraph
-                count={trades?.length}
+                count={positionData?.positions?.length}
                 walletAnalytics={walletAnalytics}
+                walletData={walletData}
               />
               <AssetAllocation />
               <RecentOrders trades={trades} />
