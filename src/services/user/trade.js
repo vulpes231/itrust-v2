@@ -25,6 +25,7 @@ async function closePosition(formData) {
 async function getUserTrades() {
   try {
     const response = await api.get("/trade");
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     const errMsg = error.response?.message?.data;

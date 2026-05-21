@@ -11,7 +11,7 @@ import numeral from "numeral";
 
 const btns = ["100", "1000", "2000", "5000", "10000", "25000", "50000", "Max"];
 
-const AddFunds = ({ accts, handleIcon }) => {
+const AddFunds = ({ accts, handleIcon, cash }) => {
   const saveAccts =
     accts && accts.length > 0 && accts.filter((acct) => acct.tag === "savings");
 
@@ -59,6 +59,10 @@ const AddFunds = ({ accts, handleIcon }) => {
         setError(
           `Deposit limit is ${numeral(selectedAcct?.depositLimit?.max).format("$0,0.00")}`,
         );
+        return;
+      }
+      if (amount > cash?.balance?.available) {
+        setError(`You don't have available cash!`);
         return;
       }
       const data = { amount: values.amount, accountId: selectedAcct.accountId };

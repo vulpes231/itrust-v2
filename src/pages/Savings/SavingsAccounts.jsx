@@ -9,7 +9,7 @@ import AddFunds from "./AddFunds";
 import { useMutation } from "@tanstack/react-query";
 import { deleteSavingsAccount } from "../../services/user/savings";
 
-const SavingsAccounts = ({ analytics, accts }) => {
+const SavingsAccounts = ({ analytics, accts, cashAcct }) => {
   const [show, setShow] = useState(false);
   const [fund, setFund] = useState(false);
   const [goals, setGoals] = useState(false);
@@ -168,7 +168,11 @@ const SavingsAccounts = ({ analytics, accts }) => {
                   </div>
                 </div>
                 <div style={{ display: fund ? "block" : "none" }}>
-                  <AddFunds accts={accts} handleIcon={getIcon} />
+                  <AddFunds
+                    cash={cashAcct}
+                    accts={accts}
+                    handleIcon={getIcon}
+                  />
                 </div>
               </Col>
               <Col>

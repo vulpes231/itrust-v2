@@ -73,7 +73,6 @@ const Plans = ({ status = "all", risk = "all" }) => {
 
   const filteredPlans = getFilteredPlans();
 
-  // Fix: Filter plans based on risk prop
   const getFilteredByRiskPlans = () => {
     if (!plans || plans.length === 0) return [];
     if (risk === "all") return plans;

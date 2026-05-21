@@ -1,148 +1,183 @@
 import { capitalize } from "lodash";
-import React from "react";
-import { Card, Col, Row } from "reactstrap";
+import React, { useState } from "react";
+import { Card, Col, Label, Row } from "reactstrap";
 import { cash } from "../../assets";
 import { formatCurrency, liveUrl } from "../../constants";
+import { GoDotFill } from "react-icons/go";
+import { FaArrowUp } from "react-icons/fa";
+import numeral from "numeral";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { MdArrowOutward } from "react-icons/md";
+import { format } from "date-fns";
+import Timer from "./Timer";
+import PlanOrders from "./PlanOrders";
 
 const ActivePlans = ({ plans, style }) => {
-  // console.log(plans);
+  const [showCard, setShowCard] = useState(false);
+  const [showOrders, setShowOrders] = useState(false);
+
   return (
     <React.Fragment>
-      <Row className="g-4 py-3">
+      <Row className="g-4 p-3">
         {plans &&
           plans.length > 0 &&
           plans.map((plan) => {
+            // console.log(plan);
             return (
-              <Col key={plan.planId} lg={4}>
-                <Card className="d-flex flex-column gap-3 py-3">
-                  <div className="d-flex align-items-center gap-3 px-4 py-2">
-                    <span className="bg-light">
-                      <img src={`${liveUrl}${plan.image}`} alt="" width={40} />
+              <Card key={plan._id}>
+                <Col className="d-flex align-items-center justify-content-between p-3">
+                  <div className="d-flex align-items-start gap-2 ">
+                    <span className="p-1 bg-light rounded-circle">
+                      <img
+                        src={`${liveUrl}${plan.image}`}
+                        alt="plan-img"
+                        width={40}
+                        className="rounded-circle"
+                      />
                     </span>
-                    <span className="d-flex flex-column">
-                      <span className="fs-16 fw-bold text-capitalize">
+                    <div>
+                      <h4 className="fw-bold fs-16 text-capitalize lh-1">
                         {plan.name}
+                      </h4>
+                      <span className="text-muted text-capitalize d-flex align-items-center gap-1">
+                        <p>1 active plan</p>
+                        <p>
+                          <GoDotFill />
+                        </p>
+                        <p>
+                          {numeral(plan.balance.available).format("$0,0.00")}
+                        </p>
                       </span>
-                      <span
-                        style={{ color: style.light }}
-                        className={style.slim}
-                      >
-                        {plan.title}
-                      </span>
-                    </span>
+                    </div>
                   </div>
-                  <Row className="px-4">
-                    <Col xs={6} className="d-flex flex-column px-4">
-                      <span
-                        style={{ color: style.light }}
-                        className={` text-nowrap ${style.slim}`}
-                      >
-                        Invested Amount
-                      </span>
-                      <span className={style.medium}>
-                        {formatCurrency(plan?.balance?.total)}
-                      </span>
+                  <div onClick={() => setShowCard(!showCard)}>
+                    {showCard ? <IoIosArrowDown /> : <IoIosArrowUp />}
+                  </div>
+                </Col>
+                {showCard && (
+                  <Col>
+                    <Col className="">
+                      <hr className="text-muted" />
+
+                      <div className="py-3 px-4">
+                        <div className="d-flex flex-column gap-4 justify-content-between mb-3 flex-md-row">
+                          <div>
+                            <Timer start={plan.start} end={plan.end} />
+                          </div>
+                          <span>
+                            <h4
+                              style={{ fontSize: "32px" }}
+                              className="fw-semibold text-success"
+                            >
+                              {parseFloat(
+                                plan.analytics.expectedReturn,
+                              ).toFixed(2)}
+                              %
+                            </h4>
+                            <small className="text-muted">Returns</small>
+                          </span>
+                        </div>
+                        <Row>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              Date Started
+                            </Label>
+                            <p className="fs-15 fw-semibold">
+                              {format(plan.start, "dd MMM yyyy")}
+                            </p>
+                          </Col>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              Amount Invested
+                            </Label>
+                            <p className="fs-15 fw-semibold">
+                              {numeral(plan.balance.total).format("$0,0.00")}
+                            </p>
+                          </Col>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              Returns
+                            </Label>
+                            <p className="fs-15 fw-semibold">
+                              {numeral(plan.balance.available).format(
+                                "$0,0.00",
+                              )}
+                            </p>
+                          </Col>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              24h Returns
+                            </Label>
+                            <p className="fs-15 fw-semibold">
+                              {plan.analytics.dailyReturn}%
+                            </p>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              Win Rate
+                            </Label>
+                            <p className="fs-15 fw-semibold">
+                              {plan.analytics.winRate}%
+                            </p>
+                          </Col>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              AUM(USD)
+                            </Label>
+                            <p className="fs-15 fw-semibold">{plan.aum}</p>
+                          </Col>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              Risk Level
+                            </Label>
+                            <p className="fs-15 fw-semibold">
+                              <span
+                                className={`px-3 py-1 fw-medium fs-11 text-capitalize ${plan.risk === "moderate" ? "text-warning bg-warning-subtle" : plan.risk === "conservative" ? "text-info bg-info-subtle" : "text-danger bg-danger-subtle"}`}
+                              >
+                                {plan.risk}{" "}
+                                <span>
+                                  <MdArrowOutward />{" "}
+                                </span>
+                              </span>
+                            </p>
+                          </Col>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              End Date
+                            </Label>
+                            <p className="fs-15 fw-semibold">
+                              {" "}
+                              {format(plan.end, "dd MMM yyyy")}
+                            </p>
+                          </Col>
+                        </Row>
+                      </div>
                     </Col>
-                    <Col xs={6} className="d-flex flex-column px-4">
-                      <span
-                        style={{ color: style.light }}
-                        className={style.slim}
-                      >
-                        Win Rate
-                      </span>
-                      <span className={style.medium}>
-                        {plan.analytics.winRate}%
-                      </span>
+                    <Col>
+                      <hr className="text-muted" />
+                      <div className="px-4 py-3 d-flex justify-content-end">
+                        <button
+                          onClick={() => setShowOrders(!showOrders)}
+                          className="btn bg-secondary-subtle text-secondary"
+                        >
+                          Close Orders{" "}
+                          {!showOrders ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                        </button>
+                      </div>
+                      {showOrders && (
+                        <div>
+                          <PlanOrders
+                            planId={plan.planId}
+                            planName={plan.name}
+                          />
+                        </div>
+                      )}
                     </Col>
-                  </Row>
-                  <Row className="px-4">
-                    <Col xs={6} className="d-flex flex-column px-4">
-                      <span
-                        style={{ color: style.light }}
-                        className={style.slim}
-                      >
-                        24H Returns
-                      </span>
-                      <span className={style.medium}>
-                        {plan.analytics.dailyReturn}%
-                      </span>
-                    </Col>
-                    <Col xs={6} className="d-flex flex-column px-4">
-                      <span
-                        style={{ color: style.light }}
-                        className={style.slim}
-                      >
-                        Duration
-                      </span>
-                      <span className={style.medium}>{plan.duration}(s)</span>
-                    </Col>
-                  </Row>
-                  <Row className="px-4">
-                    <Col xs={6} className="d-flex flex-column px-4">
-                      <span
-                        style={{ color: style.light }}
-                        className={style.slim}
-                      >
-                        AUM(USD)
-                      </span>
-                      <span className={style.medium}>{plan.aum}M</span>
-                    </Col>
-                    <Col xs={6} className="d-flex flex-column px-4">
-                      <span
-                        style={{ color: style.light }}
-                        className={style.slim}
-                      >
-                        Risk Level
-                      </span>
-                      <span
-                        className={`d-flex align-items-center p-1 rounded justify-content-center fs-10 fw-semibold  ${
-                          plan?.risk === "conservative"
-                            ? "bg-primary-subtle"
-                            : plan?.risk === "aggressive"
-                              ? "bg-danger-subtle"
-                              : plan?.risk === "moderate"
-                                ? "bg-warning-subtle"
-                                : null
-                        }`}
-                        style={{
-                          color:
-                            plan?.risk === "conservative"
-                              ? "#5162be"
-                              : plan?.risk === "aggressive"
-                                ? "#F17171"
-                                : plan?.risk === "moderate"
-                                  ? "#FFC84B"
-                                  : null,
-                          width: "98px",
-                        }}
-                      >
-                        {capitalize(plan?.risk)}{" "}
-                        <i className="ri-arrow-right-up-line fs-10"></i>
-                      </span>
-                    </Col>
-                  </Row>
-                  <hr style={{ color: "#dedede" }} />
-                  <Row className="px-4 d-flex align-items-end mb-2">
-                    <Col xs={6} className="d-flex flex-column px-4">
-                      <span
-                        className={style.large}
-                        style={{ color: style.green, fontSize: "32px" }}
-                      >
-                        {plan.analytics.expectedReturn}%
-                      </span>
-                      <span
-                        style={{ color: style.light }}
-                        className={`text-nowrap ${style.slim}`}
-                      >
-                        Expected returns
-                      </span>
-                    </Col>
-                    <Col xs={6} className="d-flex flex-column px-4">
-                      <button className="btn btn-success">Active</button>
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
+                  </Col>
+                )}
+              </Card>
             );
           })}
       </Row>

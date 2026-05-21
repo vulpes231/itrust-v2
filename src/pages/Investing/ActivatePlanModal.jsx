@@ -58,7 +58,7 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
       return () => clearTimeout(tmt);
     }
   }, [mutation.isSuccess]);
-  //   console.log(plan);
+  console.log(plan);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,7 +66,17 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
       setError("Enter amount to invest!");
       return;
     }
-    if (parseFloat(amount) > investAccount?.balance?.available) {
+
+    const parsedAmt = parseFloat(amount);
+
+    if (parsedAmt < plan?.minInvestment) {
+      setError(
+        `Minimum investment is ${numeral(plan?.minInvestment).format("$0,0.00")}!`,
+      );
+      return;
+    }
+
+    if (parsedAmt > investAccount?.balance?.available) {
       setError("Insufficient funds!");
       return;
     }
@@ -84,7 +94,7 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
         <ModalBody>
           <Col className="p-4">
             <Card>
-              <Col className="border border-1 shadow p-3">
+              <Col className="border border-2 rounded-2 shadow-md p-3">
                 <div className="d-flex align-items-center">
                   <span className="bg-light p-2 rounded-circle">
                     <img

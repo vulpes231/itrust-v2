@@ -10,6 +10,7 @@ import { getAccessToken } from "../../constants";
 import { getUserInfo } from "../../services/user/user";
 import SideContribution from "./SideContribution";
 import SideFund from "./SideFund";
+import { getUserWallets } from "../../services/user/wallet";
 
 const Saving = () => {
   const token = getAccessToken();
@@ -24,6 +25,17 @@ const Saving = () => {
     queryFn: getUserInfo,
     enabled: !!token,
   });
+
+  const { data: wallets = null } = useQuery({
+    queryKey: ["wallets"],
+    queryFn: getUserWallets,
+    enabled: !!token,
+  });
+
+  const cashAcct =
+    wallets &&
+    wallets.length > 0 &&
+    wallets.find((acct) => acct.slug === "cash");
 
   const getIcon = (name) => {
     switch (name) {
@@ -54,6 +66,7 @@ const Saving = () => {
           <SavingsAccounts
             analytics={savingAnalytics}
             accts={user?.savingsAccounts}
+            cashAcct={cashAcct}
           />
         </Col>
         <Col lg={4}>
