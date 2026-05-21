@@ -1,0 +1,271 @@
+// Variables
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+$spacers: (
+  0: 0,
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 1rem,
+  4: 1.5rem,
+  5: 3rem,
+  6: 4rem,
+  7: 5rem,
+  8: 6rem
+);
+
+
+@mixin respond-to($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@mixin respond-below($breakpoint) {
+  @media (max-width: map-get($breakpoints, $breakpoint) - 1px) {
+    @content;
+  }
+}
+
+
+@mixin respond-above($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  
+  @include respond-below(md) {
+    min-height: auto;
+    padding: 2rem 0 4rem;
+  }
+}
+
+.hero-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: 80vh;
+  padding: 4rem 4rem;
+  
+  @include respond-below(lg) {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+    padding: 2rem 0;
+  }
+  
+  @include respond-below(md) {
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 50%;
+  
+  @include respond-below(lg) {
+    max-width: 100%;
+    text-align: center;
+  }
+}
+
+.hero-title {
+  font-size: 68px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: #1a1a2e;
+  
+  @include respond-below(xl) {
+    font-size: 48px;
+  }
+  
+  @include respond-below(lg) {
+    font-size: 36px;
+  }
+  
+  @include respond-below(md) {
+    font-size: 36px;
+    margin-bottom: 1rem;
+  }
+  
+  @include respond-below(sm) {
+    font-size: 28px;
+  }
+}
+
+.hero-description {
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #4a5568;
+  margin-bottom: 2rem;
+  
+  @include respond-below(lg) {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  @include respond-below(md) {
+    font-size: 14px;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.hero-button-wrapper {
+  margin-top: 0.5rem;
+  
+  @include respond-below(lg) {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.hero-btn {
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  // background: #5126be;
+  border: none;
+  color: white;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  @include respond-below(md) {
+    padding: 10px 24px;
+    font-size: 14px;
+  }
+}
+
+.hero-image-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  @include respond-below(lg) {
+    width: 100%;
+  }
+}
+
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  
+  @include respond-below(sm) {
+    width: 280px !important;
+  }
+  
+  @include respond-below(md) {
+    width: 400px !important;
+  }
+  
+  @include respond-below(lg) {
+    width: 500px !important;
+  }
+  
+  // Fixed: Now respond-above mixin exists
+  @include respond-above(lg) {
+    width: 600px !important;
+  }
+}
+
+.hero-shape-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+  
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    
+    path {
+      fill: #ffffff;
+    }
+  }
+  
+  @include respond-below(md) {
+    display: none;
+  }
+}
+
+// Background overlay
+.bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  
+  &.bg-overlay-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+}
+
+// Responsive container padding
+@media (max-width: 576px) {
+  .hero-section {
+    .container-fluid {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+  }
+}
+
+// Animation for hero content
+.hero-content {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-image-wrapper {
+  animation: fadeInRight 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

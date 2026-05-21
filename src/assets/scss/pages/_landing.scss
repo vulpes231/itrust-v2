@@ -44,12 +44,12 @@
 // navbar
 
 .navbar-landing {
-    padding: 10px 0px;
+    // padding: 10px 0px;
     transition: all 0.5s ease;
     @media (max-width: 991.98px) {
         background-color: var(--#{$prefix}secondary-bg);
         box-shadow: 0 1px 16px -2px rgba(56, 65, 74, 0.15);
-        padding: 10px 8px;
+        // padding: 10px 8px;
     }
 
     .navbar-nav {

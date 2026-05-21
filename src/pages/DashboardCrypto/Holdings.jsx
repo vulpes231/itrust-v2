@@ -14,11 +14,14 @@ const Holdings = () => {
     enabled: !!tk,
   });
 
-  // useEffect(() => {
-  //   if (positionData) console.log(positionData);
-  // }, [positionData]);
+  useEffect(() => {
+    if (positionData) console.log(positionData);
+  }, [positionData]);
 
-  const overall = positionData?.totalInvested + positionData?.totalExtra;
+  const overall =
+    positionData?.totalInvested +
+    positionData?.totalExtra +
+    positionData?.totalReturn;
 
   return (
     <React.Fragment>

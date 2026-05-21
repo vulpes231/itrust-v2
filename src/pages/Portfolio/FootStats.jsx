@@ -7,9 +7,10 @@ import numeral from "numeral";
 const FootStats = ({ activeWallet, walletData, cashAccount }) => {
   // console.log(walletData);
   const totalInv = walletData
-    ? walletData[activeWallet?.slug]?.totalInvested +
-      walletData[activeWallet?.slug]?.totalProfitLoss
+    ? walletData[activeWallet?.slug]?.totalInvested
     : 0;
+
+  // +walletData[activeWallet?.slug]?.totalProfitLoss
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <Row className="px-3">

@@ -21,9 +21,17 @@ import trust from "./twall.png";
 import walletconn from "./wcon.png";
 import brief from "./brief.gif";
 import savings from "./savings.gif";
+import automated from "./landing/automated.png";
+import hero from "./landing/hero.png";
+import hero2 from "./landing/hero2.png";
+import treasure from "./landing/treasure.png";
 
 export {
   logo,
+  automated,
+  hero,
+  hero2,
+  treasure,
   coinbase,
   ledger,
   binance,

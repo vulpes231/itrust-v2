@@ -9,10 +9,7 @@ import { formatCurrency } from "../../constants";
 import { FaChartLine } from "react-icons/fa6";
 
 const AssetGraph = ({ count, walletAnalytics, walletData }) => {
-  const totalInv = walletData
-    ? walletData["default"]?.totalInvested +
-      walletData["default"]?.totalProfitLoss
-    : 0;
+  const totalInv = walletData ? walletData["default"]?.totalInvested : 0;
 
   // console.log(walletData);
   return (

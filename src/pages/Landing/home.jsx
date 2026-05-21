@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -10,129 +10,70 @@ import "swiper/css/pagination";
 import { EffectFade, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-// Import Images
-import imgpattern from "../../assets/images/landing/img-pattern.png";
-
-import defaultDemo from "../../assets/images/demos/default.png";
-import saasDemo from "../../assets/images/demos/saas.png";
-import materialDemo from "../../assets/images/demos/material.png";
-import minimalDemo from "../../assets/images/demos/minimal.png";
-import creativeDemo from "../../assets/images/demos/creative.png";
-import modernDemo from "../../assets/images/demos/modern.png";
-import interactiveDemo from "../../assets/images/demos/interactive.png";
+import { hero } from "../../assets";
+import "../../assets/scss/config/creative/home.scss";
 
 const Home = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const getImageWidth = () => {
+    if (windowWidth < 576) return "280px";
+    if (windowWidth < 768) return "400px";
+    if (windowWidth < 992) return "500px";
+    return "600px";
+  };
+
   return (
     <React.Fragment>
       <section className="section pb-0 hero-section" id="hero">
         <div className="bg-overlay bg-overlay-pattern"></div>
-        <Container>
-          <Row className="justify-content-center">
-            <Col lg={8} sm={10}>
-              <div className="text-center mt-lg-5 pt-5">
-                <h1 className="display-6 fw-bold mb-3 lh-base">
-                  The better way to manage your website with{" "}
-                  <span className="text-success">Itrust </span>
-                </h1>
-                <p className="lead text-muted lh-base">
-                  Itrust is a fully responsive, multipurpose and premium
-                  Bootstrap 5 Admin & Dashboard Template built in multiple
-                  frameworks.
-                </p>
+        <Container fluid className="px-3 px-md-4 px-lg-5">
+          <Row className="hero-wrapper mt-5 pt-5">
+            <div className="hero-content">
+              <h1 className="hero-title">Invest the way you want to</h1>
+              <p className="hero-description">
+                Whether you are an active trader, investing or saving for the
+                future, we can help you reach your goals. Invest globally in
+                stocks, options and many more from a single unified platform.
+                Earn the best interest rate 5.0% APY on your cash
+              </p>
 
-                <div className="d-flex gap-2 justify-content-center mt-4">
-                  <Link to="/register" className="btn btn-primary">
-                    Get Started{" "}
-                    <i className="ri-arrow-right-line align-middle ms-1"></i>
-                  </Link>
-                  <Link to="/pages-pricing" className="btn btn-danger">
-                    View Plans <i className="ri-eye-line align-middle ms-1"></i>
-                  </Link>
-                </div>
+              <div className="hero-button-wrapper">
+                <Link to="/register" className="btn btn-secondary hero-btn">
+                  Get Started
+                </Link>
               </div>
-
-              <div className="mt-4 mt-sm-5 pt-sm-5 mb-sm-n5 demo-carousel">
-                <div className="demo-img-patten-top d-none d-sm-block">
-                  <img
-                    src={imgpattern}
-                    className="d-block img-fluid"
-                    alt="..."
-                  />
-                </div>
-                <div className="demo-img-patten-bottom d-none d-sm-block">
-                  <img
-                    src={imgpattern}
-                    className="d-block img-fluid"
-                    alt="..."
-                  />
-                </div>
-                <Swiper
-                  spaceBetween={30}
-                  effect={"fade"}
-                  loop={true}
-                  pagination={{
-                    clickable: true,
-                  }}
-                  autoplay={{ delay: 2000, disableOnInteraction: false }}
-                  modules={[EffectFade, Autoplay]}
-                  className="mySwiper"
-                >
-                  <SwiperSlide className="carousel-inner shadow-lg p-2 bg-white rounded">
-                    <img
-                      src={defaultDemo}
-                      className="d-block w-100"
-                      alt="..."
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide className="carousel-inner shadow-lg p-2 bg-white rounded">
-                    <img src={saasDemo} className="d-block w-100" alt="..." />
-                  </SwiperSlide>
-                  <SwiperSlide className="carousel-inner shadow-lg p-2 bg-white rounded">
-                    <img
-                      src={materialDemo}
-                      className="d-block w-100"
-                      alt="..."
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide className="carousel-inner shadow-lg p-2 bg-white rounded">
-                    <img
-                      src={minimalDemo}
-                      className="d-block w-100"
-                      alt="..."
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide className="carousel-inner shadow-lg p-2 bg-white rounded">
-                    <img
-                      src={creativeDemo}
-                      className="d-block w-100"
-                      alt="..."
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide className="carousel-inner shadow-lg p-2 bg-white rounded">
-                    <img src={modernDemo} className="d-block w-100" alt="..." />
-                  </SwiperSlide>
-                  <SwiperSlide className="carousel-inner shadow-lg p-2 bg-white rounded">
-                    <img
-                      src={interactiveDemo}
-                      className="d-block w-100"
-                      alt="..."
-                    />
-                  </SwiperSlide>
-                </Swiper>
-              </div>
-            </Col>
+            </div>
+            <div className="hero-image-wrapper">
+              <img
+                src={hero}
+                alt="hero-img"
+                className="hero-image"
+                style={{
+                  width: getImageWidth(),
+                }}
+              />
+            </div>
           </Row>
         </Container>
 
-        <div className="position-absolute start-0 end-0 bottom-0 hero-shape-svg">
+        <div className="hero-shape-svg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
-            // xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 1440 120"
+            preserveAspectRatio="none"
           >
             <g mask='url("#SvgjsMask1003")' fill="none">
-              <path d="M 0,118 C 288,98.6 1152,40.4 1440,21L1440 140L0 140z"></path>
+              <path d="M 0,118 C 288,98.6 1152,40.4 1440,21 L 1440,140 L 0,140 Z"></path>
             </g>
           </svg>
         </div>
