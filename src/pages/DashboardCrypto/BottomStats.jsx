@@ -5,10 +5,7 @@ import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
 const BottomStats = ({ walletAnalytics, walletData }) => {
-  const totalInv = walletData
-    ? walletData["default"]?.totalInvested +
-      walletData["default"]?.totalProfitLoss
-    : 0;
+  const totalInv = walletData ? walletData["default"]?.totalInvested : 0;
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <div className="d-flex align-items-start justify-content-between px-3">

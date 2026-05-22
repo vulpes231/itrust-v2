@@ -99,7 +99,7 @@ const ActivePlans = ({ plans, style }) => {
                               Returns
                             </Label>
                             <p className="fs-15 fw-semibold">
-                              {numeral(plan.balance.available).format(
+                              {numeral(plan.performance.totalReturn).format(
                                 "$0,0.00",
                               )}
                             </p>
@@ -109,7 +109,7 @@ const ActivePlans = ({ plans, style }) => {
                               24h Returns
                             </Label>
                             <p className="fs-15 fw-semibold">
-                              {plan.analytics.dailyReturn}%
+                              {plan.performance.dailyReturn}%
                             </p>
                           </Col>
                         </Row>
