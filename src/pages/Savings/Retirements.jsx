@@ -6,8 +6,10 @@ import { GoDotFill } from "react-icons/go";
 import { formatCurrency, getIconBg, getIconColor } from "../../constants";
 import { Link } from "react-router-dom";
 import Contribute from "./Contribute";
+import { upperCase } from "lodash";
+import numeral from "numeral";
 
-const Retirements = ({ analytics, accts }) => {
+const Retirements = ({ analytics, accts, handleIcon }) => {
   const [show, setShow] = useState(false);
   const [contribute, setContribute] = useState(false);
   const [portfolio, setPortfolio] = useState(false);
@@ -31,18 +33,6 @@ const Retirements = ({ analytics, accts }) => {
     accts.length > 0 &&
     accts.filter((acct) => acct.tag === "retirement");
 
-  const getIcon = (name) => {
-    switch (name) {
-      case "traditional IRA":
-        return <i className="ri-shield-line fs-22 text-warning"></i>;
-      case "health savings":
-        return <i className="ri-service-line fs-22 text-danger"></i>;
-
-      default:
-        return null;
-    }
-  };
-
   return (
     <React.Fragment>
       <Col className="">
@@ -63,10 +53,7 @@ const Retirements = ({ analytics, accts }) => {
                 </span>
                 <span className="d-flex flex-column">
                   <span className="fw-bold fs-15">Retirement Accounts</span>
-                  <span
-                    className="fw-regular fs-15"
-                    style={{ color: "#212529" }}
-                  >
+                  <span className="fw-regular text-muted fs-15">
                     {analytics?.retireAcctLength || 0} Accounts <GoDotFill />{" "}
                     {formatCurrency(analytics?.retirementBalance || 0)}
                   </span>
@@ -80,22 +67,27 @@ const Retirements = ({ analytics, accts }) => {
               {retirementAccounts && retirementAccounts.length > 0 ? (
                 <Row className="px-4 my-4">
                   {retirementAccounts.map((acct) => {
+                    // console.log(acct.analytics.contributions);
                     return (
                       <Col lg={6} key={acct._id} className="">
-                        <div className="d-flex align-items-end justify-content-between shadow py-2 px-3 rounded">
+                        <div className="d-flex align-items-end justify-content-between shadow border-2 border py-3 px-4 rounded">
                           <span className="d-flex align-items-center gap-3">
                             <span
                               style={{ backgroundColor: getIconBg(acct.name) }}
-                              className=" px-1 rounded d-flex align-items-center justify-content-center"
+                              className="px-1 rounded d-flex align-items-center justify-content-center"
                             >
-                              {getIcon(acct.name)}
+                              {handleIcon(acct.name)}
                             </span>
                             <span className="d-flex flex-column">
-                              <span className="fw-bold fs-13 text-muted">
-                                {acct.name}
+                              <span className="fw-bold fs-13 text-muted text-capitalize">
+                                {acct.name.includes("ira")
+                                  ? `${acct.name.split(" ")[0]} ${upperCase(acct.name.split(" ")[1])}`
+                                  : acct.name}
                               </span>
                               <span className="fw-semibold fs-21">
-                                {formatCurrency(acct.analytics.balance)}
+                                {formatCurrency(
+                                  acct.analytics.balance.available,
+                                )}
                               </span>
                             </span>
                           </span>
@@ -108,14 +100,29 @@ const Retirements = ({ analytics, accts }) => {
                         </div>
                         <div className="d-flex flex-column gap-2 mt-4">
                           <span className="d-flex align-items-center justify-content-between gap-4">
-                            <span className="fs-14 fw-semibold">
+                            <span
+                              style={{ whiteSpace: "nowrap" }}
+                              className="fs-14 fw-semibold"
+                            >
                               2025 IRA Contributions
                             </span>
                             <span
-                              className="fs-14 fw-semibold"
+                              className="fs-14 fw-semibold d-flex gap-1 "
                               style={{ color: "#878A99" }}
                             >
-                              $0 / $7500
+                              <span className="fs-10">
+                                {" "}
+                                {numeral(acct.analytics.contributions).format(
+                                  "$0,0.00",
+                                )}
+                              </span>
+                              <span className="fs-10">/</span>
+                              <span className="fs-10">
+                                {" "}
+                                {numeral(acct.depositLimit.max).format(
+                                  "$0,0.00",
+                                )}
+                              </span>
                             </span>
                           </span>
                           <div
@@ -160,16 +167,8 @@ const Retirements = ({ analytics, accts }) => {
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center gap-3">
                     <span className="d-flex flex-column">
-                      <span
-                        className="fw-bold fs-15"
-                        style={{ color: "#495057" }}
-                      >
-                        Contribute
-                      </span>
-                      <span
-                        className="fw-regular fs-14"
-                        style={{ color: "#212529" }}
-                      >
+                      <span className="fw-bold fs-15">Contribute</span>
+                      <span className="fw-regular text-muted fs-14">
                         Add funds to your retirement account.
                       </span>
                     </span>
@@ -179,23 +178,17 @@ const Retirements = ({ analytics, accts }) => {
                   </div>
                 </div>
                 <div style={{ display: contribute ? "block" : "none" }}>
-                  <Contribute accts={accts} handleIcon={getIcon} />
+                  <Contribute accts={accts} handleIcon={handleIcon} />
                 </div>
               </Col>
               <Col>
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center gap-3">
                     <span className="d-flex flex-column">
-                      <span
-                        className="fw-bold fs-15"
-                        style={{ color: "#495057" }}
-                      >
+                      <span className="fw-bold fs-15">
                         Portfolio Allocation
                       </span>
-                      <span
-                        className="fw-regular fs-14"
-                        style={{ color: "#212529" }}
-                      >
+                      <span className="fw-regular text-muted fs-14">
                         Set up risk profile and allocation strategy.
                       </span>
                     </span>
@@ -210,16 +203,10 @@ const Retirements = ({ analytics, accts }) => {
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center gap-3">
                     <span className="d-flex flex-column">
-                      <span
-                        className="fw-bold fs-15"
-                        style={{ color: "#495057" }}
-                      >
+                      <span className="fw-bold fs-15">
                         Retirement Projection
                       </span>
-                      <span
-                        className="fw-regular fs-14"
-                        style={{ color: "#212529" }}
-                      >
+                      <span className="fw-regular text-muted fs-14">
                         See your projected returns in retirement
                       </span>
                     </span>

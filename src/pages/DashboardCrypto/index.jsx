@@ -65,7 +65,7 @@ const DashboardCrypto = () => {
           <VerifyAccountNotify />
 
           <Row>
-            <Col md={9}>
+            <Col md={8}>
               <Statistics
                 dataColors='["--vz-info"]'
                 analytics={walletAnalytics}
@@ -74,7 +74,7 @@ const DashboardCrypto = () => {
               <Widgets1 />
               <MyCurrencies />
             </Col>
-            <Col md={3}>
+            <Col md={4}>
               <MyPortfolio wallets={wallets} walletData={walletData} />
               <Holdings />
               <AssetGraph

@@ -2,11 +2,12 @@ import React from "react";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
 import { formatCurrency, getIconColor } from "../../constants";
 import { GoDotFill } from "react-icons/go";
+import { upperCase } from "lodash";
 
 const SavingsList = ({ accts }) => {
   const getIcon = (name) => {
     switch (name) {
-      case "traditional IRA":
+      case "traditional ira":
         return <i className="ri-shield-line fs-16 "></i>;
       case "health savings":
         return <i className="ri-service-line fs-16"></i>;
@@ -38,7 +39,9 @@ const SavingsList = ({ accts }) => {
                         </span>
                         <span className="d-flex flex-column">
                           <span className="fs-14 fw-semibold text-capitalize">
-                            {acct.name}
+                            {acct.name.includes("ira")
+                              ? `${acct.name.split(" ")[0]} ${upperCase(acct.name.split(" ")[1])}`
+                              : acct.name}
                           </span>
                           <span
                             style={{ color: "#878A99" }}

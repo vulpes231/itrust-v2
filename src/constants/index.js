@@ -72,7 +72,7 @@ const getWalletIcon = (name) => {
 
 const getIconColor = (name) => {
   switch (name) {
-    case "traditional IRA":
+    case "traditional ira":
       return "#261CB6";
     case "health savings":
       return "#F17171";
@@ -95,7 +95,7 @@ function formatBytes(bytes, decimals = 2) {
 
 const getIconBg = (name) => {
   switch (name) {
-    case "traditional IRA":
+    case "traditional ira":
       return "#E4EDFF";
     case "health savings":
       return "#FDEAEA";

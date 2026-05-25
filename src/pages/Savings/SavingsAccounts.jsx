@@ -79,9 +79,9 @@ const SavingsAccounts = ({ analytics, accts, cashAcct }) => {
             </div>
 
             <div style={{ display: show ? "block" : "none" }}>
-              {accts && accts.length > 0 ? (
+              {savingsAccts && savingsAccts.length > 0 ? (
                 <Row className="p-4 my-4 ">
-                  {accts.map((acct) => {
+                  {savingsAccts.map((acct) => {
                     return (
                       <Col lg={6} key={acct._id} className="">
                         <Card>

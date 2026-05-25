@@ -58,14 +58,14 @@ const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
               <FaEyeSlash />
             </div>
           </div>
-          <div className="d-flex align-items-center justify-content-between">
+          <div className="d-flex align-items-center justify-content-between gap-3">
             <h3>
               {activeWallet?.balance?.total
                 ? formatCurrency(totalWalletBalance)
                 : formatCurrency(0)}
             </h3>
             <span
-              className={`px-3 py-1 fs-10 fw-light rounded-1 ${
+              className={`px-3 py-1 fs-10 fw-light rounded-1 d-flex ${
                 activeWallet?.dailyProfitPercent &&
                 activeWallet?.dailyProfitPercent < 0
                   ? "bg-danger-subtle text-danger"

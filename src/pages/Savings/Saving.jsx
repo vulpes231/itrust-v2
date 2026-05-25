@@ -39,7 +39,7 @@ const Saving = () => {
 
   const getIcon = (name) => {
     switch (name) {
-      case "traditional IRA":
+      case "traditional ira":
         return (
           <i style={{ color: "#261CB6" }} className="ri-shield-line fs-22"></i>
         );
@@ -62,6 +62,7 @@ const Saving = () => {
           <Retirements
             analytics={savingAnalytics}
             accts={user?.savingsAccounts}
+            handleIcon={getIcon}
           />
           <SavingsAccounts
             analytics={savingAnalytics}

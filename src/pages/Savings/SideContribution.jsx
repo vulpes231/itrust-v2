@@ -7,6 +7,8 @@ import { useMutation } from "@tanstack/react-query";
 import { fundSavings } from "../../services/user/savings";
 import SuccessToast from "../../components/Common/SuccessToast";
 import ErrorToast from "../../components/Common/ErrorToast";
+import { upperCase } from "lodash";
+import numeral from "numeral";
 
 const btns = ["1000", "2000", "5000", "Max"];
 
@@ -75,7 +77,7 @@ const SideContribution = ({ accts, handleIcon }) => {
       {retireAccts && retireAccts.length > 0 && (
         <Card className="p-3 d-flex flex-column gap-4">
           <Col key={selectedAcct?._id} style={{ position: "relative" }}>
-            <div className="d-flex align-items-end justify-content-between shadow py-2 px-3 rounded">
+            <div className="d-flex align-items-end justify-content-between shadow border border-2 p-3 rounded">
               <span className="d-flex align-items-center gap-3">
                 <span
                   style={{ backgroundColor: getIconBg(selectedAcct?.name) }}
@@ -83,17 +85,16 @@ const SideContribution = ({ accts, handleIcon }) => {
                 >
                   {handleIcon(selectedAcct?.name)}{" "}
                 </span>
-                <span
-                  className="d-flex flex-column"
-                  // style={{  }}
-                >
-                  <span className="fw-bold fs-13 d-flex align-items-center gap-2 text-muted">
-                    {selectedAcct?.name}{" "}
+                <span className="d-flex flex-column">
+                  <span className="fw-bold fs-13 d-flex align-items-center gap-2 text-muted text-capitalize">
+                    {selectedAcct?.name?.includes("ira")
+                      ? `${selectedAcct?.name?.split(" ")[0]} ${upperCase(selectedAcct?.name?.split(" ")[1])}`
+                      : selectedAcct?.name}
                     <span onClick={handleShowAccount}>
                       {showAccounts ? <IoIosArrowUp /> : <IoIosArrowDown />}
                     </span>
                     <Card
-                      className="py-2 px-4"
+                      className="py-2 px-4 border border-2"
                       style={{
                         display: showAccounts ? "block" : "none",
                         position: "absolute",
@@ -141,7 +142,24 @@ const SideContribution = ({ accts, handleIcon }) => {
                   className="fs-14 fw-semibold"
                   style={{ color: "#878A99" }}
                 >
-                  $0 / $7500
+                  <span
+                    className="fs-14 fw-semibold d-flex gap-1 "
+                    style={{ color: "#878A99" }}
+                  >
+                    <span className="fs-10">
+                      {" "}
+                      {numeral(selectedAcct?.analytics?.contributions).format(
+                        "$0,0.00",
+                      )}
+                    </span>
+                    <span className="fs-10">/</span>
+                    <span className="fs-10">
+                      {" "}
+                      {numeral(selectedAcct?.depositLimit?.max).format(
+                        "$0,0.00",
+                      )}
+                    </span>
+                  </span>
                 </span>
               </span>
               <div
@@ -215,7 +233,7 @@ const SideContribution = ({ accts, handleIcon }) => {
               </button>
               <span
                 className="fw-medium fs-14 py-1"
-                style={{ color: "#000000", textAlign: "center" }}
+                style={{ textAlign: "center" }}
               >
                 Traditional IRA contributions may be tax-deductible. Consult
                 your tax advisor. Annual limit for 2025: $7,000 ($8,000 if age

@@ -145,7 +145,7 @@ const Portfolio = () => {
           <BreadCrumb title="Portfolio" pageTitle="History" />
           <VerifyAccountNotify />
           <Row>
-            <Col lg={9}>
+            <Col lg={8}>
               <BalanceCard
                 activeWallet={activeWallet}
                 handleChange={handleChange}
@@ -165,7 +165,7 @@ const Portfolio = () => {
               />
               <Positions />
             </Col>
-            <Col lg={3}>
+            <Col lg={4}>
               <TradeCard walletData={walletData} />
               <AssetGraph
                 count={positionData?.positions?.length}

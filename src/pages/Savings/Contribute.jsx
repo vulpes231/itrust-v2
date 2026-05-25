@@ -7,6 +7,8 @@ import { useMutation } from "@tanstack/react-query";
 import { fundSavings } from "../../services/user/savings";
 import SuccessToast from "../../components/Common/SuccessToast";
 import ErrorToast from "../../components/Common/ErrorToast";
+import { upperCase } from "lodash";
+import numeral from "numeral";
 
 const btns = ["100", "1000", "2000", "5000", "10000", "25000", "50000", "Max"];
 
@@ -17,7 +19,7 @@ const Contribute = ({ accts, handleIcon }) => {
     accts.filter((acct) => acct.tag === "retirement");
 
   const [selectedAcct, setSelectedAcct] = useState(
-    retireAccts ? retireAccts[0] : ""
+    retireAccts ? retireAccts[0] : "",
   );
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
@@ -73,7 +75,7 @@ const Contribute = ({ accts, handleIcon }) => {
   return (
     <div className="py-4 d-flex flex-column gap-4">
       <Col key={selectedAcct?._id} style={{ position: "relative" }}>
-        <div className="d-flex align-items-end justify-content-between shadow py-2 px-3 rounded">
+        <div className="d-flex align-items-end justify-content-between shadow border border-2 py-2 px-3 rounded">
           <span className="d-flex align-items-center gap-3">
             <span
               style={{ backgroundColor: getIconBg(selectedAcct?.name) }}
@@ -87,9 +89,11 @@ const Contribute = ({ accts, handleIcon }) => {
             >
               <span
                 style={{ color: "#878A99" }}
-                className="fw-bold fs-13 d-flex align-items-center gap-2"
+                className="fw-bold fs-13 d-flex align-items-center gap-2 text-capitalize"
               >
-                {selectedAcct?.name}{" "}
+                {selectedAcct?.name?.includes("ira")
+                  ? `${selectedAcct?.name?.split(" ")[0]} ${upperCase(selectedAcct?.name?.split(" ")[1])}`
+                  : selectedAcct?.name}
                 <span onClick={handleShowAccount}>
                   {showAccounts ? <IoIosArrowUp /> : <IoIosArrowDown />}
                 </span>
@@ -120,7 +124,9 @@ const Contribute = ({ accts, handleIcon }) => {
                 </Card>
               </span>
               <span style={{ color: "#495057" }} className="fw-semibold fs-21">
-                {formatCurrency(selectedAcct?.analytics?.balance || 0)}
+                {formatCurrency(
+                  selectedAcct?.analytics?.balance?.available || 0,
+                )}
               </span>
             </span>
           </span>
@@ -135,7 +141,22 @@ const Contribute = ({ accts, handleIcon }) => {
           <span className="d-flex align-items-center justify-content-between gap-4">
             <span className="fs-14 fw-semibold">2025 IRA Contributions</span>
             <span className="fs-14 fw-semibold" style={{ color: "#878A99" }}>
-              $0 / $7500
+              <span
+                className="fs-14 fw-semibold d-flex gap-1 "
+                style={{ color: "#878A99" }}
+              >
+                <span className="fs-10">
+                  {" "}
+                  {numeral(selectedAcct?.analytics?.contributions).format(
+                    "$0,0.00",
+                  )}
+                </span>
+                <span className="fs-10">/</span>
+                <span className="fs-10">
+                  {" "}
+                  {numeral(selectedAcct?.depositLimit?.max).format("$0,0.00")}
+                </span>
+              </span>
             </span>
           </span>
           <div
@@ -180,7 +201,7 @@ const Contribute = ({ accts, handleIcon }) => {
                 onClick={() =>
                   validation.setFieldValue(
                     "amount",
-                    btn === "Max" ? "100000" : btn
+                    btn === "Max" ? "100000" : btn,
                   )
                 }
               >
@@ -203,7 +224,7 @@ const Contribute = ({ accts, handleIcon }) => {
           </button>
           <span
             className="fw-regular fs-14 py-1"
-            style={{ color: "#212529", textAlign: "center" }}
+            style={{ textAlign: "center" }}
           >
             Traditional IRA contributions may be tax-deductible. Consult your
             tax advisor. Annual limit for 2025: $7,000 ($8,000 if age 50+).
