@@ -33,7 +33,12 @@ const BottomStats = ({ walletAnalytics, walletData }) => {
         </Col>
         <Col md={4} className="border-1 border-dotted p-2">
           <div className="d-flex flex-column">
-            <span className="fs-17 fw-semibold">{formatCurrency(0)}</span>
+            <span className="fs-17 fw-semibold">
+              {" "}
+              {walletAnalytics
+                ? numeral(walletAnalytics?.totalSavings).format("$0,0.00")
+                : formatCurrency(0)}
+            </span>
             <span className="text-capitalize text-muted fs-14 fw-normal">
               total savings
             </span>

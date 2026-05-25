@@ -21,9 +21,14 @@ const Widgets = ({ wallets, user, walletData }) => {
     wallets.length > 0 &&
     wallets.find((wallet) => wallet.slug === "auto");
 
-  // console.log(walletData);
+  const userPlans = (user && user.activePlans) || [];
 
-  const userPlans = user && user.activePlans;
+  const activePlans = userPlans.filter((plan) => plan.status === "active");
+
+  const totalInvested = activePlans.reduce(
+    (sum, plan) => sum + (plan.balance?.total || 0),
+    0,
+  );
 
   function convertToWidgetsData() {
     if (!investAccount || !walletData) return [];
@@ -59,7 +64,7 @@ const Widgets = ({ wallets, user, walletData }) => {
       {
         id: 4,
         label: "Amount Invested",
-        counter: walletData[investAccount.slug].totalInvested,
+        counter: totalInvested,
         decimal: "2",
         prefix: "$",
         separator: ",",
