@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUserTrades } from "../../services/user/trade";
 import { getAccessToken } from "../../constants";
+import numeral from "numeral";
 
 const PlanOrders = ({ planId, planName }) => {
   const tk = getAccessToken();
@@ -20,7 +21,7 @@ const PlanOrders = ({ planId, planName }) => {
     return orders.filter((ord) => ord.planId === planId);
   }, [orders, planId]);
 
-  //   console.log(planOrders);
+  // console.log(planOrders);
 
   const renderTableRows = useMemo(() => {
     if (!planOrders.length) {
@@ -66,12 +67,7 @@ const PlanOrders = ({ planId, planName }) => {
         <td>{planName || "N/A"}</td>
         <td>${order.execution?.amount?.toFixed(2) || "0.00"}</td>
         <td>{order.execution?.quantity?.toFixed(6) || "0"}</td>
-        <td>
-          $
-          {(
-            (order.execution?.quantity || 0) * (order.execution?.price || 0)
-          ).toFixed(2)}
-        </td>
+        <td>{numeral(order?.performance?.currentValue).format("$0,0.00")}</td>
         <td
           className={
             order.performance?.totalReturn > 0

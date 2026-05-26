@@ -20,7 +20,7 @@ const TopStats = ({ walletAnalytics }) => {
             <FaEyeSlash />
           </div>
         </div>
-        <div className="d-flex align-items-center justify-content-between">
+        <div className="d-flex align-items-center justify-content-between gap-2">
           <span className="fs-24 fw-semibold">
             {" "}
             {walletAnalytics
@@ -28,7 +28,7 @@ const TopStats = ({ walletAnalytics }) => {
               : formatCurrency(0)}
           </span>
           <span
-            className={`px-3 py-1  fs-10 fw-light rounded-1 ${
+            className={`px-3 py-1  fs-10 fw-light rounded-1 d-flex gap-1 ${
               walletAnalytics?.totalProfitPercent &&
               walletAnalytics?.totalProfitPercent < 0
                 ? "bg-danger-subtle text-danger"
@@ -47,7 +47,10 @@ const TopStats = ({ walletAnalytics }) => {
             %
           </span>
         </div>
-        <span className="fs-12 fw-semibold text-muted">
+        <span
+          className="fs-12 fw-semibold text-muted"
+          style={{ whiteSpace: "nowrap" }}
+        >
           Updated at {`${format(Date.now(), "dd/MM/yyyy")}`}
         </span>
       </Col>

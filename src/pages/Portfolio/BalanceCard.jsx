@@ -84,7 +84,11 @@ const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
               %
             </span>
           </div>
-          <span style={{ color: "#878A99" }} className="fs-11 fw-light">
+          <span
+            style={{ color: "#878A99" }}
+            className="fs-11 fw-light"
+            style={{ whiteSpace: "nowrap" }}
+          >
             Update at {`${format(Date.now(), "dd/MM/yyyy hh:mm a")}`}
           </span>
         </Col>

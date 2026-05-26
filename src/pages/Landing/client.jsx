@@ -8,7 +8,7 @@ const Client = () => {
       <div className="pt-5 mt-5">
         <Container>
           <Row>
-            <div className="hero-image-wrapper">
+            {/* <div className="hero-image-wrapper">
               <img
                 src={hero}
                 alt="hero-img"
@@ -17,7 +17,7 @@ const Client = () => {
                   width: getImageWidth(),
                 }}
               />
-            </div>
+            </div> */}
           </Row>
         </Container>
       </div>
