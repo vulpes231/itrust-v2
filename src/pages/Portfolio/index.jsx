@@ -157,6 +157,7 @@ const Portfolio = () => {
                 activeWallet={activeWallet}
                 walletData={walletData}
                 cash={cashAccount}
+                analytics={walletAnalytics}
               />
 
               <MarketStatus

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
 import ReactApexChart from "react-apexcharts";
 import { useQuery } from "@tanstack/react-query";
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
-import { getChartData } from "../../services/user/chart";
+import { getPortfolioChartData } from "../../services/user/chart";
 import FootStats from "./FootStats";
 
 const PortfolioStatistics = ({
@@ -11,181 +11,264 @@ const PortfolioStatistics = ({
   activeWallet,
   walletData,
   cash,
+  analytics,
+  currentNetWorth = 0,
 }) => {
   const [range, setRange] = React.useState("ALL");
+  const walletId = activeWallet?._id;
+
+  // console.log("walletId", walletId);
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
 
   const { data: chartData } = useQuery({
-    queryFn: () => getChartData({ timeframe: range.toLowerCase() }),
-    queryKey: ["chart", range],
+    queryKey: ["chart", range, walletId],
+
+    enabled: !!walletId,
+
+    queryFn: () =>
+      getPortfolioChartData({
+        timeframe: range.toLowerCase(),
+        walletId,
+      }),
   });
 
-  const filteredData = React.useMemo(() => {
-    if (!chartData?.length) return [];
-
-    const sorted = [...chartData].sort(
-      (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
-    );
-
-    const withBalance = sorted.map((item) => ({
-      x: new Date(item.x), // Ensure it's a Date object
-      y: item.y, // Directly use the portfolio value
-      reason: item.reason,
-    }));
-
-    // Date filtering
+  const getRangeStart = (range) => {
     const now = new Date();
-    let cutoffDate = null;
+    const date = new Date(now);
 
     switch (range) {
       case "1H":
-        cutoffDate = new Date(now.getTime() - 60 * 60 * 1000);
+        date.setHours(date.getHours() - 1);
         break;
+
       case "1D":
-        cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        date.setDate(date.getDate() - 1);
         break;
+
       case "1W":
-        cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        date.setDate(date.getDate() - 7);
         break;
+
       case "1M":
-        cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        date.setMonth(date.getMonth() - 1);
         break;
+
       case "1Y":
-        cutoffDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+        date.setFullYear(date.getFullYear() - 1);
         break;
+
       case "ALL":
-        cutoffDate = null;
-        break;
       default:
-        cutoffDate = null;
+        return null;
     }
 
-    const filtered = cutoffDate
-      ? withBalance.filter((item) => item.x >= cutoffDate)
-      : withBalance;
+    return date;
+  };
 
-    // console.log(`Range: ${range}, Points: ${filtered.length}`, filtered);
-    return filtered;
-  }, [chartData, range]);
+  // useEffect(() => {
+  //   if (range && chartData) console.log(range, chartData);
+  // }, [range, chartData]);
+
+  const filteredData = React.useMemo(() => {
+    const rangeStart = getRangeStart(range);
+    const now = new Date();
+    const nowTime = now.getTime();
+
+    let data = [...(chartData || [])]
+      .map((item) => {
+        let timestamp = item.x;
+        if (typeof timestamp === "string" || typeof timestamp === "number") {
+          timestamp = new Date(timestamp).getTime();
+        }
+        return {
+          x: isNaN(timestamp) ? nowTime : timestamp,
+          y: Math.max(0, Number(item.y) || 0),
+          reason: item.reason,
+        };
+      })
+      .sort((a, b) => a.x - b.x);
+
+    // Filter by selected range
+    if (rangeStart) {
+      const startTime = rangeStart.getTime();
+      data = data.filter((item) => item.x >= startTime && item.x <= nowTime);
+    }
+
+    const startTime = rangeStart
+      ? rangeStart.getTime()
+      : (data[0]?.x ?? nowTime - 3600000);
+    const endTime = nowTime;
+
+    const finalData = [];
+
+    if (data.length === 0) {
+      // No activity at all
+      const value = currentNetWorth ?? 0;
+      finalData.push({ x: startTime, y: value });
+      finalData.push({ x: endTime, y: value });
+    } else {
+      // === KEY FIX: Start at 0 until first activity ===
+      finalData.push({ x: startTime, y: 0 });
+
+      // Add all actual data points
+      finalData.push(...data);
+
+      // Extend the last known value until "now"
+      const lastValue = data[data.length - 1].y;
+      if (data[data.length - 1].x < endTime) {
+        finalData.push({ x: endTime, y: lastValue });
+      }
+    }
+
+    return finalData;
+  }, [chartData, range, currentNetWorth]);
 
   const series = React.useMemo(
     () => [
       {
         name: "Portfolio Balance",
         data: filteredData.map((item) => ({
-          x: item.x.getTime(),
-          y: Math.max(0, item.y),
+          x: item.x,
+          y: item.y,
         })),
+        color: "#5162be",
       },
     ],
     [filteredData],
   );
 
-  const options = {
-    chart: {
-      id: "area-datetime",
-      type: "area",
-      height: 350,
-      zoom: { autoScaleYaxis: true },
-      toolbar: {
-        show: true,
-        tools: {
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: true,
-          reset: true,
-        },
+  const options = React.useMemo(
+    () => ({
+      chart: {
+        id: "portfolio-chart",
+        type: "area",
+        height: 350,
+        zoom: { enabled: false },
+        toolbar: { show: true },
       },
-    },
-    colors: portfolioStatisticsColors,
-    dataLabels: { enabled: false },
-    markers: {
-      size: 4,
-      style: "hollow",
       colors: portfolioStatisticsColors,
-      strokeWidth: 2,
-    },
-    tooltip: {
-      x: {
-        format: "dd MMM yyyy HH:mm",
-        formatter: (val) => {
-          const date = new Date(val);
-          return date.toLocaleString();
+      dataLabels: { enabled: false },
+      stroke: {
+        curve: "stepline",
+        width: 3,
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.4,
+          opacityTo: 0.05,
+          stops: [0, 100],
         },
       },
-      y: {
-        formatter: (val) => `$${val.toLocaleString()}`,
+      markers: {
+        size: 0,
+        hover: { size: 6 },
       },
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 1,
-        inverseColors: false,
-        opacityFrom: 0.45,
-        opacityTo: 0.05,
-        stops: [20, 100, 100, 100],
-      },
-    },
-    stroke: {
-      curve: "smooth",
-      width: 2,
-    },
-    xaxis: {
-      type: "datetime",
-      labels: {
-        datetimeUTC: false,
-        formatter: (val) => {
-          const date = new Date(val);
 
-          if (isNaN(date.getTime())) return "";
+      xaxis: {
+        type: "datetime",
+        min: range !== "ALL" ? getRangeStart(range)?.getTime() : undefined,
+        max: Date.now(),
 
-          switch (range) {
-            case "1H":
-              return date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-            case "1D":
-              return date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-            case "1W":
-              return date.toLocaleDateString([], {
-                month: "short",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-            case "1M":
-              return date.toLocaleDateString([], {
-                month: "short",
-                day: "numeric",
-              });
-            case "1Y":
-            case "ALL":
-            default:
-              return date.toLocaleDateString([], {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              });
-          }
+        tickAmount: range === "1H" ? 6 : range === "1D" ? 10 : undefined,
+
+        labels: {
+          datetimeUTC: false,
+          show: true,
+          rotate: 90,
+          style: {
+            colors: "#a3a3a3",
+            fontSize: "12px",
+          },
+          minHeight: 50,
+          maxHeight: 70,
+          formatter: (value, timestamp) => {
+            const d = new Date(timestamp || value);
+
+            switch (range) {
+              case "1H":
+                return d.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
+              case "1D":
+                return d.toLocaleTimeString([], {
+                  hour: "numeric",
+                  minute: "2-digit",
+                });
+              case "1W":
+                return d.toLocaleDateString([], {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                });
+              case "1M":
+                return d.toLocaleDateString([], {
+                  month: "short",
+                  day: "numeric",
+                });
+              case "1Y":
+                return d.toLocaleDateString([], {
+                  month: "short",
+                  year: "numeric",
+                });
+              default:
+                return d.toLocaleDateString([], {
+                  month: "short",
+                  year: "2-digit",
+                });
+            }
+          },
+        },
+
+        axisBorder: {
+          show: true,
+        },
+        axisTicks: {
+          show: true,
         },
       },
-    },
-    yaxis: {
-      labels: {
-        formatter: (val) => {
-          if (val >= 1000000) return `$${(val / 1000000).toFixed(1)}M`;
-          if (val >= 1000) return `$${(val / 1000).toFixed(1)}K`;
-          return `$${val.toLocaleString()}`;
+
+      yaxis: {
+        min: 0,
+        forceNiceScale: true,
+        labels: {
+          formatter: (value) => {
+            if (value >= 1000000) {
+              return `$${(value / 1000000).toFixed(1)}M`;
+            }
+
+            if (value >= 1000) {
+              return `$${(value / 1000).toFixed(1)}K`;
+            }
+
+            return `$${Math.round(value)}`;
+          },
         },
       },
-    },
-  };
+
+      tooltip: {
+        x: {
+          formatter: (val) =>
+            new Date(val).toLocaleString([], {
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+        },
+        y: {
+          formatter: (val) => `$${Number(val).toLocaleString()}`,
+        },
+      },
+
+      noData: {
+        text: "No portfolio history in this period",
+      },
+    }),
+    [range, portfolioStatisticsColors],
+  );
 
   return (
     <React.Fragment>
