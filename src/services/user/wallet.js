@@ -34,4 +34,20 @@ async function getWalletInvestData() {
   }
 }
 
-export { getUserWallets, getWalletAnalytics, getWalletInvestData };
+async function getPortfolioAccounts() {
+  try {
+    const response = await api.get("/wallet/portfolio-accounts");
+    // console.log(response.data);
+    return response.data || null;
+  } catch (error) {
+    const errMsg = error.response?.data?.message;
+    throw new Error(errMsg);
+  }
+}
+
+export {
+  getUserWallets,
+  getWalletAnalytics,
+  getWalletInvestData,
+  getPortfolioAccounts,
+};

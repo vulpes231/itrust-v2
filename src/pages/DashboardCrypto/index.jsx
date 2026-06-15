@@ -75,7 +75,11 @@ const DashboardCrypto = () => {
               <MyCurrencies />
             </Col>
             <Col md={4}>
-              <MyPortfolio wallets={wallets} walletData={walletData} />
+              <MyPortfolio
+                wallets={wallets}
+                walletData={walletData}
+                walletAnalytics={walletAnalytics}
+              />
               <Holdings />
               <AssetGraph
                 count={positionData?.positions?.length}

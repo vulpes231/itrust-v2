@@ -7,6 +7,7 @@ import VerifyAccountNotify from "../VerifyAccountNotify";
 import BalanceCard from "./BalanceCard";
 import { getAccessToken } from "../../constants";
 import {
+  getPortfolioAccounts,
   getUserWallets,
   getWalletAnalytics,
   getWalletInvestData,
@@ -30,6 +31,15 @@ const Portfolio = () => {
     queryKey: ["userWallets"],
     enabled: !!tk,
   });
+
+  const { data: portfolioAccounts, isLoading: getPortfolioAccountsLoading } =
+    useQuery({
+      queryFn: getPortfolioAccounts,
+      queryKey: ["portfolioAccounts"],
+      enabled: !!tk,
+    });
+
+  // console.log(portfolioAccounts);
 
   const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
     queryFn: getWalletAnalytics,
@@ -56,46 +66,12 @@ const Portfolio = () => {
   });
 
   const filteredWallets = useMemo(() => {
-    if (!wallets || wallets.length === 0) {
+    if (!portfolioAccounts || portfolioAccounts.length === 0) {
       return [];
     }
 
-    const result = wallets.reduce(
-      (acc, wallet) => {
-        const isCashWallet = wallet.slug === "cash";
-
-        if (!isCashWallet) {
-          acc.defaultWallets.push(wallet);
-          acc.totalBalance += wallet.balance.total || 0;
-          acc.availableBalance += wallet.balance.available || 0;
-        }
-
-        return acc;
-      },
-      {
-        defaultWallets: [],
-        totalBalance: 0,
-        availableBalance: 0,
-      },
-    );
-
-    const investing = {
-      balance: {
-        total: result.totalBalance,
-        available: result.availableBalance,
-      },
-      slug: "default",
-      name: "investing",
-      _id: "default",
-      dailyProfitPercent:
-        result.defaultWallets.reduce(
-          (acc, wallet) => acc + (wallet.dailyProfitPercent || 0),
-          0,
-        ) / (result.defaultWallets.length || 1),
-    };
-
-    return [investing, ...result.defaultWallets];
-  }, [wallets]);
+    return portfolioAccounts;
+  }, [portfolioAccounts]);
 
   const [activeWallet, setActiveWallet] = useState(null);
 
@@ -121,7 +97,7 @@ const Portfolio = () => {
     setActiveWallet(selectedWallet);
   };
 
-  if (getWalletLoading || !wallets) {
+  if (getPortfolioAccountsLoading || !portfolioAccounts) {
     return (
       <div className="page-content">
         <Container fluid>

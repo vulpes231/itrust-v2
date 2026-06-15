@@ -102,18 +102,14 @@ const PortfolioStatistics = ({
     const finalData = [];
 
     if (data.length === 0) {
-      // No activity at all
       const value = currentNetWorth ?? 0;
       finalData.push({ x: startTime, y: value });
       finalData.push({ x: endTime, y: value });
     } else {
-      // === KEY FIX: Start at 0 until first activity ===
       finalData.push({ x: startTime, y: 0 });
 
-      // Add all actual data points
       finalData.push(...data);
 
-      // Extend the last known value until "now"
       const lastValue = data[data.length - 1].y;
       if (data[data.length - 1].x < endTime) {
         finalData.push({ x: endTime, y: lastValue });
@@ -280,7 +276,7 @@ const PortfolioStatistics = ({
                 <h5 className="card-title mb-0">Statistics</h5>
               </div>
               <div className="toolbar d-flex align-items-start justify-content-center flex-wrap gap-2">
-                {["1H", "1D", "1W", "1M", "1Y", "ALL"].map((r) => (
+                {["1D", "1W", "1M", "1Y", "ALL"].map((r) => (
                   <button
                     key={r}
                     type="button"
