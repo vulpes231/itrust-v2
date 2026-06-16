@@ -85,9 +85,7 @@ const Retirements = ({ analytics, accts, handleIcon }) => {
                                   : acct.name}
                               </span>
                               <span className="fw-semibold fs-21">
-                                {formatCurrency(
-                                  acct.analytics.balance.available,
-                                )}
+                                {formatCurrency(acct.balance.available)}
                               </span>
                             </span>
                           </span>

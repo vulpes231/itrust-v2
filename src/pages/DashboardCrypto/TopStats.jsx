@@ -7,8 +7,7 @@ import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 
 import numeral from "numeral";
 
-const TopStats = ({ walletAnalytics }) => {
-  // console.log(walletAnalytics);
+const TopStats = ({ walletAnalytics, networth }) => {
   return (
     <Row className="p-3">
       <Col md={3}>
@@ -21,12 +20,7 @@ const TopStats = ({ walletAnalytics }) => {
           </div>
         </div>
         <div className="d-flex align-items-center justify-content-between gap-2">
-          <span className="fs-24 fw-semibold">
-            {" "}
-            {walletAnalytics
-              ? numeral(walletAnalytics?.totalBalance).format("$0,0.00")
-              : formatCurrency(0)}
-          </span>
+          <span className="fs-24 fw-semibold"> {formatCurrency(networth)}</span>
           <span
             className={`px-3 py-1  fs-10 fw-light rounded-1 d-flex gap-1 ${
               walletAnalytics?.totalProfitPercent &&

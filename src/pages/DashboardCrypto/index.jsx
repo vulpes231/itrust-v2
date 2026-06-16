@@ -11,6 +11,7 @@ import Holdings from "./Holdings";
 import RecentOrders from "./RecentOrders";
 import { useQuery } from "@tanstack/react-query";
 import {
+  getTotalNetworth,
   getUserWallets,
   getWalletAnalytics,
   getWalletInvestData,
@@ -45,6 +46,11 @@ const DashboardCrypto = () => {
     queryFn: getWalletInvestData,
     enabled: !!tk,
   });
+  const { data: totalNetworth } = useQuery({
+    queryKey: ["networth"],
+    queryFn: getTotalNetworth,
+    enabled: !!tk,
+  });
 
   const { data: wallets = [], loading: isWalletLoading } = useQuery({
     queryFn: getUserWallets,
@@ -70,6 +76,7 @@ const DashboardCrypto = () => {
                 dataColors='["--vz-info"]'
                 analytics={walletAnalytics}
                 walletData={walletData}
+                currentNetWorth={totalNetworth}
               />
               <Widgets1 />
               <MyCurrencies />
@@ -79,6 +86,7 @@ const DashboardCrypto = () => {
                 wallets={wallets}
                 walletData={walletData}
                 walletAnalytics={walletAnalytics}
+                networth={totalNetworth}
               />
               <Holdings />
               <AssetGraph

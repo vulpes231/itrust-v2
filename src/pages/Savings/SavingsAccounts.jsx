@@ -100,9 +100,7 @@ const SavingsAccounts = ({ analytics, accts, cashAcct }) => {
                                   style={{ color: "#495057" }}
                                   className="fw-semibold fs-21"
                                 >
-                                  {formatCurrency(
-                                    acct.analytics.balance.available,
-                                  )}
+                                  {formatCurrency(acct.balance.available)}
                                 </span>
                               </span>
                             </span>

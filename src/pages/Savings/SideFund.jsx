@@ -139,9 +139,7 @@ const SideFund = ({ accts, handleIcon }) => {
                       </Col>
                     </span>
                     <span className="fw-semibold fs-21">
-                      {formatCurrency(
-                        selectedAcct?.analytics?.balance.available || 0,
-                      )}
+                      {formatCurrency(selectedAcct?.balance?.available || 0)}
                     </span>
                   </span>
                 </span>

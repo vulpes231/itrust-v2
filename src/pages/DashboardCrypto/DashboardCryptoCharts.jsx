@@ -13,6 +13,7 @@ const PortfolioCharts = ({
   chartLabels,
   walletData,
   walletAnalytics,
+  networth,
 }) => {
   const getChartData = () => {
     if (!chartData || chartData.length === 0) return [100];
@@ -42,7 +43,7 @@ const PortfolioCharts = ({
     if (!walletAnalytics) return 0;
 
     if (selectedWallet === "All") {
-      return walletAnalytics?.totalBalance;
+      return networth;
     } else {
       const wallet = series[0];
       if (!wallet) return 0;

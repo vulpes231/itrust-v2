@@ -261,7 +261,7 @@ const Statistics = ({
     <React.Fragment>
       <Col>
         <Card>
-          <TopStats walletAnalytics={analytics} />
+          <TopStats walletAnalytics={analytics} networth={currentNetWorth} />
           <CardHeader>
             <div className="d-flex align-items-center">
               <div className="flex-grow-1">

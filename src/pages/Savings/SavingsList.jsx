@@ -56,7 +56,7 @@ const SavingsList = ({ accts }) => {
                         </span>
                       </span>
                       <span className="fs-14 fw-semibold">
-                        {formatCurrency(acct.analytics.balance.available)}
+                        {formatCurrency(acct.balance.available)}
                       </span>
                     </div>
                   );

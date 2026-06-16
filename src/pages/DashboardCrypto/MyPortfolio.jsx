@@ -14,8 +14,10 @@ import { auto, broke, btc, cash, dash, eth, ltc } from "../../assets";
 import { capitalize } from "lodash";
 import { formatCurrency, getTotalProfit } from "../../constants";
 
-const MyPortfolio = ({ wallets, walletData, walletAnalytics }) => {
+const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
   const [selectedWallet, setSelectedWallet] = useState("All");
+
+  console.log(wallets);
 
   const onWalletChange = (wallet) => {
     setSelectedWallet(wallet);
@@ -145,6 +147,7 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics }) => {
                 chartLabels={getChartLabels()}
                 dataColors='["--vz-primary", "--vz-secondary", "--vz-warning"]'
                 walletAnalytics={walletAnalytics}
+                networth={networth}
               />
             </div>
 

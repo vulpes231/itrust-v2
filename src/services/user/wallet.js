@@ -45,9 +45,33 @@ async function getPortfolioAccounts() {
   }
 }
 
+async function getTradingAccounts() {
+  try {
+    const response = await api.get("/wallet/trading-accounts");
+    // console.log(response.data);
+    return response.data || null;
+  } catch (error) {
+    const errMsg = error.response?.data?.message;
+    throw new Error(errMsg);
+  }
+}
+
+async function getTotalNetworth() {
+  try {
+    const response = await api.get("/wallet/networth");
+    // console.log(response.data);
+    return response.data || null;
+  } catch (error) {
+    const errMsg = error.response?.data?.message;
+    throw new Error(errMsg);
+  }
+}
+
 export {
   getUserWallets,
   getWalletAnalytics,
   getWalletInvestData,
   getPortfolioAccounts,
+  getTradingAccounts,
+  getTotalNetworth,
 };
