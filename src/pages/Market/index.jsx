@@ -8,6 +8,7 @@ import AssetManager from "./AssetManager";
 import OrderHistory from "./OrderHistory";
 import TradeSection from "./TradeSection";
 import {
+  getTradingAccounts,
   getUserWallets,
   getWalletAnalytics,
   getWalletInvestData,
@@ -37,9 +38,14 @@ const BuySell = () => {
     }
   };
 
-  const { data: wallets } = useQuery({
-    queryFn: getUserWallets,
-    queryKey: ["wallets"],
+  // const { data: wallets } = useQuery({
+  //   queryFn: getUserWallets,
+  //   queryKey: ["wallets"],
+  //   enabled: !!tk,
+  // });
+  const { data: tradingAccounts } = useQuery({
+    queryFn: getTradingAccounts,
+    queryKey: ["tradingAccounts"],
     enabled: !!tk,
   });
 
@@ -125,7 +131,7 @@ const BuySell = () => {
           {shouldShowTradeSection() && (
             <TradeSection
               asset={selectedAsset || preSelectedAsset}
-              accounts={wallets}
+              accounts={tradingAccounts}
               walletData={walletData}
             />
           )}

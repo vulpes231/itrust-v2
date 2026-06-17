@@ -8,6 +8,7 @@ import BalanceCard from "./BalanceCard";
 import { getAccessToken } from "../../constants";
 import {
   getPortfolioAccounts,
+  getTradingAccounts,
   getUserWallets,
   getWalletAnalytics,
   getWalletInvestData,
@@ -39,7 +40,11 @@ const Portfolio = () => {
       enabled: !!tk,
     });
 
-  // console.log(portfolioAccounts);
+  const { data: tradingAccounts } = useQuery({
+    queryFn: getTradingAccounts,
+    queryKey: ["tradignAccounts"],
+    enabled: !!tk,
+  });
 
   const { data: walletAnalytics, isLoading: getAnalyticsLoading } = useQuery({
     queryFn: getWalletAnalytics,
@@ -112,7 +117,10 @@ const Portfolio = () => {
     );
   }
 
-  const cashAccount = wallets.find((wall) => wall.slug === "cash");
+  const cashAccount =
+    wallets &&
+    wallets.length > 0 &&
+    wallets.find((wall) => wall.slug === "cash");
 
   return (
     <React.Fragment>
@@ -143,7 +151,10 @@ const Portfolio = () => {
               <Positions />
             </Col>
             <Col lg={4}>
-              <TradeCard walletData={walletData} />
+              <TradeCard
+                walletData={walletData}
+                tradingAccounts={tradingAccounts}
+              />
               <AssetGraph
                 count={positionData?.positions?.length}
                 walletAnalytics={walletAnalytics}

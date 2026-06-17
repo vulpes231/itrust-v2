@@ -32,6 +32,23 @@ const PortfolioStatistics = ({
       }),
   });
 
+  const getTickAmount = (range) => {
+    switch (range) {
+      case "1D":
+        return 24; // ~hourly
+      case "1W":
+        return 8; // daily-ish for a week
+      case "1M":
+        return 15; // daily for a month
+      case "1Y":
+        return 12; // monthly
+      case "ALL":
+        return 12; // monthly
+      default:
+        return undefined;
+    }
+  };
+
   const getRangeStart = (range) => {
     const now = new Date();
     const date = new Date(now);
@@ -58,6 +75,8 @@ const PortfolioStatistics = ({
         break;
 
       case "ALL":
+        date.setFullYear(date.getFullYear() - 1);
+        break;
       default:
         return null;
     }
@@ -65,9 +84,9 @@ const PortfolioStatistics = ({
     return date;
   };
 
-  // useEffect(() => {
-  //   if (range && chartData) console.log(range, chartData);
-  // }, [range, chartData]);
+  useEffect(() => {
+    if (range && chartData) console.log(range, chartData);
+  }, [range, chartData]);
 
   const filteredData = React.useMemo(() => {
     const rangeStart = getRangeStart(range);
@@ -106,13 +125,17 @@ const PortfolioStatistics = ({
       finalData.push({ x: startTime, y: value });
       finalData.push({ x: endTime, y: value });
     } else {
-      finalData.push({ x: startTime, y: 0 });
-
+      finalData.push({ x: startTime, y: 0 }); // start at baseline
       finalData.push(...data);
 
       const lastValue = data[data.length - 1].y;
       if (data[data.length - 1].x < endTime) {
         finalData.push({ x: endTime, y: lastValue });
+      }
+
+      // NEW: Force the chart to understand the baseline better
+      if (finalData[0].y !== 0) {
+        finalData.unshift({ x: startTime, y: 0 });
       }
     }
 
@@ -144,17 +167,30 @@ const PortfolioStatistics = ({
       },
       colors: portfolioStatisticsColors,
       dataLabels: { enabled: false },
-      stroke: {
-        curve: "stepline",
-        width: 3,
-      },
       fill: {
         type: "gradient",
         gradient: {
           shadeIntensity: 1,
-          opacityFrom: 0.4,
+          opacityFrom: 0.45,
           opacityTo: 0.05,
-          stops: [0, 100],
+          stops: [0, 90],
+        },
+        colors: ["#5162be"],
+      },
+
+      stroke: {
+        curve: "stepline",
+        width: 3,
+        colors: ["#5162be"],
+      },
+
+      grid: {
+        show: true,
+        xaxis: {
+          lines: { show: false },
+        },
+        yaxis: {
+          lines: { show: true },
         },
       },
       markers: {
@@ -164,66 +200,67 @@ const PortfolioStatistics = ({
 
       xaxis: {
         type: "datetime",
-        min: range !== "ALL" ? getRangeStart(range)?.getTime() : undefined,
+        min: getRangeStart(range)?.getTime(),
         max: Date.now(),
 
-        tickAmount: range === "1H" ? 6 : range === "1D" ? 10 : undefined,
+        tickAmount: getTickAmount(range),
 
         labels: {
           datetimeUTC: false,
           show: true,
-          rotate: 90,
+          rotate: range === "1D" ? -45 : 90,
           style: {
             colors: "#a3a3a3",
             fontSize: "12px",
           },
           minHeight: 50,
-          maxHeight: 70,
+          maxHeight: 80,
+          hideOverlappingLabels: false,
+          showDuplicates: false,
+
           formatter: (value, timestamp) => {
             const d = new Date(timestamp || value);
 
             switch (range) {
-              case "1H":
-                return d.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                });
               case "1D":
-                return d.toLocaleTimeString([], {
-                  hour: "numeric",
-                  minute: "2-digit",
-                });
+                return d
+                  .toLocaleTimeString([], {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: false,
+                  })
+                  .replace(":00", "");
+
               case "1W":
                 return d.toLocaleDateString([], {
-                  weekday: "short",
-                  month: "short",
                   day: "numeric",
+                  month: "short",
+                  // year: "2-digit",
                 });
               case "1M":
                 return d.toLocaleDateString([], {
                   month: "short",
                   day: "numeric",
                 });
+
               case "1Y":
+              case "ALL":
                 return d.toLocaleDateString([], {
                   month: "short",
-                  year: "numeric",
+
+                  year: range === "ALL" ? "numeric" : "2-digit",
                 });
+
               default:
                 return d.toLocaleDateString([], {
                   month: "short",
-                  year: "2-digit",
+                  day: "numeric",
                 });
             }
           },
         },
-
-        axisBorder: {
-          show: true,
-        },
-        axisTicks: {
-          show: true,
-        },
+        axisBorder: { show: true },
+        axisTicks: { show: true },
       },
 
       yaxis: {

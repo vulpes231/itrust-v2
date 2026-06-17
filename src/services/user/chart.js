@@ -16,7 +16,7 @@ export async function getDashboardChartData(formData) {
 
 export async function getPortfolioChartData(formData) {
   const { timeframe, walletId } = formData;
-  console.log(formData);
+  // console.log(formData);
   if (!walletId) return [];
   try {
     const res =

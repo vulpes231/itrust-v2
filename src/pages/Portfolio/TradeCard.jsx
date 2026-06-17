@@ -39,17 +39,12 @@ const allowedTypes = [
   { id: "leverage", label: "Leverage Order" },
 ];
 
-const TradeCard = ({ walletData }) => {
+const TradeCard = ({ walletData, tradingAccounts }) => {
   const [activeTab, setActiveTab] = useState("buy");
 
   const [tradeType, setTradeType] = useState({
     id: "market",
     label: "Market Order",
-  });
-
-  const { data: wallets } = useQuery({
-    queryFn: getUserWallets,
-    queryKey: ["wallets"],
   });
 
   const toggleTab = (tab) => {
@@ -135,7 +130,7 @@ const TradeCard = ({ walletData }) => {
           <TabPane tabId="buy">
             <BuyForm
               tradeType={tradeType}
-              wallets={wallets}
+              wallets={tradingAccounts}
               activeTab={activeTab}
             />
           </TabPane>
@@ -143,7 +138,7 @@ const TradeCard = ({ walletData }) => {
           <TabPane tabId="sell">
             <SellForm
               tradeType={tradeType}
-              wallets={wallets}
+              wallets={tradingAccounts}
               activeTab={activeTab}
               walletData={walletData}
             />

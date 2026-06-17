@@ -43,7 +43,7 @@ const PortfolioCharts = ({
     if (!walletAnalytics) return 0;
 
     if (selectedWallet === "All") {
-      return networth;
+      return networth || 0;
     } else {
       const wallet = series[0];
       if (!wallet) return 0;

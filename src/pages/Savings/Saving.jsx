@@ -32,6 +32,8 @@ const Saving = () => {
     enabled: !!token,
   });
 
+  // console.log(savingAnalytics);
+
   const cashAcct =
     wallets &&
     wallets.length > 0 &&

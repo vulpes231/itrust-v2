@@ -17,8 +17,6 @@ import { formatCurrency, getTotalProfit } from "../../constants";
 const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
   const [selectedWallet, setSelectedWallet] = useState("All");
 
-  console.log(wallets);
-
   const onWalletChange = (wallet) => {
     setSelectedWallet(wallet);
   };
@@ -84,10 +82,24 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
             <i className="ri-bar-chart-2-line fs-20 text-warning"></i>
           </span>
         );
-      case "traditional IRA":
-        return <i className="ri-shield-line fs-20"></i>;
+      case "traditional ira":
+        return (
+          <span
+            className="bg-success-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
+            style={{ width: "35px", height: "35px" }}
+          >
+            <i className="ri-shield-line fs-20 text-success"></i>
+          </span>
+        );
       case "health savings":
-        return <i className="ri-service-line fs-20"></i>;
+        return (
+          <span
+            className="bg-light-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
+            style={{ width: "35px", height: "35px" }}
+          >
+            <i className="ri-service-line fs-20 "></i>
+          </span>
+        );
       default:
         return null;
     }
@@ -145,7 +157,7 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                 selectedWallet={selectedWallet}
                 chartData={getChartData()}
                 chartLabels={getChartLabels()}
-                dataColors='["--vz-primary", "--vz-secondary", "--vz-warning"]'
+                dataColors='["--vz-primary", "--vz-secondary", "--vz-warning", "--vz-info", "--vz-success"]'
                 walletAnalytics={walletAnalytics}
                 networth={networth}
               />
