@@ -88,58 +88,33 @@ const PortfolioStatistics = ({
     if (range && chartData) console.log(range, chartData);
   }, [range, chartData]);
 
-  const filteredData = React.useMemo(() => {
+  const { filteredData, yAxisMax } = React.useMemo(() => {
     const rangeStart = getRangeStart(range);
     const now = new Date();
     const nowTime = now.getTime();
 
     let data = [...(chartData || [])]
-      .map((item) => {
-        let timestamp = item.x;
-        if (typeof timestamp === "string" || typeof timestamp === "number") {
-          timestamp = new Date(timestamp).getTime();
-        }
-        return {
-          x: isNaN(timestamp) ? nowTime : timestamp,
-          y: Math.max(0, Number(item.y) || 0),
-          reason: item.reason,
-        };
-      })
+      .map((item) => ({
+        x: new Date(item.x).getTime(),
+        y: Math.max(0, Number(item.y) || 0),
+        reason: item.reason,
+      }))
       .sort((a, b) => a.x - b.x);
 
-    // Filter by selected range
     if (rangeStart) {
-      const startTime = rangeStart.getTime();
-      data = data.filter((item) => item.x >= startTime && item.x <= nowTime);
+      data = data.filter(
+        (item) => item.x >= rangeStart.getTime() && item.x <= nowTime,
+      );
     }
 
-    const startTime = rangeStart
-      ? rangeStart.getTime()
-      : (data[0]?.x ?? nowTime - 3600000);
-    const endTime = nowTime;
+    const finalData = [{ x: rangeStart?.getTime() ?? nowTime, y: 0 }, ...data];
 
-    const finalData = [];
+    const maxY = finalData.reduce((max, point) => Math.max(max, point.y), 0);
 
-    if (data.length === 0) {
-      const value = currentNetWorth ?? 0;
-      finalData.push({ x: startTime, y: value });
-      finalData.push({ x: endTime, y: value });
-    } else {
-      finalData.push({ x: startTime, y: 0 }); // start at baseline
-      finalData.push(...data);
-
-      const lastValue = data[data.length - 1].y;
-      if (data[data.length - 1].x < endTime) {
-        finalData.push({ x: endTime, y: lastValue });
-      }
-
-      // NEW: Force the chart to understand the baseline better
-      if (finalData[0].y !== 0) {
-        finalData.unshift({ x: startTime, y: 0 });
-      }
-    }
-
-    return finalData;
+    return {
+      filteredData: finalData,
+      yAxisMax: Math.max(500, Math.ceil(maxY / 500) * 500),
+    };
   }, [chartData, range, currentNetWorth]);
 
   const series = React.useMemo(
@@ -208,7 +183,9 @@ const PortfolioStatistics = ({
         labels: {
           datetimeUTC: false,
           show: true,
-          rotate: range === "1D" ? -45 : 90,
+          rotate: -45,
+          rotateAlways: true, // important
+          trim: false,
           style: {
             colors: "#a3a3a3",
             fontSize: "12px",
@@ -265,6 +242,8 @@ const PortfolioStatistics = ({
 
       yaxis: {
         min: 0,
+        max: yAxisMax,
+        tickAmount: yAxisMax / 1000,
         forceNiceScale: true,
         labels: {
           formatter: (value) => {
@@ -300,7 +279,7 @@ const PortfolioStatistics = ({
         text: "No portfolio history in this period",
       },
     }),
-    [range, portfolioStatisticsColors],
+    [range, portfolioStatisticsColors, yAxisMax],
   );
 
   return (
