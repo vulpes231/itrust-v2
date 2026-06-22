@@ -236,7 +236,7 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                 {({ getRootProps, getInputProps, isDragActive }) => (
                   <div
                     className={`dropzone dz-clickable ${isDragActive ? "dz-drag-hover" : ""}`}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", height: "270px" }}
                   >
                     <div
                       className="dz-message needsclick text-center"
@@ -291,7 +291,7 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                 {({ getRootProps, getInputProps, isDragActive }) => (
                   <div
                     className={`dropzone dz-clickable ${isDragActive ? "dz-drag-hover" : ""}`}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", height: "270px" }}
                   >
                     <div
                       className="dz-message needsclick text-center"

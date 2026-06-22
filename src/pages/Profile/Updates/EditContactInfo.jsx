@@ -22,7 +22,7 @@ import SuccessToast from "../../../components/Common/SuccessToast";
 
 const EditContactInfo = ({ isOpen, handleToggle, user }) => {
   const [error, setError] = useState("");
-
+  const [selectedCountry, setSelectedCountry] = useState("");
   const mutation = useMutation({
     mutationFn: updateUserInfo,
     onError: (err) => setError(err.message),
@@ -83,6 +83,16 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (!validation.values.countryId) return;
+    const country =
+      countries &&
+      countries.length > 0 &&
+      countries.find((ct) => ct._id.toString() === validation.values.countryId);
+    // console.log(country);
+    setSelectedCountry(country);
+  }, [validation.values.countryId]);
+
   return (
     <React.Fragment>
       <Modal isOpen={isOpen} toggle={handleToggle} centered>
@@ -114,16 +124,24 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                 <Label className="fs-15 fw-normal text-capitalize">
                   phone number
                 </Label>
-                <Input
-                  type="text"
-                  name="phone"
-                  onChange={validation.handleChange}
-                  value={validation.values.phone}
-                  readOnly={user?.contactInfo?.status === "verified"}
-                  className={
-                    user?.contactInfo?.status === "verified" ? "bg-light" : ""
-                  }
-                />
+                <div className="d-flex align-items-center gap-1">
+                  {selectedCountry !== "" ? (
+                    <span className="border border-2 rounded-2 p-2">
+                      {selectedCountry?.phoneCode}
+                    </span>
+                  ) : null}
+
+                  <Input
+                    type="text"
+                    name="phone"
+                    onChange={validation.handleChange}
+                    value={validation.values.phone}
+                    readOnly={user?.contactInfo?.status === "verified"}
+                    className={
+                      user?.contactInfo?.status === "verified" ? "bg-light" : ""
+                    }
+                  />
+                </div>
               </Col>
             </Row>
             <Row>

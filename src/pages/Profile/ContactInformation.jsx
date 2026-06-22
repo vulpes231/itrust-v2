@@ -82,7 +82,12 @@ const ContactInformation = ({ user }) => {
               <span className="text-capitalize" style={{ color: "#878A99" }}>
                 phone number
               </span>
-              <h6>{user?.contactInfo?.phone || "-"}</h6>
+              <h6 className="d-flex gap-1">
+                <span>
+                  {`${user?.contactInfo?.country?.phoneCode} ${user?.contactInfo?.phone}` ||
+                    "-"}
+                </span>
+              </h6>
             </Col>
           </Row>
           <Row>

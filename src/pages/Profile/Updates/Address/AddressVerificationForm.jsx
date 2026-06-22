@@ -282,7 +282,10 @@ const AddressVerificationForm = ({
                 maxFiles={1}
               >
                 {({ getRootProps, getInputProps }) => (
-                  <div className="dropzone dz-clickable">
+                  <div
+                    className="dropzone dz-clickable"
+                    style={{ cursor: "pointer", height: "270px" }}
+                  >
                     <div
                       className="dz-message needsclick text-center"
                       {...getRootProps()}

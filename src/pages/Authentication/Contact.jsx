@@ -33,6 +33,8 @@ const Contact = () => {
     queryKey: ["countries"],
   });
 
+  const [selectedCountry, setSelectedCountry] = useState("");
+
   const validation = useFormik({
     enableReinitialize: true,
 
@@ -59,6 +61,13 @@ const Contact = () => {
     },
   });
 
+  const handleCountryInputChange = (e) => {
+    const currentCountry = e.target.value;
+    setSelectedCountry(currentCountry);
+
+    validation.setFieldValue("countryId", currentCountry._id);
+  };
+
   const { data: states, isLoading: getStatesLoading } = useQuery({
     queryFn: () => getStatesByCountry(validation.values.countryId),
     queryKey: ["states", validation.values.countryId],
@@ -69,7 +78,15 @@ const Contact = () => {
 
   const location = useLocation();
 
-  // console.log(location.pathname);
+  useEffect(() => {
+    if (!validation.values.countryId) return;
+    const country =
+      countries &&
+      countries.length > 0 &&
+      countries.find((ct) => ct._id.toString() === validation.values.countryId);
+    // console.log(country);
+    setSelectedCountry(country);
+  }, [validation.values.countryId]);
 
   return (
     <React.Fragment>
@@ -182,20 +199,27 @@ const Contact = () => {
                       <Label htmlFor="phone" className="form-label">
                         Phone Number <span className="text-danger">*</span>
                       </Label>
-                      <Input
-                        name="phone"
-                        type="text"
-                        placeholder="Enter phone"
-                        onChange={validation.handleChange}
-                        onBlur={validation.handleBlur}
-                        value={validation.values.phone || ""}
-                        invalid={
-                          validation.touched.phone && validation.errors.phone
-                            ? true
-                            : false
-                        }
-                        autoComplete="off"
-                      />
+                      <div className="d-flex align-items-center gap-1">
+                        {selectedCountry !== "" ? (
+                          <span className="border border-2 rounded-2 p-2">
+                            {selectedCountry?.phoneCode}
+                          </span>
+                        ) : null}
+                        <Input
+                          name="phone"
+                          type="text"
+                          placeholder="Enter phone"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.phone || ""}
+                          invalid={
+                            validation.touched.phone && validation.errors.phone
+                              ? true
+                              : false
+                          }
+                          autoComplete="off"
+                        />
+                      </div>
                       {validation.touched.phone && validation.errors.phone ? (
                         <FormFeedback type="invalid">
                           <div>{validation.errors.phone}</div>
