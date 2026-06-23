@@ -62,11 +62,11 @@ const ContactInformation = ({ user }) => {
               <h6 className="d-flex align-items-center gap-2">
                 {user?.contactInfo?.email || "-"}{" "}
                 <span className={`fs-10 fw-light text-capitalize`}>
-                  {user?.accountStatus?.emailVerified ? (
+                  {user && user?.accountStatus?.emailVerified ? (
                     <small className="text-success bg-success-subtle p-1 rounded-2 d-flex align-items-center gap-1">
                       <FaRegCircleCheck /> verified
                     </small>
-                  ) : (
+                  ) : user && !user?.accountStatus?.emailVerified ? (
                     <Link
                       className="p-1 fw-bold fs-11 d-flex align-items-center gap-1"
                       style={{ textDecoration: "underline", color: "#D9AA40" }}
@@ -74,7 +74,7 @@ const ContactInformation = ({ user }) => {
                     >
                       <FiAlertCircle /> verify email
                     </Link>
-                  )}
+                  ) : null}
                 </span>
               </h6>
             </Col>

@@ -15,7 +15,6 @@ import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import {
   addToWatchList,
   getUserWatchList,
-  removeFromWatchList,
 } from "../../services/watchlist/watchlist";
 import { getUserInfo } from "../../services/user/user";
 
@@ -36,7 +35,6 @@ const Market = () => {
 
   const token = getAccessToken();
 
-  // Fetch assets (only when not in watchlist mode)
   const {
     data: dbAssets,
     isLoading: getAssetsLoading,
@@ -47,7 +45,6 @@ const Market = () => {
     enabled: !showWatchlistOnly,
   });
 
-  // Fetch watchlist data
   const {
     data: watchlistData,
     isLoading: getWatchlistLoading,
@@ -57,26 +54,22 @@ const Market = () => {
     queryKey: ["watchlist"],
   });
 
-  // Fetch user info
   const { data: user, isLoading: getUserLoading } = useQuery({
     queryFn: () => getUserInfo(),
     queryKey: ["user"],
   });
 
-  // Create a Set of watchlist asset IDs for quick lookup
   const watchlistIds = useMemo(() => {
     return new Set(
       user?.watchList?.map((item) => item.assetId?.toString()) || [],
     );
   }, [user?.watchList]);
 
-  // Determine which assets to display
   const displayedAssets = useMemo(() => {
     if (showWatchlistOnly) {
-      // Return watchlist assets
       return watchlistData || [];
     }
-    // Return all assets from API
+
     return dbAssets?.data || [];
   }, [showWatchlistOnly, watchlistData, dbAssets?.data]);
 
@@ -84,7 +77,6 @@ const Market = () => {
     ? { total: watchlistData?.data?.length || 0, page: 1, pages: 1 }
     : dbAssets?.pagination;
 
-  // Transform data for table display
   const transformedData = useMemo(() => {
     if (!displayedAssets || displayedAssets.length === 0) return [];
 
@@ -118,12 +110,10 @@ const Market = () => {
     });
   }, [displayedAssets, watchlistIds]);
 
-  // Add to watchlist mutation
   const addAssetToWatchList = useMutation({
     mutationFn: addToWatchList,
     onError: (err) => setError(err.message),
     onSuccess: () => {
-      // Invalidate and refetch queries
       queryClient.invalidateQueries(["watchlist"]);
       queryClient.invalidateQueries(["user"]);
 
@@ -133,31 +123,14 @@ const Market = () => {
     },
   });
 
-  // Remove from watchlist mutation
-  const removeAssetFromWatchList = useMutation({
-    mutationFn: removeFromWatchList,
-    onError: (err) => setError(err.message),
-    onSuccess: () => {
-      // Invalidate and refetch queries
-      queryClient.invalidateQueries(["watchlist"]);
-      queryClient.invalidateQueries(["user"]);
-
-      if (showWatchlistOnly) {
-        refetchWatchlist();
-      }
-    },
-  });
-
-  // Handle watchlist toggle
-  const handleWatchlistToggle = (assetId, isInWatchlist) => {
-    if (isInWatchlist) {
-      removeAssetFromWatchList.mutate(assetId);
-    } else {
-      addAssetToWatchList.mutate(assetId);
+  const handleWatchlistToggle = (assetId) => {
+    if (addAssetToWatchList.isLoading) {
+      console.log("Loading please wait...");
+      return;
     }
+    addAssetToWatchList.mutate(assetId);
   };
 
-  // Handle watchlist filter button
   const handleWatchlistFilter = () => {
     if (showWatchlistOnly) {
       setShowWatchlistOnly(false);
@@ -169,7 +142,6 @@ const Market = () => {
     }
   };
 
-  // Handle asset filter change
   const handleAssetFilterChange = (value) => {
     setAssetFilter(value);
     setShowWatchlistOnly(false);
@@ -177,21 +149,18 @@ const Market = () => {
     setCurrentPage(1);
   };
 
-  // Handle sort change
   const handleSortChange = (sortType) => {
     setSort(sortType);
     setShowWatchlistOnly(false);
     setCurrentPage(1);
   };
 
-  // Handle page change
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
   const isLoading = getAssetsLoading || getWatchlistLoading || getUserLoading;
 
-  // Define table columns with watchlist star functionality
   const columns = useMemo(
     () => [
       {
@@ -201,8 +170,7 @@ const Market = () => {
         cell: (cell) => {
           const assetId = cell.row.original.id;
           const isInWatchlist = cell.row.original.isInWatchlist;
-          const isMutating =
-            addAssetToWatchList.isLoading || removeAssetFromWatchList.isLoading;
+          const isMutating = addAssetToWatchList.isLoading;
 
           return (
             <button
@@ -308,7 +276,7 @@ const Market = () => {
         ),
       },
     ],
-    [addAssetToWatchList.isLoading, removeAssetFromWatchList.isLoading],
+    [addAssetToWatchList.isLoading],
   );
 
   return (

@@ -3,10 +3,7 @@ import PropTypes from "prop-types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Col, Collapse, Row } from "reactstrap";
 import withRouter from "../../Components/Common/withRouter";
-
-// Import Data
 import navdata from "../LayoutMenuData";
-//i18n
 import { withTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { allowedRoutesIfNotVerified, getAccessToken } from "../../constants";
@@ -15,7 +12,7 @@ import ErrorToast from "../../components/Common/ErrorToast";
 
 const HorizontalLayout = (props) => {
   const [isMoreMenu, setIsMoreMenu] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("");
+  // const [activeMenu, setActiveMenu] = useState("");
   const location = useLocation();
   const navData = navdata().props.children;
 
@@ -46,32 +43,28 @@ const HorizontalLayout = (props) => {
     }
   });
 
-  // const kycStatus = user?.identityVerification?.kycStatus;
+  // useEffect(() => {
+  //   const currentPath = location.pathname;
+  //   setActiveMenu(currentPath);
 
-  // Update active menu when location changes
-  useEffect(() => {
-    const currentPath = location.pathname;
-    setActiveMenu(currentPath);
+  //   const initMenu = () => {
+  //     const ul = document.getElementById("navbar-nav");
+  //     const items = ul.getElementsByTagName("a");
+  //     let itemsArray = [...items];
 
-    // Initialize menu activation
-    const initMenu = () => {
-      const ul = document.getElementById("navbar-nav");
-      const items = ul.getElementsByTagName("a");
-      let itemsArray = [...items];
+  //     removeActivation(itemsArray);
 
-      removeActivation(itemsArray);
+  //     let matchingMenuItem = itemsArray.find((x) => {
+  //       return x.getAttribute("href") === currentPath;
+  //     });
 
-      let matchingMenuItem = itemsArray.find((x) => {
-        return x.getAttribute("href") === currentPath;
-      });
+  //     if (matchingMenuItem) {
+  //       activateParentDropdown(matchingMenuItem);
+  //     }
+  //   };
 
-      if (matchingMenuItem) {
-        activateParentDropdown(matchingMenuItem);
-      }
-    };
-
-    initMenu();
-  }, [location.pathname, props.layoutType]);
+  //   initMenu();
+  // }, [location.pathname, props.layoutType]);
 
   function activateParentDropdown(item) {
     item.classList.add("active");
@@ -129,9 +122,10 @@ const HorizontalLayout = (props) => {
     });
   };
 
-  // Check if menu item is active
   const isMenuItemActive = (itemLink) => {
-    return activeMenu === itemLink || activeMenu.startsWith(itemLink + "/");
+    if (!itemLink) return false;
+    const currentPath = location.pathname;
+    return currentPath === itemLink || currentPath.startsWith(itemLink + "/");
   };
 
   const navigate = useNavigate();
@@ -353,7 +347,6 @@ const HorizontalLayout = (props) => {
                       item.click(e);
                       navigate(item.link);
                     }}
-                    // to={}
                   >
                     <i className={item.icon}></i>{" "}
                     <span>{props.t(item.label)}</span>

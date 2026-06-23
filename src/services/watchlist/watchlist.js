@@ -24,17 +24,6 @@ async function addToWatchList(assetId) {
   }
 }
 
-async function removeFromWatchList(assetId) {
-  try {
-    const response = await api.put(`/watchlist`, { assetId });
-
-    return response.data;
-  } catch (error) {
-    const errMsg = error || "Failed to remove from watchlist.";
-    throw new Error(errMsg);
-  }
-}
-
 const checkWatchlistStatus = async (assetId) => {
   try {
     const response = await api.get(`watchlist/check/${assetId}`);
@@ -45,9 +34,4 @@ const checkWatchlistStatus = async (assetId) => {
   }
 };
 
-export {
-  addToWatchList,
-  removeFromWatchList,
-  getUserWatchList,
-  checkWatchlistStatus,
-};
+export { addToWatchList, getUserWatchList, checkWatchlistStatus };

@@ -1,12 +1,17 @@
 import numeral from "numeral";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardBody, CardHeader, Col, Input, Row } from "reactstrap";
 import { formatCurrency, getAccessToken } from "../../constants";
 import { useQuery } from "@tanstack/react-query";
 import { getUserPositions } from "../../services/user/position";
+import {
+  getPortfolioAccounts,
+  getTradingAccounts,
+} from "../../services/user/wallet";
 
 const Holdings = () => {
   const tk = getAccessToken();
+  const [filter, setFilter] = useState("");
 
   const { data: positionData } = useQuery({
     queryKey: ["positionData"],
@@ -15,6 +20,28 @@ const Holdings = () => {
   });
 
   const overall = positionData?.totalCurrentValue;
+
+  const { data: tradeAccounts } = useQuery({
+    queryKey: ["tradeAccounts"],
+    queryFn: getPortfolioAccounts,
+  });
+
+  const allPositions = positionData?.positions || [];
+
+  const filteredPosition =
+    filter === ""
+      ? allPositions
+      : allPositions.filter((trade) => trade.wallet.name === filter);
+
+  const accounts =
+    (tradeAccounts &&
+      tradeAccounts.length > 0 &&
+      tradeAccounts.filter((acct) => acct.slug !== "default")) ||
+    [];
+
+  const handleChange = (e) => {
+    setFilter(e.target.value);
+  };
 
   return (
     <React.Fragment>
@@ -25,26 +52,33 @@ const Holdings = () => {
             <span>
               <Input
                 type="select"
-                className="text-secondary bg-secondary-subtle"
+                className="text-secondary bg-secondary-subtle text-capitalize"
+                onChange={handleChange}
               >
                 <option value="">All</option>
+                {accounts &&
+                  accounts.length > 0 &&
+                  accounts.map((acct) => {
+                    return (
+                      <option value={acct.name} key={acct._id}>
+                        {acct.name}
+                      </option>
+                    );
+                  })}
               </Input>
             </span>
           </div>
         </CardHeader>
         <CardBody>
-          {positionData &&
-            positionData.positions &&
-            positionData.positions.length === 0 && (
-              <Col className="p-4">
-                <span style={{ color: "#878A99" }}>You have no holdings</span>
-              </Col>
-            )}
+          {filteredPosition && filteredPosition.length === 0 && (
+            <Col className="p-4">
+              <span style={{ color: "#878A99" }}>You have no holdings</span>
+            </Col>
+          )}
           <Col className="d-flex flex-column gap-3">
-            {positionData &&
-              positionData.positions &&
-              positionData.positions.length > 0 &&
-              positionData.positions.map((trade) => {
+            {filteredPosition &&
+              filteredPosition.length > 0 &&
+              filteredPosition.map((trade) => {
                 const value = Number(trade?.return) || 0;
 
                 const safeValue = Math.abs(value) < 0.005 ? 0 : value;

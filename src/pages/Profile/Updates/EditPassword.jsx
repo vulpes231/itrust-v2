@@ -7,8 +7,9 @@ import * as Yup from "yup";
 import SuccessToast from "../../../components/Common/SuccessToast";
 import { useMutation } from "@tanstack/react-query";
 import { updatePassword } from "../../../services/user/user";
+import ResetPasswordModal from "./ResetPasswordModal";
 
-const EditPassword = ({ onClose }) => {
+const EditPassword = ({ onClose, forgetPassModal, setForgetPassModal }) => {
   const [error, setError] = useState("");
 
   const mutation = useMutation({
@@ -134,7 +135,13 @@ const EditPassword = ({ onClose }) => {
         </Col>
       </Row>
       <Col>
-        <Link className="text-capitalize text-decoration-underline ">
+        <Link
+          onClick={(e) => {
+            e.preventDefault();
+            setForgetPassModal(true);
+          }}
+          className="text-capitalize text-decoration-underline "
+        >
           forgot password?
         </Link>
         <Col className="d-flex align-items-center justify-content-end gap-3">
@@ -164,6 +171,12 @@ const EditPassword = ({ onClose }) => {
           successMsg={"Password Updated"}
           isOpen={mutation.isSuccess}
           onClose={() => mutation.reset()}
+        />
+      )}
+      {forgetPassModal && (
+        <ResetPasswordModal
+          isOpen={forgetPassModal}
+          handleToggle={() => setForgetPassModal(false)}
         />
       )}
     </div>

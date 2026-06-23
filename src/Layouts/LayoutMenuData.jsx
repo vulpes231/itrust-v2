@@ -15,7 +15,7 @@ const Navdata = () => {
   });
 
   const history = useNavigate();
-  //state data
+
   const [isDashboard, setIsDashboard] = useState(false);
   const [isMarket, setIsMarket] = useState(false);
   const [isSavings, setIsSavings] = useState(false);
@@ -159,8 +159,6 @@ const Navdata = () => {
 
   const isSuperUser = loginType === "superuser";
 
-  // console.log(loginType);
-
   const isTwoFaRequirementMet = isSuperUser
     ? true
     : user?.accountStatus?.twoFaActivated
@@ -175,5 +173,3 @@ const Navdata = () => {
   );
 };
 export default Navdata;
-
-// user:"{"credentials":{"email":"newitrust@mbox.re"},"identityVerification":{"kycStatus":"not verified"},"accountStatus":{"status":"active","banned":false,"emailVerified":true,"twoFaActivated":true,"twoFaVerified":true}}"

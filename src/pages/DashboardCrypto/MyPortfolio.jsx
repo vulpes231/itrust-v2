@@ -157,7 +157,7 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                 selectedWallet={selectedWallet}
                 chartData={getChartData()}
                 chartLabels={getChartLabels()}
-                dataColors='["--vz-primary", "--vz-secondary", "--vz-warning", "--vz-info", "--vz-success"]'
+                dataColors='["--vz-secondary", "--vz-info", "--vz-warning", "--vz-light", "--vz-danger"]'
                 walletAnalytics={walletAnalytics}
                 networth={networth}
               />
@@ -197,14 +197,18 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                           <h6 className="mb-1 text-capitalize">
                             {wallet.name}
                           </h6>
-                          <p className="fs-13 mb-0 text-muted text-capitalize">
+                          <p className="fs-10 mb-0 text-muted text-uppercase">
                             <i
                               className={`mdi mdi-circle fs-10 align-middle  ${
                                 wallet.slug === "cash"
                                   ? "text-primary"
                                   : wallet.slug === "brokerage"
                                     ? "text-warning"
-                                    : "text-info"
+                                    : wallet.slug === "hsa"
+                                      ? "text-muted"
+                                      : wallet.slug === "ira"
+                                        ? "text-danger"
+                                        : "text-info"
                               }  me-1`}
                             ></i>
                             {wallet.slug}

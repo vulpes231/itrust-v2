@@ -18,6 +18,7 @@ import ErrorToast from "../../components/Common/ErrorToast";
 
 const Security = ({ user }) => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [forgetPassModal, setForgetPassModal] = useState(false);
   const [error, setError] = useState("");
   const [action, setAction] = useState("");
 
@@ -96,7 +97,11 @@ const Security = ({ user }) => {
           </Col>
         </Row>
         {showPasswordForm && (
-          <EditPassword onClose={() => setShowPasswordForm(false)} />
+          <EditPassword
+            onClose={() => setShowPasswordForm(false)}
+            forgetPassModal={forgetPassModal}
+            setForgetPassModal={setForgetPassModal}
+          />
         )}
         <Row>
           <Col className="d-flex align-items-center justify-content-between">

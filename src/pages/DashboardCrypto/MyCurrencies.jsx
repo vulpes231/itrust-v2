@@ -10,30 +10,32 @@ import numeral from "numeral";
 import {
   addToWatchList,
   getUserWatchList,
-  removeFromWatchList,
 } from "../../services/watchlist/watchlist";
 import { getUserInfo } from "../../services/user/user";
 
 const MyCurrencies = () => {
   const [assetFilter, setAssetFilter] = useState("stock");
-  const [sort, setSort] = useState("volume");
+  const [sort, setSort] = useState("market_cap");
   const [showWatchlistOnly, setShowWatchlistOnly] = useState(false);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
 
   const queryClient = useQueryClient();
 
   const queryData = {
     sortBy: sort,
     type: assetFilter,
+    page,
+    limit: 14,
   };
 
   const {
-    data: assets,
+    data: { data: assets, pagination: assetsPagination } = {},
     isLoading: getAssetsLoading,
     refetch: refetchAssets,
   } = useQuery({
     queryFn: () => getAssets(queryData),
-    queryKey: ["assets", assetFilter, sort],
+    queryKey: ["assets", assetFilter, sort, page],
     enabled: !showWatchlistOnly,
   });
 
@@ -55,11 +57,9 @@ const MyCurrencies = () => {
     user?.watchList?.map((asset) => asset.assetId) || [],
   );
 
-  // console.log(watchlistIds);
-
   const displayedAssets = showWatchlistOnly
     ? watchlistData || []
-    : assets?.data || [];
+    : assets || [];
 
   const addAssetToWatchList = useMutation({
     mutationFn: addToWatchList,
@@ -74,25 +74,12 @@ const MyCurrencies = () => {
     },
   });
 
-  const removeAssetFromWatchList = useMutation({
-    mutationFn: removeFromWatchList,
-    onError: (err) => setError(err.message),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["watchlist"]);
-      queryClient.invalidateQueries(["user"]);
-
-      if (showWatchlistOnly) {
-        refetchWatchlist();
-      }
-    },
-  });
-
-  const handleWatchlistToggle = (assetId, isInWatchlist) => {
-    if (isInWatchlist) {
-      removeAssetFromWatchList.mutate(assetId);
-    } else {
-      addAssetToWatchList.mutate(assetId);
+  const handleWatchlistToggle = (assetId) => {
+    if (addAssetToWatchList.isPending) {
+      console.log("Loading please wait...");
+      return;
     }
+    addAssetToWatchList.mutate(assetId);
   };
 
   const handleWatchlistFilter = () => {
@@ -110,12 +97,14 @@ const MyCurrencies = () => {
   const handleAssetFilterChange = (value) => {
     setAssetFilter(value);
     setShowWatchlistOnly(false);
-    setSort("volume");
+    setSort("market_cap");
+    setPage(1);
   };
 
   const handleSortChange = (sortType) => {
     setSort(sortType);
     setShowWatchlistOnly(false);
+    setPage(1);
   };
 
   const isLoading = getAssetsLoading || getWatchlistLoading || getUserLoading;
@@ -210,19 +199,6 @@ const MyCurrencies = () => {
             </div>
           </CardHeader>
           <div className="card-body">
-            {error && (
-              <div
-                className="alert alert-danger alert-dismissible fade show"
-                role="alert"
-              >
-                {error}
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setError("")}
-                ></button>
-              </div>
-            )}
             <div className="table-responsive table-card">
               <table className="table table-hover table-borderless table-centered align-middle table-nowrap mb-0">
                 <thead className="text-muted bg-light-subtle">
@@ -252,7 +228,7 @@ const MyCurrencies = () => {
                       </td>
                     </tr>
                   ) : (
-                    displayedAssets.slice(0, 14).map((asset) => {
+                    displayedAssets.map((asset) => {
                       const assetId = asset.id || asset._id;
                       const isInWatchlist = watchlistIds.has(assetId);
                       const value = Number(asset.priceData?.change) || 0;
@@ -262,23 +238,20 @@ const MyCurrencies = () => {
                         <tr key={assetId}>
                           <td>
                             <button
-                              onClick={() =>
-                                handleWatchlistToggle(assetId, isInWatchlist)
-                              }
+                              onClick={() => handleWatchlistToggle(assetId)}
                               style={{
                                 background: "none",
                                 border: "none",
-                                cursor: "pointer",
+                                cursor: addAssetToWatchList.isPending
+                                  ? "not-allowed"
+                                  : "pointer",
                               }}
-                              disabled={
-                                addAssetToWatchList.isLoading ||
-                                removeAssetFromWatchList.isLoading
-                              }
+                              disabled={addAssetToWatchList.isPending}
                             >
                               {isInWatchlist ? (
                                 <AiFillStar size={20} color="#FFC84B" />
                               ) : (
-                                <AiOutlineStar size={20} color="#FFC84B" />
+                                <AiOutlineStar size={20} color={"#FFC84B"} />
                               )}
                             </button>
                           </td>
@@ -390,6 +363,53 @@ const MyCurrencies = () => {
                 </tbody>
               </table>
             </div>
+            {!showWatchlistOnly && assetsPagination && (
+              <div className="d-flex justify-content-between align-items-center mt-4 px-3">
+                <div className="text-muted">
+                  Page {assetsPagination.currentPage} of{" "}
+                  {assetsPagination.totalPages}
+                </div>
+
+                <div className="d-flex gap-2">
+                  <button
+                    className="btn btn-sm btn-soft-primary"
+                    disabled={assetsPagination.currentPage === 1}
+                    onClick={() => setPage((prev) => prev - 1)}
+                  >
+                    Previous
+                  </button>
+
+                  {[...Array(assetsPagination.totalPages)].map((_, index) => {
+                    const pageNumber = index + 1;
+
+                    return (
+                      <button
+                        key={pageNumber}
+                        onClick={() => setPage(pageNumber)}
+                        className={`btn btn-sm ${
+                          page === pageNumber
+                            ? "btn-primary"
+                            : "btn-soft-primary"
+                        }`}
+                      >
+                        {pageNumber}
+                      </button>
+                    );
+                  })}
+
+                  <button
+                    className="btn btn-sm btn-soft-primary"
+                    disabled={
+                      assetsPagination.currentPage ===
+                      assetsPagination.totalPages
+                    }
+                    onClick={() => setPage((prev) => prev + 1)}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </Card>
       </Col>

@@ -84,11 +84,7 @@ const PortfolioStatistics = ({
     return date;
   };
 
-  useEffect(() => {
-    if (range && chartData) console.log(range, chartData);
-  }, [range, chartData]);
-
-  const { filteredData, yAxisMax } = React.useMemo(() => {
+  const { filteredData, yAxisMin, yAxisMax } = React.useMemo(() => {
     const rangeStart = getRangeStart(range);
     const now = new Date();
     const nowTime = now.getTime();
@@ -107,15 +103,69 @@ const PortfolioStatistics = ({
       );
     }
 
-    const finalData = [{ x: rangeStart?.getTime() ?? nowTime, y: 0 }, ...data];
+    let minY = 0;
+    let maxY = 0;
 
-    const maxY = finalData.reduce((max, point) => Math.max(max, point.y), 0);
+    if (data.length > 0) {
+      minY = data.reduce((min, point) => Math.min(min, point.y), Infinity);
+      maxY = data.reduce((max, point) => Math.max(max, point.y), 0);
+    }
+
+    // Carry forward last value
+    const finalData = [{ x: rangeStart?.getTime() ?? nowTime, y: 0 }, ...data];
+    if (data.length > 0) {
+      const lastValue = data[data.length - 1].y;
+      finalData.push({ x: nowTime, y: lastValue });
+    }
+
+    // Minimum span
+    const rangeSpan = maxY - minY;
+    if (rangeSpan < 100) {
+      const center = (minY + maxY) / 2;
+      minY = Math.max(0, Math.floor(center - 50));
+      maxY = Math.ceil(center + 50);
+    }
+
+    // Smart step
+    const getNiceStep = (span) => {
+      if (span <= 200) return 50;
+      if (span <= 600) return 100;
+      if (span <= 2000) return 250;
+      if (span <= 5000) return 500;
+      return 1000;
+    };
+
+    const step = getNiceStep(rangeSpan);
+
+    minY = Math.floor(minY / step) * step;
+    maxY = Math.ceil(maxY / step) * step;
+
+    // Prefer exact max when possible
+    const actualMax = data.length > 0 ? data[data.length - 1].y : 0;
+    if (maxY > actualMax && maxY - actualMax > step * 0.4) {
+      maxY = actualMax;
+    }
+
+    if (maxY - minY < 100) {
+      maxY = minY + 100;
+    }
+
+    // === ADD PADDING ===
+    const paddingBottom = Math.max(50, (maxY - minY) * 0.05); // 5% or min 50
+    const paddingTop = (maxY - minY) * 0.08; // 8% on top
+
+    const finalMin = Math.max(
+      0,
+      Math.floor((minY - paddingBottom) / step) * step,
+    );
+    const finalMax = Math.ceil((maxY + paddingTop) / step) * step;
 
     return {
       filteredData: finalData,
-      yAxisMax: Math.max(500, Math.ceil(maxY / 500) * 500),
+      yAxisMin: finalMin,
+      yAxisMax: finalMax,
     };
-  }, [chartData, range, currentNetWorth]);
+  }, [chartData, range]);
 
   const series = React.useMemo(
     () => [
@@ -137,8 +187,15 @@ const PortfolioStatistics = ({
         id: "portfolio-chart",
         type: "area",
         height: 350,
-        zoom: { enabled: false },
-        toolbar: { show: true },
+        zoom: {
+          enabled: true,
+          type: "xy",
+          autoScaleYaxis: true,
+        },
+        toolbar: {
+          show: true,
+          tools: { zoom: true, zoomin: true, zoomout: true, reset: true },
+        },
       },
       colors: portfolioStatisticsColors,
       dataLabels: { enabled: false },
@@ -239,24 +296,18 @@ const PortfolioStatistics = ({
         axisBorder: { show: true },
         axisTicks: { show: true },
       },
-
       yaxis: {
-        min: 0,
+        min: yAxisMin,
         max: yAxisMax,
-        tickAmount: yAxisMax / 1000,
-        forceNiceScale: true,
+        tickAmount: 2, //range === "1D" ? 2 : range === "1W" ? 3 : 2
+        forceNiceScale: false,
         labels: {
           formatter: (value) => {
-            if (value >= 1000000) {
-              return `$${(value / 1000000).toFixed(1)}M`;
-            }
-
-            if (value >= 1000) {
-              return `$${(value / 1000).toFixed(1)}K`;
-            }
-
+            if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
+            if (value >= 1000) return `$${(value / 1000).toFixed(1)}K`;
             return `$${Math.round(value)}`;
           },
+          style: { fontSize: "12px" },
         },
       },
 
@@ -279,7 +330,7 @@ const PortfolioStatistics = ({
         text: "No portfolio history in this period",
       },
     }),
-    [range, portfolioStatisticsColors, yAxisMax],
+    [range, portfolioStatisticsColors, yAxisMin, yAxisMax],
   );
 
   return (

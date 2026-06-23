@@ -44,7 +44,7 @@ const RecentActivity = () => {
                             ? "bg-success-subtle"
                             : trx.type === "transfer"
                               ? "bg-warning-subtle"
-                              : trx.type === "withdrawal"
+                              : trx.type === "withdraw"
                                 ? "bg-danger-subtle"
                                 : "bg-info-subtle"
                         } bg-success-subtle rounded-circle d-flex align-items-center justify-content-center`}
@@ -59,7 +59,7 @@ const RecentActivity = () => {
                             style={{ height: "14px" }}
                           />
                         ) : trx.type === "withdraw" ? (
-                          <i class="ri-arrow-right-up-fill text-danger fs-18"></i>
+                          <i class="ri-arrow-right-down-fill text-danger fs-18"></i>
                         ) : (
                           <i class="ri-exchange-line text-info fs-18"></i>
                         )}{" "}
