@@ -23,10 +23,10 @@ import { openPosition } from "../../services/user/trade";
 
 const BuyForm = ({ tradeType, wallets, activeTab }) => {
   const units = [
-    { id: 1, label: "$1k", amount: 1000 },
-    { id: 2, label: "$2k", amount: 2000 },
-    { id: 3, label: "$5k", amount: 5000 },
-    { id: 4, label: "Max", amount: 10000 },
+    { id: 1, label: "25%", percent: 25 },
+    { id: 2, label: "50%", percent: 50 },
+    { id: 3, label: "75%", percent: 75 },
+    { id: 4, label: "Max", percent: 100 },
   ];
 
   const [qty, setQty] = useState(0);
@@ -198,6 +198,26 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
 
   // console.log(selectedAsset);
 
+  const calculateAmount = (fraction, account) => {
+    if (!account) return;
+    const availableBalance = account.balance.available;
+    const amountToTrade = (parseFloat(fraction) / 100) * availableBalance;
+    validation.setFieldValue("amount", amountToTrade);
+  };
+
+  const assetTypeOrder = {
+    stock: 0,
+    etf: 1,
+    crypto: 2,
+  };
+
+  const sortedAssets =
+    assetResults &&
+    assetResults.length > 0 &&
+    [...assetResults].sort(
+      (a, b) => assetTypeOrder[a.type] - assetTypeOrder[b.type],
+    );
+
   return (
     <div className="p-3">
       <Col>
@@ -234,8 +254,8 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
               className="w-100"
               style={{ maxHeight: "200px", overflowY: "auto" }}
             >
-              {assetResults && assetResults.length > 0 ? (
-                assetResults.map((asset) => (
+              {sortedAssets && sortedAssets.length > 0 ? (
+                sortedAssets.map((asset) => (
                   <DropdownItem
                     toggle
                     key={asset._id}
@@ -249,6 +269,7 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
                       <img src={asset.imageUrl} alt="" width={"20px"} />{" "}
                       <strong>{asset.symbol}</strong> - {asset.name}
                     </div>
+
                     {asset.currentPrice && (
                       <small className="text-muted">
                         ${formatCurrency(asset.currentPrice)}
@@ -390,7 +411,7 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
                 <span
                   style={{ cursor: "default" }}
                   className="bg-light rounded-1 px-3 py-1"
-                  onClick={() => validation.setFieldValue("amount", ut.amount)}
+                  onClick={() => calculateAmount(ut.percent, selectedAcct)}
                   key={ut.id}
                 >
                   {ut.label}

@@ -72,7 +72,7 @@ const Widgets = ({ analytics, walletData, count }) => {
                   </div>
                   <div className="flex-shrink-0 avatar-sm">
                     <div
-                      className={`avatar-title fs-22 rounded bg-${item.iconClass}-subtle text-${item.iconClass}`}
+                      className={`avatar-title fs-22 rounded bg-${item.iconClass}-subtle text-${item.iconClass} ${item.id === 3 && item.counter < 0 ? "bg-danger-subtle text-danger" : `bg-${item.iconClass}-subtle text-${item.iconClass}`}`}
                     >
                       {item.id === 4 ? (
                         <span>{item.icon}</span>

@@ -22,7 +22,7 @@ import { formatCurrency } from "../../constants";
 
 const Widgets1 = () => {
   const queryData = {
-    limit: 10,
+    limit: 25,
     sortBy: "marketCap",
     type: "stock",
   };

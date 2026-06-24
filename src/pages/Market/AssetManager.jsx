@@ -64,6 +64,19 @@ const AssetManager = ({
 
   const navigate = useNavigate();
 
+  const assetTypeOrder = {
+    stock: 0,
+    etf: 1,
+    crypto: 2,
+  };
+
+  const sortedAssets =
+    searchResults &&
+    searchResults.length > 0 &&
+    [...searchResults].sort(
+      (a, b) => assetTypeOrder[a.type] - assetTypeOrder[b.type],
+    );
+
   return (
     <Card className="p-0 ">
       <CardHeader>
@@ -112,7 +125,7 @@ const AssetManager = ({
         </Col>
         {isFetching && <p>Searching...</p>}
         {showResult &&
-          (searchResults || []).map((item) => {
+          (sortedAssets || []).map((item) => {
             return (
               <Col
                 key={item._id}

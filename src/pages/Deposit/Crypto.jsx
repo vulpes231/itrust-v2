@@ -245,7 +245,7 @@ const Crypto = ({ settings, user }) => {
                 className="d-flex flex-column text-primary"
               >
                 <span>
-                  Send exactly <b>{formatCurrency(data?.amount)}</b>{" "}
+                  Send <b>{formatCurrency(data?.amount)}</b> in{" "}
                   <b>{selectedMode?.symbol}</b> to the address below{" "}
                 </span>
                 <span>

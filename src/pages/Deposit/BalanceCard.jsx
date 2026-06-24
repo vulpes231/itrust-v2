@@ -58,7 +58,7 @@ const BalanceCard = () => {
               marginBottom: "4px",
             }}
           >
-            .{decimalPart}k
+            .{decimalPart}
           </span>
         </div>
         <div

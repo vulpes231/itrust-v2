@@ -6,7 +6,6 @@ import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { formatCurrency } from "../../constants";
 
 const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
-  // Show placeholder if no active wallet
   if (!activeWallet || !wallets || wallets.length === 0) {
     return (
       <Card>
@@ -33,8 +32,6 @@ const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
       ? activeWallet?.balance?.total +
         walletData[activeWallet?.slug].totalProfitLoss
       : 0;
-
-  // console.log(activeWallet);
 
   return (
     <Card>

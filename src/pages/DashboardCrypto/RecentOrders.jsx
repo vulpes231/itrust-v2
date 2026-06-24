@@ -101,14 +101,9 @@ const RecentOrders = ({ trades }) => {
                         </p>
                         <span
                           className={`${
-                            trade.orderType === "buy"
-                              ? `text-success`
-                              : trade.orderType === "sell"
-                                ? `text-danger`
-                                : null
+                            safeValue < 0 ? `text-danger` : `text-success`
                           } d-flex align-items-center gap-1`}
                         >
-                          {trade.orderType === "buy" ? `+` : null}
                           {numeral(safeValue).format("$0,0.00")}
                         </span>
                       </div>

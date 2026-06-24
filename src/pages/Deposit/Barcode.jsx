@@ -43,12 +43,7 @@ const Barcode = ({ method, network, amount, address }) => {
             <QRCode value={qrValue} size={180} />
           </div>
 
-          <small className="text-muted text-center">
-            Scan to pay{" "}
-            {amount
-              ? `${amount} ${method?.toUpperCase()}`
-              : method?.toUpperCase()}
-          </small>
+          <small className="text-muted text-center">Scan to pay </small>
         </>
       ) : (
         <span className="text-muted">No coin selected.</span>

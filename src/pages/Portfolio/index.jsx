@@ -64,6 +64,7 @@ const Portfolio = () => {
     queryFn: () => getUserTrades(),
     enabled: !!tk,
   });
+
   const { data: positionData } = useQuery({
     queryKey: ["positionData"],
     queryFn: () => getUserPositions(),
@@ -80,27 +81,59 @@ const Portfolio = () => {
 
   const [activeWallet, setActiveWallet] = useState(null);
 
+  // Restore from sessionStorage on mount
   useEffect(() => {
-    if (
-      filteredWallets.length > 0 &&
-      (!activeWallet || activeWallet._id === "default")
-    ) {
-      setActiveWallet(filteredWallets[0]);
+    const savedWalletId = sessionStorage.getItem("activeWalletId");
+
+    if (!savedWalletId) return;
+
+    const savedWallet = filteredWallets.find(
+      (wallet) => wallet._id === savedWalletId,
+    );
+
+    if (savedWallet) {
+      setActiveWallet(savedWallet);
     }
-  }, [filteredWallets, activeWallet]);
+  }, [filteredWallets]);
 
   const handleChange = (e) => {
     const walletId = e.target.value;
+
     const selectedWallet = filteredWallets.find(
       (wallet) => wallet._id === walletId,
     );
 
-    if (!selectedWallet) {
-      return;
-    }
+    if (!selectedWallet) return;
 
     setActiveWallet(selectedWallet);
+
+    // Persist selection
+    sessionStorage.setItem("activeWalletId", walletId);
   };
+
+  // const [activeWallet, setActiveWallet] = useState(null);
+
+  // useEffect(() => {
+  //   if (
+  //     filteredWallets.length > 0 &&
+  //     (!activeWallet || activeWallet._id === "default")
+  //   ) {
+  //     setActiveWallet(filteredWallets[0]);
+  //   }
+  // }, [filteredWallets, activeWallet]);
+
+  // const handleChange = (e) => {
+  //   const walletId = e.target.value;
+  //   const selectedWallet = filteredWallets.find(
+  //     (wallet) => wallet._id === walletId,
+  //   );
+
+  //   if (!selectedWallet) {
+  //     return;
+  //   }
+
+  //   setActiveWallet(selectedWallet);
+  // };
 
   if (getPortfolioAccountsLoading || !portfolioAccounts) {
     return (

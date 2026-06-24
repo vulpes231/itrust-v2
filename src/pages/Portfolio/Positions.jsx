@@ -41,6 +41,7 @@ const Positions = () => {
               type="select"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
+              className="bg-secondary-subtle border-0 text-secondary outline-none"
             >
               <option value="all">All</option>
               <option value="individual brokerage">Individual Brokerage</option>
@@ -55,6 +56,11 @@ const Positions = () => {
               filteredPositions.map((pos) => {
                 return <PositionTab key={pos._id} position={pos} />;
               })}
+            {filteredPositions && filteredPositions.length === 0 && (
+              <Col className="py-4 text-muted d-flex align-items-center justify-content-center">
+                No records found.
+              </Col>
+            )}
           </Col>
         </CardBody>
       </Card>
