@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Col, FormFeedback, Input, Label, Row, Spinner } from "reactstrap";
 import ErrorToast from "../../../components/Common/ErrorToast";
 import * as Yup from "yup";
@@ -8,9 +8,13 @@ import SuccessToast from "../../../components/Common/SuccessToast";
 import { useMutation } from "@tanstack/react-query";
 import { updatePassword } from "../../../services/user/user";
 import ResetPasswordModal from "./ResetPasswordModal";
+import { logoutUser } from "../../../services/auth/logout";
+import Loader from "../../../components/Common/Loader";
 
 const EditPassword = ({ onClose, forgetPassModal, setForgetPassModal }) => {
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: updatePassword,
@@ -62,6 +66,15 @@ const EditPassword = ({ onClose, forgetPassModal, setForgetPassModal }) => {
       return () => clearTimeout(tmt);
     }
   }, [mutation.isSuccess]);
+
+  const clearUserSession = useMutation({
+    mutationFn: logoutUser,
+    onError: (err) => setError(err.message),
+    onSuccess: () => {
+      sessionStorage.clear();
+      navigate("/forgot-password");
+    },
+  });
 
   return (
     <div className=" d-flex flex-column gap-2">
@@ -138,7 +151,7 @@ const EditPassword = ({ onClose, forgetPassModal, setForgetPassModal }) => {
         <Link
           onClick={(e) => {
             e.preventDefault();
-            setForgetPassModal(true);
+            clearUserSession.mutate();
           }}
           className="text-capitalize text-decoration-underline "
         >
@@ -179,6 +192,7 @@ const EditPassword = ({ onClose, forgetPassModal, setForgetPassModal }) => {
           handleToggle={() => setForgetPassModal(false)}
         />
       )}
+      {clearUserSession.isPending && <Loader />}
     </div>
   );
 };

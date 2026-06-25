@@ -31,6 +31,7 @@ import { IoEllipsisVerticalSharp } from "react-icons/io5";
 
 import { format } from "date-fns";
 import PendingDropDown from "./PendingDropDown";
+import MobileTransaction from "./MobileTransaction";
 
 const AllTransactions = () => {
   const token = getAccessToken();
@@ -224,49 +225,43 @@ const AllTransactions = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="d-flex flex-column gap-2">
-          <Row className="align-items-center g-3">
-            <Col md={3}>
-              <h5 className="card-title mb-0">Recent Cash Transactions</h5>
-            </Col>
-            <div className="col-md-auto ms-auto">
-              <div className="d-flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowFilter(!showFilter)}
-                  className="btn btn-secondary"
-                >
-                  <i className="ri-equalizer-line align-bottom me-1"></i>
-                  Filters
-                </button>
-              </div>
+          <div className="d-flex justify-content-between align-items-center">
+            <h5 className="card-title mb-0">Recent Cash Transactions</h5>
+
+            <div className="d-flex gap-2">
+              <button
+                type="button"
+                onClick={() => setShowFilter(!showFilter)}
+                className="btn btn-secondary"
+              >
+                <i className="ri-equalizer-line align-bottom me-1"></i>
+                Filters
+              </button>
             </div>
-          </Row>
+          </div>
           {showFilter && (
-            <Row className="justify-content-between d-flex">
-              <Col className="d-flex gap-2">
-                <div className="d-flex align-items-center gap-1">
-                  <span className="text-muted flex-shrink-0">Sort by: </span>
-                  <Input type="select" onChange={handleFilter}>
-                    <option value="">Select Account</option>
-                    <option value="all">All</option>
-                    <option value="cash">Cash</option>
-                    <option value="automated investing">
-                      Automated Investing
-                    </option>
-                    <option value="brokerage">Brokerage</option>
-                  </Input>
-                </div>
-                <div>
-                  <Input type="select" onChange={handleFilter}>
-                    <option value="">Select Status</option>
-                    <option value="all">All Status</option>
-                    <option value="completed">Processed</option>
-                    <option value="pending">Pending</option>
-                    <option value="failed">Failed</option>
-                  </Input>
-                </div>
-              </Col>
-              <Col className="d-flex align-items-center justify-content-end gap-2">
+            <div className="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-stretch align-items-lg-center">
+              <div className="d-flex flex-md-row gap-2 w-100">
+                <Input type="select" onChange={handleFilter} className="w-100">
+                  <option value="">Select Account</option>
+                  <option value="all">All</option>
+                  <option value="cash">Cash</option>
+                  <option value="automated investing">
+                    Automated Investing
+                  </option>
+                  <option value="brokerage">Brokerage</option>
+                </Input>
+
+                <Input type="select" onChange={handleFilter} className="w-100">
+                  <option value="">Select Status</option>
+                  <option value="all">All Status</option>
+                  <option value="completed">Processed</option>
+                  <option value="pending">Pending</option>
+                  <option value="failed">Failed</option>
+                </Input>
+              </div>
+
+              <div className="d-flex flex-wrap flex-md-nowrap gap-2">
                 <button
                   onClick={() => setFilter("deposit")}
                   className={`btn text-capitalize ${
@@ -275,8 +270,9 @@ const AllTransactions = () => {
                       : "bg-secondary-subtle text-secondary"
                   }`}
                 >
-                  deposit
+                  Deposit
                 </button>
+
                 <button
                   onClick={() => setFilter("withdraw")}
                   className={`btn text-capitalize ${
@@ -285,8 +281,9 @@ const AllTransactions = () => {
                       : "bg-secondary-subtle text-secondary"
                   }`}
                 >
-                  withdrawals
+                  Withdrawals
                 </button>
+
                 <button
                   onClick={() => setFilter("transfer")}
                   className={`btn text-capitalize ${
@@ -295,8 +292,9 @@ const AllTransactions = () => {
                       : "bg-secondary-subtle text-secondary"
                   }`}
                 >
-                  transfers
+                  Transfers
                 </button>
+
                 <button
                   onClick={() => setFilter("all")}
                   className={`btn text-capitalize ${
@@ -305,26 +303,31 @@ const AllTransactions = () => {
                       : "bg-secondary-subtle text-secondary"
                   }`}
                 >
-                  transactions
+                  Transactions
                 </button>
-              </Col>
-            </Row>
+              </div>
+            </div>
           )}
         </CardHeader>
         <CardBody>
-          <TableContainer
-            columns={columns}
-            data={transformedData}
-            isGlobalFilter={false}
-            isAddUserList={false}
-            customPageSize={8}
-            className="custom-header-css"
-            divClass="table-responsive table-card mb-4"
-            tableClass="align-middle table-nowrap mb-0"
-            theadClass="table-light table-nowrap"
-            thClass="table-light text-muted"
-            isLoading={getTransactionLoading}
-          />
+          <div className="d-none d-md-flex flex-md-column">
+            <TableContainer
+              columns={columns}
+              data={transformedData}
+              isGlobalFilter={false}
+              isAddUserList={false}
+              customPageSize={8}
+              className="custom-header-css"
+              divClass="table-responsive table-card mb-4"
+              tableClass="align-middle table-nowrap mb-0"
+              theadClass="table-light table-nowrap"
+              thClass="table-light text-muted"
+              isLoading={getTransactionLoading}
+            />
+          </div>
+          <div className="d-flex d-md-none">
+            <MobileTransaction data={transformedData} />
+          </div>
         </CardBody>
       </Card>
       <Modal

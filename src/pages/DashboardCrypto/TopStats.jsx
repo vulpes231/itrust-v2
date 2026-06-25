@@ -12,7 +12,7 @@ const TopStats = ({ walletAnalytics, networth }) => {
     <Row className="p-3">
       <Col md={3}>
         <div className="d-flex align-items-start justify-content-between">
-          <h6 className="text-uppercase fs-13 fw-bold text-muted">
+          <h6 className="text-uppercase fs-13 fw-bold text-muted text-nowrap">
             total net worth
           </h6>
           <div className="bg-secondary-subtle px-2 rounded-1">

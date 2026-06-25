@@ -36,61 +36,63 @@ const PositionTab = ({ position }) => {
       <Col className="px-3 d-flex flex-column gap-2">
         <Row className="text-capitalize">
           <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">Order Type</Label>
-            <p className="fw-normal fs-14 text-muted">buy</p>
+            <Label className="fw-semibold fs-13 fs-md-15">Order Type</Label>
+            <p className="fw-normal fs-12 fs-md-14 text-muted">buy</p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">quantity</Label>
-            <p className="fw-normal fs-14 text-muted">
+            <Label className="fw-semibold fs-13 fs-md-15">quantity</Label>
+            <p className="fw-normal fs-12 fs-md-14 text-muted">
               {position?.asset?.type === "crypto"
                 ? parseFloat(position?.quantity).toFixed(7)
                 : parseFloat(position?.quantity).toFixed(4)}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">cost</Label>
-            <p className="fw-normal fs-14 text-muted">
+            <Label className="fw-semibold fs-13 fs-md-15">cost</Label>
+            <p className="fw-normal fs-12 fs-md-14 text-muted">
               {numeral(position?.amountInvested).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">today's return</Label>
+            <Label className="fw-semibold fs-13 fs-md-15">today's return</Label>
             <p
-              className={`fw-normal fs-14 ${position?.todayReturn < 0 ? "text-danger" : "text-success"}`}
+              className={`fw-normal fs-12 fs-md-14 ${position?.todayReturn < 0 ? "text-danger" : "text-success"}`}
             >
               {numeral(position?.todayReturn).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">unrealized P&L</Label>
+            <Label className="fw-semibold fs-13 fs-md-15 text-nowrap">
+              unrealized P&L
+            </Label>
             <p
-              className={`fw-normal fs-14 ${position?.return < 0 ? "text-danger" : "text-success"}`}
+              className={`fw-normal fs-12 fs-md-14 ${position?.return < 0 ? "text-danger" : "text-success"}`}
             >
               {numeral(position?.return).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">current value</Label>
-            <p className="fw-normal fs-14 text-muted">
+            <Label className="fw-semibold fs-13 fs-md-15">current value</Label>
+            <p className="fw-normal fs-12 fs-md-14 text-muted">
               {numeral(position?.currentValue).format("$0,0.00")}
             </p>
           </Col>
           <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">average cost</Label>
-            <p className="fw-normal fs-14 text-muted">
+            <Label className="fw-semibold fs-13 fs-md-15">average cost</Label>
+            <p className="fw-normal fs-12 fs-md-14 text-muted">
               {numeral(position?.currentPrice).format("$0,0.00")}
             </p>
           </Col>
           {/* <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">Leverage</Label>
-            <p className="fw-normal fs-14 text-muted">
+            <Label className="fw-semibold fs-13 fs-md-15">Leverage</Label>
+            <p className="fw-normal fs-12 fs-md-14 text-muted">
               {position?.leverage || "-"}
             </p>
           </Col> */}
           <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-15">realized P&L</Label>
+            <Label className="fw-semibold fs-13 fs-md-15">realized P&L</Label>
             <p
-              className={`fw-normal fs-14 ${position?.return < 0 ? "text-danger" : "text-success"}`}
+              className={`fw-normal fs-12 fs-md-14 ${position?.return < 0 ? "text-danger" : "text-success"}`}
             >
               {numeral(position?.return).format("$0,0.00")}
             </p>

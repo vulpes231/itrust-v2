@@ -113,13 +113,13 @@ const MyCurrencies = () => {
     <React.Fragment>
       <Col>
         <Card className="card-height-100">
-          <CardHeader className="align-items-center d-flex">
+          <CardHeader className="align-items-md-center d-flex flex-column flex-md-row">
             <h4 className="card-title mb-0 flex-grow-1">
               {showWatchlistOnly
                 ? "My Watchlist"
                 : `${assetFilter.charAt(0).toUpperCase() + assetFilter.slice(1)}s`}
             </h4>
-            <div className="flex-shrink-0 d-flex align-items-center gap-2 ">
+            <div className="flex-shrink-0 d-flex flex-wrap align-items-center gap-2 ">
               <span style={{ color: "#878A99" }}>Filter by:</span>
 
               {/* Asset Type Filter */}
@@ -217,7 +217,10 @@ const MyCurrencies = () => {
                   {isLoading ? (
                     <tr>
                       <td colSpan="8">
-                        <div className="p-5 d-flex align-items-center justify-content-center w-100">
+                        <div
+                          style={{ minHeight: "480px" }}
+                          className="p-5 d-flex align-items-center justify-content-center w-100"
+                        >
                           <Spinner color="primary" />
                           <span className="fs-14 fw-semibold text-muted ms-2">
                             {showWatchlistOnly
@@ -364,13 +367,9 @@ const MyCurrencies = () => {
               </table>
             </div>
             {!showWatchlistOnly && assetsPagination && (
-              <div className="d-flex justify-content-between align-items-center mt-4 px-3">
-                <div className="text-muted">
-                  Page {assetsPagination.currentPage} of{" "}
-                  {assetsPagination.totalPages}
-                </div>
-
-                <div className="d-flex gap-2">
+              <div className="mt-4 px-3">
+                {/* Mobile Pagination */}
+                <div className="d-flex d-md-none justify-content-between align-items-center gap-2">
                   <button
                     className="btn btn-sm btn-soft-primary"
                     disabled={assetsPagination.currentPage === 1}
@@ -379,23 +378,10 @@ const MyCurrencies = () => {
                     Previous
                   </button>
 
-                  {[...Array(assetsPagination.totalPages)].map((_, index) => {
-                    const pageNumber = index + 1;
-
-                    return (
-                      <button
-                        key={pageNumber}
-                        onClick={() => setPage(pageNumber)}
-                        className={`btn btn-sm ${
-                          page === pageNumber
-                            ? "btn-primary"
-                            : "btn-soft-primary"
-                        }`}
-                      >
-                        {pageNumber}
-                      </button>
-                    );
-                  })}
+                  <div className="text-muted text-nowrap">
+                    Page {assetsPagination.currentPage} of{" "}
+                    {assetsPagination.totalPages}
+                  </div>
 
                   <button
                     className="btn btn-sm btn-soft-primary"
@@ -407,6 +393,53 @@ const MyCurrencies = () => {
                   >
                     Next
                   </button>
+                </div>
+
+                {/* Desktop Pagination */}
+                <div className="d-none d-md-flex justify-content-between align-items-center">
+                  <div className="text-muted">
+                    Page {assetsPagination.currentPage} of{" "}
+                    {assetsPagination.totalPages}
+                  </div>
+
+                  <div className="d-flex gap-2">
+                    <button
+                      className="btn btn-sm btn-soft-primary"
+                      disabled={assetsPagination.currentPage === 1}
+                      onClick={() => setPage((prev) => prev - 1)}
+                    >
+                      Previous
+                    </button>
+
+                    {[...Array(assetsPagination.totalPages)].map((_, index) => {
+                      const pageNumber = index + 1;
+
+                      return (
+                        <button
+                          key={pageNumber}
+                          onClick={() => setPage(pageNumber)}
+                          className={`btn btn-sm ${
+                            page === pageNumber
+                              ? "btn-primary"
+                              : "btn-soft-primary"
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      );
+                    })}
+
+                    <button
+                      className="btn btn-sm btn-soft-primary"
+                      disabled={
+                        assetsPagination.currentPage ===
+                        assetsPagination.totalPages
+                      }
+                      onClick={() => setPage((prev) => prev + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

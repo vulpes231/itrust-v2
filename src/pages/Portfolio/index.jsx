@@ -111,29 +111,15 @@ const Portfolio = () => {
     sessionStorage.setItem("activeWalletId", walletId);
   };
 
-  // const [activeWallet, setActiveWallet] = useState(null);
-
-  // useEffect(() => {
-  //   if (
-  //     filteredWallets.length > 0 &&
-  //     (!activeWallet || activeWallet._id === "default")
-  //   ) {
-  //     setActiveWallet(filteredWallets[0]);
-  //   }
-  // }, [filteredWallets, activeWallet]);
-
-  // const handleChange = (e) => {
-  //   const walletId = e.target.value;
-  //   const selectedWallet = filteredWallets.find(
-  //     (wallet) => wallet._id === walletId,
-  //   );
-
-  //   if (!selectedWallet) {
-  //     return;
-  //   }
-
-  //   setActiveWallet(selectedWallet);
-  // };
+  useEffect(() => {
+    if (
+      filteredWallets.length > 0 &&
+      (!activeWallet || activeWallet._id === "default")
+    ) {
+      sessionStorage.setItem("activeWalletId", filteredWallets[0]._id);
+      setActiveWallet(filteredWallets[0]);
+    }
+  }, [filteredWallets, activeWallet]);
 
   if (getPortfolioAccountsLoading || !portfolioAccounts) {
     return (

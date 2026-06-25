@@ -329,11 +329,11 @@ const Statistics = ({
         <Card>
           <TopStats walletAnalytics={analytics} networth={currentNetWorth} />
           <CardHeader>
-            <div className="d-flex align-items-center">
+            <div className="d-flex flex-column gap-2 gap-md-0 flex-md-row align-items-md-center">
               <div className="flex-grow-1">
                 <h5 className="card-title mb-0">Statistics</h5>
               </div>
-              <div className="toolbar d-flex align-items-start justify-content-center flex-wrap gap-2">
+              <div className="toolbar d-flex align-items-start justify-content-md-center flex-wrap gap-2">
                 {["1D", "1W", "1M", "1Y", "ALL"].map((r) => (
                   <button
                     key={r}

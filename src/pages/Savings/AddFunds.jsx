@@ -56,9 +56,7 @@ const AddFunds = ({ accts, handleIcon, cash }) => {
       }
 
       if (amount > selectedAcct?.depositLimit?.max) {
-        setError(
-          `Deposit limit is ${numeral(selectedAcct?.depositLimit?.max).format("$0,0.00")}`,
-        );
+        setError(`Exceeds max contribution!`);
         return;
       }
       if (amount > cash?.balance?.available) {
