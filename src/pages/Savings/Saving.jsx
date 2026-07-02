@@ -65,6 +65,7 @@ const Saving = () => {
             analytics={savingAnalytics}
             accts={user?.savingsAccounts}
             handleIcon={getIcon}
+            cashAcct={cashAcct}
           />
           <SavingsAccounts
             analytics={savingAnalytics}

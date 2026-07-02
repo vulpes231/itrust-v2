@@ -76,10 +76,13 @@ const ForgetPasswordPage = (props) => {
 
   return (
     <ParticlesAuth>
-      <div className="auth-page-content">
-        <Container>
+      <div
+        className="auth-page-content d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Container style={{ height: "100%" }} className="">
           {step === 1 && (
-            <Row className="justify-content-center">
+            <Row className="d-flex align-items-center justify-content-center">
               <Col md={8} lg={6} xl={5}>
                 <Card className="mt-4">
                   <CardBody className="p-4">
@@ -176,14 +179,14 @@ const ForgetPasswordPage = (props) => {
             </Row>
           )}
           {step === 2 && (
-            <Row className="justify-content-center">
+            <Row className="d-flex align-items-center justify-content-center">
               <Col md={8} lg={6} xl={5}>
                 <ForgetPassOtp handleStep={handleStep} />
               </Col>
             </Row>
           )}
           {step === 3 && (
-            <Row className="justify-content-center">
+            <Row className="d-flex align-items-center justify-content-center">
               <Col md={8} lg={6} xl={5}>
                 <ChangePass handleStep={handleStep} />
               </Col>

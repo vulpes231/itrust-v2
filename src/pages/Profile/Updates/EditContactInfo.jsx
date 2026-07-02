@@ -38,6 +38,7 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
     initialValues: {
       email: user?.contactInfo?.email || "",
       phone: user?.contactInfo?.phone || "",
+      phoneCode: user?.contactInfo?.areaCode || "",
       address: user?.contactInfo?.street || "",
       countryId: user?.contactInfo?.country?.countryId || "",
       stateId: user?.contactInfo?.state?.stateId || "",
@@ -73,6 +74,17 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
     queryKey: ["states", validation.values.countryId],
     enabled: !!validation.values.countryId,
   });
+
+  const handleCountryInputChange = (e) => {
+    const currentCountryId = e.target.value;
+    const currentCountry = countries.find(
+      (cont) => cont._id === currentCountryId,
+    );
+    setSelectedCountry(currentCountry);
+
+    validation.setFieldValue("countryId", currentCountry._id);
+    validation.setFieldValue("phoneCode", currentCountry.phoneCode);
+  };
 
   useEffect(() => {
     if (error) {
@@ -125,13 +137,54 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                   phone number
                 </Label>
                 <div className="d-flex align-items-center gap-1">
-                  {selectedCountry !== "" ? (
-                    <span className="border border-2 rounded-2 p-2">
-                      {selectedCountry?.phoneCode}
-                    </span>
-                  ) : null}
+                  <div className="d-flex align-items-center w-100 gap-2">
+                    <Input
+                      name="phoneCode"
+                      type="text"
+                      maxLength={6}
+                      placeholder="+123"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.phoneCode}
+                      invalid={
+                        validation.touched.phoneCode &&
+                        validation.errors.phoneCode
+                          ? true
+                          : false
+                      }
+                      autoComplete="off"
+                      style={{ width: "20%" }}
+                      readOnly={user?.contactInfo?.status === "verified"}
+                      className={
+                        user?.contactInfo?.status === "verified"
+                          ? "bg-light"
+                          : ""
+                      }
+                    />{" "}
+                    <Input
+                      name="phone"
+                      type="text"
+                      placeholder="Enter phone"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.phone}
+                      invalid={
+                        validation.touched.phone && validation.errors.phone
+                          ? true
+                          : false
+                      }
+                      autoComplete="off"
+                      style={{ width: "100%" }}
+                      readOnly={user?.contactInfo?.status === "verified"}
+                      className={
+                        user?.contactInfo?.status === "verified"
+                          ? "bg-light"
+                          : ""
+                      }
+                    />
+                  </div>
 
-                  <Input
+                  {/* <Input
                     type="text"
                     name="phone"
                     onChange={validation.handleChange}
@@ -140,7 +193,7 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                     className={
                       user?.contactInfo?.status === "verified" ? "bg-light" : ""
                     }
-                  />
+                  /> */}
                 </div>
               </Col>
             </Row>
@@ -169,7 +222,7 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                 <Input
                   type="select"
                   name="countryId"
-                  onChange={validation.handleChange}
+                  onChange={handleCountryInputChange}
                   value={validation.values.countryId}
                   className="text-capitalize"
                   disabled={user?.contactInfo?.status === "verified"}

@@ -2,10 +2,21 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useMemo, useState } from "react";
 import { getUserPositions } from "../../services/user/position";
 import { getAccessToken } from "../../constants";
-import { Card, CardBody, CardHeader, Col, Input } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Input,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  UncontrolledDropdown,
+} from "reactstrap";
 import PositionTab from "./PositionTab";
 
-const Positions = () => {
+const Positions = ({ accounts }) => {
   const tk = getAccessToken();
   const { data: positionData } = useQuery({
     queryKey: ["positionData"],
@@ -28,6 +39,10 @@ const Positions = () => {
     return positions;
   }, [myPositions, filter]);
 
+  const tradeAccts = (accounts || []).filter(
+    (acct) => acct.name !== "investing",
+  );
+
   return (
     <React.Fragment>
       <Card className="">
@@ -36,7 +51,43 @@ const Positions = () => {
             <h5 className="card-title mb-0">Positions</h5>
           </div>
 
-          <span>
+          <div>
+            <UncontrolledDropdown direction="start">
+              <DropdownToggle
+                tag="button"
+                className="btn btn-soft-primary btn-sm"
+              >
+                <span className="text-uppercase">
+                  {filter}
+                  <i className="mdi mdi-chevron-down align-middle ms-1"></i>
+                </span>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu dropdown-menu-end">
+                <DropdownItem
+                  onClick={() => setFilter("all")}
+                  className={filter === "all" ? "active" : ""}
+                >
+                  All
+                </DropdownItem>
+                {tradeAccts &&
+                  tradeAccts.length > 0 &&
+                  tradeAccts.map((acct) => {
+                    // console.log(acct);
+                    return (
+                      <DropdownItem
+                        key={acct._id}
+                        onClick={() => setFilter(acct.name)}
+                        className={filter === acct.name ? "active" : ""}
+                      >
+                        {acct.name}
+                      </DropdownItem>
+                    );
+                  })}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+
+          {/* <span>
             <Input
               type="select"
               value={filter}
@@ -47,7 +98,7 @@ const Positions = () => {
               <option value="individual brokerage">Individual Brokerage</option>
               <option value="automated investing">Automated Investing</option>
             </Input>
-          </span>
+          </span> */}
         </CardHeader>
         <CardBody>
           <Col className="d-flex flex-column gap-3">

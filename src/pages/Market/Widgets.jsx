@@ -27,10 +27,10 @@ const Widgets = ({ analytics, walletData, count }) => {
     {
       id: 3,
       title: "Today's P&L",
-      counter: analytics.totalProfit.toFixed(2).split(".")[0] || 0,
+      counter: Number(analytics.totalProfit.toFixed(2).split(".")[0]) || 0,
       decimal: analytics.totalProfit.toFixed(2).split(".")[1],
       icon: "ri-arrow-right-up-fill",
-      iconClass: "success",
+      iconClass: analytics.totalProfit < 0 ? "danger" : "success",
     },
     {
       id: 4,
@@ -42,7 +42,7 @@ const Widgets = ({ analytics, walletData, count }) => {
     },
   ];
 
-  // console.log(analytics);
+  // console.log(marketWidgets);
   return (
     <React.Fragment>
       {marketWidgets &&
@@ -54,7 +54,15 @@ const Widgets = ({ analytics, walletData, count }) => {
                 <div className="d-flex">
                   <div className="flex-grow-1">
                     <h6 className="text-muted mb-3">{item.title}</h6>
-                    <h2 className="mb-0">
+                    <h2
+                      className={`mb-0 ${
+                        item.id === 3
+                          ? item.counter < 0
+                            ? "text-danger"
+                            : "text-success"
+                          : ""
+                      }`}
+                    >
                       {item.id !== 1 && "$"}
                       <span className="counter-value">
                         <CountUp
@@ -63,7 +71,7 @@ const Widgets = ({ analytics, walletData, count }) => {
                           duration={3}
                         />
                       </span>
-                      <small className="text-muted fs-14">
+                      <small className="fs-14">
                         {item.id !== 1 && "."}
                         {item.decimal}
                         {/* {item.decimal && "k"} */}
@@ -72,12 +80,12 @@ const Widgets = ({ analytics, walletData, count }) => {
                   </div>
                   <div className="flex-shrink-0 avatar-sm">
                     <div
-                      className={`avatar-title fs-22 rounded bg-${item.iconClass}-subtle text-${item.iconClass} ${item.id === 3 && item.counter < 0 ? "bg-danger-subtle text-danger" : `bg-${item.iconClass}-subtle text-${item.iconClass}`}`}
+                      className={`avatar-title fs-22 rounded bg-${item.iconClass}-subtle text-${item.iconClass}`}
                     >
                       {item.id === 4 ? (
                         <span>{item.icon}</span>
                       ) : (
-                        <i className={item.icon}></i>
+                        <i className={`${item.icon}`}></i>
                       )}
                     </div>
                   </div>

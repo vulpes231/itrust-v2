@@ -81,18 +81,22 @@ const Portfolio = () => {
 
   const [activeWallet, setActiveWallet] = useState(null);
 
-  // Restore from sessionStorage on mount
   useEffect(() => {
+    if (!filteredWallets.length) return;
+
     const savedWalletId = sessionStorage.getItem("activeWalletId");
 
-    if (!savedWalletId) return;
-
+    // try restoring saved wallet
     const savedWallet = filteredWallets.find(
       (wallet) => wallet._id === savedWalletId,
     );
 
     if (savedWallet) {
       setActiveWallet(savedWallet);
+    } else {
+      // fallback to first wallet
+      setActiveWallet(filteredWallets[0]);
+      sessionStorage.setItem("activeWalletId", filteredWallets[0]._id);
     }
   }, [filteredWallets]);
 
@@ -107,19 +111,18 @@ const Portfolio = () => {
 
     setActiveWallet(selectedWallet);
 
-    // Persist selection
     sessionStorage.setItem("activeWalletId", walletId);
   };
 
-  useEffect(() => {
-    if (
-      filteredWallets.length > 0 &&
-      (!activeWallet || activeWallet._id === "default")
-    ) {
-      sessionStorage.setItem("activeWalletId", filteredWallets[0]._id);
-      setActiveWallet(filteredWallets[0]);
-    }
-  }, [filteredWallets, activeWallet]);
+  // useEffect(() => {
+  //   if (
+  //     filteredWallets.length > 0 &&
+  //     (!activeWallet || activeWallet._id === "default")
+  //   ) {
+  //     sessionStorage.setItem("activeWalletId", filteredWallets[0]._id);
+  //     setActiveWallet(filteredWallets[0]);
+  //   }
+  // }, [filteredWallets, activeWallet]);
 
   if (getPortfolioAccountsLoading || !portfolioAccounts) {
     return (
@@ -166,8 +169,9 @@ const Portfolio = () => {
               <MarketStatus
                 activeWallet={activeWallet}
                 trades={positionData?.positions}
+                accounts={filteredWallets}
               />
-              <Positions />
+              <Positions accounts={filteredWallets} />
             </Col>
             <Col lg={4}>
               <TradeCard

@@ -102,7 +102,7 @@ const Widgets = () => {
                         }}
                         className="text-muted"
                       >
-                        .{decimalPart}k
+                        .{decimalPart}
                       </span>
                     </div>
                     <div

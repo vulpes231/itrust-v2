@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import numeral from "numeral";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Card,
   CardBody,
@@ -16,7 +16,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { formatMarketCap } from "../../constants";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { openPosition } from "../../services/user/trade";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
@@ -24,18 +24,20 @@ import { capitalize } from "lodash";
 import MarketBuy from "./MarketBuy";
 import SellForm from "../Portfolio/SellForm";
 import { getAssetInfo } from "../../services/asset/asset";
+import { addToWatchList } from "../../services/watchlist/watchlist";
+import { getUserInfo } from "../../services/user/user";
 
 const execTypes = [
   { id: "market", label: "Market Order" },
-  { id: "limit", label: "Limit Order" },
-  { id: "stoploss", label: "Stop Loss Order" },
-  { id: "takeprofit", label: "Take Profit Order" },
+  // { id: "limit", label: "Limit Order" },
+  // { id: "stoploss", label: "Stop Loss Order" },
+  // { id: "takeprofit", label: "Take Profit Order" },
   { id: "leverage", label: "Leverage Order" },
 ];
 
 const TradeSection = ({ asset, accounts, walletData }) => {
   const [activeOrder, setActiveOrder] = useState("buy");
-  // const [tradeType, setTradeType] = useState("market");
+  const [error, setError] = useState("");
 
   const [tradeType, setTradeType] = useState({
     id: "market",
@@ -50,10 +52,25 @@ const TradeSection = ({ asset, accounts, walletData }) => {
     setTradeType(type);
   };
 
-  const { data: assetInfo } = useQuery({
-    queryFn: () => getAssetInfo({ assetId: asset?._id }),
-    queryKey: ["assetInfo", asset?._id],
-    enabled: !!asset?._id,
+  const { data: user, isLoading: getUserLoading } = useQuery({
+    queryFn: () => getUserInfo(),
+    queryKey: ["user"],
+  });
+
+  const watchlistIds = useMemo(() => {
+    return new Set(
+      user?.watchList?.map((item) => item.assetId?.toString()) || [],
+    );
+  }, [user?.watchList]);
+
+  const addAssetToWatchList = useMutation({
+    mutationFn: addToWatchList,
+    onError: (err) => setError(err.message),
+    onSuccess: () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    },
   });
 
   return (
@@ -139,29 +156,27 @@ const TradeSection = ({ asset, accounts, walletData }) => {
           <div className="d-flex flex-column gap-4 border rounded-2 p-4">
             <div className="d-flex align-items-center justify-content-between">
               <span>
-                <h5>{assetInfo?.symbol}</h5>
-                <span>{assetInfo?.name}</span>
+                <h5>{asset?.symbol}</h5>
+                <span>{asset?.name}</span>
               </span>
               <span className="bg-light p-1 rounded-circle">
-                <img src={assetInfo?.imageUrl} alt="" width={30} />
+                <img src={asset?.imageUrl} alt="" width={30} />
               </span>
             </div>
             <div className="d-flex flex-column">
-              <h5>
-                {numeral(assetInfo?.priceData?.current).format("$0,0.00")}
-              </h5>
+              <h5>{numeral(asset?.priceData?.current).format("$0,0.00")}</h5>
               <span
                 className={`d-flex align-items-center gap-1 fs-12 ${
-                  assetInfo?.priceData?.changePercent < 0
+                  asset?.priceData?.changePercent < 0
                     ? "text-danger"
                     : "text-success"
                 }`}
               >
                 <span>
-                  {numeral(assetInfo?.priceData?.change).format("$0,0.00")}
+                  {numeral(asset?.priceData?.change).format("$0,0.00")}
                 </span>
                 <span>
-                  ({parseFloat(assetInfo?.priceData?.changePercent).toFixed(2)}
+                  ({parseFloat(asset?.priceData?.changePercent).toFixed(2)}
                   %)
                 </span>
               </span>
@@ -170,13 +185,13 @@ const TradeSection = ({ asset, accounts, walletData }) => {
               <span className="d-flex flex-column">
                 <Label className="text-muted fw-light">Market Cap</Label>
                 <span className="fw-medium fs-15 text-capitalize">
-                  {formatMarketCap(assetInfo?.fundamentals?.marketCap) || "-"}
+                  {formatMarketCap(asset?.fundamentals?.marketCap) || "-"}
                 </span>
               </span>
               <span className="d-flex flex-column align-items-end">
                 <Label className="text-muted fw-light">Volume</Label>
                 <span className="fw-medium fs-15">
-                  {formatMarketCap(assetInfo?.priceData?.volume) || "-"}
+                  {formatMarketCap(asset?.priceData?.volume) || "-"}
                 </span>
               </span>
             </div>
@@ -184,13 +199,13 @@ const TradeSection = ({ asset, accounts, walletData }) => {
               <span className="d-flex flex-column">
                 <Label className="text-muted fw-light">24 High</Label>
                 <span className="fw-medium fs-15">
-                  {numeral(assetInfo?.priceData?.dayHigh).format("$0,0.00")}
+                  {numeral(asset?.priceData?.dayHigh).format("$0,0.00")}
                 </span>
               </span>
               <span className="d-flex flex-column align-items-end">
                 <Label className="text-muted fw-light">24 Low</Label>
                 <span className="fw-medium fs-15">
-                  {numeral(assetInfo?.priceData?.dayLow).format("$0,0.00")}
+                  {numeral(asset?.priceData?.dayLow).format("$0,0.00")}
                 </span>
               </span>
             </div>
@@ -198,25 +213,46 @@ const TradeSection = ({ asset, accounts, walletData }) => {
               <span className="d-flex flex-column">
                 <Label className="text-muted fw-light">P/E Ratio</Label>
                 <span className="fw-medium fs-15">
-                  {assetInfo?.fundamentals?.pe || "-"}
+                  {asset?.fundamentals?.pe || "-"}
                 </span>
               </span>
               <span className="d-flex flex-column align-items-end">
                 <Label className="text-muted fw-light">52 Weeks Range</Label>
                 <span className="fw-medium fs-15">
-                  {numeral(assetInfo?.historical?.yearHigh).format("$0,0.00")} -{" "}
-                  {numeral(assetInfo?.historical?.yearLow).format("$0,0.00")}
+                  {numeral(asset?.historical?.yearHigh).format("$0,0.00")} -{" "}
+                  {numeral(asset?.historical?.yearLow).format("$0,0.00")}
                 </span>
               </span>
             </div>
             <div>
-              <button className="btn btn-soft-secondary text-secondary w-100">
-                Add to Watchlist
+              <button
+                type="button"
+                onClick={() => {
+                  if (!asset) {
+                    setError("Missing data!");
+                    return;
+                  }
+                  addAssetToWatchList.mutate(asset._id);
+                }}
+                className={`btn ${watchlistIds.has(asset?._id) ? "btn-danger" : "btn-secondary"} w-100 d-flex gap-2 justify-content-center`}
+                disabled={addAssetToWatchList.isPending}
+              >
+                {addAssetToWatchList.isPending && <Spinner size={"sm"} />}{" "}
+                {watchlistIds.has(asset?._id)
+                  ? "Remove from watchlist"
+                  : " Add to Watchlist"}
               </button>
             </div>
           </div>
         </Card>
       </Col>
+      {addAssetToWatchList.isSuccess && (
+        <SuccessToast
+          successMsg={"Watchlist Updated"}
+          isOpen={addAssetToWatchList.isSuccess}
+          onClose={() => addAssetToWatchList.reset()}
+        />
+      )}
     </Row>
   );
 };

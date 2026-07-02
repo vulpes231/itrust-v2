@@ -49,7 +49,7 @@ const Bank = ({ settings }) => {
     }),
     onSubmit: (values) => {
       console.log(values);
-      // mutation.mutate();
+      mutation.mutate();
     },
   });
 

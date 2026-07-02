@@ -41,6 +41,7 @@ const Contact = () => {
     initialValues: {
       countryId: savedContact?.countryId || "",
       phone: savedContact?.phone || "",
+      phoneCode: savedContact?.phoneCode || "",
       street: savedContact?.street || "",
       stateId: savedContact?.stateId || "",
       city: savedContact?.city || "",
@@ -55,17 +56,21 @@ const Contact = () => {
       zipCode: Yup.string().required("Please Enter Your Zipcode"),
     }),
     onSubmit: (values) => {
-      // console.log(values);
+      console.log(values);
       sessionStorage.setItem("contact", JSON.stringify(values));
       history("/personal");
     },
   });
 
   const handleCountryInputChange = (e) => {
-    const currentCountry = e.target.value;
+    const currentCountryId = e.target.value;
+    const currentCountry = countries.find(
+      (cont) => cont._id === currentCountryId,
+    );
     setSelectedCountry(currentCountry);
 
     validation.setFieldValue("countryId", currentCountry._id);
+    validation.setFieldValue("phoneCode", currentCountry.phoneCode);
   };
 
   const { data: states, isLoading: getStatesLoading } = useQuery({
@@ -159,7 +164,7 @@ const Contact = () => {
                         className="form-control text-capitalize"
                         placeholder="Enter country"
                         type="select"
-                        onChange={validation.handleChange}
+                        onChange={handleCountryInputChange} //validation.handleChange
                         onBlur={validation.handleBlur}
                         value={validation.values.countryId || ""}
                         invalid={
@@ -200,25 +205,41 @@ const Contact = () => {
                         Phone Number <span className="text-danger">*</span>
                       </Label>
                       <div className="d-flex align-items-center gap-1">
-                        {selectedCountry !== "" ? (
-                          <span className="border border-2 rounded-2 p-2">
-                            {selectedCountry?.phoneCode}
-                          </span>
-                        ) : null}
-                        <Input
-                          name="phone"
-                          type="text"
-                          placeholder="Enter phone"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.phone || ""}
-                          invalid={
-                            validation.touched.phone && validation.errors.phone
-                              ? true
-                              : false
-                          }
-                          autoComplete="off"
-                        />
+                        <div className="d-flex align-items-center w-100 gap-2">
+                          <Input
+                            name="phoneCode"
+                            type="text"
+                            maxLength={6}
+                            placeholder="+123"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.phoneCode}
+                            invalid={
+                              validation.touched.phoneCode &&
+                              validation.errors.phoneCode
+                                ? true
+                                : false
+                            }
+                            autoComplete="off"
+                            style={{ width: "20%" }}
+                          />{" "}
+                          <Input
+                            name="phone"
+                            type="text"
+                            placeholder="Enter phone"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.phone}
+                            invalid={
+                              validation.touched.phone &&
+                              validation.errors.phone
+                                ? true
+                                : false
+                            }
+                            autoComplete="off"
+                            style={{ width: "100%" }}
+                          />
+                        </div>
                       </div>
                       {validation.touched.phone && validation.errors.phone ? (
                         <FormFeedback type="invalid">

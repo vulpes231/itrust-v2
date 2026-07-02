@@ -1,6 +1,17 @@
 import numeral from "numeral";
 import React, { useEffect, useMemo, useState } from "react";
-import { Card, CardBody, CardHeader, Col, Input, Row } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Input,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  UncontrolledDropdown,
+} from "reactstrap";
 import { formatCurrency, getAccessToken } from "../../constants";
 import { useQuery } from "@tanstack/react-query";
 import { getUserPositions } from "../../services/user/position";
@@ -11,7 +22,7 @@ import {
 
 const Holdings = () => {
   const tk = getAccessToken();
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState("all");
 
   const { data: positionData } = useQuery({
     queryKey: ["positionData"],
@@ -29,7 +40,7 @@ const Holdings = () => {
   const allPositions = positionData?.positions || [];
 
   const filteredPosition =
-    filter === ""
+    filter === "all"
       ? allPositions
       : allPositions.filter((trade) => trade.wallet.name === filter);
 
@@ -39,8 +50,8 @@ const Holdings = () => {
       tradeAccounts.filter((acct) => acct.slug !== "default")) ||
     [];
 
-  const handleChange = (e) => {
-    setFilter(e.target.value);
+  const handleChange = (acct) => {
+    setFilter(acct);
   };
 
   return (
@@ -49,24 +60,43 @@ const Holdings = () => {
         <CardHeader>
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="card-title mb-0 flex-grow-1">Holdings</h4>
-            <span>
-              <Input
-                type="select"
-                className="text-secondary bg-secondary-subtle text-capitalize"
-                onChange={handleChange}
-              >
-                <option value="">All</option>
-                {accounts &&
-                  accounts.length > 0 &&
-                  accounts.map((acct) => {
-                    return (
-                      <option value={acct.name} key={acct._id}>
-                        {acct.name}
-                      </option>
-                    );
-                  })}
-              </Input>
-            </span>
+
+            <div>
+              <UncontrolledDropdown direction="start">
+                <DropdownToggle
+                  tag="button"
+                  className="btn btn-soft-primary btn-sm"
+                >
+                  <span className="text-uppercase">
+                    {filter}
+                    <i className="mdi mdi-chevron-down align-middle ms-1"></i>
+                  </span>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu dropdown-menu-end">
+                  <DropdownItem
+                    onClick={() => handleChange("all")}
+                    // className={filter === "all" ? "active" : ""}
+                  >
+                    All
+                  </DropdownItem>
+                  {accounts &&
+                    accounts.length > 0 &&
+                    allPositions.length > 0 &&
+                    accounts.map((acct) => {
+                      // console.log(acct);
+                      return (
+                        <DropdownItem
+                          key={acct._id}
+                          onClick={() => handleChange(acct.name)}
+                          // className={filter === acct.name ? "active" : ""}
+                        >
+                          {acct.name}
+                        </DropdownItem>
+                      );
+                    })}
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </div>
           </div>
         </CardHeader>
         <CardBody>

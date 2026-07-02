@@ -84,7 +84,7 @@ const ContactInformation = ({ user }) => {
               </span>
               <h6 className="d-flex gap-1">
                 <span>
-                  {`${user?.contactInfo?.country?.phoneCode} ${user?.contactInfo?.phone}` ||
+                  {`${user?.contactInfo?.areaCode || ""}${user?.contactInfo?.phone}` ||
                     "-"}
                 </span>
               </h6>

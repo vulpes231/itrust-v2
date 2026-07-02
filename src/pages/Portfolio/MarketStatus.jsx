@@ -1,25 +1,33 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Card, CardBody, CardHeader, Input } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  UncontrolledDropdown,
+} from "reactstrap";
 import TableContainer from "../../components/Common/TableContainer";
 import { Link } from "react-router-dom";
 import { Quantity, AvgPrice, CurrentValue, Returns } from "./MarketStatusCol";
 import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
-const MarketStatus = ({ activeWallet, trades }) => {
-  const [currentAccount, setCurrentAccount] = useState("investing");
+const MarketStatus = ({ activeWallet, trades, accounts }) => {
+  const [currentAccount, setCurrentAccount] = useState("all");
 
-  const handleAccountChange = (e) => {
-    setCurrentAccount(e.target.value);
+  const handleAccountChange = (acct) => {
+    setCurrentAccount(acct);
   };
-
-  // console.log(trades);
 
   const transformedData = useMemo(() => {
     if (!trades) return [];
 
     const filteredTrades =
-      currentAccount === "investing"
+      currentAccount === "all"
         ? trades
         : trades.filter((trd) => trd.wallet.name === currentAccount);
 
@@ -164,12 +172,51 @@ const MarketStatus = ({ activeWallet, trades }) => {
     if (activeWallet) setCurrentAccount(activeWallet.name);
   }, [activeWallet]);
 
+  const tradeAccts = (accounts || []).filter(
+    (acct) => acct.name !== "investing",
+  );
+
   return (
     <React.Fragment>
       <Card>
         <CardHeader className="border-bottom-dashed d-flex align-items-center">
           <h4 className="card-title mb-0 flex-grow-1">Portfolio Holdings</h4>
-          <div className="flex-shrink-0">
+          <div>
+            <UncontrolledDropdown direction="start">
+              <DropdownToggle
+                tag="button"
+                className="btn btn-soft-primary btn-sm"
+              >
+                <span className="text-uppercase">
+                  {currentAccount}
+                  <i className="mdi mdi-chevron-down align-middle ms-1"></i>
+                </span>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu dropdown-menu-end">
+                <DropdownItem
+                  onClick={() => handleAccountChange("all")}
+                  className={currentAccount === "all" ? "active" : ""}
+                >
+                  All
+                </DropdownItem>
+                {tradeAccts &&
+                  tradeAccts.length > 0 &&
+                  tradeAccts.map((acct) => {
+                    // console.log(acct);
+                    return (
+                      <DropdownItem
+                        key={acct._id}
+                        onClick={() => handleAccountChange(acct.name)}
+                        className={currentAccount === acct.name ? "active" : ""}
+                      >
+                        {acct.name}
+                      </DropdownItem>
+                    );
+                  })}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+          {/* <div className="flex-shrink-0">
             <Input
               type="select"
               className="bg-secondary-subtle border-0 text-secondary outline-none"
@@ -180,7 +227,7 @@ const MarketStatus = ({ activeWallet, trades }) => {
               <option value="individual brokerage">Brokerage</option>
               <option value="automated investing">Automated Investing</option>
             </Input>
-          </div>
+          </div> */}
         </CardHeader>
         <CardBody>
           <TableContainer

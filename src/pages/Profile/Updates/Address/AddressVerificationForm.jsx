@@ -80,6 +80,15 @@ const AddressVerificationForm = ({
     },
   });
 
+  const validateFileSize = (file) => {
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setError("File size must be less than 20MB");
+      return;
+    }
+    return null;
+  };
+
   function toggleKycVerification() {
     setIsKycVerification(!isKycVerification);
 
@@ -95,6 +104,14 @@ const AddressVerificationForm = ({
     const file = files[0];
 
     if (!file) return;
+
+    const sizeError = validateFileSize(file);
+    if (sizeError) {
+      setFileError(sizeError);
+      return;
+    }
+
+    setFileError("");
 
     const updatedFile = Object.assign(file, {
       preview: URL.createObjectURL(file),

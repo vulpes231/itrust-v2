@@ -410,7 +410,7 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
               return (
                 <span
                   style={{ cursor: "default" }}
-                  className="bg-light rounded-1 px-3 py-1"
+                  className="bg-light rounded-1 px-3 py-1 w-100 d-flex justify-content-center fs-12 fw-normal text-muted"
                   onClick={() => calculateAmount(ut.percent, selectedAcct)}
                   key={ut.id}
                 >

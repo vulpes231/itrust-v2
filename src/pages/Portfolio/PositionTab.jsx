@@ -83,18 +83,19 @@ const PositionTab = ({ position }) => {
               {numeral(position?.currentPrice).format("$0,0.00")}
             </p>
           </Col>
-          {/* <Col xs={6} sm={4}>
-            <Label className="fw-semibold fs-13 fs-md-15">Leverage</Label>
-            <p className="fw-normal fs-12 fs-md-14 text-muted">
-              {position?.leverage || "-"}
-            </p>
-          </Col> */}
+
           <Col xs={6} sm={4}>
             <Label className="fw-semibold fs-13 fs-md-15">realized P&L</Label>
             <p
-              className={`fw-normal fs-12 fs-md-14 ${position?.return < 0 ? "text-danger" : "text-success"}`}
+              className={`fw-normal fs-12 fs-md-14 ${
+                position.status === "open" || position?.return >= 0
+                  ? "text-success"
+                  : "text-danger"
+              }`}
             >
-              {numeral(position?.return).format("$0,0.00")}
+              {position.status === "open"
+                ? numeral(0).format("$0,0.00")
+                : numeral(position?.return).format("$0,0.00")}
             </p>
           </Col>
         </Row>

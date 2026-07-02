@@ -12,6 +12,7 @@ import {
   getUserWatchList,
 } from "../../services/watchlist/watchlist";
 import { getUserInfo } from "../../services/user/user";
+import SuccessToast from "../../components/Common/SuccessToast";
 
 const MyCurrencies = () => {
   const [assetFilter, setAssetFilter] = useState("stock");
@@ -71,6 +72,9 @@ const MyCurrencies = () => {
       if (showWatchlistOnly) {
         refetchWatchlist();
       }
+      setTimeout(() => {
+        addAssetToWatchList.reset();
+      }, 2000);
     },
   });
 
@@ -446,6 +450,13 @@ const MyCurrencies = () => {
           </div>
         </Card>
       </Col>
+      {addAssetToWatchList.isSuccess && (
+        <SuccessToast
+          successMsg={"Watchlist updated."}
+          isOpen={addAssetToWatchList.isSuccess}
+          onClose={() => addAssetToWatchList.reset()}
+        />
+      )}
     </React.Fragment>
   );
 };

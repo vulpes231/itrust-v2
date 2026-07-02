@@ -9,7 +9,7 @@ import Contribute from "./Contribute";
 import { upperCase } from "lodash";
 import numeral from "numeral";
 
-const Retirements = ({ analytics, accts, handleIcon }) => {
+const Retirements = ({ analytics, accts, handleIcon, cashAcct }) => {
   const [show, setShow] = useState(false);
   const [contribute, setContribute] = useState(false);
   const [portfolio, setPortfolio] = useState(false);
@@ -176,7 +176,11 @@ const Retirements = ({ analytics, accts, handleIcon }) => {
                   </div>
                 </div>
                 <div style={{ display: contribute ? "block" : "none" }}>
-                  <Contribute accts={accts} handleIcon={handleIcon} />
+                  <Contribute
+                    accts={accts}
+                    handleIcon={handleIcon}
+                    cash={cashAcct}
+                  />
                 </div>
               </Col>
               <Col>

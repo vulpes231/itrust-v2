@@ -71,11 +71,11 @@ const RecentActivity = () => {
                             {" "}
                             {trx.type === "deposit"
                               ? `Deposit`
-                              : trx.type === "transfer"
-                                ? `Transfer`
-                                : trx.type === "withdraw"
-                                  ? `Withdraw`
-                                  : "Savings"}
+                              : trx.type === "withdraw"
+                                ? `Withdraw`
+                                : trx.type === "savings"
+                                  ? "Contribution"
+                                  : "Transfer"}
                           </span>
                           <span
                             className={`fs-10 px-2 py-1 rounded-1 text-capitalize d-flex align-items-center gap-1 ${

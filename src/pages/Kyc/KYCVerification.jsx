@@ -72,7 +72,7 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
   });
 
   const validateFileSize = (file) => {
-    const maxSize = 20 * 1024 * 1024;
+    const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
       setError("File size must be less than 20MB");
       return;
@@ -98,7 +98,6 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
     if (!file) return;
 
-    // Validate file size
     const sizeError = validateFileSize(file);
     if (sizeError) {
       setMainFileError(sizeError);
@@ -120,7 +119,6 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
     if (!file) return;
 
-    // Validate file size
     const sizeError = validateFileSize(file);
     if (sizeError) {
       setBackFileError(sizeError);
