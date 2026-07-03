@@ -61,7 +61,7 @@ const WithdrawForm = () => {
             : () => handleView("default")
         }
       />
-      <Row>
+      <Row className="d-flex flex-column-reverse flex-md-row">
         <Col lg={9}>
           <Card>
             {activeView === "default" ? (
@@ -82,7 +82,9 @@ const WithdrawForm = () => {
           <Card>
             <BalanceCard />
           </Card>
-          <Card>
+          <Card
+            className={`bg-warning-subtle ${analytics?.pendingWithdrawal > 0 ? "d-flex" : "d-none"}`}
+          >
             <PendingWithdrawal analytics={analytics} />
           </Card>
           <Card>

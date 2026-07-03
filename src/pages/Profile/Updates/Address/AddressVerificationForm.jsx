@@ -298,18 +298,25 @@ const AddressVerificationForm = ({
                 }}
                 maxFiles={1}
               >
-                {({ getRootProps, getInputProps }) => (
+                {({ getRootProps, getInputProps, isDragActive }) => (
                   <div
-                    className="dropzone dz-clickable"
-                    style={{ cursor: "pointer", height: "270px" }}
+                    {...getRootProps()}
+                    className={`dropzone dz-clickable ${
+                      isDragActive ? "dz-drag-hover" : ""
+                    }`}
+                    style={{
+                      cursor: "pointer",
+                      minHeight: window.innerHeight <= 670 ? "150px" : "270px",
+                      height: window.innerHeight <= 670 ? "150px" : "270px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    <div
-                      className="dz-message needsclick text-center"
-                      {...getRootProps()}
-                    >
-                      <input {...getInputProps()} />
+                    <input {...getInputProps()} />
 
-                      <div className="mb-3">
+                    <div className="dz-message needsclick text-center m-0">
+                      <div className="mb-2">
                         <i className="display-4 text-muted ri-upload-cloud-2-fill" />
                       </div>
 

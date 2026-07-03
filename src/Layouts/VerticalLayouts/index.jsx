@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Collapse } from "reactstrap";
 
 // Import Data
@@ -12,15 +12,16 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "../../services/user/user";
-import { getAccessToken } from "../../constants";
+import { allowedRoutesIfNotVerified, getAccessToken } from "../../constants";
+import ErrorToast from "../../components/Common/ErrorToast";
 
 const VerticalLayout = (props) => {
   const navData = navdata().props.children;
   const path = props.router.location.pathname;
+  const navigate = useNavigate();
 
-  /*
-    layout settings
-    */
+  const [error, setError] = useState("");
+
   const selectLayoutState = (state) => state.Layout;
   const selectLayoutProperties = createSelector(
     selectLayoutState,
@@ -31,12 +32,19 @@ const VerticalLayout = (props) => {
     }),
   );
 
-  // Inside your component
   const { leftsidbarSizeType, sidebarVisibilitytype, layoutType } = useSelector(
     selectLayoutProperties,
   );
 
-  //vertical and semibox resize events
+  const token = getAccessToken();
+
+  const { data: user } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!token,
+  });
+  const isKycApproved = user?.identityVerification?.kycStatus === "approved";
+
   const resizeSidebarMenu = useCallback(() => {
     var windowSize = document.documentElement.clientWidth;
     if (windowSize >= 1025) {
@@ -180,32 +188,47 @@ const VerticalLayout = (props) => {
     });
   };
 
-  const token = getAccessToken();
+  const closeMobileSidebar = useCallback(() => {
+    document.body.classList.remove("vertical-sidebar-enable");
+    document.documentElement.setAttribute("data-sidebar-size", "lg");
 
-  const { data: user } = useQuery({
-    queryFn: getUserInfo,
-    queryKey: ["user"],
-    enabled: !!token,
-  });
-  const isKycApproved = user?.identityVerification?.kycStatus === "approved";
+    const hamburgerIcon = document.querySelector(".hamburger-icon");
+    if (hamburgerIcon) hamburgerIcon.classList.remove("open");
+  }, []);
+
+  useEffect(() => {
+    if (error) {
+      const tmt = setTimeout(() => {
+        setError("");
+        window.location.href = "/dashboard";
+      }, 2000);
+      return () => clearTimeout(tmt);
+    }
+  }, [error]);
 
   return (
     <React.Fragment>
-      {/* menu Items */}
       {(navData || []).map((item, key) => {
         return (
           <React.Fragment key={key}>
             {/* Main Header */}
             {item["isHeader"] ? (
               <li className="menu-title">
-                <span data-key="t-menu">{props.t(item.label)} </span>
+                {/* <span data-key="t-menu">{props.t(item.label)} </span> */}
               </li>
             ) : item.subItems ? (
               <li className="nav-item">
                 <Link
                   onClick={(e) => {
                     e.preventDefault();
-                    if (!isKycApproved) return;
+                    if (
+                      !allowedRoutesIfNotVerified.includes(item.link) &&
+                      !isKycApproved
+                    ) {
+                      setError("Profile Verification Required!");
+                      return;
+                    }
+                    closeMobileSidebar();
                     item.click();
                   }}
                   className="nav-link menu-link"
@@ -354,6 +377,20 @@ const VerticalLayout = (props) => {
             ) : (
               <li className="nav-item">
                 <Link
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (
+                      !allowedRoutesIfNotVerified.includes(item.link) &&
+                      !isKycApproved
+                    ) {
+                      setError("Profile Verification Required!");
+                      return;
+                    }
+                    closeMobileSidebar();
+                    if (item.link) {
+                      navigate(item.link);
+                    }
+                  }}
                   className="nav-link menu-link"
                   to={item.link ? item.link : "/#"}
                 >
@@ -373,6 +410,7 @@ const VerticalLayout = (props) => {
           </React.Fragment>
         );
       })}
+      {error && <ErrorToast errorMsg={error} onClose={() => setError("")} />}
     </React.Fragment>
   );
 };

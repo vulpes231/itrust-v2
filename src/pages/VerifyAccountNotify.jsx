@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Alert, Row } from "reactstrap";
+import { Alert, Card, Row } from "reactstrap";
 import { getAccessToken } from "../constants";
 import { getUserInfo } from "../services/user/user";
 import KYCVerification from "./Kyc/KYCVerification";
@@ -22,10 +22,12 @@ const VerifyAccountNotify = () => {
         color="danger"
         isOpen={user?.identityVerification?.kycStatus === "not verified"}
         // toggle={onDismiss}
-        style={{ display: "flex", gap: "4px" }}
+        className="d-flex flex-column flex-md-row gap-4 justify-content-start"
       >
-        To start trading, complete your profile verification and access multiple
-        accounts and tools to help you manage your money.
+        <span>
+          To start trading, complete your profile verification and access
+          multiple accounts and tools to help you manage your money.
+        </span>
         <button
           onClick={() => setShowKYCModal(true)}
           style={{

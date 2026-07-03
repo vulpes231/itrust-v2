@@ -4,6 +4,7 @@ import { getWalletAnalytics } from "../../services/user/wallet";
 import { useQuery } from "@tanstack/react-query";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import CountUp from "react-countup";
+import { brief } from "../../assets";
 
 const BalanceCard = () => {
   const token = getAccessToken();
@@ -31,7 +32,7 @@ const BalanceCard = () => {
       className="py-3 px-3"
       style={{ display: "flex", flexDirection: "column", gap: "2px" }}
     >
-      <i className="ri-briefcase-line" style={{ fontSize: "29px" }}></i>
+      <img src={brief} alt="" width={40} />
       <div
         style={{
           display: "flex",

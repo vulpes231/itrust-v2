@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown, DropdownMenu, DropdownToggle, Form } from "reactstrap";
 import SearchOption from "../components/Common/SearchOption";
@@ -15,41 +15,85 @@ import { getAccessToken } from "../constants";
 const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
   const dispatch = useDispatch();
   const token = getAccessToken();
+  const menuBtnRef = useRef(null);
+  const sidebarRef = useRef(null);
 
   const selectDashboardData = createSelector(
     (state) => state.Layout,
-    (sidebarVisibilitytype) => sidebarVisibilitytype.sidebarVisibilitytype
+    (sidebarVisibilitytype) => sidebarVisibilitytype.sidebarVisibilitytype,
   );
 
   const sidebarVisibilitytype = useSelector(selectDashboardData);
 
+  useEffect(() => {
+    const closeSidebar = () => {
+      document.body.classList.remove("vertical-sidebar-enable");
+      document.documentElement.setAttribute("data-sidebar-size", "lg");
+
+      const hamburgerIcon = document.querySelector(".hamburger-icon");
+      if (hamburgerIcon) hamburgerIcon.classList.remove("open");
+
+      dispatch(changeSidebarVisibility("hide"));
+    };
+
+    const handleClickOutside = (event) => {
+      const isSidebarOpen = document.body.classList.contains(
+        "vertical-sidebar-enable",
+      );
+      if (!isSidebarOpen) return;
+
+      const sidebar = document.querySelector(".app-menu");
+      const hamburger = menuBtnRef.current;
+
+      if (sidebar && hamburger) {
+        const clickedInside =
+          sidebar.contains(event.target) || hamburger.contains(event.target);
+        if (!clickedInside) {
+          closeSidebar();
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [dispatch]);
+
   const toogleMenuBtn = () => {
-    var windowSize = document.documentElement.clientWidth;
+    const windowSize = document.documentElement.clientWidth;
+    const isCurrentlyOpen = document.body.classList.contains(
+      "vertical-sidebar-enable",
+    );
+
     dispatch(changeSidebarVisibility("show"));
 
-    if (windowSize > 767)
-      document.querySelector(".hamburger-icon").classList.toggle("open");
-
-    //For collapse horizontal menu
-    if (document.documentElement.getAttribute("data-layout") === "horizontal") {
-      document.body.classList.contains("menu")
-        ? document.body.classList.remove("menu")
-        : document.body.classList.add("menu");
+    // Toggle hamburger icon for larger screens
+    if (windowSize > 767) {
+      const hamburgerIcon = document.querySelector(".hamburger-icon");
+      if (hamburgerIcon) hamburgerIcon.classList.toggle("open");
     }
 
-    //For collapse vertical and semibox menu
+    // Horizontal layout
+    if (document.documentElement.getAttribute("data-layout") === "horizontal") {
+      document.body.classList.toggle("menu");
+    }
+
+    // Vertical / Semibox
     if (
-      sidebarVisibilitytype === "show" &&
-      (document.documentElement.getAttribute("data-layout") === "vertical" ||
-        document.documentElement.getAttribute("data-layout") === "semibox")
+      document.documentElement.getAttribute("data-layout") === "vertical" ||
+      document.documentElement.getAttribute("data-layout") === "semibox"
     ) {
       if (windowSize < 1025 && windowSize > 767) {
-        document.body.classList.remove("vertical-sidebar-enable");
+        document.body.classList.toggle("vertical-sidebar-enable");
         document.documentElement.getAttribute("data-sidebar-size") === "sm"
           ? document.documentElement.setAttribute("data-sidebar-size", "")
           : document.documentElement.setAttribute("data-sidebar-size", "sm");
       } else if (windowSize > 1025) {
-        document.body.classList.remove("vertical-sidebar-enable");
+        document.body.classList.toggle("vertical-sidebar-enable");
         document.documentElement.getAttribute("data-sidebar-size") === "lg"
           ? document.documentElement.setAttribute("data-sidebar-size", "sm")
           : document.documentElement.setAttribute("data-sidebar-size", "lg");
@@ -59,11 +103,9 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
       }
     }
 
-    //Two column menu
+    // Two column
     if (document.documentElement.getAttribute("data-layout") === "twocolumn") {
-      document.body.classList.contains("twocolumn-panel")
-        ? document.body.classList.remove("twocolumn-panel")
-        : document.body.classList.add("twocolumn-panel");
+      document.body.classList.toggle("twocolumn-panel");
     }
   };
 
@@ -100,6 +142,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
               </div>
 
               <button
+                ref={menuBtnRef}
                 onClick={toogleMenuBtn}
                 type="button"
                 className="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"

@@ -112,7 +112,7 @@ const Layout = (props) => {
   };
 
   const [headerClass, setHeaderClass] = useState("");
-  // class add remove in header
+
   useEffect(() => {
     window.addEventListener("scroll", scrollNavigation, true);
   });
@@ -140,6 +140,26 @@ const Layout = (props) => {
   useEffect(() => {
     dispatch(initializeLayoutMode());
   }, [dispatch]);
+
+  // Add this useEffect
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      if (width <= 767 && layoutType !== "vertical") {
+        // Force vertical on mobile
+        dispatch(changeLayout("vertical"));
+      } else if (width > 767 && layoutType === "vertical") {
+        // Optional: Switch back to horizontal on large screens
+        // dispatch(changeLayout("horizontal"));
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Run once on mount
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [layoutType, dispatch]);
 
   return (
     <React.Fragment>

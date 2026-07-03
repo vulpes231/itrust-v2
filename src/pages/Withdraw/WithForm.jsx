@@ -145,7 +145,7 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
               }}
               value={amount}
             />
-            <FlexRow>
+            <div className="d-flex flex-wrap gap-2">
               {buttons.map((btn, idx) => {
                 return (
                   <button
@@ -165,7 +165,7 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
                   </button>
                 );
               })}
-            </FlexRow>
+            </div>
           </div>
         </Col>
         <Col>

@@ -160,18 +160,16 @@ const Form = ({
               value={amount}
               autoComplete="off"
             />
-            <FlexRow>
+            <div className="d-flex flex-wrap gap-2">
               {buttons.map((btn, idx) => {
                 return (
                   <button
                     style={{
-                      fontSize: "10.5px",
-                      // color: "#878A99",
                       width: "90px",
                     }}
                     key={idx}
                     type="button"
-                    className="btn bg-light mt-2 text-muted"
+                    className="btn bg-light mt-2 text-muted fs-10"
                     onClick={() => {
                       setAmount(btn);
                     }}
@@ -180,7 +178,7 @@ const Form = ({
                   </button>
                 );
               })}
-            </FlexRow>
+            </div>
           </div>
         </Col>
         <Col>

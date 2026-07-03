@@ -54,7 +54,7 @@ const DepositForm = () => {
             : () => handleView("default")
         }
       />
-      <Row>
+      <Row className="d-flex flex-column-reverse flex-md-row">
         <Col lg={9}>
           <Card>
             {activeView === "default" ? (
@@ -80,7 +80,9 @@ const DepositForm = () => {
           <Card>
             <BalanceCard />
           </Card>
-          <Card className="bg-warning-subtle">
+          <Card
+            className={`bg-warning-subtle ${analytics?.pendingDeposit > 0 ? "d-flex" : "d-none"}`}
+          >
             <PendingDeposit analytics={analytics} />
           </Card>
           <Card>

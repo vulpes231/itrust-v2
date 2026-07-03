@@ -228,21 +228,26 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                   "image/*": [".jpeg", ".jpg", ".png", ".webp"],
                 }}
                 maxFiles={1}
-                noClick={false}
-                noKeyboard={false}
               >
                 {({ getRootProps, getInputProps, isDragActive }) => (
                   <div
-                    className={`dropzone dz-clickable ${isDragActive ? "dz-drag-hover" : ""}`}
-                    style={{ cursor: "pointer", height: "270px" }}
+                    {...getRootProps()}
+                    className={`dropzone dz-clickable ${
+                      isDragActive ? "dz-drag-hover" : ""
+                    }`}
+                    style={{
+                      cursor: "pointer",
+                      minHeight: window.innerHeight <= 670 ? "50px" : "270px",
+                      height: window.innerHeight <= 670 ? "50px" : "270px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    <div
-                      className="dz-message needsclick text-center"
-                      {...getRootProps()}
-                    >
-                      <input {...getInputProps()} />
+                    <input {...getInputProps()} />
 
-                      <div className="mb-3">
+                    <div className="dz-message needsclick text-center m-0">
+                      <div className="mb-2">
                         <i className="display-5 text-muted ri-upload-cloud-2-fill" />
                       </div>
 
@@ -283,23 +288,29 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                   "image/*": [".jpeg", ".jpg", ".png", ".webp"],
                 }}
                 maxFiles={1}
-                noClick={false}
-                noKeyboard={false}
               >
                 {({ getRootProps, getInputProps, isDragActive }) => (
                   <div
-                    className={`dropzone dz-clickable ${isDragActive ? "dz-drag-hover" : ""}`}
-                    style={{ cursor: "pointer", height: "270px" }}
+                    {...getRootProps()}
+                    className={`dropzone dz-clickable ${
+                      isDragActive ? "dz-drag-hover" : ""
+                    }`}
+                    style={{
+                      cursor: "pointer",
+                      minHeight: window.innerHeight <= 670 ? "150px" : "270px",
+                      height: window.innerHeight <= 670 ? "150px" : "270px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    <div
-                      className="dz-message needsclick text-center"
-                      {...getRootProps()}
-                    >
-                      <input {...getInputProps()} />
+                    <input {...getInputProps()} />
 
-                      <div className="mb-3">
+                    <div className="dz-message needsclick text-center m-0">
+                      <div className="mb-2">
                         <i className="display-5 text-muted ri-upload-cloud-2-fill" />
                       </div>
+
                       <h6 className="mb-1">
                         {backFile
                           ? backFile.name
