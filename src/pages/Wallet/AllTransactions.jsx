@@ -323,6 +323,7 @@ const AllTransactions = () => {
               theadClass="table-light table-nowrap"
               thClass="table-light text-muted"
               isLoading={getTransactionLoading}
+              pageParam="ca"
             />
           </div>
           <div className="d-flex d-md-none">

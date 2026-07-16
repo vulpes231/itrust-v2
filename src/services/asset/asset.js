@@ -9,6 +9,8 @@ async function getAssets(queryData) {
       `/asset/?limit=${limit}&sortBy=${sortBy}&page=${page}&type=${type}`,
     );
 
+    // console.log(response);
+
     return { data: response.data, pagination: response.pagination };
   } catch (error) {
     const errMsg = error || "Fetch assets failed.";

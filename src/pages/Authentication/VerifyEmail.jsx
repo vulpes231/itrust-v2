@@ -112,91 +112,88 @@ const VerifyEmail = () => {
   }, [disableResend]);
 
   return (
-    <div className="auth-page-wrapper">
-      <ParticlesAuth>
-        <div className="auth-page-content">
-          <Container>
-            <Row className="justify-content-center">
-              <Col md={8} lg={6} xl={5}>
-                <Card className="mt-4">
-                  <CardBody className="p-4">
-                    <div className="text-center mb-4 d-flex align-items-center justify-content-center flex-column gap-2">
-                      <Link to="/dashboard" className="auth-logo mb-4">
-                        <img src={logo} alt="" height="30" width={"120"} />
-                      </Link>
-                      <div
-                        className="bg-secondary-subtle d-flex align-items-center justify-content-center"
-                        style={{
-                          height: "80px",
-                          width: "80px",
-                          borderRadius: "50%",
-                        }}
-                      >
-                        <CiMail size={50} className="text-secondary" />
-                      </div>
-                      <h4>Verify Your Email</h4>
-                      <p className="d-flex align-items-center gap-2 text-muted fw-light">
-                        Please enter the 4 digit code sent to
-                        <strong>
-                          {`${sessionEmail.split("@")[0].slice(0, 3)}xxxxx@${sessionEmail.split("@")[1]}` ||
-                            "email@email.com"}
-                        </strong>
-                      </p>
-                    </div>
-
-                    <Row>
-                      {otp.map((digit, index) => (
-                        <Col key={index} className="col-3">
-                          <input
-                            id={`digit${index + 1}-input`}
-                            type="text"
-                            value={digit}
-                            maxLength="1"
-                            className="form-control text-center border-0 bg-light"
-                            onChange={(e) =>
-                              handleChange(e.target.value, index)
-                            }
-                            onKeyDown={(e) => handleKeyDown(e, index)}
-                          />
-                        </Col>
-                      ))}
-                    </Row>
-
-                    {error && (
-                      <p className="text-danger text-center mt-2">{error}</p>
-                    )}
-
-                    <Button
-                      onClick={handleSubmit}
-                      className="w-100 mt-3"
-                      disabled={verifyMutation.isPending}
+    <ParticlesAuth>
+      <div
+        className="auth-page-content d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Container style={{ height: "100%" }} className="">
+          <Row className="d-flex align-items-center justify-content-center">
+            <Col md={8} lg={6} xl={5}>
+              <Card className="mt-4">
+                <CardBody className="p-4">
+                  <div className="text-center mb-4 d-flex align-items-center justify-content-center flex-column gap-2">
+                    <Link to="/dashboard" className="auth-logo mb-4">
+                      <img src={logo} alt="" height="30" width={"120"} />
+                    </Link>
+                    <div
+                      className="bg-secondary-subtle d-flex align-items-center justify-content-center"
+                      style={{
+                        height: "80px",
+                        width: "80px",
+                        borderRadius: "50%",
+                      }}
                     >
-                      {verifyMutation.isPending && <Spinner size="sm" />}{" "}
-                      Confirm
-                    </Button>
-                  </CardBody>
-                </Card>
+                      <CiMail size={50} className="text-secondary" />
+                    </div>
+                    <h4>Verify Your Email</h4>
+                    <p className="d-flex align-items-center gap-2 text-muted fw-light">
+                      Please enter the 4 digit code sent to
+                      <strong>
+                        {`${sessionEmail ? sessionEmail : "email@email.com"}`}
+                      </strong>
+                    </p>
+                  </div>
 
-                <div className="mt-4 text-center d-flex align-items-center gap-4 justify-content-center">
-                  <span>Didn't receive a code?</span>
-                  <button
-                    disabled={disableResend || resendMutation.isPending}
-                    onClick={handleCodeResend}
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                      textDecoration: "underline",
-                    }}
-                    className="text-secondary"
+                  <Row>
+                    {otp.map((digit, index) => (
+                      <Col key={index} className="col-3">
+                        <input
+                          id={`digit${index + 1}-input`}
+                          type="text"
+                          value={digit}
+                          maxLength="1"
+                          className="form-control text-center border-0 bg-light"
+                          onChange={(e) => handleChange(e.target.value, index)}
+                          onKeyDown={(e) => handleKeyDown(e, index)}
+                        />
+                      </Col>
+                    ))}
+                  </Row>
+
+                  {error && (
+                    <p className="text-danger text-center mt-2">{error}</p>
+                  )}
+
+                  <Button
+                    onClick={handleSubmit}
+                    className="w-100 mt-3"
+                    disabled={verifyMutation.isPending}
                   >
-                    {resendMutation.isPending ? "Sending..." : "Resend"}
-                  </button>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      </ParticlesAuth>
+                    {verifyMutation.isPending && <Spinner size="sm" />} Confirm
+                  </Button>
+                </CardBody>
+              </Card>
+
+              <div className="mt-4 text-center d-flex align-items-center gap-4 justify-content-center">
+                <span>Didn't receive a code?</span>
+                <button
+                  disabled={disableResend || resendMutation.isPending}
+                  onClick={handleCodeResend}
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    textDecoration: "underline",
+                  }}
+                  className="text-secondary"
+                >
+                  {resendMutation.isPending ? "Sending..." : "Resend"}
+                </button>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
       {error && <ErrorToast errorMsg={error} onClose={() => setError("")} />}
       {verifyMutation.isSuccess && (
         <SuccessToast
@@ -205,7 +202,7 @@ const VerifyEmail = () => {
         />
       )}
       {resendMutation.isPending && <Loader />}
-    </div>
+    </ParticlesAuth>
   );
 };
 

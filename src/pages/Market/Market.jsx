@@ -17,11 +17,12 @@ import {
   getUserWatchList,
 } from "../../services/watchlist/watchlist";
 import { getUserInfo } from "../../services/user/user";
+import SuccessToast from "../../components/Common/SuccessToast";
 
 const Market = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [assetFilter, setAssetFilter] = useState("stock");
-  const [sort, setSort] = useState("volume");
+  const [sort, setSort] = useState("market_cap");
   const [showWatchlistOnly, setShowWatchlistOnly] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,7 +31,6 @@ const Market = () => {
   const queryData = {
     sortBy: sort,
     type: assetFilter,
-    page: currentPage,
   };
 
   const token = getAccessToken();
@@ -76,6 +76,8 @@ const Market = () => {
   const pagination = showWatchlistOnly
     ? { total: watchlistData?.data?.length || 0, page: 1, pages: 1 }
     : dbAssets?.pagination;
+
+  // console.log(pagination);
 
   const transformedData = useMemo(() => {
     if (!displayedAssets || displayedAssets.length === 0) return [];
@@ -281,20 +283,6 @@ const Market = () => {
 
   return (
     <React.Fragment>
-      {error && (
-        <div
-          className="alert alert-danger alert-dismissible fade show m-3"
-          role="alert"
-        >
-          {error}
-          <button
-            type="button"
-            className="btn-close"
-            onClick={() => setError("")}
-          ></button>
-        </div>
-      )}
-
       <Card>
         <CardHeader className="border-bottom-dashed">
           <Row className="align-items-center">
@@ -390,7 +378,10 @@ const Market = () => {
 
         <CardBody>
           {isLoading ? (
-            <div className="text-center py-5">
+            <div
+              className="text-center py-5 gap-2 d-flex align-items-center justify-content-center"
+              style={{ height: "500px" }}
+            >
               <div className="spinner-border text-primary" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>
@@ -412,8 +403,6 @@ const Market = () => {
               tableClass="align-middle table-nowrap"
               theadClass="table-light text-muted"
               isLoading={getAssetsLoading}
-              pagination={pagination}
-              onPageChange={handlePageChange}
             />
           ) : (
             <div className="text-center py-5">
@@ -434,6 +423,13 @@ const Market = () => {
           )}
         </CardBody>
       </Card>
+      {addAssetToWatchList.isSuccess && (
+        <SuccessToast
+          successMsg={"Watchlist updated."}
+          isOpen={addAssetToWatchList.isSuccess}
+          onClose={() => addAssetToWatchList.reset()}
+        />
+      )}
     </React.Fragment>
   );
 };

@@ -18,10 +18,15 @@ import * as Yup from "yup";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { submitAddressVericationRequest } from "../../../../services/user/verification";
 import { getUserInfo } from "../../../../services/user/user";
-import { formatBytes, getAccessToken } from "../../../../constants";
+import {
+  formatBytes,
+  getAccessToken,
+  validateFileSize,
+} from "../../../../constants";
 import ErrorToast from "../../../../components/Common/ErrorToast";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import SuccessToast from "../../../../components/Common/SuccessToast";
+import classnames from "classnames";
 
 const AddressVerificationForm = ({
   isKycVerification,
@@ -80,15 +85,6 @@ const AddressVerificationForm = ({
     },
   });
 
-  const validateFileSize = (file) => {
-    const maxSize = 10 * 1024 * 1024;
-    if (file.size > maxSize) {
-      setError("File size must be less than 20MB");
-      return;
-    }
-    return null;
-  };
-
   function toggleKycVerification() {
     setIsKycVerification(!isKycVerification);
 
@@ -105,9 +101,9 @@ const AddressVerificationForm = ({
 
     if (!file) return;
 
-    const sizeError = validateFileSize(file);
-    if (sizeError) {
-      setFileError(sizeError);
+    if (!validateFileSize(file)) {
+      setAddressFile(null);
+      setFileError("File size must be less than 10MB");
       return;
     }
 
@@ -282,12 +278,6 @@ const AddressVerificationForm = ({
               </Col>
             </Row>
             <Col>
-              {fileError && (
-                <Alert color="danger" className="mb-3">
-                  {fileError}
-                </Alert>
-              )}
-
               <div className="mb-1">
                 <Label className="form-label">Proof of Address</Label>
               </div>
@@ -298,49 +288,67 @@ const AddressVerificationForm = ({
                 }}
                 maxFiles={1}
               >
-                {({ getRootProps, getInputProps, isDragActive }) => (
-                  <div
-                    {...getRootProps()}
-                    className={`dropzone dz-clickable ${
-                      isDragActive ? "dz-drag-hover" : ""
-                    }`}
-                    style={{
-                      cursor: "pointer",
-                      minHeight: window.innerHeight <= 670 ? "150px" : "270px",
-                      height: window.innerHeight <= 670 ? "150px" : "270px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <input {...getInputProps()} />
+                {({ getRootProps, getInputProps, isDragActive }) => {
+                  const hasError = Boolean(fileError);
 
-                    <div className="dz-message needsclick text-center m-0">
-                      <div className="mb-2">
-                        <i className="display-4 text-muted ri-upload-cloud-2-fill" />
+                  return (
+                    <div
+                      {...getRootProps()}
+                      className={classnames("dropzone dz-clickable", {
+                        "dz-drag-hover": isDragActive,
+                        "border border-dashed border-danger": hasError,
+                      })}
+                      style={{
+                        cursor: "pointer",
+                        minHeight: window.innerHeight <= 670 ? "50px" : "270px",
+                        height: window.innerHeight <= 670 ? "50px" : "270px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <input {...getInputProps()} />
+
+                      <div className="dz-message needsclick text-center m-0">
+                        <div className="mb-2">
+                          <i
+                            className={classnames(
+                              "display-5 ri-upload-cloud-2-fill",
+                              {
+                                "text-danger": hasError,
+                                "text-muted": !hasError,
+                              },
+                            )}
+                          />
+                        </div>
+
+                        <h6
+                          className={classnames("mb-1", {
+                            "text-danger": hasError,
+                          })}
+                        >
+                          {addressFile && !hasError
+                            ? addressFile.name
+                            : "Click to upload or drag and drop"}
+                        </h6>
+
+                        <small
+                          className={classnames("fs-12", {
+                            "text-danger": hasError,
+                            "text-muted": !hasError,
+                          })}
+                        >
+                          {addressFile && !hasError
+                            ? `${addressFile.formattedSize} uploaded`
+                            : "PNG, JPG up to 10MB"}
+                        </small>
                       </div>
-
-                      <h6 className="mb-1">
-                        {addressFile
-                          ? addressFile.name
-                          : "Click to upload or drag and drop"}
-                      </h6>
-
-                      <small className="text-muted fs-12">
-                        {addressFile ? "Image uploaded" : "PNG, JPG up to 5MB"}
-                      </small>
                     </div>
-                  </div>
-                )}
+                  );
+                }}
               </Dropzone>
             </Col>
-            <Col>
-              {fileError && (
-                <Alert color="danger" className="mb-3">
-                  {fileError}
-                </Alert>
-              )}
-            </Col>
+
             <Col>
               <Col className="d-flex align-items-start gap-2 justify-content-between bg-primary-subtle p-3 rounded">
                 <div className="d-flex align-items-start gap-4 text-primary">
@@ -396,7 +404,7 @@ const AddressVerificationForm = ({
           }}
         />
       )}
-      {!mutation.isSuccess && (
+      {mutation.isSuccess && (
         <SuccessToast
           successMsg={"Documents submitted."}
           isOpen={mutation.isSuccess}

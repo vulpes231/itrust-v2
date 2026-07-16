@@ -1,9 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { CardBody, Col, Row, Table } from "reactstrap";
-import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import {
-  // Table as ReactTable,
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
@@ -14,43 +13,6 @@ import {
 
 import { rankItem } from "@tanstack/match-sorter-utils";
 
-import {
-  ProductsGlobalFilter,
-  CustomersGlobalFilter,
-  OrderGlobalFilter,
-  ContactsGlobalFilter,
-  CompaniesGlobalFilter,
-  LeadsGlobalFilter,
-  CryptoOrdersGlobalFilter,
-  InvoiceListGlobalSearch,
-  TicketsListGlobalFilter,
-  NFTRankingGlobalFilter,
-  TaskListGlobalFilter,
-} from "../../Components/Common/GlobalSearchFilter";
-
-// Column Filter
-const Filter = ({
-  column,
-  // table
-}) => {
-  const columnFilterValue = column.getFilterValue();
-
-  return (
-    <>
-      <DebouncedInput
-        type="text"
-        value={columnFilterValue ?? ""}
-        onChange={(event) => column.setFilterValue(event.target.value)}
-        placeholder="Search..."
-        className="w-36 border shadow rounded"
-        list={column.id + "list"}
-      />
-      <div className="h-1" />
-    </>
-  );
-};
-
-// Global Filter
 const DebouncedInput = ({
   value: initialValue,
   onChange,
@@ -64,184 +26,136 @@ const DebouncedInput = ({
   }, [initialValue]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
+    const timeout = setTimeout(() => onChange(value), debounce);
     return () => clearTimeout(timeout);
-  }, [debounce, onChange, value]);
+  }, [value, debounce, onChange]);
 
   return (
     <input
       {...props}
       value={value}
-      id="search-bar-0"
       className="form-control search"
       onChange={(e) => setValue(e.target.value)}
     />
   );
 };
 
+const Filter = ({ column }) => (
+  <>
+    <DebouncedInput
+      value={column.getFilterValue() ?? ""}
+      onChange={(value) => column.setFilterValue(value)}
+      placeholder="Search..."
+    />
+    <div className="h-1" />
+  </>
+);
+
 const TableContainer = ({
   columns,
   data,
-  isGlobalFilter,
-  isProductsFilter,
-  isCustomerFilter,
-  isOrderFilter,
-  isContactsFilter,
-  isCompaniesFilter,
-  isLeadsFilter,
-  isCryptoOrdersFilter,
-  isInvoiceListFilter,
-  isTicketsListFilter,
-  isNFTRankingFilter,
-  isTaskListFilter,
-  customPageSize,
+  isGlobalFilter = false,
+  customPageSize = 10,
   tableClass,
   theadClass,
   trClass,
   thClass,
   divClass,
-  SearchPlaceholder,
-  // New props for server-side pagination
-  pagination, // { currentPage, totalPages, totalItems, pageSize }
-  onPageChange, // Function to handle page changes
+  SearchPlaceholder = "Search...",
   isLoading = false,
+  pageParam = "page",
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialPage = useMemo(() => {
+    const page = Number(searchParams.get(pageParam));
+
+    if (!page || page < 1) return 0;
+
+    return page - 1;
+  }, []);
+
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
+  const [pagination, setPagination] = useState({
+    pageIndex: initialPage,
+    pageSize: customPageSize,
+  });
+
   const fuzzyFilter = (row, columnId, value, addMeta) => {
     const itemRank = rankItem(row.getValue(columnId), value);
-    addMeta({
-      itemRank,
-    });
+    addMeta({ itemRank });
     return itemRank.passed;
   };
 
   const table = useReactTable({
-    columns,
     data,
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
+    columns,
+
     state: {
+      pagination,
       columnFilters,
       globalFilter,
     },
+
+    onPaginationChange: setPagination,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
+
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
+
     globalFilterFn: fuzzyFilter,
+
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const {
-    getHeaderGroups,
-    getRowModel,
-    getCanPreviousPage,
-    getCanNextPage,
-    getPageOptions,
-    setPageIndex,
-    nextPage,
-    previousPage,
-    setPageSize,
-    getState,
-  } = table;
-
+  // keep page in range
   useEffect(() => {
-    customPageSize && setPageSize(customPageSize);
-  }, [customPageSize, setPageSize]);
+    const pageCount = table.getPageCount();
 
-  const handleServerPageChange = (pageIndex) => {
-    if (onPageChange && pagination) {
-      onPageChange(pageIndex + 1);
-    } else {
-      setPageIndex(pageIndex);
+    if (pageCount > 0 && pagination.pageIndex >= pageCount) {
+      table.setPageIndex(pageCount - 1);
     }
-  };
+  }, [data.length]);
 
-  const handleServerPrevious = () => {
-    if (onPageChange && pagination) {
-      onPageChange(pagination.currentPage - 1);
-    } else {
-      previousPage();
-    }
-  };
+  // update URL only when page changes
+  useEffect(() => {
+    const current = Number(searchParams.get(pageParam) || 1);
 
-  const handleServerNext = () => {
-    console.log("next clivked", pagination);
-    if (onPageChange && pagination) {
-      onPageChange(pagination.currentPage + 1);
-    } else {
-      nextPage();
-    }
-  };
+    const next = pagination.pageIndex + 1;
 
-  // Determine if we can navigate pages
-  const canPrevious = pagination
-    ? pagination.currentPage > 1
-    : getCanPreviousPage();
+    if (current === next) return;
 
-  const canNext = pagination
-    ? pagination.currentPage < pagination.totalPages
-    : getCanNextPage();
+    const params = new URLSearchParams(searchParams);
 
-  // Get current page info
-  const currentPageIndex = pagination
-    ? pagination.currentPage - 1
-    : getState().pagination.pageIndex;
+    params.set(pageParam, String(next));
 
-  const totalItems = pagination?.totalItems || data.length;
-  const pageSize = pagination?.pageSize || getState().pagination.pageSize;
-  const totalPages = pagination?.totalPages || getPageOptions().length;
-
-  const pageOptions = pagination
-    ? Array.from({ length: pagination.totalPages }, (_, i) => i)
-    : getPageOptions();
+    setSearchParams(params, { replace: true });
+  }, [pagination.pageIndex]);
 
   return (
     <Fragment>
       {isGlobalFilter && (
         <Row className="mb-3">
           <CardBody className="border border-dashed border-end-0 border-start-0">
-            <form>
-              <Row>
-                <Col sm={5}>
-                  <div
-                    className={
-                      isProductsFilter ||
-                      isContactsFilter ||
-                      isCompaniesFilter ||
-                      isNFTRankingFilter
-                        ? "search-box me-2 mb-2 d-inline-block"
-                        : "search-box me-2 mb-2 d-inline-block col-12"
-                    }
-                  >
-                    <DebouncedInput
-                      value={globalFilter ?? ""}
-                      onChange={(value) => setGlobalFilter(value)}
-                      placeholder={SearchPlaceholder}
-                    />
-                    <i className="bx bx-search-alt search-icon"></i>
-                  </div>
-                </Col>
-                {isProductsFilter && <ProductsGlobalFilter />}
-                {isCustomerFilter && <CustomersGlobalFilter />}
-                {isOrderFilter && <OrderGlobalFilter />}
-                {isContactsFilter && <ContactsGlobalFilter />}
-                {isCompaniesFilter && <CompaniesGlobalFilter />}
-                {isLeadsFilter && <LeadsGlobalFilter />}
-                {isCryptoOrdersFilter && <CryptoOrdersGlobalFilter />}
-                {isInvoiceListFilter && <InvoiceListGlobalSearch />}
-                {isTicketsListFilter && <TicketsListGlobalFilter />}
-                {isNFTRankingFilter && <NFTRankingGlobalFilter />}
-                {isTaskListFilter && <TaskListGlobalFilter />}
-              </Row>
-            </form>
+            <Row>
+              <Col sm={5}>
+                <div className="search-box me-2 mb-2 d-inline-block col-12">
+                  <DebouncedInput
+                    value={globalFilter}
+                    onChange={setGlobalFilter}
+                    placeholder={SearchPlaceholder}
+                  />
+                  <i className="bx bx-search-alt search-icon"></i>
+                </div>
+              </Col>
+            </Row>
           </CardBody>
         </Row>
       )}
@@ -249,32 +163,23 @@ const TableContainer = ({
       <div className={divClass}>
         <Table hover className={tableClass}>
           <thead className={theadClass}>
-            {getHeaderGroups().map((headerGroup) => (
-              <tr className={trClass} key={headerGroup.id}>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id} className={trClass}>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
                     className={thClass}
-                    {...{
-                      onClick: header.column.getToggleSortingHandler(),
-                    }}
+                    onClick={header.column.getToggleSortingHandler()}
                   >
-                    {header.isPlaceholder ? null : (
-                      <React.Fragment>
-                        {flexRender(
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
-                        {{
-                          asc: " ",
-                          desc: " ",
-                        }[header.column.getIsSorted()] ?? null}
-                        {header.column.getCanFilter() ? (
-                          <div>
-                            <Filter column={header.column} table={table} />
-                          </div>
-                        ) : null}
-                      </React.Fragment>
+
+                    {header.column.getCanFilter() && (
+                      <Filter column={header.column} />
                     )}
                   </th>
                 ))}
@@ -284,30 +189,25 @@ const TableContainer = ({
 
           <tbody>
             {isLoading ? (
-              // Loading state
               <tr>
-                <td colSpan={columns.length} className="text-center py-4">
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
+                <td colSpan={columns.length} className="text-center py-5">
+                  <div className="spinner-border text-primary" />
                 </td>
               </tr>
-            ) : getRowModel().rows.length === 0 ? (
-              // Empty state
+            ) : table.getRowModel().rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="text-center py-4">
-                  <div className="text-muted">No records found</div>
+                <td colSpan={columns.length} className="text-center py-5">
+                  No records found.
                 </td>
               </tr>
             ) : (
-              // Data rows
-              getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row) => (
                 <tr key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </td>
                   ))}
@@ -318,41 +218,38 @@ const TableContainer = ({
         </Table>
       </div>
 
-      {/* Simple Pagination - Clean and Effective */}
-      <Row className="align-items-center mt-2 g-3 text-center text-sm-start">
-        <div className="col-sm">
-          <div className="text-muted">
-            Showing{" "}
-            <span className="fw-semibold">
-              {pagination ? data.length : getState().pagination.pageSize}
-            </span>{" "}
-            of <span className="fw-semibold">{totalItems}</span> Results
-          </div>
-        </div>
-        <div className="col-sm-auto">
+      <Row className="align-items-center mt-3">
+        <Col>
+          <span className="text-muted">
+            Showing <strong>{table.getRowModel().rows.length}</strong> of{" "}
+            <strong>{data.length}</strong> results
+          </span>
+        </Col>
+
+        <Col xs="auto">
           <div className="d-flex align-items-center gap-2">
             <button
               className="btn btn-light btn-sm"
-              onClick={handleServerPrevious}
-              disabled={!canPrevious}
+              disabled={!table.getCanPreviousPage()}
+              onClick={() => table.previousPage()}
             >
-              <i className="ri-arrow-left-line me-1"></i> Previous
+              Previous
             </button>
 
-            <span className="text-muted mx-2">
-              Page {pagination ? pagination.currentPage : currentPageIndex + 1}{" "}
-              of {totalPages}
+            <span>
+              Page <strong>{table.getState().pagination.pageIndex + 1}</strong>{" "}
+              of <strong>{table.getPageCount()}</strong>
             </span>
 
             <button
               className="btn btn-light btn-sm"
-              onClick={handleServerNext}
-              disabled={!canNext}
+              disabled={!table.getCanNextPage()}
+              onClick={() => table.nextPage()}
             >
-              Next <i className="ri-arrow-right-line ms-1"></i>
+              Next
             </button>
           </div>
-        </div>
+        </Col>
       </Row>
     </Fragment>
   );

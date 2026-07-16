@@ -147,7 +147,7 @@ const TwoFa = () => {
                     <p className="d-flex align-items-center gap-2 text-muted fw-light">
                       Please enter the 4 digit code sent to
                       <strong>
-                        {`${sessionEmail.split("@")[0].slice(0, 3)}xxxxx@${sessionEmail.split("@")[1]}` ||
+                        {`${sessionEmail.split("@")[0].slice(0, 3)}****@${sessionEmail.split("@")[1]}` ||
                           "email@email.com"}
                       </strong>
                     </p>

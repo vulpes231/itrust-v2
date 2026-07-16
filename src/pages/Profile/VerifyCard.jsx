@@ -12,7 +12,7 @@ const VerifyCard = ({ showVerify, setShowVerify }) => {
           <h6 className="text-danger fs-16 fw-medium">Verify Account</h6>
           <span className="fs-13 fw-light">
             Complete KYC verification to access potfolio and unlock full trading
-            capibilities <br /> Required by federal regulation (KYC/AML
+            capabilities <br /> Required by federal regulation (KYC/AML
             compliance)
           </span>
         </span>

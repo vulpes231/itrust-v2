@@ -129,8 +129,19 @@ const allowedRoutesIfNotVerified = [
   "/personal",
 ];
 
+const validateFileSize = (file) => {
+  const maxSize = 10 * 1024 * 1024;
+
+  if (file.size > maxSize) {
+    return false;
+  }
+
+  return true;
+};
+
 export {
   getAccessToken,
+  validateFileSize,
   allowedRoutesIfNotVerified,
   liveUrl,
   devUrl,

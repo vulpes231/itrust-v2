@@ -18,10 +18,11 @@ import * as Yup from "yup";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { submitVericationRequest } from "../../services/user/verification";
 import { getUserInfo } from "../../services/user/user";
-import { formatBytes, getAccessToken } from "../../constants";
+import { formatBytes, getAccessToken, validateFileSize } from "../../constants";
 import ErrorToast from "../../components/Common/ErrorToast";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import SuccessToast from "../../components/Common/SuccessToast";
+import classnames from "classnames";
 
 const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
   const token = getAccessToken();
@@ -65,20 +66,13 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
         return;
       }
 
+      console.log(values);
+
       setMainFileError("");
       setBackFileError("");
       mutation.mutate(values);
     },
   });
-
-  const validateFileSize = (file) => {
-    const maxSize = 10 * 1024 * 1024;
-    if (file.size > maxSize) {
-      setError("File size must be less than 20MB");
-      return;
-    }
-    return null;
-  };
 
   function toggleKycVerification() {
     setIsKycVerification(!isKycVerification);
@@ -98,9 +92,9 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
     if (!file) return;
 
-    const sizeError = validateFileSize(file);
-    if (sizeError) {
-      setMainFileError(sizeError);
+    if (!validateFileSize(file)) {
+      setMainFile(null);
+      setMainFileError("File size must be less than 10MB");
       return;
     }
 
@@ -119,9 +113,9 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
     if (!file) return;
 
-    const sizeError = validateFileSize(file);
-    if (sizeError) {
-      setBackFileError(sizeError);
+    if (!validateFileSize(file)) {
+      setBackFile(null);
+      setBackFileError("File size must be less than 10MB");
       return;
     }
 
@@ -143,13 +137,15 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
   }, [mainFile, backFile]);
 
   useEffect(() => {
-    if (error) {
+    if (error || mainFileError || backFileError) {
       const tmt = setTimeout(() => {
         setError("");
+        setMainFileError("");
+        setBackFileError("");
       }, 3000);
       return () => clearTimeout(tmt);
     }
-  }, [error]);
+  }, [error, mainFileError, backFileError]);
 
   useEffect(() => {
     if (mutation.isSuccess) {
@@ -213,12 +209,6 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
             {/* Main ID Upload */}
             <Col>
-              {mainFileError && (
-                <Alert color="danger" className="mb-3">
-                  {mainFileError}
-                </Alert>
-              )}
-
               <div className="mb-1">
                 <Label className="form-label">Main ID *</Label>
               </div>
@@ -229,53 +219,69 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                 }}
                 maxFiles={1}
               >
-                {({ getRootProps, getInputProps, isDragActive }) => (
-                  <div
-                    {...getRootProps()}
-                    className={`dropzone dz-clickable ${
-                      isDragActive ? "dz-drag-hover" : ""
-                    }`}
-                    style={{
-                      cursor: "pointer",
-                      minHeight: window.innerHeight <= 670 ? "50px" : "270px",
-                      height: window.innerHeight <= 670 ? "50px" : "270px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <input {...getInputProps()} />
+                {({ getRootProps, getInputProps, isDragActive }) => {
+                  const hasError = Boolean(mainFileError);
 
-                    <div className="dz-message needsclick text-center m-0">
-                      <div className="mb-2">
-                        <i className="display-5 text-muted ri-upload-cloud-2-fill" />
+                  return (
+                    <div
+                      {...getRootProps()}
+                      className={classnames("dropzone dz-clickable", {
+                        "dz-drag-hover": isDragActive,
+                        "border border-dashed border-danger": hasError,
+                      })}
+                      style={{
+                        cursor: "pointer",
+                        minHeight: window.innerHeight <= 670 ? "50px" : "270px",
+                        height: window.innerHeight <= 670 ? "50px" : "270px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <input {...getInputProps()} />
+
+                      <div className="dz-message needsclick text-center m-0">
+                        <div className="mb-2">
+                          <i
+                            className={classnames(
+                              "display-5 ri-upload-cloud-2-fill",
+                              {
+                                "text-danger": hasError,
+                                "text-muted": !hasError,
+                              },
+                            )}
+                          />
+                        </div>
+
+                        <h6
+                          className={classnames("mb-1", {
+                            "text-danger": hasError,
+                          })}
+                        >
+                          {mainFile && !hasError
+                            ? mainFile.name
+                            : "Click to upload or drag and drop"}
+                        </h6>
+
+                        <small
+                          className={classnames("fs-12", {
+                            "text-danger": hasError,
+                            "text-muted": !hasError,
+                          })}
+                        >
+                          {mainFile && !hasError
+                            ? `${mainFile.formattedSize} uploaded`
+                            : "PNG, JPG up to 10MB"}
+                        </small>
                       </div>
-
-                      <h6 className="mb-1">
-                        {mainFile
-                          ? mainFile.name
-                          : "Click to upload or drag and drop"}
-                      </h6>
-
-                      <small className="text-muted fs-12">
-                        {mainFile
-                          ? `${mainFile.formattedSize} uploaded`
-                          : "PNG, JPG up to 20MB"}
-                      </small>
                     </div>
-                  </div>
-                )}
+                  );
+                }}
               </Dropzone>
             </Col>
 
             {/* Back ID Upload */}
             <Col>
-              {backFileError && (
-                <Alert color="danger" className="mb-3">
-                  {backFileError}
-                </Alert>
-              )}
-
               <div className="mb-1">
                 <Label className="form-label text-muted">
                   Back ID (Optional)
@@ -289,42 +295,65 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                 }}
                 maxFiles={1}
               >
-                {({ getRootProps, getInputProps, isDragActive }) => (
-                  <div
-                    {...getRootProps()}
-                    className={`dropzone dz-clickable ${
-                      isDragActive ? "dz-drag-hover" : ""
-                    }`}
-                    style={{
-                      cursor: "pointer",
-                      minHeight: window.innerHeight <= 670 ? "150px" : "270px",
-                      height: window.innerHeight <= 670 ? "150px" : "270px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <input {...getInputProps()} />
+                {({ getRootProps, getInputProps, isDragActive }) => {
+                  const hasError = Boolean(backFileError);
 
-                    <div className="dz-message needsclick text-center m-0">
-                      <div className="mb-2">
-                        <i className="display-5 text-muted ri-upload-cloud-2-fill" />
+                  return (
+                    <div
+                      {...getRootProps()}
+                      className={classnames("dropzone dz-clickable", {
+                        "dz-drag-hover": isDragActive,
+                        "border border-dashed border-danger": hasError,
+                      })}
+                      style={{
+                        cursor: "pointer",
+                        minHeight:
+                          window.innerHeight <= 670 ? "150px" : "270px",
+                        height: window.innerHeight <= 670 ? "150px" : "270px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <input {...getInputProps()} />
+
+                      <div className="dz-message needsclick text-center m-0">
+                        <div className="mb-2">
+                          <i
+                            className={classnames(
+                              "display-5 ri-upload-cloud-2-fill",
+                              {
+                                "text-danger": hasError,
+                                "text-muted": !hasError,
+                              },
+                            )}
+                          />
+                        </div>
+
+                        <h6
+                          className={classnames("mb-1", {
+                            "text-danger": hasError,
+                          })}
+                        >
+                          {backFile && !hasError
+                            ? backFile.name
+                            : "Click to upload or drag and drop"}
+                        </h6>
+
+                        <small
+                          className={classnames("fs-12", {
+                            "text-danger": hasError,
+                            "text-muted": !hasError,
+                          })}
+                        >
+                          {backFile && !hasError
+                            ? `${backFile.formattedSize} uploaded`
+                            : "PNG, JPG up to 10MB"}
+                        </small>
                       </div>
-
-                      <h6 className="mb-1">
-                        {backFile
-                          ? backFile.name
-                          : "Click to upload or drag and drop"}
-                      </h6>
-
-                      <small className="text-muted fs-12">
-                        {backFile
-                          ? `${backFile.formattedSize} uploaded`
-                          : "PNG, JPG up to 20MB"}
-                      </small>
                     </div>
-                  </div>
-                )}
+                  );
+                }}
               </Dropzone>
             </Col>
 
