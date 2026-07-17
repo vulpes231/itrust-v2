@@ -44,11 +44,13 @@ const Holdings = () => {
       ? allPositions
       : allPositions.filter((trade) => trade.wallet.name === filter);
 
-  const accounts =
-    (tradeAccounts &&
-      tradeAccounts.length > 0 &&
-      tradeAccounts.filter((acct) => acct.slug !== "default")) ||
-    [];
+  const accountsWithPositions = new Set(
+    allPositions.map((position) => position.wallet.name),
+  );
+
+  const accounts = (tradeAccounts ?? [])
+    .filter((acct) => acct.slug !== "default")
+    .filter((acct) => accountsWithPositions.has(acct.name));
 
   const handleChange = (acct) => {
     setFilter(acct);
@@ -101,7 +103,7 @@ const Holdings = () => {
         </CardHeader>
         <CardBody>
           {filteredPosition && filteredPosition.length === 0 && (
-            <Col className="p-4">
+            <Col className="p-4 text-center">
               <span style={{ color: "#878A99" }}>You have no holdings</span>
             </Col>
           )}

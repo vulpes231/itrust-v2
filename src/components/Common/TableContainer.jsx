@@ -92,7 +92,7 @@ const TableContainer = ({
   const table = useReactTable({
     data,
     columns,
-
+    autoResetPageIndex: false,
     state: {
       pagination,
       columnFilters,

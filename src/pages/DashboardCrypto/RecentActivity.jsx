@@ -110,7 +110,9 @@ const RecentActivity = () => {
                                 ? "USDT"
                                 : trx.method.mode === "ETH"
                                   ? "Ethereum"
-                                  : capitalize(trx?.method?.mode)}
+                                  : trx.method.mode === "contribution"
+                                    ? "Cash"
+                                    : capitalize(trx?.method?.mode)}
                           </span>
                           <span>
                             <GoArrowRight />

@@ -33,9 +33,9 @@ import SellForm from "./SellForm";
 
 const allowedTypes = [
   { id: "market", label: "Market Order" },
-  { id: "limit", label: "Limit Order" },
-  { id: "stoploss", label: "Stop Loss Order" },
-  { id: "takeprofit", label: "Take Profit Order" },
+  // { id: "limit", label: "Limit Order" },
+  // { id: "stoploss", label: "Stop Loss Order" },
+  // { id: "takeprofit", label: "Take Profit Order" },
   { id: "leverage", label: "Leverage Order" },
 ];
 

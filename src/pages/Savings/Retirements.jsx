@@ -3,13 +3,19 @@ import { Card, Col, Row } from "reactstrap";
 import { IoShieldOutline } from "react-icons/io5";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
-import { formatCurrency, getIconBg, getIconColor } from "../../constants";
+import {
+  formatCurrency,
+  getIconBg,
+  getIconColor,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { Link } from "react-router-dom";
 import Contribute from "./Contribute";
 import { upperCase } from "lodash";
 import numeral from "numeral";
 
-const Retirements = ({ analytics, accts, handleIcon, cashAcct }) => {
+const Retirements = ({ analytics, accts, cashAcct }) => {
   const [show, setShow] = useState(false);
   const [contribute, setContribute] = useState(false);
   const [portfolio, setPortfolio] = useState(false);
@@ -72,12 +78,23 @@ const Retirements = ({ analytics, accts, handleIcon, cashAcct }) => {
                       <Col lg={6} key={acct._id} className="">
                         <div className="d-flex align-items-end justify-content-between shadow border-2 border py-3 px-4 rounded">
                           <span className="d-flex align-items-center gap-3">
-                            <span
-                              style={{ backgroundColor: getIconBg(acct.name) }}
-                              className="px-1 rounded d-flex align-items-center justify-content-center"
-                            >
-                              {handleIcon(acct.name)}
-                            </span>
+                            <div className="flex-shrink-0 avatar-xs">
+                              <span
+                                style={{
+                                  backgroundColor: `${getWalletColorBySlug(acct.designTag)}33`,
+                                }}
+                                className="avatar-title text-muted p-1 rounded-circle"
+                              >
+                                <i
+                                  style={{
+                                    color: getWalletColorBySlug(acct.designTag),
+                                  }}
+                                  className={getWalletLogoBySlug(
+                                    acct.designTag,
+                                  )}
+                                />
+                              </span>
+                            </div>
                             <span className="d-flex flex-column">
                               <span className="fw-bold fs-13 text-muted text-capitalize">
                                 {acct.name.includes("ira")
@@ -176,11 +193,7 @@ const Retirements = ({ analytics, accts, handleIcon, cashAcct }) => {
                   </div>
                 </div>
                 <div style={{ display: contribute ? "block" : "none" }}>
-                  <Contribute
-                    accts={accts}
-                    handleIcon={handleIcon}
-                    cash={cashAcct}
-                  />
+                  <Contribute accts={accts} cash={cashAcct} />
                 </div>
               </Col>
               <Col>

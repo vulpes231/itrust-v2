@@ -44,6 +44,56 @@ const getWalletColor = (name) => {
   }
 };
 
+const getWalletLogoBySlug = (slug) => {
+  switch (slug) {
+    case "cash":
+      return "ri-wallet-line";
+    case "auto":
+      return "ri-24-hours-line";
+    case "brokerage":
+      return "ri-bar-chart-2-line";
+    case "savings1":
+      return "ri-hand-coin-line";
+    case "savings2":
+      return "ri-focus-2-line";
+    case "savings3":
+      return "ri-service-line";
+    case "retirement1":
+      return "ri-shield-line";
+    case "retirement2":
+      return "ri-donut-chart-line";
+    case "retirement3":
+      return "ri-coins-line";
+    default:
+      return "";
+  }
+};
+
+const getWalletColorBySlug = (slug) => {
+  switch (slug) {
+    case "cash":
+      return "#29BADB";
+    case "auto":
+      return "#f1cf24";
+    case "brokerage":
+      return "#5156be";
+    case "savings1":
+      return "#13b799";
+    case "savings2":
+      return "#a227ab";
+    case "savings3":
+      return "#f17171";
+    case "retirement1":
+      return "#261cb6";
+    case "retirement2":
+      return "#468927";
+    case "retirement3":
+      return "#af7e3e";
+    default:
+      return null;
+  }
+};
+
 const getWalletBg = (name) => {
   switch (name) {
     case "brokerage":
@@ -155,4 +205,6 @@ export {
   getIconBg,
   formatBytes,
   getTotalProfit,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
 };

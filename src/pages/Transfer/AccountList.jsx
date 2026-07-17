@@ -4,14 +4,14 @@ import { getUserWallets } from "../../services/user/wallet";
 import {
   formatCurrency,
   getAccessToken,
-  getWalletColor,
-  // getWalletIcon,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
 } from "../../constants";
 import { Label } from "reactstrap";
 import { GoDotFill } from "react-icons/go";
 import { capitalize } from "lodash";
 
-const AccountList = ({ getWalletIcon }) => {
+const AccountList = () => {
   const token = getAccessToken();
 
   const { data: wallets } = useQuery({
@@ -46,9 +46,28 @@ const AccountList = ({ getWalletIcon }) => {
                   key={wallet._id}
                 >
                   <div className="d-flex align-items-start gap-2">
-                    <span className="text-muted">
-                      {getWalletIcon(wallet.name)}
-                    </span>
+                    <div className="flex-shrink-0 avatar-xs">
+                      <span
+                        style={{
+                          backgroundColor: wallet.designTag
+                            ? `${getWalletColorBySlug(wallet.designTag)}33`
+                            : `${getWalletColorBySlug(wallet.slug)}33`,
+                        }}
+                        className="avatar-title text-muted p-1 rounded-circle"
+                      >
+                        <i
+                          style={{
+                            color: getWalletColorBySlug(
+                              wallet.designTag ?? wallet.slug,
+                            ),
+                          }}
+                          className={getWalletLogoBySlug(
+                            wallet.designTag ?? wallet.slug,
+                          )}
+                        />
+                      </span>
+                    </div>
+
                     <span className="d-flex flex-column">
                       <span
                         style={{
@@ -57,8 +76,9 @@ const AccountList = ({ getWalletIcon }) => {
                           fontSize: "14px",
                           whiteSpace: "nowrap",
                         }}
+                        className="text-capitalize"
                       >
-                        {capitalize(wallet.name)}
+                        {wallet.name}
                       </span>
                       <span
                         style={{
@@ -66,13 +86,16 @@ const AccountList = ({ getWalletIcon }) => {
                           fontWeight: 300,
                           fontSize: "13px",
                         }}
-                        className="d-flex align-items-center text-muted"
+                        className="d-flex align-items-center text-muted text-uppercase fs-10"
                       >
                         <GoDotFill
-                          className={`${getWalletColor(wallet.name)}`}
-                          // style={{ color: getWalletColor(wallet.slug) }}
+                          style={{
+                            color: getWalletColorBySlug(
+                              wallet.designTag ?? wallet.slug,
+                            ),
+                          }}
                         />
-                        {capitalize(wallet.name)}
+                        {wallet.slug}
                       </span>
                     </span>
                   </div>

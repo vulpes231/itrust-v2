@@ -94,7 +94,7 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
     if (!validateFileSize(file)) {
       setMainFile(null);
-      setMainFileError("File size must be less than 10MB");
+      setMainFileError("File size must be less than 10MB!");
       return;
     }
 
@@ -115,7 +115,7 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
 
     if (!validateFileSize(file)) {
       setBackFile(null);
-      setBackFileError("File size must be less than 10MB");
+      setBackFileError("File size must be less than 10MB!");
       return;
     }
 
@@ -142,7 +142,7 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
         setError("");
         setMainFileError("");
         setBackFileError("");
-      }, 3000);
+      }, 4000);
       return () => clearTimeout(tmt);
     }
   }, [error, mainFileError, backFileError]);
@@ -260,7 +260,9 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                         >
                           {mainFile && !hasError
                             ? mainFile.name
-                            : "Click to upload or drag and drop"}
+                            : hasError
+                              ? mainFileError
+                              : "Click to upload or drag and drop"}
                         </h6>
 
                         <small
@@ -337,7 +339,9 @@ const KYCVerification = ({ isKycVerification, setIsKycVerification }) => {
                         >
                           {backFile && !hasError
                             ? backFile.name
-                            : "Click to upload or drag and drop"}
+                            : hasError
+                              ? backFileError
+                              : "Click to upload or drag and drop"}
                         </h6>
 
                         <small

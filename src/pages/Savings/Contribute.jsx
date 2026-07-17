@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Input, Label } from "reactstrap";
-import { formatCurrency, getIconBg } from "../../constants";
+import {
+  formatCurrency,
+  getIconBg,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { useFormik } from "formik";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useMutation } from "@tanstack/react-query";
@@ -12,7 +17,7 @@ import numeral from "numeral";
 
 const btns = ["100", "1000", "2000", "5000", "10000", "25000", "50000", "Max"];
 
-const Contribute = ({ accts, handleIcon, cash }) => {
+const Contribute = ({ accts, cash }) => {
   const retireAccts =
     accts &&
     accts.length > 0 &&
@@ -99,12 +104,21 @@ const Contribute = ({ accts, handleIcon, cash }) => {
       <Col key={selectedAcct?._id} style={{ position: "relative" }}>
         <div className="d-flex align-items-end justify-content-between shadow border border-2 py-2 px-3 rounded">
           <span className="d-flex align-items-center gap-3">
-            <span
-              style={{ backgroundColor: getIconBg(selectedAcct?.name) }}
-              className=" px-1 rounded d-flex align-items-center justify-content-center"
-            >
-              {handleIcon(selectedAcct?.name)}{" "}
-            </span>
+            <div className="flex-shrink-0 avatar-xs">
+              <span
+                style={{
+                  backgroundColor: `${getWalletColorBySlug(selectedAcct.designTag)}33`,
+                }}
+                className="avatar-title text-muted p-1 rounded-circle"
+              >
+                <i
+                  style={{
+                    color: getWalletColorBySlug(selectedAcct.designTag),
+                  }}
+                  className={getWalletLogoBySlug(selectedAcct.designTag)}
+                />
+              </span>
+            </div>
             <span
               className="d-flex flex-column"
               // style={{  }}
@@ -146,9 +160,7 @@ const Contribute = ({ accts, handleIcon, cash }) => {
                 </Card>
               </span>
               <span style={{ color: "#495057" }} className="fw-semibold fs-21">
-                {formatCurrency(
-                  selectedAcct?.analytics?.balance?.available || 0,
-                )}
+                {formatCurrency(selectedAcct?.balance?.available || 0)}
               </span>
             </span>
           </span>

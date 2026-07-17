@@ -13,51 +13,13 @@ const TransferForm = () => {
     setActiveTab(type);
   };
 
-  const getWalletIcon = (value) => {
-    switch (value) {
-      case "cash account":
-        return (
-          <span
-            className="bg-secondary-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
-            style={{ width: "35px", height: "35px" }}
-          >
-            <i class="ri-wallet-line fs-20 text-secondary"></i>
-          </span>
-        );
-      case "automated investing":
-        return (
-          <span
-            className="bg-info-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
-            style={{ width: "35px", height: "35px" }}
-          >
-            <i class="ri-24-hours-line fs-20 text-info"></i>
-          </span>
-        );
-      case "individual brokerage":
-        return (
-          <span
-            className="bg-warning-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
-            style={{ width: "35px", height: "35px" }}
-          >
-            <i className="ri-bar-chart-2-line fs-20 text-warning"></i>
-          </span>
-        );
-      case "traditional IRA":
-        return <i className="ri-shield-line fs-20"></i>;
-      case "health savings":
-        return <i className="ri-service-line fs-20"></i>;
-      default:
-        return null;
-    }
-  };
-
   return (
     <React.Fragment>
       <TrxCrumb title={"Transfer"} handleMove={() => window.history.back()} />
       <Row>
         <Col lg={9}>
           <Card>
-            <Crypto getWalletIcon={getWalletIcon} />
+            <Crypto />
           </Card>
         </Col>
         <Col lg={3}>
@@ -65,7 +27,7 @@ const TransferForm = () => {
             <BalanceCard />
           </Card>
           <Card>
-            <AccountList getWalletIcon={getWalletIcon} />
+            <AccountList />
           </Card>
           <Card>
             <TransferLimits />

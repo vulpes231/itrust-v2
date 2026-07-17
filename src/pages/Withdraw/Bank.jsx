@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Col, FormFeedback, Input, Label, Row } from "reactstrap";
+import { Col, FormFeedback, Input, Label, Row, Spinner } from "reactstrap";
 
 import * as Yup from "yup";
-import { depositFunds } from "../../services/user/transactions";
+import { withdrawFund } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { formatCurrency } from "../../constants";
@@ -19,7 +19,7 @@ const Bank = ({ settings }) => {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: () => depositFunds(validation.values),
+    mutationFn: () => withdrawFund(validation.values),
     onError: (err) => setError(err.message),
   });
 
@@ -37,7 +37,7 @@ const Bank = ({ settings }) => {
       swiftCode: "",
       routingNumber: "",
       bankAddress: "",
-      reference: "",
+      // reference: "",
     },
     validationSchema: Yup.object({
       amount: Yup.string().required("Enter deposit amount"),
@@ -292,7 +292,7 @@ const Bank = ({ settings }) => {
           ) : null}
         </div>
       </Col>
-      <Col lg={12}>
+      {/* <Col lg={12}>
         <div className="mb-3 px-2">
           <Label for="banknameInput" className="form-label">
             Reference (Optional for International)
@@ -313,7 +313,7 @@ const Bank = ({ settings }) => {
             // }
           />
         </div>
-      </Col>
+      </Col> */}
 
       <Col lg={12}>
         <div className="px-2">
@@ -377,9 +377,9 @@ const Bank = ({ settings }) => {
             }}
             type="submit"
             disabled={mutation.isPending}
-            className="btn btn-primary"
+            className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
           >
-            Confirm Withdrawal
+            {mutation.isPending && <Spinner size={"sm"} />} Confirm Withdrawal
           </button>
           <small
             className="pb-3"

@@ -12,7 +12,12 @@ import { PortfolioCharts } from "./DashboardCryptoCharts";
 import { auto, broke, btc, cash, dash, eth, ltc } from "../../assets";
 
 import { capitalize } from "lodash";
-import { formatCurrency, getTotalProfit } from "../../constants";
+import {
+  formatCurrency,
+  getTotalProfit,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 
 const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
   const [selectedWallet, setSelectedWallet] = useState("All");
@@ -105,6 +110,7 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
     }
   };
 
+  // console.log(getFilteredWallets());
   return (
     <React.Fragment>
       <Col>
@@ -157,7 +163,6 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                 selectedWallet={selectedWallet}
                 chartData={getChartData()}
                 chartLabels={getChartLabels()}
-                dataColors='["--vz-secondary", "--vz-info", "--vz-warning", "--vz-light", "--vz-danger"]'
                 walletAnalytics={walletAnalytics}
                 networth={networth}
               />
@@ -189,8 +194,26 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                     >
                       <div className="d-flex">
                         <div className="flex-shrink-0 avatar-xs">
-                          <span className="avatar-title bg-light text-muted p-1 rounded-circle">
-                            {getAccountIcon(wallet.name)}
+                          <span
+                            style={{
+                              backgroundColor: wallet.designTag
+                                ? `${getWalletColorBySlug(wallet.designTag)}33`
+                                : `${getWalletColorBySlug(wallet.slug)}33`,
+                            }}
+                            className="avatar-title text-muted p-1 rounded-circle"
+                          >
+                            <i
+                              style={{
+                                color: wallet.designTag
+                                  ? getWalletColorBySlug(wallet.designTag)
+                                  : getWalletColorBySlug(wallet.slug),
+                              }}
+                              className={
+                                wallet.designTag
+                                  ? getWalletLogoBySlug(wallet.designTag)
+                                  : getWalletLogoBySlug(wallet.slug)
+                              }
+                            />
                           </span>
                         </div>
                         <div className="flex-grow-1 ms-2">
@@ -199,17 +222,12 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                           </h6>
                           <p className="fs-10 mb-0 text-muted text-uppercase">
                             <i
-                              className={`mdi mdi-circle fs-10 align-middle  ${
-                                wallet.slug === "cash"
-                                  ? "text-primary"
-                                  : wallet.slug === "brokerage"
-                                    ? "text-warning"
-                                    : wallet.slug === "hsa"
-                                      ? "text-muted"
-                                      : wallet.slug === "ira"
-                                        ? "text-danger"
-                                        : "text-info"
-                              }  me-1`}
+                              style={{
+                                color: wallet.designTag
+                                  ? getWalletColorBySlug(wallet.designTag)
+                                  : getWalletColorBySlug(wallet.slug),
+                              }}
+                              className={`mdi mdi-circle fs-10 align-middle me-1`}
                             ></i>
                             {wallet.slug}
                           </p>

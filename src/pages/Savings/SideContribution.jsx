@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Input, Label } from "reactstrap";
-import { formatCurrency, getIconBg } from "../../constants";
+import {
+  formatCurrency,
+  getIconBg,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { useFormik } from "formik";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useMutation } from "@tanstack/react-query";
@@ -12,7 +17,7 @@ import numeral from "numeral";
 
 const btns = ["1000", "2000", "5000", "Max"];
 
-const SideContribution = ({ accts, handleIcon }) => {
+const SideContribution = ({ accts, cash }) => {
   const retireAccts =
     accts &&
     accts.length > 0 &&
@@ -39,6 +44,28 @@ const SideContribution = ({ accts, handleIcon }) => {
       amount: amount || "",
     },
     onSubmit: (values) => {
+      const amount = parseFloat(values.amount);
+
+      if (!amount || amount < 0) {
+        setError("Enter amount to fund!");
+        return;
+      }
+
+      if (amount < selectedAcct?.depositLimit?.min) {
+        setError(
+          `Deposit limit is ${numeral(selectedAcct?.depositLimit?.min).format("$0,0.00")}`,
+        );
+        return;
+      }
+
+      if (amount > selectedAcct?.depositLimit?.max) {
+        setError(`Exceeds max contribution!`);
+        return;
+      }
+      if (amount > cash?.balance?.available) {
+        setError(`You don't have available cash!`);
+        return;
+      }
       const data = { amount: values.amount, accountId: selectedAcct.accountId };
       mutation.mutate(data);
     },
@@ -79,12 +106,21 @@ const SideContribution = ({ accts, handleIcon }) => {
           <Col key={selectedAcct?._id} style={{ position: "relative" }}>
             <div className="d-flex align-items-end justify-content-between shadow border border-2 p-3 rounded">
               <span className="d-flex align-items-center gap-3">
-                <span
-                  style={{ backgroundColor: getIconBg(selectedAcct?.name) }}
-                  className=" px-1 rounded d-flex align-items-center justify-content-center"
-                >
-                  {handleIcon(selectedAcct?.name)}{" "}
-                </span>
+                <div className="flex-shrink-0 avatar-xs">
+                  <span
+                    style={{
+                      backgroundColor: `${getWalletColorBySlug(selectedAcct.designTag)}33`,
+                    }}
+                    className="avatar-title text-muted p-1 rounded-circle"
+                  >
+                    <i
+                      style={{
+                        color: getWalletColorBySlug(selectedAcct.designTag),
+                      }}
+                      className={getWalletLogoBySlug(selectedAcct.designTag)}
+                    />
+                  </span>
+                </div>
                 <span className="d-flex flex-column">
                   <span className="fw-bold fs-13 d-flex align-items-center gap-2 text-muted text-capitalize">
                     {selectedAcct?.name?.includes("ira")
@@ -120,9 +156,7 @@ const SideContribution = ({ accts, handleIcon }) => {
                     </Card>
                   </span>
                   <span className="fw-semibold fs-21">
-                    {formatCurrency(
-                      selectedAcct?.analytics?.balance?.available || 0,
-                    )}
+                    {formatCurrency(selectedAcct?.balance?.available || 0)}
                   </span>
                 </span>
               </span>

@@ -1,24 +1,14 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
-import { formatCurrency, getIconColor } from "../../constants";
+import {
+  formatCurrency,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { GoDotFill } from "react-icons/go";
 import { upperCase } from "lodash";
 
 const SavingsList = ({ accts }) => {
-  const getIcon = (name) => {
-    switch (name) {
-      case "traditional ira":
-        return <i className="ri-shield-line fs-16 "></i>;
-      case "health savings":
-        return <i className="ri-service-line fs-16"></i>;
-
-      default:
-        return null;
-    }
-  };
-
-  //  getIconColor
-
   return (
     <React.Fragment>
       <Col>
@@ -34,9 +24,21 @@ const SavingsList = ({ accts }) => {
                       className="d-flex align-items-center justify-content-between"
                     >
                       <span className="d-flex align-items-center gap-2">
-                        <span className="bg-light rounded-2 px-1">
-                          {getIcon(acct.name)}
-                        </span>
+                        <div className="flex-shrink-0 avatar-xs">
+                          <span
+                            style={{
+                              backgroundColor: `${getWalletColorBySlug(acct.designTag)}33`,
+                            }}
+                            className="avatar-title text-muted p-1 rounded-circle"
+                          >
+                            <i
+                              style={{
+                                color: getWalletColorBySlug(acct.designTag),
+                              }}
+                              className={getWalletLogoBySlug(acct.designTag)}
+                            />
+                          </span>
+                        </div>
                         <span className="d-flex flex-column">
                           <span className="fs-14 fw-semibold text-capitalize">
                             {acct.name.includes("ira")
@@ -49,7 +51,9 @@ const SavingsList = ({ accts }) => {
                           >
                             {" "}
                             <GoDotFill
-                              style={{ color: getIconColor(acct.name) }}
+                              style={{
+                                color: getWalletColorBySlug(acct.designTag),
+                              }}
                             />{" "}
                             {acct.slug}
                           </span>

@@ -1,5 +1,10 @@
 import React from "react";
-import { formatCurrency, getWalletBg } from "../../constants";
+import {
+  formatCurrency,
+  getWalletBg,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { capitalize } from "lodash";
 import { GoDotFill } from "react-icons/go";
 
@@ -29,7 +34,27 @@ const CashAccounts = ({
             onClick={() => setToAccount(wallet)}
           >
             <div className={`d-flex align-items-center gap-3`}>
-              <span>{getWalletIcon(wallet.name)}</span>
+              <div className="flex-shrink-0 avatar-xs">
+                <span
+                  style={{
+                    backgroundColor: wallet.designTag
+                      ? `${getWalletColorBySlug(wallet.designTag)}33`
+                      : `${getWalletColorBySlug(wallet.slug)}33`,
+                  }}
+                  className="avatar-title text-muted p-1 rounded-circle"
+                >
+                  <i
+                    style={{
+                      color: getWalletColorBySlug(
+                        wallet.designTag ?? wallet.slug,
+                      ),
+                    }}
+                    className={getWalletLogoBySlug(
+                      wallet.designTag ?? wallet.slug,
+                    )}
+                  />
+                </span>
+              </div>
               <div className="d-flex flex-column gap-1">
                 <span
                   style={{
@@ -37,8 +62,9 @@ const CashAccounts = ({
                     fontWeight: 600,
                     fontSize: "14px",
                   }}
+                  className="text-capitalize"
                 >
-                  {capitalize(wallet.name)}
+                  {wallet.name}
                 </span>
 
                 <span

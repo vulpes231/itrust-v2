@@ -39,9 +39,15 @@ const MyCurrencies = () => {
     isLoading: getAssetsLoading,
     refetch: refetchAssets,
   } = useQuery({
-    queryFn: () => getAssets(queryData),
     queryKey: ["assets", assetFilter, sort],
+    queryFn: () => getAssets(queryData),
     enabled: !showWatchlistOnly,
+
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 
   const {
@@ -396,7 +402,7 @@ const MyCurrencies = () => {
               divClass="table-responsive table-card mb-3"
               isLoading={getAssetsLoading}
               isGlobalFilter={false}
-              pageParam={"da"}
+              pageParam={"asset"}
             />
           ) : (
             <div className="text-center py-5">

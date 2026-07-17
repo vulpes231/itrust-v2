@@ -39,21 +39,6 @@ const Saving = () => {
     wallets.length > 0 &&
     wallets.find((acct) => acct.slug === "cash");
 
-  const getIcon = (name) => {
-    switch (name) {
-      case "traditional ira":
-        return (
-          <i style={{ color: "#261CB6" }} className="ri-shield-line fs-22"></i>
-        );
-      case "health Savings":
-        return (
-          <i style={{ color: "#F17171" }} className="ri-service-line fs-22"></i>
-        );
-
-      default:
-        return null;
-    }
-  };
   return (
     <React.Fragment>
       <Col className="mt-2">
@@ -64,7 +49,6 @@ const Saving = () => {
           <Retirements
             analytics={savingAnalytics}
             accts={user?.savingsAccounts}
-            handleIcon={getIcon}
             cashAcct={cashAcct}
           />
           <SavingsAccounts
@@ -75,11 +59,8 @@ const Saving = () => {
         </Col>
         <Col lg={4}>
           <SavingsList accts={user?.savingsAccounts} />
-          <SideContribution
-            accts={user?.savingsAccounts}
-            handleIcon={getIcon}
-          />
-          <SideFund accts={user?.savingsAccounts} handleIcon={getIcon} />
+          <SideContribution accts={user?.savingsAccounts} cash={cashAcct} />
+          <SideFund accts={user?.savingsAccounts} cash={cashAcct} />
         </Col>
       </Row>
     </React.Fragment>

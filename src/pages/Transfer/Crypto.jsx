@@ -12,7 +12,13 @@ import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import { CenterSpan, CustomSpan, FlexRow } from "../Deposit/DepositUtils";
 import { BsFillSendFill } from "react-icons/bs";
-import { formatCurrency, getWalletBg, getWalletColor } from "../../constants";
+import {
+  formatCurrency,
+  getWalletBg,
+  getWalletColor,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { GoDotFill } from "react-icons/go";
 import Loader from "../../components/Common/Loader";
 import CashAccounts from "./CashAccounts";
@@ -31,7 +37,7 @@ const buttons = [
   "100000",
 ];
 
-const Crypto = ({ getWalletIcon }) => {
+const Crypto = () => {
   const [error, setError] = useState("");
   const [selectedAccount, setSelectedAccount] = useState("");
   const [accountSelected, setAccountSelected] = useState(false);
@@ -163,7 +169,7 @@ const Crypto = ({ getWalletIcon }) => {
                 setAccountSelected={setAccountSelected}
                 accountSelected={accountSelected}
                 setToAccount={setToAccount}
-                getWalletIcon={getWalletIcon}
+                // getWalletIcon={getWalletIcon}
               />
             ) : (
               wallets &&
@@ -189,7 +195,27 @@ const Crypto = ({ getWalletIcon }) => {
                     }}
                   >
                     <div className={`d-flex align-items-center gap-3`}>
-                      <span>{getWalletIcon(wallet.name)}</span>
+                      <div className="flex-shrink-0 avatar-xs">
+                        <span
+                          style={{
+                            backgroundColor: wallet.designTag
+                              ? `${getWalletColorBySlug(wallet.designTag)}33`
+                              : `${getWalletColorBySlug(wallet.slug)}33`,
+                          }}
+                          className="avatar-title text-muted p-1 rounded-circle"
+                        >
+                          <i
+                            style={{
+                              color: getWalletColorBySlug(
+                                wallet.designTag ?? wallet.slug,
+                              ),
+                            }}
+                            className={getWalletLogoBySlug(
+                              wallet.designTag ?? wallet.slug,
+                            )}
+                          />
+                        </span>
+                      </div>
                       <div className="d-flex flex-column gap-1">
                         <span
                           style={{
@@ -197,8 +223,9 @@ const Crypto = ({ getWalletIcon }) => {
                             fontWeight: 600,
                             fontSize: "14px",
                           }}
+                          className="text-capitalize"
                         >
-                          {capitalize(wallet.name)}
+                          {wallet.name}
                         </span>
 
                         <span
@@ -294,7 +321,6 @@ const Crypto = ({ getWalletIcon }) => {
                       otherAccts={otherAccounts}
                       toAccount={toAccount}
                       setToAccount={setToAccount}
-                      getWalletIcon={getWalletIcon}
                     />
                   ) : (
                     <CashAccounts

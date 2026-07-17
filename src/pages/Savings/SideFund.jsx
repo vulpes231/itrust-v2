@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Input, Label } from "reactstrap";
-import { formatCurrency, getIconBg } from "../../constants";
+import {
+  formatCurrency,
+  getIconBg,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { useFormik } from "formik";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useMutation } from "@tanstack/react-query";
@@ -11,7 +16,7 @@ import numeral from "numeral";
 
 const btns = ["1000", "2000", "5000", "Max"];
 
-const SideFund = ({ accts, handleIcon }) => {
+const SideFund = ({ accts, cash }) => {
   const saveAccts =
     accts && accts.length > 0 && accts.filter((acct) => acct.tag === "savings");
 
@@ -51,9 +56,12 @@ const SideFund = ({ accts, handleIcon }) => {
       }
 
       if (amount > selectedAcct?.depositLimit?.max) {
-        setError(
-          `Deposit limit is ${numeral(selectedAcct?.depositLimit?.max).format("$0,0.00")}`,
-        );
+        setError(`Exceeds max contribution!`);
+        return;
+      }
+
+      if (amount > cash?.balance?.available) {
+        setError(`You don't have available cash!`);
         return;
       }
       const data = { amount: values.amount, accountId: selectedAcct.accountId };
@@ -97,12 +105,21 @@ const SideFund = ({ accts, handleIcon }) => {
             <Card>
               <div className="d-flex align-items-end justify-content-between shadow py-2 px-3 rounded border-2 border">
                 <span className="d-flex align-items-center gap-3">
-                  <span
-                    style={{ backgroundColor: getIconBg(selectedAcct?.name) }}
-                    className=" px-1 rounded d-flex align-items-center justify-content-center"
-                  >
-                    {handleIcon(selectedAcct?.name)}{" "}
-                  </span>
+                  <div className="flex-shrink-0 avatar-xs">
+                    <span
+                      style={{
+                        backgroundColor: `${getWalletColorBySlug(selectedAcct.designTag)}33`,
+                      }}
+                      className="avatar-title text-muted p-1 rounded-circle"
+                    >
+                      <i
+                        style={{
+                          color: getWalletColorBySlug(selectedAcct.designTag),
+                        }}
+                        className={getWalletLogoBySlug(selectedAcct.designTag)}
+                      />
+                    </span>
+                  </div>
                   <span
                     className="d-flex flex-column"
                     // style={{  }}

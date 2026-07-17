@@ -98,6 +98,7 @@ const TransactionHistory = ({ filter }) => {
         amount1: `${transaction.amount} USD`,
         status: transaction.status,
         type: transaction.type,
+        tag: transaction.tag,
         icon: icon,
         iconClass: iconClass,
         amountColor: amountColor,
@@ -159,7 +160,8 @@ const TransactionHistory = ({ filter }) => {
         accessorKey: "to",
         enableColumnFilter: false,
         cell: (cell) => {
-          return <ToCol {...cell} />;
+          const wallet = cell.row.original;
+          return <ToCol cell={cell} trnx={wallet} />;
         },
       },
       {

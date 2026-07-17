@@ -1,42 +1,29 @@
 import { capitalize, upperCase } from "lodash";
 import React from "react";
 import { auto, broke, cash } from "../../assets";
+import { getWalletColorBySlug, getWalletLogoBySlug } from "../../constants";
 
 const FromCol = (cell) => {
   return <React.Fragment>{upperCase(cell.getValue())}</React.Fragment>;
 };
-{
-  /* <i class="ri-24-hours-line"></i> */
-}
-{
-  /*  */
-}
-const ToCol = (cell) => {
-  const getIcon = (value) => {
-    switch (value) {
-      case "cash account":
-        return <i class="ri-wallet-line fs-22"></i>;
-      case "automated investing":
-        return <i class="ri-24-hours-line fs-22"></i>;
-      case "individual brokerage":
-        return <i className="ri-bar-chart-2-line fs-22"></i>;
-      case "traditional IRA":
-        return <i className="ri-shield-line fs-22"></i>;
-      case "health savings":
-        return <i className="ri-service-line fs-22"></i>;
-      default:
-        return null;
-    }
-  };
 
+const ToCol = ({ cell, trnx }) => {
   const cellValue = cell.getValue();
-  const icon = getIcon(cellValue);
+
+  const tag = trnx.tag ? trnx.tag : trnx.account;
 
   return (
     <React.Fragment>
       <div className="d-flex align-items-center gap-2">
-        <span className="text-muted">{icon}</span>
-        <span className="text-capitalize">{cellValue}</span>
+        <span className="text-muted">
+          <i
+            style={{
+              color: getWalletColorBySlug(tag),
+            }}
+            className={getWalletLogoBySlug(tag)}
+          />
+        </span>
+        <span className="text-uppercase fs-13">{cellValue}</span>
       </div>
     </React.Fragment>
   );

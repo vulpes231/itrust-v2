@@ -32,6 +32,7 @@ import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import { format } from "date-fns";
 import PendingDropDown from "./PendingDropDown";
 import MobileTransaction from "./MobileTransaction";
+import numeral from "numeral";
 
 const AllTransactions = () => {
   const token = getAccessToken();
@@ -102,10 +103,11 @@ const AllTransactions = () => {
         from: transaction.method?.mode || "Unknown",
         to: transaction.account || "Unknown",
         details: transaction.memo || "No details",
-        amount: `$${transaction.amount}`,
+        amount: numeral(transaction.amount).format("$0,0.00"),
         amount1: `${transaction.amount} USD`,
         status: transaction.status,
         type: transaction.type,
+        tag: transaction.tag || "cash",
         icon: icon,
         iconClass: iconClass,
         amountColor: amountColor,
@@ -113,6 +115,8 @@ const AllTransactions = () => {
       };
     });
   }, [transactions, filter]);
+
+  console.log(transformedData);
 
   function getCurrencyImage(currency) {
     const images = {
@@ -170,7 +174,8 @@ const AllTransactions = () => {
         accessorKey: "to",
         enableColumnFilter: false,
         cell: (cell) => {
-          return <ToCol {...cell} />;
+          const wallet = cell.row.original;
+          return <ToCol cell={cell} trnx={wallet} />;
         },
       },
       {
@@ -323,7 +328,7 @@ const AllTransactions = () => {
               theadClass="table-light table-nowrap"
               thClass="table-light text-muted"
               isLoading={getTransactionLoading}
-              pageParam="ca"
+              pageParam="cash-history"
             />
           </div>
           <div className="d-flex d-md-none">

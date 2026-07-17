@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Input, Label } from "reactstrap";
-import { formatCurrency, getIconBg } from "../../constants";
+import {
+  formatCurrency,
+  getIconBg,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { useFormik } from "formik";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useMutation } from "@tanstack/react-query";
@@ -93,9 +98,21 @@ const AddFunds = ({ accts, handleIcon, cash }) => {
         <Card>
           <div className="d-flex align-items-end justify-content-between shadow p-3 rounded border border-1">
             <span className="d-flex align-items-center gap-3">
-              <span className="py-2 px-3 rounded d-flex align-items-center justify-content-center bg-danger-subtle">
-                {handleIcon(selectedAcct?.name)}
-              </span>
+              <div className="flex-shrink-0 avatar-xs">
+                <span
+                  style={{
+                    backgroundColor: `${getWalletColorBySlug(selectedAcct.designTag)}33`,
+                  }}
+                  className="avatar-title text-muted p-1 rounded-circle"
+                >
+                  <i
+                    style={{
+                      color: getWalletColorBySlug(selectedAcct.designTag),
+                    }}
+                    className={getWalletLogoBySlug(selectedAcct.designTag)}
+                  />
+                </span>
+              </div>
               <span className="d-flex flex-column">
                 <span className="fw-bold fs-13 d-flex align-items-center gap-2 text-uppercase text-muted">
                   {selectedAcct?.name}
@@ -132,9 +149,7 @@ const AddFunds = ({ accts, handleIcon, cash }) => {
                   style={{ color: "#495057" }}
                   className="fw-semibold fs-21"
                 >
-                  {formatCurrency(
-                    selectedAcct?.analytics?.balance?.available || 0,
-                  )}
+                  {formatCurrency(selectedAcct?.balance?.available || 0)}
                 </span>
               </span>
             </span>

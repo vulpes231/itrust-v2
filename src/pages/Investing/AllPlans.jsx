@@ -99,8 +99,8 @@ const AllPlans = ({ plans, style }) => {
                     <span style={{ color: style.light }} className={style.slim}>
                       AUM(USD)
                     </span>
-                    <span className={style.medium}>
-                      {plan?.performance?.aum}M
+                    <span className={`${style.medium} text-capitalize`}>
+                      {plan?.performance?.aum}
                     </span>
                   </Col>
                   <Col xs={6} className="d-flex flex-column px-4">

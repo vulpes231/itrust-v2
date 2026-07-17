@@ -2,11 +2,14 @@ import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
-import { formatCurrency, getTotalProfit } from "../../constants";
+import {
+  formatCurrency,
+  getTotalProfit,
+  getWalletColorBySlug,
+} from "../../constants";
 import { capitalize } from "lodash";
 
 const PortfolioCharts = ({
-  dataColors,
   series,
   selectedWallet,
   chartData,
@@ -23,8 +26,6 @@ const PortfolioCharts = ({
 
     return chartData;
   };
-
-  // console.log(walletAnalytics);
 
   const getChartLabels = () => {
     if (!chartLabels || chartLabels.length === 0) return ["No Data"];
@@ -58,12 +59,13 @@ const PortfolioCharts = ({
     }
   };
 
-  var donutchartportfolioColors = getChartColorsArray(dataColors);
-
   const chartColors =
-    donutchartportfolioColors.length > 0
-      ? donutchartportfolioColors
-      : ["#727cf5"]; // Fallback color
+    series?.length > 0
+      ? series.map(
+          (wallet) =>
+            getWalletColorBySlug(wallet.designTag ?? wallet.slug) || "#727cf5",
+        )
+      : ["#727cf5"];
 
   var options = {
     labels: getChartLabels(),

@@ -43,9 +43,13 @@ const TradeHistory = ({ trades }) => {
       amount: numeral(trade?.execution?.amount).format("$0,0.00"),
       quantity: parseFloat(trade?.execution?.quantity).toFixed(4),
       currentValue: numeral(trade?.performance?.currentValue).format("$0,0.00"),
-      unrealizedProfit: numeral(0).format("$0,0.00"),
-      realizedProfit:
+      unrealizedProfit:
         numeral(trade.performance?.totalReturn).format("$0,0.00") || 0,
+      realizedProfit:
+        trade.status === "open"
+          ? numeral(0).format("$0,0.00")
+          : numeral(trade.performance?.totalReturn).format("$0,0.00"),
+
       symbol: trade?.asset?.symbol,
       percentChange: trade.performance?.totalReturnPercent?.toFixed(2) || 0,
       unrealizedPercentChange: parseFloat(0).toFixed(2),
@@ -130,7 +134,7 @@ const TradeHistory = ({ trades }) => {
           return (
             <UnrealizedPL
               value={cell.getValue()}
-              percent={cell.row.original.unrealizedPercentChange}
+              percent={cell.row.original.percentChange}
             />
           );
         },
@@ -144,6 +148,7 @@ const TradeHistory = ({ trades }) => {
             <RealizedPL
               value={cell.getValue()}
               percent={cell.row.original.percentChange}
+              percent={cell.row.original.unrealizedPercentChange}
             />
           );
         },
@@ -157,7 +162,7 @@ const TradeHistory = ({ trades }) => {
         },
       },
     ],
-    []
+    [],
   );
 
   return (

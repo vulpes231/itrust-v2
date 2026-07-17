@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Card, Col, Row } from "reactstrap";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
-import { formatCurrency, getIconBg, getIconColor } from "../../constants";
+import {
+  formatCurrency,
+  getIconBg,
+  getIconColor,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { GiReceiveMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import AddFunds from "./AddFunds";
@@ -87,10 +93,24 @@ const SavingsAccounts = ({ analytics, accts, cashAcct }) => {
                         <Card>
                           <div className="d-flex align-items-end justify-content-between shadow py-3 px-4 rounded border border-1">
                             <span className="d-flex align-items-center gap-3">
-                              <div
-                                className={`p-2 rounded d-flex align-items-center justify-content-center bg-danger-subtle`}
-                              >
-                                {getIcon(acct.name)}
+                              <div className="flex-shrink-0 avatar-xs">
+                                <span
+                                  style={{
+                                    backgroundColor: `${getWalletColorBySlug(acct.designTag)}33`,
+                                  }}
+                                  className="avatar-title text-muted p-1 rounded-circle"
+                                >
+                                  <i
+                                    style={{
+                                      color: getWalletColorBySlug(
+                                        acct.designTag,
+                                      ),
+                                    }}
+                                    className={getWalletLogoBySlug(
+                                      acct.designTag,
+                                    )}
+                                  />
+                                </span>
                               </div>
                               <span className="d-flex flex-column">
                                 <span className="fw-bold fs-13 text-uppercase text-muted">
