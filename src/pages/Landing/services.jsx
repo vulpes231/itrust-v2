@@ -1,255 +1,61 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+
 import { Col, Container, Row } from "reactstrap";
+import { automated, hero2 } from "../../assets";
+import { getBodySize, getSize } from "../../constants";
 
 const Services = () => {
   return (
     <React.Fragment>
-      <section className="section" id="services">
-        <Container>
-          <Row className="justify-content-center">
-            <Col lg={8}>
-              <div className="text-center mb-5">
-                <h1 className="mb-3 ff-secondary fw-semibold lh-base">
-                  A Digital web design studio creating modern & engaging online
-                </h1>
-                <p className="text-muted">
-                  To achieve this, it would be necessary to have uniform
-                  grammar, pronunciation and more common words. If several
-                  languages coalesce the grammar
-                </p>
-              </div>
-            </Col>
-          </Row>
-
-          <Row className="g-3">
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-pencil-ruler-2-line fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Creative Design</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    The creative design includes designs that are unique,
-                    effective and memorable.
-                  </p>
+      <div className="">
+        <Container
+          fluid
+          className="px-lg-4"
+          style={{
+            maxWidth: getBodySize(window.innerWidth),
+            margin: "0 auto",
+          }}
+        >
+          <div className="row mt-5 align-items-center gx-3 gx-lg-5">
+            <div className="col-12 col-lg-6">
+              <div className="ps-lg-5">
+                <div className="d-flex gap-1 pb-4 mb-4">
                   <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Col>
+                    <h3
+                      className="fw-bold mb-3"
+                      style={{
+                        color: "#202020",
+                        fontSize: "2rem",
+                      }}
+                    >
+                      Automated, diversified{" "}
+                      <br className="d-none d-lg-block" /> index investing.
+                    </h3>
 
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-palette-line fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Unlimited Colors</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    The collection of rules and guidelines which designers use
-                    to communicate with users through appealing.
-                  </p>
-                  <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
+                    <p
+                      className="mb-0"
+                      style={{
+                        color: "#6c757d",
+                        lineHeight: 1.8,
+                        // fontSize: "1.1rem",
+                      }}
+                    >
+                      Come bears or bulls, our expert-built portfolios help you
+                      stay diversified for your goals. Limit your risk, minimize
+                      your taxes, and maximize your returns — all with built-in
+                      automated easy-ness
+                    </p>
                   </div>
                 </div>
               </div>
-            </Col>
-
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-lightbulb-flash-line fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Strategy Solutions</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    Business development firm that provides strategic planning,
-                    market research services and project.
-                  </p>
-                  <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-customer-service-line fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Awesome Support</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    Awesome Support is the most versatile and feature-rich
-                    support plugin for all version.
-                  </p>
-                  <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-stack-line fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Truly Multipurpose</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    You usually get a broad range of options to play with. This
-                    enables you to use a single theme across multiple.
-                  </p>
-                  <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-settings-2-line fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Easy to customize</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    Personalise your own website, no matter what theme and what
-                    customization options.
-                  </p>
-                  <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-slideshow-line fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Responsive & Clean Design</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    Responsive design is a graphic user interface (GUI) design
-                    approach used to create content.
-                  </p>
-                  <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-google-fill fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Google Font Collection</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    Google Fonts is a collection of 915 fonts, all available to
-                    use for free on your website.
-                  </p>
-                  <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg={4}>
-              <div className="d-flex p-3">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-sm icon-effect">
-                    <div className="avatar-title bg-transparent text-success rounded-circle">
-                      <i className="ri-briefcase-5-line fs-36"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h5 className="fs-18">Top Industry Specialists</h5>
-                  <p className="text-muted my-3 ff-secondary">
-                    An industrial specialist works with industrial operations to
-                    ensure that manufacturing facilities work.
-                  </p>
-                  <div>
-                    <Link to="#" className="fs-13 fw-medium">
-                      Learn More{" "}
-                      <i className="ri-arrow-right-s-line align-bottom"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </Col>
-          </Row>
+            </div>
+            <div className="col-12 col-lg-6 bg-warning-subtle rounded-xl pe-lg-5">
+              <img src={automated} alt="hero-img" className="img-fluid" />
+            </div>
+          </div>
+          {/* <Row></Row> */}
         </Container>
-      </section>
+      </div>
     </React.Fragment>
   );
 };

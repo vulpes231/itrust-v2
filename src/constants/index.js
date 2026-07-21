@@ -94,6 +94,38 @@ const getWalletColorBySlug = (slug) => {
   }
 };
 
+const getSize = (width) => {
+  if (width >= 768) {
+    return "1350px";
+  }
+
+  // if (width >= 576) {
+  //   return "900px";
+  // }
+
+  // if (width >= 992) {
+  //   return "1400px";
+  // }
+
+  return "100%";
+};
+
+const getBodySize = (width) => {
+  if (width >= 768) {
+    return "1250px";
+  }
+
+  // if (width >= 576) {
+  //   return "1000px";
+  // }
+
+  // if (width >= 992) {
+  //   return "1400px";
+  // }
+
+  return "100%";
+};
+
 const getWalletBg = (name) => {
   switch (name) {
     case "brokerage":
@@ -207,4 +239,6 @@ export {
   getTotalProfit,
   getWalletColorBySlug,
   getWalletLogoBySlug,
+  getSize,
+  getBodySize,
 };

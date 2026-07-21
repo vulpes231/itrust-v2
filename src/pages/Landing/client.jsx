@@ -1,24 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Col, Container, Row } from "reactstrap";
+import { hero2 } from "../../assets";
+import { getBodySize, getSize } from "../../constants";
 
 const Client = () => {
+  const items = [
+    {
+      id: 1,
+      num: "01",
+      title: "Choose how you want to invest",
+      info: "Pick one of our diversified portfolios that interests you. They’re built by experts using low-cost exchange-traded funds.",
+    },
+    {
+      id: 2,
+      num: "02",
+      title: "We put your money to work",
+      info: "Automated trading, rebalancing, and dividend reinvestment, we put our technology behind every dollar you invest.",
+    },
+    {
+      id: 3,
+      num: "03",
+      title: "Investing for you, Managed by us",
+      info: "Everyone’s financial situation is different. Get personal recommendations based on what you want to accomplish, whether that’s retirement or simply building wealth.",
+    },
+  ];
   return (
     <React.Fragment>
-      <div className="pt-5 mt-5">
-        <Container>
-          <Row>
-            {/* <div className="hero-image-wrapper">
-              <img
-                src={hero}
-                alt="hero-img"
-                className="hero-image"
-                style={{
-                  width: getImageWidth(),
-                }}
-              />
-            </div> */}
-          </Row>
+      <div className="">
+        <Container
+          fluid
+          className="px-lg-4"
+          style={{
+            maxWidth: getBodySize(window.innerWidth),
+            margin: "0 auto",
+          }}
+        >
+          <div className="row mt-5 align-items-center g-5">
+            <div className="col-12 col-lg-6 order-1 order-lg-2">
+              <div className="ps-lg-5">
+                <h1 className="fw-bolder mb-5">A Smart Way to Invest</h1>
+
+                {items.map((it) => (
+                  <div
+                    key={it.id}
+                    className="d-flex gap-1 pb-4 mb-4 border-bottom"
+                  >
+                    <div
+                      className="fw-bold fs-20"
+                      style={{
+                        color: "#cfd7ff",
+                        // fontSize: "2rem",
+                        minWidth: "50px",
+                      }}
+                    >
+                      {it.num}
+                    </div>
+
+                    <div>
+                      <h3
+                        className="fw-bold mb-3"
+                        style={{
+                          color: "#202020",
+                          // fontSize: "2rem",
+                        }}
+                      >
+                        {it.title}
+                      </h3>
+
+                      <p
+                        className="mb-0"
+                        style={{
+                          color: "#6c757d",
+                          lineHeight: 1.8,
+                          // fontSize: "1.1rem",
+                        }}
+                      >
+                        {it.info}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="col-12 col-lg-6 order-2 order-lg-1">
+              <img src={hero2} alt="hero-img" className="img-fluid" />
+            </div>
+          </div>
+          <Row></Row>
         </Container>
       </div>
     </React.Fragment>

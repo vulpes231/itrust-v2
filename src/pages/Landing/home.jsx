@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Row } from "reactstrap";
+import { Container } from "reactstrap";
 import { Link } from "react-router-dom";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/effect-fade";
-import "swiper/css/pagination";
-
-import { EffectFade, Autoplay } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { motion } from "framer-motion";
 
 import { hero } from "../../assets";
 import "../../assets/scss/config/creative/home.scss";
+import { getSize } from "../../constants";
 
 const Home = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -24,45 +18,71 @@ const Home = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const getImageWidth = () => {
-    if (windowWidth < 576) return "280px";
-    if (windowWidth < 768) return "400px";
-    if (windowWidth < 992) return "500px";
-    return "600px";
-  };
-
   return (
     <React.Fragment>
       <section className="section pb-0 hero-section" id="hero">
         <div className="bg-overlay bg-overlay-pattern"></div>
-        <Container fluid className="px-3 px-md-4 px-lg-5">
-          <Row className="hero-wrapper mt-5 pt-5">
-            <div className="hero-content">
-              <h1 className="hero-title">Invest the way you want to</h1>
-              <p className="hero-description">
-                Whether you are an active trader, investing or saving for the
-                future, we can help you reach your goals. Invest globally in
-                stocks, options and many more from a single unified platform.
-                Earn the best interest rate 5.0% APY on your cash
-              </p>
-
-              <div className="hero-button-wrapper">
-                <Link to="/register" className="btn btn-secondary hero-btn">
-                  Get Started
-                </Link>
+        <Container
+          fluid
+          className="px-lg-4"
+          style={{
+            maxWidth: getSize(window.innerWidth),
+            margin: "0 auto",
+          }}
+        >
+          <motion.div
+            className="row mt-5 pt-5 align-items-center"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.7,
+              ease: "easeOut",
+            }}
+          >
+            <div className="col-12 col-lg-6 ">
+              <div className="d-flex flex-column align-items-center align-items-lg-start">
+                <h1
+                  style={{
+                    fontWeight: "black",
+                    color: "#000000",
+                    fontSize: windowWidth > 992 ? "60px" : "25px",
+                    fontFamily: "arial",
+                  }}
+                  className="mb-3"
+                >
+                  Invest the way you want to
+                </h1>
+                <p
+                  className="fs-17 text-center text-lg-start"
+                  style={{
+                    color: "#505050",
+                    lineHeight: windowWidth >= 992 ? "2" : "1.5",
+                    maxWidth: windowWidth >= 992 ? "520px" : "100%",
+                  }}
+                >
+                  Whether you are an active trader, investing or saving for the
+                  future, we can help you reach your goals. Invest globally in
+                  stocks, options and many more from a single unified platform.
+                  Earn the best interest rate 5.0% APY on your cash
+                </p>
+                <div className="hero-button-wrapper">
+                  <Link
+                    to="/register"
+                    className="btn btn-secondary d-flex align-items-center justify-content-center"
+                    style={{
+                      height: windowWidth > 768 ? "49px" : "45px",
+                      width: windowWidth > 768 ? "170px" : "128px",
+                    }}
+                  >
+                    Get Started
+                  </Link>
+                </div>
               </div>
             </div>
-            <div className="hero-image-wrapper">
-              <img
-                src={hero}
-                alt="hero-img"
-                className="hero-image"
-                style={{
-                  width: getImageWidth(),
-                }}
-              />
+            <div className="col-12 col-lg-6 text-center">
+              <img src={hero} alt="hero-img" className="img-fluid" />
             </div>
-          </Row>
+          </motion.div>
         </Container>
 
         <div className="hero-shape-svg">
