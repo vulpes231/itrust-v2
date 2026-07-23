@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "reactstrap";
 import { automated, hero2 } from "../../assets";
 import { getBodySize, getSize } from "../../constants";
+import { motion } from "framer-motion";
+import { fadeUp, slideLeft } from "../../constants/variants";
+// motion
 
 const Services = () => {
   return (
@@ -17,7 +20,16 @@ const Services = () => {
           }}
         >
           <div className="row mt-5 align-items-center gx-3 gx-lg-5">
-            <div className="col-12 col-lg-6">
+            <motion.div
+              className="col-12 col-lg-6"
+              variants={slideLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{
+                once: false,
+                amount: 0.3,
+              }}
+            >
               <div className="ps-lg-5">
                 <div className="d-flex gap-1 pb-4 mb-4">
                   <div>
@@ -48,9 +60,20 @@ const Services = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-12 col-lg-6 bg-warning-subtle rounded-xl pe-lg-5">
-              <img src={automated} alt="hero-img" className="img-fluid" />
+            </motion.div>
+            <div className="col-12 col-lg-6 bg-warning-subtle rounded-4 pe-lg-5">
+              <motion.img
+                src={automated}
+                alt="hero-img"
+                className="img-fluid"
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{
+                  once: false,
+                  amount: 0.3,
+                }}
+              />
             </div>
           </div>
           {/* <Row></Row> */}

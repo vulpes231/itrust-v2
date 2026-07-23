@@ -50,8 +50,9 @@ const Landing = () => {
         <Services />
         <Features />
         <Plans />
-        <Faqs />
         <Reviews />
+        <Faqs />
+
         <Counter />
         <WorkProcess />
         <Team />

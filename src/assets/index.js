@@ -23,11 +23,17 @@ import brief from "./brief.gif";
 import savings from "./savings.gif";
 import automated from "./landing/automated.png";
 import hero from "./landing/hero.png";
+import gift from "./landing/gift.png";
+import fund from "./landing/fund.png";
+import reg from "./landing/reg.png";
 import hero2 from "./landing/hero2.png";
 import treasure from "./landing/treasure.png";
 
 export {
   logo,
+  gift,
+  fund,
+  reg,
   automated,
   hero,
   hero2,

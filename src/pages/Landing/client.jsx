@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "reactstrap";
 import { hero2 } from "../../assets";
 import { getBodySize, getSize } from "../../constants";
+import { motion } from "framer-motion";
+import { imageVariant, textVariant } from "../../constants/variants";
 
 const Client = () => {
   const items = [
@@ -37,7 +39,16 @@ const Client = () => {
           }}
         >
           <div className="row mt-5 align-items-center g-5">
-            <div className="col-12 col-lg-6 order-1 order-lg-2">
+            <motion.div
+              className="col-12 col-lg-6 order-1 order-lg-2"
+              variants={textVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{
+                once: false,
+                amount: 0.3,
+              }}
+            >
               <div className="ps-lg-5">
                 <h1 className="fw-bolder mb-5">A Smart Way to Invest</h1>
 
@@ -82,10 +93,19 @@ const Client = () => {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="col-12 col-lg-6 order-2 order-lg-1">
+            </motion.div>
+            <motion.div
+              className="col-12 col-lg-6 order-2 order-lg-1"
+              variants={imageVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{
+                once: false,
+                amount: 0.3,
+              }}
+            >
               <img src={hero2} alt="hero-img" className="img-fluid" />
-            </div>
+            </motion.div>
           </div>
           <Row></Row>
         </Container>
