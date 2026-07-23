@@ -1,18 +1,14 @@
 import React from "react";
+import Navbar from "../navbar";
+import Footer from "../footer";
+import Earn from "./Earn";
+import Bill from "./Bill";
+import Diversify from "./Diversify";
+import CashFeatures from "./CashFeatures";
+import Frequents from "./Frequents";
 
-import Navbar from "./navbar";
-import Home from "./home";
-import Client from "./client";
-import Services from "./services";
-import Features from "./features";
-import Plans from "./plans";
-import Reviews from "./reviews";
-import Counter from "./counter";
-import WorkProcess from "./workProcess";
-import Footer from "./footer";
-
-const Landing = () => {
-  document.title = "Welcome - ItrustInvestment";
+const CashPage = () => {
+  document.title = "Welcome - Itrustinvestment Cash";
 
   window.onscroll = function () {
     scrollFunction();
@@ -41,15 +37,11 @@ const Landing = () => {
     <React.Fragment>
       <div className="layout-wrapper landing">
         <Navbar />
-        <Home />
-        <Client />
-        <Services />
-        <Features />
-        <Plans />
-        <Reviews />
-
-        <Counter />
-        <WorkProcess />
+        <Earn />
+        <Bill />
+        <Diversify />
+        <CashFeatures />
+        <Frequents />
 
         <Footer />
         <button
@@ -64,4 +56,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default CashPage;

@@ -52,21 +52,21 @@ const Navbar = () => {
     {
       id: "investing",
       label: "Investing",
-      path: "",
+      path: "/",
       submenus: [
         {
           id: "automated",
           label: "Automated Investing",
-          path: "/investing/automated",
+          path: "/automated",
         },
-        { id: "crypto", label: "Crypto Investing", path: "/investing/crypto" },
-        { id: "bond", label: "Bond Investing", path: "/investing/bond" },
+        { id: "crypto", label: "Crypto Investing", path: "/crypto" },
+        { id: "bond", label: "Bond Investing", path: "/bond" },
       ],
     },
     {
       id: "cash",
       label: "Cash",
-      path: "#cash",
+      path: "/cash-page",
       submenus: [],
     },
     {
@@ -82,13 +82,13 @@ const Navbar = () => {
     {
       id: "stocks",
       label: "Stocks",
-      path: "#stocks",
+      path: "/stocks",
       submenus: [],
     },
     {
       id: "faq",
       label: "F.A.Q",
-      path: "#faq",
+      path: "/faq",
       submenus: [],
     },
   ];
@@ -151,8 +151,9 @@ const Navbar = () => {
                 //   }
                 // }}
               >
-                <NavLink
-                  href={`#${link.path}`}
+                <Link
+                  to={`${link.path}`}
+                  style={{ color: "#505050" }}
                   className="fw-normal fs-16 d-flex align-items-center px-lg-2"
                   onClick={(e) => {
                     if (link.submenus.length) {
@@ -165,7 +166,7 @@ const Navbar = () => {
                 >
                   {link.label}
                   {link.submenus.length > 0 && <MdArrowDropDown />}
-                </NavLink>
+                </Link>
 
                 {openSubmenu === link.id && link.submenus.length > 0 && (
                   <div

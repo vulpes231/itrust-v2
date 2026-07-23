@@ -53,16 +53,7 @@ const Question = () => {
           }}
         >
           <div className="row ">
-            <div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: false,
-                amount: 0.3,
-              }}
-              className="col-12 col-lg-4"
-            >
+            <div className="col-12 col-lg-4">
               <div className="mb-5">
                 <h3 className="mb-3 fw-bold">
                   A good investment starts with asking good questions.

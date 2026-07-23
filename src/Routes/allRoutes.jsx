@@ -28,6 +28,10 @@ import {
 import AutomatedInvesting from "../pages/Landing/Automated";
 import BondInvesting from "../pages/Landing/Bond";
 import CryptoInvesting from "../pages/Landing/Crypto";
+import CashPage from "../pages/Landing/Cash";
+import Stocks from "../pages/Landing/Stocks";
+import Faq from "../pages/Landing/Faq";
+import GeneralQuestions from "../pages/Landing/Faq";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardCrypto /> },
@@ -64,9 +68,12 @@ const publicRoutes = [
   { path: "/forgot-password", component: <ForgetPassword /> },
   { path: "/register", component: <Register /> },
   { path: "/verifyemail", component: <VerifyEmail /> },
-  { path: "/investing/automated", component: <AutomatedInvesting /> },
-  { path: "/investing/bond", component: <BondInvesting /> },
-  { path: "/investing/crypto", component: <CryptoInvesting /> },
+  { path: "/automated", component: <AutomatedInvesting /> },
+  { path: "/bond", component: <BondInvesting /> },
+  { path: "/crypto", component: <CryptoInvesting /> },
+  { path: "/cash-page", component: <CashPage /> },
+  { path: "/stocks", component: <Stocks /> },
+  { path: "/faq", component: <GeneralQuestions /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

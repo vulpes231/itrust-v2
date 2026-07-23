@@ -37,9 +37,27 @@ import treasure from "./landing/treasure.png";
 import sec from "./landing/sec.png";
 import light from "./landing/light.png";
 import earn from "./landing/earn.png";
+import bill from "./landing/bill.png";
+import cashier from "./landing/cashier.png";
+import indy from "./landing/indy.png";
+import atm from "./landing/atm.png";
+import deppy from "./landing/dep.png";
+import pay from "./landing/pay.png";
+import save1 from "./landing/save1.png";
+import keep from "./landing/keep.png";
+import cat from "./landing/cat.png";
 
 export {
   logo,
+  indy,
+  cashier,
+  atm,
+  deppy,
+  pay,
+  save1,
+  keep,
+  cat,
+  bill,
   card1,
   earn,
   card2,

@@ -1,9 +1,9 @@
 import React from "react";
-import { getBodySize } from "../../../constants";
+import { getBodySize, getSize } from "../../../constants";
 import { Container } from "reactstrap";
 import { Link } from "react-router-dom";
 
-const Crypto = () => {
+const Stock = () => {
   return (
     <React.Fragment>
       <section className="section" id="contact">
@@ -11,11 +11,11 @@ const Crypto = () => {
           fluid
           className="px-lg-4 py-5"
           style={{
-            maxWidth: getBodySize(window.innerWidth),
+            maxWidth: getSize(window.innerWidth),
             margin: "0 auto",
           }}
         >
-          <div className="d-flex flex-column align-items-center justify-content-center">
+          <div className="d-flex flex-column align-items-center justify-content-center bg-white">
             <h2
               className="fw-bolder mb-3 mt-4 lg-mt-0"
               style={{
@@ -23,7 +23,7 @@ const Crypto = () => {
                 fontSize: "44px",
               }}
             >
-              Crypto Investing?
+              Smart stock Investing
             </h2>
             <p
               className="mb-0 text-center fs-18"
@@ -33,8 +33,9 @@ const Crypto = () => {
                 maxWidth: window.innerWidth >= 992 ? "520px" : "100%",
               }}
             >
-              Buy and sell Bitcoin, Ethereum, Dogecoin, and other
-              cryptocurrencies 24/7 and commission-free with Itrust Crypto.(sub)
+              Invest in individual stocks. Skip the endless hours of research to
+              find companies not on your radar and see stocks in a whole new
+              light — with fractional shares and no commissions
             </p>
 
             <Link
@@ -53,4 +54,4 @@ const Crypto = () => {
   );
 };
 
-export default Crypto;
+export default Stock;

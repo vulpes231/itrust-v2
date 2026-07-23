@@ -20,7 +20,7 @@ const Automated = () => {
               className="fw-bolder mb-3 mt-4 lg-mt-0"
               style={{
                 color: "#202020",
-                fontSize: "2.5rem",
+                fontSize: "44px",
               }}
             >
               Automate Your Trading

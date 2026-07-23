@@ -20,7 +20,7 @@ const Bond = () => {
               className="fw-bolder mb-3 mt-4 lg-mt-0 text-center"
               style={{
                 color: "#202020",
-                fontSize: "2.5rem",
+                fontSize: "44px",
                 maxWidth: window.innerWidth >= 992 ? "520px" : "100%",
               }}
             >
