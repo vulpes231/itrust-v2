@@ -1,18 +1,14 @@
 import React from "react";
+import Navbar from "../navbar";
+import Footer from "../footer";
+import Crypto from "./Crypto";
+import Create from "./Create";
+import Lighting from "./Lighting";
+import Security from "./Security";
+import How from "./How";
+import WorkProcess from "../workProcess";
 
-import Navbar from "./navbar";
-import Home from "./home";
-import Client from "./client";
-import Services from "./services";
-import Features from "./features";
-import Plans from "./plans";
-import Faqs from "./faq";
-import Reviews from "./reviews";
-import Counter from "./counter";
-import WorkProcess from "./workProcess";
-import Footer from "./footer";
-
-const Landing = () => {
+const CryptoInvesting = () => {
   document.title = "Welcome - ItrustInvestment";
 
   window.onscroll = function () {
@@ -42,14 +38,11 @@ const Landing = () => {
     <React.Fragment>
       <div className="layout-wrapper landing">
         <Navbar />
-        <Home />
-        <Client />
-        <Services />
-        <Features />
-        <Plans />
-        <Reviews />
-
-        <Counter />
+        <Crypto />
+        <Create />
+        <Lighting />
+        <Security />
+        <How />
         <WorkProcess />
 
         <Footer />
@@ -65,4 +58,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default CryptoInvesting;

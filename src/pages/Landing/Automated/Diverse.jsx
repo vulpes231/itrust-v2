@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 
 import { Col, Container, Row } from "reactstrap";
-import { automated, hero2, treasure } from "../../assets";
-import { getBodySize, getSize } from "../../constants";
+import { automated, hero2 } from "../../../assets";
+import { getBodySize, getSize } from "../../../constants";
 import { motion } from "framer-motion";
-import { fadeUp, slideLeft, slideRight } from "../../constants/variants";
-// motion
+import { fadeUp, slideLeft, slideRight } from "../../../constants/variants";
 
-const Features = () => {
+const Diverse = () => {
   return (
     <React.Fragment>
       <div className="">
@@ -20,9 +19,9 @@ const Features = () => {
           }}
         >
           <div className="row mt-5 align-items-center gx-3 gx-lg-5">
-            <div className="col-12 col-lg-6 bg-light rounded-4 pe-lg-5">
+            <div className="col-12 col-lg-6 bg-warning-subtle rounded-4 pe-lg-5">
               <motion.img
-                src={treasure}
+                src={automated}
                 alt="hero-img"
                 className="img-fluid"
                 variants={fadeUp}
@@ -34,7 +33,6 @@ const Features = () => {
                 }}
               />
             </div>
-
             <motion.div
               className="col-12 col-lg-6"
               variants={slideRight}
@@ -55,8 +53,8 @@ const Features = () => {
                         fontSize: "2rem",
                       }}
                     >
-                      Using a ladder of Treasuries, maintain a high yield. (And
-                      avoid paying state income taxes.)
+                      Automated, diversified{" "}
+                      <br className="d-none d-lg-block" /> index investing.
                     </h3>
 
                     <p
@@ -67,19 +65,21 @@ const Features = () => {
                         // fontSize: "1.1rem",
                       }}
                     >
-                      Safety, security and compliance. Adapting to legal
-                      verification and complying with federal regulations
-                      guarantees the lifetime safety of your assets and funds.
+                      Come bears or bulls, our expert-built portfolios help you
+                      stay diversified for your goals. Limit your risk, minimize
+                      your taxes, and maximize your returns — all with built-in
+                      automated easy-ness
                     </p>
                   </div>
                 </div>
               </div>
             </motion.div>
           </div>
+          {/* <Row></Row> */}
         </Container>
       </div>
     </React.Fragment>
   );
 };
 
-export default Features;
+export default Diverse;

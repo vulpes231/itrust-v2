@@ -9,7 +9,9 @@ import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import { getBodySize } from "../../constants";
 import { MdStar } from "react-icons/md";
-
+import { motion } from "framer-motion";
+import { fadeUp } from "../../constants/variants";
+// motion
 const Reviews = () => {
   const reviews = [
     {
@@ -64,7 +66,6 @@ const Reviews = () => {
   return (
     <React.Fragment>
       <section className="" id="reviews">
-        <div className=""></div>
         <Container
           fluid
           className="px-lg-4 py-5"
@@ -94,7 +95,15 @@ const Reviews = () => {
               Read what other people are saying
             </i>
           </div>
-          <div>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: false,
+              amount: 0.3,
+            }}
+          >
             <Row className="gy-4 mt-4">
               {reviews.map((rev) => {
                 return (
@@ -132,7 +141,7 @@ const Reviews = () => {
                 );
               })}
             </Row>
-          </div>
+          </motion.div>
         </Container>
       </section>
     </React.Fragment>

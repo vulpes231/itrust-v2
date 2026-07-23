@@ -26,11 +26,29 @@ import hero from "./landing/hero.png";
 import gift from "./landing/gift.png";
 import fund from "./landing/fund.png";
 import reg from "./landing/reg.png";
+import inny from "./landing/inny.png";
+import port from "./landing/port.png";
+import card1 from "./landing/card1.png";
+import card2 from "./landing/card2.png";
+import smart from "./landing/smart.png";
+import card3 from "./landing/card3.png";
 import hero2 from "./landing/hero2.png";
 import treasure from "./landing/treasure.png";
+import sec from "./landing/sec.png";
+import light from "./landing/light.png";
+import earn from "./landing/earn.png";
 
 export {
   logo,
+  card1,
+  earn,
+  card2,
+  card3,
+  smart,
+  light,
+  sec,
+  inny,
+  port,
   gift,
   fund,
   reg,

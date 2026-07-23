@@ -57,10 +57,10 @@ const Navbar = () => {
         {
           id: "automated",
           label: "Automated Investing",
-          path: "#automated-investing",
+          path: "/investing/automated",
         },
-        { id: "crypto", label: "Crypto Investing", path: "#crypto-investing" },
-        { id: "bond", label: "Bond Investing", path: "#bond-investing" },
+        { id: "crypto", label: "Crypto Investing", path: "/investing/crypto" },
+        { id: "bond", label: "Bond Investing", path: "/investing/bond" },
       ],
     },
     {
@@ -200,10 +200,11 @@ const Navbar = () => {
             <span className="d-block">
               <Link
                 style={{
-                  width: isDesktop() ? "115px" : "85px",
+                  width: isDesktop() ? "125px" : "85px",
+                  height: isDesktop() ? "48px" : "44px",
                   // backgroundColor: isDesktop() ? "green" : "red",
                 }}
-                className="btn btn-secondary fw-bold p-1 p-lg-2"
+                className="btn btn-secondary fw-bold p-1 p-lg-2 d-flex align-items-center justify-content-center"
                 to={"/login"}
               >
                 Sign In

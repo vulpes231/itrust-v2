@@ -25,6 +25,10 @@ import {
   TwoFa,
 } from "../pages";
 
+import AutomatedInvesting from "../pages/Landing/Automated";
+import BondInvesting from "../pages/Landing/Bond";
+import CryptoInvesting from "../pages/Landing/Crypto";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardCrypto /> },
   { path: "/index", component: <DashboardCrypto /> },
@@ -60,6 +64,9 @@ const publicRoutes = [
   { path: "/forgot-password", component: <ForgetPassword /> },
   { path: "/register", component: <Register /> },
   { path: "/verifyemail", component: <VerifyEmail /> },
+  { path: "/investing/automated", component: <AutomatedInvesting /> },
+  { path: "/investing/bond", component: <BondInvesting /> },
+  { path: "/investing/crypto", component: <CryptoInvesting /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

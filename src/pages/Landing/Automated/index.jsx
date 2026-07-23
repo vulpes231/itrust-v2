@@ -1,18 +1,13 @@
 import React from "react";
+import Navbar from "../navbar";
+import Automated from "./Automated";
+import Footer from "../footer";
+import Cards from "./Cards";
+import Diverse from "./Diverse";
+import WorkProcess from "../workProcess";
+import Smart from "./Smart";
 
-import Navbar from "./navbar";
-import Home from "./home";
-import Client from "./client";
-import Services from "./services";
-import Features from "./features";
-import Plans from "./plans";
-import Faqs from "./faq";
-import Reviews from "./reviews";
-import Counter from "./counter";
-import WorkProcess from "./workProcess";
-import Footer from "./footer";
-
-const Landing = () => {
+const AutomatedInvesting = () => {
   document.title = "Welcome - ItrustInvestment";
 
   window.onscroll = function () {
@@ -42,14 +37,10 @@ const Landing = () => {
     <React.Fragment>
       <div className="layout-wrapper landing">
         <Navbar />
-        <Home />
-        <Client />
-        <Services />
-        <Features />
-        <Plans />
-        <Reviews />
-
-        <Counter />
+        <Automated />
+        <Cards />
+        <Diverse />
+        <Smart />
         <WorkProcess />
 
         <Footer />
@@ -65,4 +56,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default AutomatedInvesting;
