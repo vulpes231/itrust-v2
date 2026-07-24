@@ -84,20 +84,21 @@ const Question = () => {
                       }}
                       className="d-flex flex-column bg-white  p-3 rounded-4 text-dark"
                     >
-                      <div className="d-flex justify-content-between align-items-center">
+                      <div
+                        onClick={() => {
+                          if (currentQue === que.id) {
+                            setCurrentQue("");
+                          } else {
+                            setCurrentQue(que.id);
+                          }
+                        }}
+                        className="d-flex justify-content-between align-items-center"
+                      >
                         <div className="d-flex align-items-center gap-3">
                           <span>{que.id}.</span>
                           <span className="fs-16">{que.question}</span>
                         </div>
-                        <span
-                          onClick={() => {
-                            if (currentQue === que.id) {
-                              setCurrentQue("");
-                            } else {
-                              setCurrentQue(que.id);
-                            }
-                          }}
-                        >
+                        <span>
                           {currentQue === que.id ? <MdClose /> : <MdAdd />}
                         </span>
                       </div>

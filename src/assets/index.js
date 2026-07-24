@@ -46,9 +46,41 @@ import pay from "./landing/pay.png";
 import save1 from "./landing/save1.png";
 import keep from "./landing/keep.png";
 import cat from "./landing/cat.png";
+import stock from "./landing/stock.png";
+import stockbg from "./landing/stockbg.png";
+import tool1 from "./landing/tool1.png";
+import tool2 from "./landing/tool2.png";
+import tool3 from "./landing/tool3.png";
+import tool4 from "./landing/tool4.png";
+import tool5 from "./landing/tool5.png";
+import tool6 from "./landing/tool6.png";
+import tool7 from "./landing/tool7.png";
+import tool8 from "./landing/tool8.png";
+import tool9 from "./landing/tool9.png";
+import tool0 from "./landing/tool0.png";
+import toollast from "./landing/toollast.png";
+import exp from "./landing/exp.png";
+import mul from "./landing/mul.png";
+import dil from "./landing/dil.png";
 
 export {
   logo,
+  exp,
+  mul,
+  dil,
+  tool1,
+  tool2,
+  tool3,
+  tool4,
+  tool5,
+  tool6,
+  tool7,
+  tool8,
+  tool9,
+  tool0,
+  toollast,
+  stock,
+  stockbg,
   indy,
   cashier,
   atm,

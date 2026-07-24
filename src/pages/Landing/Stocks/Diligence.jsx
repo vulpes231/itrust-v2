@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 
 import { Col, Container, Row } from "reactstrap";
-import { automated, hero2, light, smart } from "../../../assets";
+import { automated, bill, cashier, dil, hero2, indy } from "../../../assets";
 import { getBodySize, getSize } from "../../../constants";
 import { motion } from "framer-motion";
 import { fadeUp, slideLeft, slideRight } from "../../../constants/variants";
+import { MdOutlineCancel } from "react-icons/md";
+import { BsBank } from "react-icons/bs";
+import { HiOutlineBanknotes } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
-const Lighting = () => {
+const Diligence = () => {
   return (
     <React.Fragment>
-      <div className="">
+      <div className="section">
         <Container
           fluid
           className="px-lg-4"
           style={{
-            maxWidth: getBodySize(window.innerWidth),
+            maxWidth: getSize(window.innerWidth),
             margin: "0 auto",
           }}
         >
@@ -37,48 +41,62 @@ const Lighting = () => {
                       style={{
                         color: "#202020",
                         fontSize: "44px",
+                        lineHeight: 1,
                       }}
                     >
-                      Lightning-Fast
-                      <br className="d-none d-lg-block" /> Crypto Trading
+                      Due Diligence
                     </h3>
+                    <span
+                      className="fw-light"
+                      style={{
+                        color: "#202020",
+                        fontSize: "44px",
+                        lineHeight: 1,
+                        fontStyle: "italic",
+                      }}
+                    >
+                      Done for You
+                    </span>
 
                     <p
-                      className="mb-0 fs-16"
+                      className="mb-0 mt-3 fs-16"
                       style={{
                         color: "#6c757d",
                         lineHeight: 1.8,
-                        // fontSize: "1.1rem",
+                        maxWidth: window.innerWidth > 562 ? "370px" : "100%",
                       }}
                     >
-                      The Exchange supports USD, EUR, and GBP. Invest in
-                      cryptocurrency slowly over time by scheduling buys daily,
-                      weekly, or monthly.
+                      1,500+ stocks selected by our research team Learn more
+                      about each stock in a collection Spend less time
+                      micromanaging your investments
                     </p>
                   </div>
                 </div>
               </div>
             </motion.div>
-            <div className="col-12 col-lg-6 bg-info-subtle rounded-4 pe-lg-5">
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{
+                once: false,
+                amount: 0.3,
+              }}
+              style={{ background: "brown" }}
+              className="col-12 col-lg-6 pe-lg-5 rounded-4"
+            >
               <div className="d-flex align-items-center justify-content-center">
-                <motion.img
-                  src={light}
+                <img
+                  src={dil}
                   alt="hero-img"
                   className="img-fluid"
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{
-                    once: false,
-                    amount: 0.3,
-                  }}
                   style={{
-                    maxWidth: window.innerWidth > 562 ? "450px" : "100%",
+                    maxWidth: window.innerWidth > 562 ? "370px" : "100%",
                     height: "auto",
                   }}
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
         </Container>
       </div>
@@ -86,4 +104,4 @@ const Lighting = () => {
   );
 };
 
-export default Lighting;
+export default Diligence;

@@ -36,7 +36,8 @@ const Earn = () => {
                     className="fw-bold mb-3"
                     style={{
                       color: "#202020",
-                      fontSize: "2rem",
+                      fontSize: "44px",
+                      maxWidth: window.innerWidth > 562 ? "450px" : "100%",
                     }}
                   >
                     Earn more on your extra cash with zero state taxes.
@@ -46,6 +47,7 @@ const Earn = () => {
                       color: "#6c757d",
                       lineHeight: 1.8,
                       // fontSize: "1.1rem",
+                      maxWidth: window.innerWidth > 562 ? "450px" : "100%",
                     }}
                     className="fs-16"
                   >
@@ -69,6 +71,10 @@ const Earn = () => {
                   viewport={{
                     once: false,
                     amount: 0.3,
+                  }}
+                  style={{
+                    maxWidth: window.innerWidth > 562 ? "500px" : "100%",
+                    height: "auto",
                   }}
                 />
               </div>

@@ -31,6 +31,10 @@ const Ladder = () => {
                   once: false,
                   amount: 0.3,
                 }}
+                style={{
+                  maxWidth: window.innerWidth > 562 ? "500px" : "100%",
+                  height: "auto",
+                }}
               />
             </div>
             <motion.div
@@ -50,7 +54,8 @@ const Ladder = () => {
                       className="fw-bold mb-3"
                       style={{
                         color: "#202020",
-                        fontSize: "2rem",
+                        fontSize: "44px",
+                        maxWidth: window.innerWidth > 562 ? "560px" : "100%",
                       }}
                     >
                       Using a ladder of Treasuries, maintain a high yield.
@@ -59,11 +64,12 @@ const Ladder = () => {
                     </h3>
 
                     <p
-                      className="mb-0 fs-14 fs-lg-16"
+                      className="mb-0 fs-16"
                       style={{
                         color: "#6c757d",
                         lineHeight: 1.8,
                         // fontSize: "1.1rem",
+                        maxWidth: window.innerWidth > 562 ? "450px" : "100%",
                       }}
                     >
                       Safety, security and compliance. Adapting to legal
@@ -93,15 +99,25 @@ const Ladder = () => {
                       className="fw-bold mb-3"
                       style={{
                         color: "#202020",
-                        fontSize: "2rem",
+                        fontSize: "41px",
                       }}
                     >
                       Keep your savings up.
                     </h3>
-                    <span>Even if interest rates drop.</span>
+                    <span
+                      className="fw-light"
+                      style={{
+                        color: "#202020",
+                        fontSize: "39px",
+                        lineHeight: 1,
+                        fontStyle: "italic",
+                      }}
+                    >
+                      Even if interest rates drop.
+                    </span>
 
                     <p
-                      className="mb-0 fs-14 fs-lg-16"
+                      className="mb-0 fs-16"
                       style={{
                         color: "#6c757d",
                         lineHeight: 1.8,
@@ -136,16 +152,26 @@ const Ladder = () => {
                       className="fw-bold mb-3"
                       style={{
                         color: "#202020",
-                        fontSize: "2rem",
+                        fontSize: "41px",
                       }}
                     >
                       To build your own bond ladder, you’ll need patience and
                       plenty of research.
                     </h3>
-                    <span>Or just use our service.</span>
+                    <span
+                      className="fw-light"
+                      style={{
+                        color: "#202020",
+                        fontSize: "39px",
+                        lineHeight: 1,
+                        fontStyle: "italic",
+                      }}
+                    >
+                      Or just use our service.
+                    </span>
 
                     <p
-                      className="mb-0 fs-14 fs-lg-16"
+                      className="mb-0 fs-16"
                       style={{
                         color: "#6c757d",
                         lineHeight: 1.8,

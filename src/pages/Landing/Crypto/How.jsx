@@ -52,7 +52,14 @@ const How = () => {
             <Row className="justify-content-center">
               <Col lg={8}>
                 <div className="text-center mb-5">
-                  <h3 className="mb-3 fw-bold">
+                  <h3
+                    className="mb-3 fw-bold "
+                    style={{
+                      fontSize: "44px",
+                      maxWidth: window.innerWidth > 563 ? "560px" : "100%",
+                      margin: "0 auto",
+                    }}
+                  >
                     Why Invest in crypto with us?
                   </h3>
                   <p className="text-muted mb-4">
@@ -75,34 +82,30 @@ const How = () => {
             }}
           >
             <Row className="gy-4">
-              {steps.map((st) => {
-                return (
-                  <Col key={st.id} lg={4}>
-                    <Card className="mb-0 p-4 rounded-4 d-flex flex-column align-items-center justify-content-center">
-                      <img src={st.img} alt="" width={150} />
-                      <h3
-                        className="fw-bolder mb-3 fs-18"
-                        style={{
-                          color: "#202020",
-                          // fontSize: "2rem",
-                        }}
-                      >
-                        {st.title}
-                      </h3>
-                      <p
-                        className="mb-0 text-center fs-15"
-                        style={{
-                          color: "#6c757d",
-                          lineHeight: 1.8,
-                          // fontSize: "1.1rem",
-                        }}
-                      >
-                        {st.info}
-                      </p>
-                    </Card>
-                  </Col>
-                );
-              })}
+              {steps.map((st) => (
+                <Col key={st.id} lg={4} className="d-flex">
+                  <Card className="mb-0 p-4 rounded-4 d-flex flex-column align-items-center justify-content-center h-100 w-100">
+                    <img src={st.img} alt="" width={150} className="mb-3" />
+
+                    <h3
+                      className="fw-bolder mb-3 fs-18 text-center"
+                      style={{ color: "#202020" }}
+                    >
+                      {st.title}
+                    </h3>
+
+                    <p
+                      className="mb-0 text-center fs-15 flex-grow-1"
+                      style={{
+                        color: "#6c757d",
+                        lineHeight: 1.8,
+                      }}
+                    >
+                      {st.info}
+                    </p>
+                  </Card>
+                </Col>
+              ))}
             </Row>
           </motion.div>
         </Container>

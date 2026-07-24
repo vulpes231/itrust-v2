@@ -20,18 +20,24 @@ const Create = () => {
         >
           <div className="row mt-5 align-items-center gx-3 gx-lg-5">
             <div className="col-12 col-lg-6 bg-warning-subtle rounded-4 pe-lg-5">
-              <motion.img
-                src={automated}
-                alt="hero-img"
-                className="img-fluid"
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{
-                  once: false,
-                  amount: 0.3,
-                }}
-              />
+              <div className="d-flex align-items-center justify-content-center">
+                <motion.img
+                  src={automated}
+                  alt="hero-img"
+                  className="img-fluid"
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{
+                    once: false,
+                    amount: 0.3,
+                  }}
+                  style={{
+                    maxWidth: window.innerWidth > 562 ? "450px" : "100%",
+                    height: "auto",
+                  }}
+                />
+              </div>
             </div>
             <motion.div
               className="col-12 col-lg-6"
@@ -50,7 +56,7 @@ const Create = () => {
                       className="fw-bold mb-3"
                       style={{
                         color: "#202020",
-                        fontSize: "2rem",
+                        fontSize: "44px",
                       }}
                     >
                       Create portfolio
@@ -58,7 +64,7 @@ const Create = () => {
                     </h3>
 
                     <p
-                      className="mb-0"
+                      className="mb-0 fs-16"
                       style={{
                         color: "#6c757d",
                         lineHeight: 1.8,

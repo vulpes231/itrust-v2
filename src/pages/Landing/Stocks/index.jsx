@@ -2,6 +2,13 @@ import React from "react";
 import Navbar from "../navbar";
 import Stock from "./Stock";
 import Footer from "../footer";
+import Hero from "./Hero";
+import Tool from "./Tool";
+import Explore from "./Explore";
+import Diligence from "./Diligence";
+import Multiple from "./Multiple";
+import Takeaway from "./Takeaway";
+import Foot from "./Foot";
 
 const Stocks = () => {
   document.title = "Welcome - ItrustInvestment";
@@ -34,6 +41,13 @@ const Stocks = () => {
       <div className="layout-wrapper landing">
         <Navbar />
         <Stock />
+        <Hero />
+        <Tool />
+        <Explore />
+        <Diligence />
+        <Multiple />
+        <Takeaway />
+        <Foot />
 
         <Footer />
         <button
