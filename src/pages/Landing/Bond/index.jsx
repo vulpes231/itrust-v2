@@ -7,7 +7,7 @@ import Ladder from "./Ladder";
 import Question from "./Question";
 
 const BondInvesting = () => {
-  document.title = "Welcome - ItrustInvestment";
+  document.title = "Bond Investing - ItrustInvestment";
 
   window.onscroll = function () {
     scrollFunction();

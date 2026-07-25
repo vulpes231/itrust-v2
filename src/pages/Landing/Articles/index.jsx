@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../navbar";
 import Footer from "../footer";
-import How from "./How";
-import When from "./When";
-import Commission from "./Commission";
-import Texts from "./Texts";
-import HowTitle from "./HowTitle";
+import ArticleTitle from "./ArticleTitle";
+import ArticleBody from "./ArticleBody";
+import ArticleList from "./ArticleList";
 
-const Invest = () => {
-  document.title = "Welcome - ItrustInvestment";
+const Articles = () => {
+  document.title = "Articles - ItrustInvestment";
 
   window.onscroll = function () {
     scrollFunction();
@@ -33,15 +31,15 @@ const Invest = () => {
     document.documentElement.scrollTop = 0;
   };
 
+  const [activeTab, setActiveTab] = useState("all");
+
   return (
     <React.Fragment>
       <div className="layout-wrapper landing">
         <Navbar />
-        <HowTitle />
-        <How />
-        <When />
-        <Commission />
-        <Texts />
+        <ArticleTitle />
+        <ArticleBody activeTab={activeTab} setActiveTab={setActiveTab} />
+        <ArticleList activeTab={activeTab} />
 
         <Footer />
         <button
@@ -56,4 +54,4 @@ const Invest = () => {
   );
 };
 
-export default Invest;
+export default Articles;

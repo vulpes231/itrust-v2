@@ -10,24 +10,12 @@ const How = () => {
       <section className="section">
         <Container
           fluid
-          className="px-lg-4 py-5"
+          className="px-lg-4 "
           style={{
             maxWidth: getBodySize(window.innerWidth),
             margin: "0 auto",
           }}
         >
-          <div className="d-flex align-items-center justify-content-center mb-4">
-            <h3
-              style={{
-                fontWeight: "bolder",
-                fontSize: "50px",
-                // maxWidth: window.innerWidth > 562 ? "560px" : "100%",
-              }}
-            >
-              {" "}
-              How to Invest
-            </h3>
-          </div>
           <div className="bg-white">
             <div className="d-flex align-items-center justify-content-center flex-column mb-5">
               <h3

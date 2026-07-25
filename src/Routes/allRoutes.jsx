@@ -34,6 +34,7 @@ import Faq from "../pages/Landing/Faq";
 import GeneralQuestions from "../pages/Landing/Faq";
 import Invest from "../pages/Landing/Invest";
 import About from "../pages/Landing/About";
+import Articles from "../pages/Landing/Articles";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardCrypto /> },
@@ -78,6 +79,7 @@ const publicRoutes = [
   { path: "/faq", component: <GeneralQuestions /> },
   { path: "/how-to-invest", component: <Invest /> },
   { path: "/about-us", component: <About /> },
+  { path: "/articles", component: <Articles /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };
