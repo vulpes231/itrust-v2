@@ -52,7 +52,7 @@ const Navbar = () => {
     {
       id: "investing",
       label: "Investing",
-      path: "/",
+      path: "",
       submenus: [
         {
           id: "automated",
@@ -74,9 +74,9 @@ const Navbar = () => {
       label: "Learn",
       path: "",
       submenus: [
-        { id: "automated", label: "How to Invest", path: "#how-to-invest" },
-        { id: "crypto", label: "About Us", path: "#about-us" },
-        { id: "bond", label: "Articles", path: "#articles" },
+        { id: "how", label: "How to Invest", path: "/how-to-invest" },
+        { id: "about", label: "About Us", path: "/about-us" },
+        { id: "articles", label: "Articles", path: "/articles" },
       ],
     },
     {
@@ -102,7 +102,7 @@ const Navbar = () => {
   useEffect(() => {
     setOpenSubmenu(null);
     // setMobileMenu(false);
-  }, [location.hash]);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {

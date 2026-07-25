@@ -32,6 +32,8 @@ import CashPage from "../pages/Landing/Cash";
 import Stocks from "../pages/Landing/Stocks";
 import Faq from "../pages/Landing/Faq";
 import GeneralQuestions from "../pages/Landing/Faq";
+import Invest from "../pages/Landing/Invest";
+import About from "../pages/Landing/About";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardCrypto /> },
@@ -74,6 +76,8 @@ const publicRoutes = [
   { path: "/cash-page", component: <CashPage /> },
   { path: "/stocks", component: <Stocks /> },
   { path: "/faq", component: <GeneralQuestions /> },
+  { path: "/how-to-invest", component: <Invest /> },
+  { path: "/about-us", component: <About /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

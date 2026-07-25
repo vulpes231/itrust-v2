@@ -62,9 +62,15 @@ import toollast from "./landing/toollast.png";
 import exp from "./landing/exp.png";
 import mul from "./landing/mul.png";
 import dil from "./landing/dil.png";
+import about from "./landing/about.png";
+import pri from "./landing/pri.png";
+import rad from "./landing/rad.png";
 
 export {
   logo,
+  about,
+  pri,
+  rad,
   exp,
   mul,
   dil,
