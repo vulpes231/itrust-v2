@@ -23,7 +23,7 @@ const Crypto = () => {
                 fontSize: "44px",
               }}
             >
-              Crypto Investing?
+              Crypto Investing
             </h2>
             <p
               className="mb-0 text-center fs-18"

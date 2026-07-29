@@ -43,7 +43,24 @@ const Question = () => {
   ];
   return (
     <React.Fragment>
-      <section className="section bg-secondary-subtle mt-5 " id="plans">
+      <section
+        className="section mt-5 position-relative"
+        id="plans"
+        style={{
+          background: "linear-gradient(to bottom, #2f176f 0%, #5126BE 100%)",
+        }}
+      >
+        <img
+          src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+          alt=""
+          style={{ position: "absolute", top: "220px", left: 0 }}
+        />
+        <img
+          src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+          alt=""
+          // className="position-absolute top-0 right-0"
+          style={{ position: "absolute", top: 0, right: 0 }}
+        />
         <Container
           fluid
           className="px-lg-4"
@@ -55,7 +72,15 @@ const Question = () => {
           <div className="row ">
             <div className="col-12 col-lg-4">
               <div className="mb-5">
-                <h3 className="mb-3 fw-bold">
+                <h3
+                  className="mb-3 fw-bold text-white"
+                  style={{
+                    maxWidth: window.innerWidth >= 560 ? "300px" : "100%",
+                    fontSize: window.innerWidth >= 560 ? "43px" : "30px",
+                    fontWeight: 700, // instead of "bolder"
+                    lineHeight: 1.2,
+                  }}
+                >
                   A good investment starts with asking good questions.
                 </h3>
               </div>

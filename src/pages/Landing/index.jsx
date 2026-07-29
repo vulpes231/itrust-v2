@@ -44,11 +44,11 @@ const Landing = () => {
         <Home />
         <Client />
         <Services />
-        <Features />
+        {/* <Features /> */}
         <Plans />
         <Reviews />
 
-        <Counter />
+        {/* <Counter /> */}
         <WorkProcess />
 
         <Footer />

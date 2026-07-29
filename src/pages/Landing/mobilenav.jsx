@@ -57,7 +57,7 @@ const MobileNav = ({ links, isOpen, logo, handleClose }) => {
             >
               <NavLink
                 to={link.path}
-                className="text-decoration-none text-dark flex-grow-1"
+                className="text-decoration-none text-dark fw-bold flex-grow-1"
               >
                 {link.label}
               </NavLink>

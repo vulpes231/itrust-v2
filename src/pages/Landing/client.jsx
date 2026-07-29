@@ -38,62 +38,65 @@ const Client = () => {
             margin: "0 auto",
           }}
         >
-          <div className="row mt-5 align-items-center g-5">
-            <motion.div
-              className="col-12 col-lg-6 order-1 order-lg-2"
-              variants={textVariant}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: false,
-                amount: 0.3,
-              }}
-            >
-              <div className="ps-lg-5">
-                <h1 className="fw-bolder mb-5">A Smart Way to Invest</h1>
+          <div className="row mt-5 align-items-center">
+            <div style={{ overflowX: "hidden" }}>
+              <motion.div
+                className="col-12 col-lg-6 order-1 order-lg-2"
+                variants={textVariant}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{
+                  once: false,
+                  amount: 0.3,
+                }}
+              >
+                <div className="ps-lg-5">
+                  <h1 className="fw-bolder mb-5">A Smart Way to Invest</h1>
 
-                {items.map((it) => (
-                  <div
-                    key={it.id}
-                    className="d-flex gap-1 pb-4 mb-4 border-bottom"
-                  >
+                  {items.map((it) => (
                     <div
-                      className="fw-bold fs-20"
-                      style={{
-                        color: "#cfd7ff",
-                        // fontSize: "2rem",
-                        minWidth: "50px",
-                      }}
+                      key={it.id}
+                      className="d-flex gap-1 pb-4 mb-4 border-bottom"
                     >
-                      {it.num}
-                    </div>
-
-                    <div>
-                      <h3
-                        className="fw-bold mb-3"
+                      <div
+                        className="fw-bold fs-20"
                         style={{
-                          color: "#202020",
+                          color: "#cfd7ff",
                           // fontSize: "2rem",
+                          minWidth: "50px",
                         }}
                       >
-                        {it.title}
-                      </h3>
+                        {it.num}
+                      </div>
 
-                      <p
-                        className="mb-0"
-                        style={{
-                          color: "#6c757d",
-                          lineHeight: 1.8,
-                          // fontSize: "1.1rem",
-                        }}
-                      >
-                        {it.info}
-                      </p>
+                      <div>
+                        <h3
+                          className="fw-bold mb-3"
+                          style={{
+                            color: "#202020",
+                            // fontSize: "2rem",
+                          }}
+                        >
+                          {it.title}
+                        </h3>
+
+                        <p
+                          className="mb-0"
+                          style={{
+                            color: "#6c757d",
+                            lineHeight: 1.8,
+                            // fontSize: "1.1rem",
+                          }}
+                        >
+                          {it.info}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+
             <motion.div
               className="col-12 col-lg-6 order-2 order-lg-1"
               variants={imageVariant}
@@ -107,7 +110,6 @@ const Client = () => {
               <img src={hero2} alt="hero-img" className="img-fluid" />
             </motion.div>
           </div>
-          <Row></Row>
         </Container>
       </div>
     </React.Fragment>

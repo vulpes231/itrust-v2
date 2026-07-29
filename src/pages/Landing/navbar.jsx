@@ -123,9 +123,9 @@ const Navbar = () => {
   return (
     <React.Fragment>
       <header
-        className={`bg-white position-fixed top-0 w-100 px-4 py-3 py-lg-4 ${navClass}`}
+        className={`bg-white position-fixed top-0 px-4 py-3 py-lg-4 ${navClass}`}
         id="navbar"
-        style={{ zIndex: 1500 }}
+        style={{ zIndex: 1500, width: "100vw" }}
       >
         <nav
           className="d-flex align-items-center justify-content-between"

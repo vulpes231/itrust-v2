@@ -65,9 +65,11 @@ import dil from "./landing/dil.png";
 import about from "./landing/about.png";
 import pri from "./landing/pri.png";
 import rad from "./landing/rad.png";
+import joinbg from "./landing/joinbg.png";
 
 export {
   logo,
+  joinbg,
   about,
   pri,
   rad,

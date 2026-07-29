@@ -77,6 +77,7 @@ const Smart = () => {
                   style={{
                     maxWidth: window.innerWidth > 562 ? "450px" : "100%",
                     height: "auto",
+                    display: "block",
                   }}
                 />
               </div>

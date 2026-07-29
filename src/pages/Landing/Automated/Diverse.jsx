@@ -19,7 +19,7 @@ const Diverse = () => {
           }}
         >
           <div className="row mt-5 align-items-center gx-3 gx-lg-5">
-            <div className="col-12 col-lg-6 bg-warning-subtle rounded-4 pe-lg-5">
+            <div className="col-12 col-lg-6 bg-warning-subtle rounded-4 pe-lg-5 mb-4 mb-lg-0">
               <div className="d-flex align-items-center justify-content-center">
                 <motion.img
                   src={automated}

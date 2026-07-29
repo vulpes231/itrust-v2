@@ -17,7 +17,7 @@ const Automated = () => {
         >
           <div className="d-flex flex-column align-items-center justify-content-center bg-white">
             <h2
-              className="fw-bolder mb-3 mt-4 lg-mt-0"
+              className="fw-bolder mb-3 mt-4 lg-mt-0 text-center"
               style={{
                 color: "#202020",
                 fontSize: "44px",
@@ -33,10 +33,11 @@ const Automated = () => {
                 maxWidth: window.innerWidth >= 992 ? "520px" : "100%",
               }}
             >
-              Whether you are an active trader, investing or saving for the
-              future, we can help you reach your goals. Invest globally in
-              stocks, options and many more from a single unified platform. Earn
-              the best interest rate 5.0% APY on your cash
+              The Automated Investing Account is designed to make time-tested
+              investing strategies accessible to everyone. Invest in AI-curated,
+              professionally managed portfolios built with low-cost index funds
+              and proven strategies to help deliver steady long-term growth,
+              even in volatile markets.
             </p>
 
             <Link

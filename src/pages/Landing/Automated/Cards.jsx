@@ -30,7 +30,7 @@ const Cards = () => {
   ];
   return (
     <React.Fragment>
-      <div className="bg-secondary-subtle p-4 p-lg-5">
+      <div className="bg-secondary-subtle p-2 p-lg-5">
         <Container
           fluid
           className="px-lg-4"
@@ -42,7 +42,7 @@ const Cards = () => {
           <div className="row mt-5 align-items-center gx-3 gx-lg-5">
             {cardItems.map((item) => {
               return (
-                <div key={item.id} className="col-12 col-lg-4">
+                <div key={item.id} className="col-12 col-lg-4 gy-4">
                   <div
                     className="d-flex flex-column justify-content-between gap-2 bg-white rounded-4 p-3"
                     style={{ height: "400px" }}
@@ -56,7 +56,7 @@ const Cards = () => {
                           width: "100%",
                         }}
                       />
-                      <h3 className="font-normal text-secondary fs-18">
+                      <h3 className="font-normal text-secondary fs-18 mt-3">
                         {item.title}
                       </h3>
                       <p className="text-muted">{item.info}</p>
