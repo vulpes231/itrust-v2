@@ -34,47 +34,48 @@ const Features = () => {
                 }}
               />
             </div>
+            <div style={{ overflowX: "hidden" }}>
+              <motion.div
+                className="col-12 col-lg-6"
+                variants={slideRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{
+                  once: false,
+                  amount: 0.3,
+                }}
+              >
+                <div className="ps-lg-5">
+                  <div className="d-flex gap-1 pb-4 mb-4 mt-4 mt-lg-0">
+                    <div>
+                      <h3
+                        className="fw-bold mb-3"
+                        style={{
+                          color: "#202020",
+                          fontSize: "2rem",
+                        }}
+                      >
+                        Using a ladder of Treasuries, maintain a high yield.
+                        (And avoid paying state income taxes.)
+                      </h3>
 
-            <motion.div
-              className="col-12 col-lg-6"
-              variants={slideRight}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: false,
-                amount: 0.3,
-              }}
-            >
-              <div className="ps-lg-5">
-                <div className="d-flex gap-1 pb-4 mb-4">
-                  <div>
-                    <h3
-                      className="fw-bold mb-3"
-                      style={{
-                        color: "#202020",
-                        fontSize: "2rem",
-                      }}
-                    >
-                      Using a ladder of Treasuries, maintain a high yield. (And
-                      avoid paying state income taxes.)
-                    </h3>
-
-                    <p
-                      className="mb-0"
-                      style={{
-                        color: "#6c757d",
-                        lineHeight: 1.8,
-                        // fontSize: "1.1rem",
-                      }}
-                    >
-                      Safety, security and compliance. Adapting to legal
-                      verification and complying with federal regulations
-                      guarantees the lifetime safety of your assets and funds.
-                    </p>
+                      <p
+                        className="mb-0"
+                        style={{
+                          color: "#6c757d",
+                          lineHeight: 1.8,
+                          // fontSize: "1.1rem",
+                        }}
+                      >
+                        Safety, security and compliance. Adapting to legal
+                        verification and complying with federal regulations
+                        guarantees the lifetime safety of your assets and funds.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </Container>
       </div>

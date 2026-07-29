@@ -20,15 +20,7 @@ const Explore = () => {
             margin: "0 auto",
           }}
         >
-          <div
-            variants={slideLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{
-              once: false,
-              amount: 0.3,
-            }}
-          >
+          <div>
             <div className="row mt-5 align-items-center gx-3 gx-lg-5">
               <motion.div
                 variants={fadeUp}
@@ -53,68 +45,70 @@ const Explore = () => {
                   />
                 </div>
               </motion.div>
-              <motion.div
-                variants={slideRight}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{
-                  once: false,
-                  amount: 0.3,
-                }}
-                className="col-12 col-lg-6 pe-lg-5"
-              >
-                <div className="mb-5">
-                  <h3
-                    className="fw-bold mb-3"
-                    style={{
-                      color: "#202020",
-                      fontSize: "44px",
-                      lineHeight: 1,
-                    }}
-                  >
-                    See more stocks
-                  </h3>
-                  <span
-                    className="fw-light"
-                    style={{
-                      color: "#202020",
-                      fontSize: "44px",
-                      lineHeight: 1,
-                      fontStyle: "italic",
-                    }}
-                  >
-                    Beyond the obvious
-                  </span>
-                  <div className="mt-3 fs-16">
-                    <p
+              <div className="overflow-hidden">
+                <motion.div
+                  variants={slideRight}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{
+                    once: false,
+                    amount: 0.3,
+                  }}
+                  className="col-12 col-lg-6 pe-lg-5"
+                >
+                  <div className="mb-5 mt-5 mt-lg-0">
+                    <h3
+                      className="fw-bold mb-3"
                       style={{
-                        color: "#6c757d",
-                        lineHeight: 0.7,
+                        color: "#202020",
+                        fontSize: "44px",
+                        lineHeight: 1,
                       }}
                     >
-                      {" "}
-                      Companies you know you
-                    </p>{" "}
-                    <p
+                      See more stocks
+                    </h3>
+                    <span
+                      className="fw-light"
                       style={{
-                        color: "#6c757d",
-                        lineHeight: 0.7,
+                        color: "#202020",
+                        fontSize: "44px",
+                        lineHeight: 1,
+                        fontStyle: "italic",
                       }}
                     >
-                      know Companies you don’t know you know
-                    </p>{" "}
-                    <p
-                      style={{
-                        color: "#6c757d",
-                        lineHeight: 0.7,
-                      }}
-                    >
-                      {" "}
-                      Companies you know you don’t know
-                    </p>
+                      Beyond the obvious
+                    </span>
+                    <div className="mt-3 fs-16">
+                      <p
+                        style={{
+                          color: "#6c757d",
+                          lineHeight: 0.7,
+                        }}
+                      >
+                        {" "}
+                        Companies you know you
+                      </p>{" "}
+                      <p
+                        style={{
+                          color: "#6c757d",
+                          lineHeight: 0.7,
+                        }}
+                      >
+                        know Companies you don’t know you know
+                      </p>{" "}
+                      <p
+                        style={{
+                          color: "#6c757d",
+                          lineHeight: 0.7,
+                        }}
+                      >
+                        {" "}
+                        Companies you know you don’t know
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             </div>
           </div>
         </Container>

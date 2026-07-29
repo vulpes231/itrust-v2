@@ -15,8 +15,16 @@ const Hero = () => {
             margin: "0 auto",
           }}
         >
-          <div>
-            <img src={stock} className="img-fluid" alt="" />
+          <div className="d-flex align-items center justify-content-center position-relative">
+            <img
+              src={stock}
+              className="img-fluid"
+              alt=""
+              style={{
+                maxWidth: window.innerWidth >= 562 ? "450px" : "100%",
+                height: "auto",
+              }}
+            />
           </div>
         </Container>
       </div>

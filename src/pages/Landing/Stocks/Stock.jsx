@@ -11,7 +11,7 @@ const Stock = () => {
         className="section"
         id="contact"
         style={{
-          backgroundImage: `url(${stockbg})`,
+          backgroundImage: window.innerWidth > 562 ? `url(${stockbg})` : "",
         }}
       >
         <Container
@@ -24,7 +24,7 @@ const Stock = () => {
         >
           <div className="d-flex flex-column align-items-center justify-content-center">
             <h2
-              className="fw-bolder mb-3 mt-4 lg-mt-0"
+              className="fw-bolder mb-3 mt-4 lg-mt-0 text-center text-center text-lg-left"
               style={{
                 color: "#202020",
                 fontSize: "44px",

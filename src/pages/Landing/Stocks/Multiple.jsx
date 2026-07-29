@@ -20,15 +20,7 @@ const Multiple = () => {
             margin: "0 auto",
           }}
         >
-          <div
-            variants={slideLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{
-              once: false,
-              amount: 0.3,
-            }}
-          >
+          <div>
             <div className="row mt-5 align-items-center gx-3 gx-lg-5">
               <motion.div
                 variants={fadeUp}
@@ -53,55 +45,57 @@ const Multiple = () => {
                   />
                 </div>
               </motion.div>
-              <motion.div
-                variants={slideRight}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{
-                  once: false,
-                  amount: 0.3,
-                }}
-                className="col-12 col-lg-6 pe-lg-5"
-              >
-                <div className="mb-5">
-                  <h3
-                    className="fw-bold mb-3"
-                    style={{
-                      color: "#202020",
-                      fontSize: "44px",
-                      lineHeight: 1,
-                    }}
-                  >
-                    Invest
-                  </h3>
-                  <span
-                    className="fw-light"
-                    style={{
-                      color: "#202020",
-                      fontSize: "44px",
-                      lineHeight: 1,
-                      fontStyle: "italic",
-                      //   maxWidth: window.innerWidth > 562 ? "00px" : "100%",
-                    }}
-                  >
-                    In multiple stocks more easily
-                  </span>
-                  <div className="mt-3 fs-16">
-                    <p
+              <div className="overflow-hidden">
+                <motion.div
+                  variants={slideRight}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{
+                    once: false,
+                    amount: 0.3,
+                  }}
+                  className="col-12 col-lg-6 pe-lg-5"
+                >
+                  <div className="mb-5 mt-5 mt-lg-0">
+                    <h3
+                      className="fw-bold mb-3"
                       style={{
-                        color: "#6c757d",
-                        lineHeight: 1.5,
-                        maxWidth: window.innerWidth > 562 ? "400px" : "100%",
+                        color: "#202020",
+                        fontSize: "44px",
+                        lineHeight: 1,
                       }}
                     >
-                      Decide how much to invest, <br /> and we'll split your
-                      deposit into multiple stocks and <br />
-                      Companies you don’t know you know <br />
-                      Companies you know you don’t know
-                    </p>{" "}
+                      Invest
+                    </h3>
+                    <span
+                      className="fw-light"
+                      style={{
+                        color: "#202020",
+                        fontSize: "44px",
+                        lineHeight: 1,
+                        fontStyle: "italic",
+                        //   maxWidth: window.innerWidth > 562 ? "00px" : "100%",
+                      }}
+                    >
+                      In multiple stocks more easily
+                    </span>
+                    <div className="mt-3 fs-16">
+                      <p
+                        style={{
+                          color: "#6c757d",
+                          lineHeight: 1.5,
+                          maxWidth: window.innerWidth > 562 ? "400px" : "100%",
+                        }}
+                      >
+                        Decide how much to invest, <br /> and we'll split your
+                        deposit into multiple stocks and <br />
+                        Companies you don’t know you know <br />
+                        Companies you know you don’t know
+                      </p>{" "}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             </div>
           </div>
         </Container>

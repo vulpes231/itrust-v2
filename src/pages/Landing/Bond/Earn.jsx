@@ -20,15 +20,7 @@ const Earn = () => {
             margin: "0 auto",
           }}
         >
-          <div
-            variants={slideLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{
-              once: false,
-              amount: 0.3,
-            }}
-          >
+          <div>
             <div className="row mt-5 align-items-center gx-3 gx-lg-5">
               <div className="col-12 col-lg-6 pe-lg-5">
                 <div className="mb-5">
@@ -61,22 +53,24 @@ const Earn = () => {
                 </div>
               </div>
               <div className="col-12 col-lg-6 pe-lg-5">
-                <motion.img
-                  src={earn}
-                  alt="hero-img"
-                  className="img-fluid"
-                  variants={slideRight}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{
-                    once: false,
-                    amount: 0.3,
-                  }}
-                  style={{
-                    maxWidth: window.innerWidth > 562 ? "500px" : "100%",
-                    height: "auto",
-                  }}
-                />
+                <div className="overflow-hidden">
+                  <motion.img
+                    src={earn}
+                    alt="hero-img"
+                    className="img-fluid"
+                    variants={slideRight}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{
+                      once: false,
+                      amount: 0.3,
+                    }}
+                    style={{
+                      maxWidth: window.innerWidth > 562 ? "500px" : "100%",
+                      height: "auto",
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>

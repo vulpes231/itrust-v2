@@ -186,7 +186,7 @@ const CashFeatures = () => {
               </p>
             </div>
 
-            <div className="d-flex align-items-center flex-column justify-content-center mt-5 bg-white shadow-lg rounded-4 p-5">
+            {/* <div className="d-flex align-items-center flex-column justify-content-center mt-5 bg-white shadow-lg rounded-4 p-5">
               <p style={{ fontSize: "20px" }}>
                 {" "}
                 Money for monthly expenses:{" "}
@@ -211,7 +211,7 @@ const CashFeatures = () => {
                 Calculation is an estimate and assumes 4.50% APY for 30 days and
                 no withdrawals. Actual interest payments and APY can vary.{" "}
               </small>
-            </div>
+            </div> */}
           </div>
         </Container>
       </div>

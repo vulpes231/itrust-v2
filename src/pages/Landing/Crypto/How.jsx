@@ -40,7 +40,7 @@ const How = () => {
             margin: "0 auto",
           }}
         >
-          <div
+          <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -70,7 +70,7 @@ const How = () => {
                 </div>
               </Col>
             </Row>
-          </div>
+          </motion.div>
 
           <motion.div
             variants={fadeUp}

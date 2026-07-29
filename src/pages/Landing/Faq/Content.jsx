@@ -42,7 +42,7 @@ const Content = () => {
                   style={{
                     // color: "#6c757d",
                     lineHeight: 1,
-                    fontSize: "44px",
+                    fontSize: window.innerWidth >= 562 ? "40px" : "36px",
                   }}
                   className="mb-3 fw-bold"
                 >

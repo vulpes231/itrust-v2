@@ -89,20 +89,25 @@ const ArticleBody = ({ activeTab, setActiveTab }) => {
               planning from the get-go.{" "}
             </p>
             <p style={{ fontWeight: "bold" }}>EXPLORE TRENDING TOPICS</p>
-            <div className="row g-3 justify-content-center">
+            <div className="row g-2 g-lg-3 justify-content-center">
               {tabs.map((tb) => {
                 return (
                   <span
                     onClick={() => setActiveTab(tb.id)}
                     key={tb.id}
-                    className="col-12 col-lg-2"
+                    className="col-4 col-lg-2"
                   >
                     <span
                       //   style={{ width: window.innerWidth > 562 ? "180px" : "" }}
                       className={`d-flex align-items-center justify-content-center gap-1 shadow-lg px-2 py-3 ${activeTab === tb.id ? "rounded-pill border border-secondary" : ""}`}
                     >
                       <span className="fs-18">{tb.icon}</span>
-                      <span style={{ fontWeight: "bolder" }}>{tb.label}</span>
+                      <span
+                        className="fs-14 fs-lg-16"
+                        style={{ fontWeight: 600 }}
+                      >
+                        {tb.label}
+                      </span>
                     </span>
                   </span>
                 );

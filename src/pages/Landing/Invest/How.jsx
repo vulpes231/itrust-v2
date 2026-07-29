@@ -17,25 +17,28 @@ const How = () => {
           }}
         >
           <div className="bg-white">
-            <div className="d-flex align-items-center justify-content-center flex-column mb-5">
+            <div className="d-flex align-items-center justify-content-center flex-column mb-5 ">
               <h3
                 style={{
-                  fontWeight: "bolder",
-                  fontSize: "30px",
+                  fontWeight: 800,
+                  fontSize: "36px",
                   maxWidth: window.innerWidth > 562 ? "560px" : "100%",
                 }}
-                className="text-center"
+                className="text-center "
               >
                 The building blocks of your financial journey
               </h3>
-              <p style={{ fontSize: "25px" }} className="text-dark ">
-                What you need to know about investing from thget-go.
+              <p
+                style={{ fontSize: "25px" }}
+                className="text-dark text-center text-lg-left"
+              >
+                What you need to know about investing from the get-go.
               </p>
             </div>
 
             <div className="row">
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "44px", fontWeight: "bolder" }}>
+                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
                   When should I start investing?
                 </h3>
               </div>

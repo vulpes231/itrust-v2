@@ -15,7 +15,7 @@ const Automated = () => {
             margin: "0 auto",
           }}
         >
-          <div className="d-flex flex-column align-items-center justify-content-center bg-white">
+          <div className="d-flex flex-column align-items-center justify-content-center ">
             <h2
               className="fw-bolder mb-3 mt-4 lg-mt-0 text-center"
               style={{

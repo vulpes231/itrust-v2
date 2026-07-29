@@ -50,27 +50,27 @@ const Footer = () => {
                     <div className="text-muted mt-3">
                       <ul className="list-unstyled ff-secondary d-flex flex-column gap-3 fs-15">
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/about-us">
                             About Us
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/faq">
                             F.A.Q
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/articles">
                             Our Blog
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/terms">
                             Term of Use
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/privacy-policy">
                             Privacy Policy
                           </Link>
                         </li>
@@ -82,27 +82,27 @@ const Footer = () => {
                     <div className="text-muted mt-3">
                       <ul className="list-unstyled ff-secondary d-flex flex-column gap-3 fs-15">
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/login">
                             Login
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/how-to-invest">
                             How to Invest
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/automated">
                             Automated Investing
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="">
+                          <Link className="text-muted" to="/stocks">
                             Stocks
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="#">
+                          <Link className="text-muted" to="/crypto">
                             Crypto Investing
                           </Link>
                         </li>

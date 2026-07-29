@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Crypto = () => {
   return (
     <React.Fragment>
-      <section className="section" id="contact">
+      <section className="section bg-white" id="contact">
         <Container
           fluid
           className="px-lg-4 py-5"

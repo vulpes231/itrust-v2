@@ -37,55 +37,57 @@ const Bill = () => {
                 }}
               />
             </div>
-            <motion.div
-              className="col-12 col-lg-6"
-              variants={slideRight}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: false,
-                amount: 0.3,
-              }}
-            >
-              <div className="ps-lg-5">
-                <div className="d-flex gap-1 pb-4 mb-4">
-                  <div>
-                    <h3
-                      className="fw-bold mb-3"
-                      style={{
-                        color: "#202020",
-                        fontSize: "2rem",
-                        lineHeight: "1",
-                      }}
-                    >
-                      Optimize your cash today.
-                    </h3>
-                    <span
-                      style={{
-                        fontStyle: "italic",
-                        lineHeight: "1",
-                        fontSize: "35px",
-                      }}
-                    >
-                      Start saving for tomorrow.
-                    </span>
+            <div className="overflow-hidden">
+              <motion.div
+                className="col-12 col-lg-6"
+                variants={slideRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{
+                  once: false,
+                  amount: 0.3,
+                }}
+              >
+                <div className="ps-lg-5">
+                  <div className="d-flex gap-1 pb-4 mb-4">
+                    <div>
+                      <h3
+                        className="fw-bold mb-3"
+                        style={{
+                          color: "#202020",
+                          fontSize: "2rem",
+                          lineHeight: "1",
+                        }}
+                      >
+                        Optimize your cash today.
+                      </h3>
+                      <span
+                        style={{
+                          fontStyle: "italic",
+                          lineHeight: "1",
+                          fontSize: "35px",
+                        }}
+                      >
+                        Start saving for tomorrow.
+                      </span>
 
-                    <p
-                      className="mb-0 mt-3 fs-16"
-                      style={{
-                        color: "#6c757d",
-                        lineHeight: 1.8,
-                        // fontSize: "1.1rem",
-                      }}
-                    >
-                      Set money aside for what matters to you. Create multiple
-                      savings goals and use our automated tools to help you
-                      achieve them.
-                    </p>
+                      <p
+                        className="mb-0 mt-3 fs-16"
+                        style={{
+                          color: "#6c757d",
+                          lineHeight: 1.8,
+                          // fontSize: "1.1rem",
+                        }}
+                      >
+                        Set money aside for what matters to you. Create multiple
+                        savings goals and use our automated tools to help you
+                        achieve them.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </Container>
       </div>

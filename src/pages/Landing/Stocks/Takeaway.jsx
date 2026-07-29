@@ -60,7 +60,7 @@ const Takeaway = () => {
                 average
               </p>
             </div>
-            <div className="col-12 col-lg-6">
+            <div className="col-12 col-lg-6 mt-5 mt-lg-0">
               <h3
                 className="fw-bold mb-3"
                 style={{

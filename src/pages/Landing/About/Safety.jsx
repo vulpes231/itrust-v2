@@ -6,7 +6,29 @@ import { about } from "../../../assets";
 const Safety = () => {
   return (
     <React.Fragment>
-      <div className="bg-secondary">
+      <div
+        className="bg-secondary position-relative"
+        style={{
+          background: "linear-gradient(to bottom, #2f176f 0%, #5126BE 100%)",
+        }}
+      >
+        <img
+          src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+          alt=""
+          style={{ position: "absolute", top: "220px", left: 0 }}
+        />
+        <img
+          src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+          alt=""
+          // className="position-absolute top-0 right-0"
+          style={{ position: "absolute", top: 0, right: 0 }}
+        />
+        <img
+          src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+          alt=""
+          className="d-none d-lg-flex"
+          style={{ position: "absolute", top: "500px", right: "40%" }}
+        />
         <Container
           fluid
           className="px-lg-4 py-5"

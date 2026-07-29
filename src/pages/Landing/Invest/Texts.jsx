@@ -43,7 +43,7 @@ const Texts = () => {
               className="row mb-5"
             >
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "40px", fontWeight: "bolder" }}>
+                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
                   How much do I need to start investing?
                 </h3>
               </div>
@@ -71,7 +71,7 @@ const Texts = () => {
               className="row mb-5"
             >
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "40px", fontWeight: "bolder" }}>
+                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
                   How to invest with Itrust Investment
                 </h3>
               </div>
@@ -97,7 +97,7 @@ const Texts = () => {
               className="row mb-5"
             >
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "40px", fontWeight: "bolder" }}>
+                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
                   How to open an Itrust Investment account
                 </h3>
               </div>
@@ -138,7 +138,7 @@ const Texts = () => {
               className="row mb-5"
             >
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "40px", fontWeight: "bolder" }}>
+                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
                   How to open an Itrust Investment account
                 </h3>
               </div>

@@ -39,46 +39,48 @@ const Create = () => {
                 />
               </div>
             </div>
-            <motion.div
-              className="col-12 col-lg-6"
-              variants={slideRight}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: false,
-                amount: 0.3,
-              }}
-            >
-              <div className="ps-lg-5">
-                <div className="d-flex gap-1 pb-4 mb-4">
-                  <div>
-                    <h3
-                      className="fw-bold mb-3"
-                      style={{
-                        color: "#202020",
-                        fontSize: "44px",
-                      }}
-                    >
-                      Create portfolio
-                      <br className="d-none d-lg-block" /> today.
-                    </h3>
+            <div className="overflow-hidden">
+              <motion.div
+                className="col-12 col-lg-6"
+                variants={slideRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{
+                  once: false,
+                  amount: 0.3,
+                }}
+              >
+                <div className="ps-lg-5">
+                  <div className="d-flex gap-1 pb-4 mb-4 mt-4 mt-lg-0">
+                    <div>
+                      <h3
+                        className="fw-bold mb-3"
+                        style={{
+                          color: "#202020",
+                          fontSize: "44px",
+                        }}
+                      >
+                        Create portfolio
+                        <br className="d-none d-lg-block" /> today.
+                      </h3>
 
-                    <p
-                      className="mb-0 fs-16"
-                      style={{
-                        color: "#6c757d",
-                        lineHeight: 1.8,
-                        // fontSize: "1.1rem",
-                      }}
-                    >
-                      Buy and sell popular digital currencies, keep track of
-                      them in the one place. Has a variety of features that make
-                      it the best place to start trading
-                    </p>
+                      <p
+                        className="mb-0 fs-16"
+                        style={{
+                          color: "#6c757d",
+                          lineHeight: 1.8,
+                          // fontSize: "1.1rem",
+                        }}
+                      >
+                        Buy and sell popular digital currencies, keep track of
+                        them in the one place. Has a variety of features that
+                        make it the best place to start trading
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
           {/* <Row></Row> */}
         </Container>

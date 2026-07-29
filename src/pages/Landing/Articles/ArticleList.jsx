@@ -49,7 +49,7 @@ const ArticleList = ({ activeTab }) => {
                     <img
                       src={item.img}
                       alt=""
-                      className="img-fluid"
+                      className="img-fluid rounded-5"
                       style={{
                         height: "220px",
                         width: "100%",

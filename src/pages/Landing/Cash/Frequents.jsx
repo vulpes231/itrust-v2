@@ -53,7 +53,13 @@ const Frequents = () => {
   ];
   return (
     <React.Fragment>
-      <section className="section bg-secondary-subtle mt-5 " id="plans">
+      <section
+        className="section bg-secondary-subtle mt-5 "
+        style={{
+          background: "linear-gradient(to bottom, #2f176f 0%, #5126BE 100%)",
+        }}
+        id="plans"
+      >
         <Container
           fluid
           className="px-lg-4"
@@ -62,6 +68,17 @@ const Frequents = () => {
             margin: "0 auto",
           }}
         >
+          <img
+            src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+            alt=""
+            style={{ position: "absolute", top: "220px", left: 0 }}
+          />
+          <img
+            src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+            alt=""
+            // className="position-absolute top-0 right-0"
+            style={{ position: "absolute", top: 0, right: 0 }}
+          />
           <div className="row ">
             <div
               variants={fadeUp}
@@ -75,7 +92,7 @@ const Frequents = () => {
             >
               <div className="mb-5">
                 <h3
-                  className="fw-bolder mb-3 mt-4 lg-mt-0"
+                  className="fw-bolder mb-3 mt-4 lg-mt-0 text-white"
                   style={{
                     color: "#202020",
                     fontSize: "44px",
@@ -84,7 +101,7 @@ const Frequents = () => {
                   Don’t save your questions.
                 </h3>
                 <span
-                  className="fw-light"
+                  className="fw-light text-white"
                   style={{
                     color: "#202020",
                     fontSize: "44px",
