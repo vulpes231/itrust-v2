@@ -65,7 +65,10 @@ const Footer = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link className="text-muted" to="/terms">
+                          <Link
+                            className="text-muted"
+                            to="/terms-and-conditions"
+                          >
                             Term of Use
                           </Link>
                         </li>

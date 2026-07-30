@@ -35,6 +35,8 @@ import GeneralQuestions from "../pages/Landing/Faq";
 import Invest from "../pages/Landing/Invest";
 import About from "../pages/Landing/About";
 import Articles from "../pages/Landing/Articles";
+import Terms from "../pages/Landing/Terms";
+import Privacy from "../pages/Landing/Privacy";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardCrypto /> },
@@ -80,6 +82,8 @@ const publicRoutes = [
   { path: "/how-to-invest", component: <Invest /> },
   { path: "/about-us", component: <About /> },
   { path: "/articles", component: <Articles /> },
+  { path: "/terms-and-conditions", component: <Terms /> },
+  { path: "/privacy-policy", component: <Privacy /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };
