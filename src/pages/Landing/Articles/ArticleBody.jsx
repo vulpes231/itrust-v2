@@ -16,47 +16,109 @@ const ArticleBody = ({ activeTab, setActiveTab }) => {
     {
       id: "all",
       label: "All Articles",
-      icon: <BiWorld className="text-danger" />,
+      icon: (
+        <BiWorld
+          className="text-danger"
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
     {
       id: "business",
       label: "Business",
-      icon: <FaWallet className="text-secondary" />,
+      icon: (
+        <FaWallet
+          className="text-secondary"
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
     {
       id: "investing",
       label: "Investing",
-      icon: <HiMiniPresentationChartBar />,
+      icon: (
+        <HiMiniPresentationChartBar
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
     {
       id: "savings",
       label: "Savings",
-      icon: <FaMoneyBill1 className="text-success" />,
+      icon: (
+        <FaMoneyBill1
+          className="text-success"
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
     {
       id: "retirement",
       label: "Retirement",
-      icon: <BiSolidPlaneAlt className="text-danger" />,
+      icon: (
+        <BiSolidPlaneAlt
+          className="text-danger"
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
     {
       id: "management",
       label: "Management",
-      icon: <HiChartBar className="text-danger" />,
+      icon: (
+        <HiChartBar
+          className="text-danger"
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
     {
       id: "trend",
       label: "Trends",
-      icon: <PiFireSimpleFill className="text-danger" />,
+      icon: (
+        <PiFireSimpleFill
+          className="text-danger"
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
     {
       id: "technology",
       label: "Technology",
-      icon: <RiComputerFill className="text-info" />,
+      icon: (
+        <RiComputerFill
+          className="text-info"
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
     {
       id: "news",
       label: "News",
-      icon: <FaSheetPlastic className="text-info" />,
+      icon: (
+        <FaSheetPlastic
+          className="text-info"
+          style={{
+            fontSize: window.innerWidth > 562 ? "24px" : "18px",
+          }}
+        />
+      ),
     },
   ];
   return (
@@ -89,29 +151,27 @@ const ArticleBody = ({ activeTab, setActiveTab }) => {
               planning from the get-go.{" "}
             </p>
             <p style={{ fontWeight: "bold" }}>EXPLORE TRENDING TOPICS</p>
-            <div className="row g-2 g-lg-3 justify-content-center">
-              {tabs.map((tb) => {
-                return (
-                  <span
-                    onClick={() => setActiveTab(tb.id)}
-                    key={tb.id}
-                    className="col-4 col-lg-2"
-                  >
-                    <span
-                      //   style={{ width: window.innerWidth > 562 ? "180px" : "" }}
-                      className={`d-flex align-items-center justify-content-center gap-1 shadow-lg px-2 py-3 ${activeTab === tb.id ? "rounded-pill border border-secondary" : ""}`}
-                    >
-                      <span className="fs-18">{tb.icon}</span>
-                      <span
-                        className="fs-14 fs-lg-16"
-                        style={{ fontWeight: 600 }}
-                      >
-                        {tb.label}
-                      </span>
-                    </span>
-                  </span>
-                );
-              })}
+            <div className="d-flex flex-wrap justify-content-center gap-3">
+              {tabs.map((tb) => (
+                <div
+                  key={tb.id}
+                  onClick={() => setActiveTab(tb.id)}
+                  className={`d-flex align-items-center gap-1 px-3 py-2 shadow-lg ${
+                    activeTab === tb.id
+                      ? "rounded-pill border border-secondary"
+                      : "rounded-3"
+                  }`}
+                  style={{
+                    minWidth: tb.id === 1 ? "flex-grow-1" : "",
+                    cursor: "pointer",
+                  }}
+                >
+                  <span>{tb.icon}</span>
+                  <p style={{ fontWeight: 900 }} className="mb-0">
+                    {tb.label}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </Container>

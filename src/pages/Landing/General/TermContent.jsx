@@ -3,10 +3,10 @@ import React from "react";
 const TermContent = () => {
   return (
     <div>
-      <h4 className="fs-18" style={{ fontWeight: 800 }}>
+      <h4 className="fs-15" style={{ fontWeight: 800 }}>
         Content
       </h4>
-      <p className="text-dark fs-18">
+      <p className="text-dark fs-15">
         {" "}
         Content posted on the Service is published as of its stated date or, if
         no date is stated, the date of first posting. Neither Itrust nor the

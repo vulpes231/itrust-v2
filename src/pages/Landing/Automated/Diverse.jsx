@@ -18,29 +18,31 @@ const Diverse = () => {
             margin: "0 auto",
           }}
         >
-          <div className="row mt-5 align-items-center gx-3 gx-lg-5">
-            <div className="col-12 col-lg-6 bg-warning-subtle rounded-4 pe-lg-5 mb-4 mb-lg-0">
-              <div className="d-flex align-items-center justify-content-center">
-                <motion.img
-                  src={automated}
-                  alt="hero-img"
-                  className="img-fluid"
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{
-                    once: false,
-                    amount: 0.3,
-                  }}
-                  style={{
-                    maxWidth: window.innerWidth > 562 ? "450px" : "100%",
-                    height: "auto",
-                  }}
-                />
+          <div className="row mt-5 align-items-center g-4 g-lg-5 p-2 p-lg-0">
+            <div className="col-12 col-lg-6 order-2 order-lg-1 pe-lg-5 ">
+              <div className="px-4">
+                <figure className="d-flex align-items-center justify-content-center bg-warning-subtle rounded-4">
+                  <motion.img
+                    src={automated}
+                    alt="hero-img"
+                    className="img-fluid"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{
+                      once: false,
+                      amount: 0.3,
+                    }}
+                    style={{
+                      maxWidth: window.innerWidth > 562 ? "450px" : "100%",
+                      height: "350px",
+                    }}
+                  />
+                </figure>
               </div>
             </div>
             <motion.div
-              className="col-12 col-lg-6"
+              className="col-12 col-lg-6 order-1 order-lg-2"
               variants={slideRight}
               initial="hidden"
               whileInView="visible"
@@ -50,17 +52,18 @@ const Diverse = () => {
               }}
             >
               <div className="ps-lg-5">
-                <div className="d-flex gap-1 pb-4 mb-4">
+                <div className="d-flex gap-1">
                   <div>
                     <h3
                       className="fw-bold mb-3"
                       style={{
                         color: "#202020",
-                        fontSize: "44px",
+                        fontSize: window.innerWidth >= 562 ? "44px" : "32px",
+                        maxWidth: window.innerWidth >= 562 ? "520px" : "70%",
+                        fontWeight: 900,
                       }}
                     >
-                      Automated, diversified{" "}
-                      <br className="d-none d-lg-block" /> index investing.
+                      Automated, diversifiedindex investing.
                     </h3>
 
                     <p

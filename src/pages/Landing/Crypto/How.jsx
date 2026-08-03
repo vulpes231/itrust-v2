@@ -51,18 +51,20 @@ const How = () => {
           >
             <Row className="justify-content-center">
               <Col lg={8}>
-                <div className="text-center mb-5">
+                <div className="d-flex flex-column justify-content-center align-items-center mb-5">
                   <h3
-                    className="mb-3 fw-bold "
+                    className="mb-3 fw-bold text-center"
                     style={{
-                      fontSize: "44px",
-                      maxWidth: window.innerWidth > 563 ? "560px" : "100%",
-                      margin: "0 auto",
+                      color: "#202020",
+                      fontSize: window.innerWidth >= 562 ? "44px" : "30px",
+                      maxWidth: window.innerWidth >= 992 ? "520px" : "70%",
+                      fontWeight: 900,
+                      // margin: "0 auto",
                     }}
                   >
                     Why Invest in crypto with us?
                   </h3>
-                  <p className="text-muted mb-4">
+                  <p className="text-muted text-center mb-4">
                     Get easy exposure to the two largest and widely traded
                     cryptocurrencies, Bitcoin and Ethereum, with the convenience
                     and familiarity of exchange-traded funds (ETFs).

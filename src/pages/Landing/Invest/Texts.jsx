@@ -40,10 +40,17 @@ const Texts = () => {
                 once: false,
                 amount: 0.3,
               }}
-              className="row mb-5"
+              className="row mb-5 p-2 p-lg-0"
             >
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
+                <h3
+                  style={{
+                    color: "#202020",
+                    fontSize: window.innerWidth >= 562 ? "36px" : "22px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                    fontWeight: 900,
+                  }}
+                >
                   How much do I need to start investing?
                 </h3>
               </div>
@@ -68,10 +75,17 @@ const Texts = () => {
                 once: false,
                 amount: 0.3,
               }}
-              className="row mb-5"
+              className="row mb-5 p-2 p-lg-0"
             >
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
+                <h3
+                  style={{
+                    color: "#202020",
+                    fontSize: window.innerWidth >= 562 ? "36px" : "22px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                    fontWeight: 900,
+                  }}
+                >
                   How to invest with Itrust Investment
                 </h3>
               </div>
@@ -94,10 +108,17 @@ const Texts = () => {
                 once: false,
                 amount: 0.3,
               }}
-              className="row mb-5"
+              className="row mb-5 p-2 p-lg-0"
             >
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
+                <h3
+                  style={{
+                    color: "#202020",
+                    fontSize: window.innerWidth >= 562 ? "36px" : "22px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                    fontWeight: 900,
+                  }}
+                >
                   How to open an Itrust Investment account
                 </h3>
               </div>
@@ -135,10 +156,17 @@ const Texts = () => {
                 once: false,
                 amount: 0.3,
               }}
-              className="row mb-5"
+              className="row mb-5 p-2 p-lg-0"
             >
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
+                <h3
+                  style={{
+                    color: "#202020",
+                    fontSize: window.innerWidth >= 562 ? "36px" : "22px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                    fontWeight: 900,
+                  }}
+                >
                   How to open an Itrust Investment account
                 </h3>
               </div>

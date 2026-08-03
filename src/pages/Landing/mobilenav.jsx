@@ -57,6 +57,7 @@ const MobileNav = ({ links, isOpen, logo, handleClose }) => {
             >
               <NavLink
                 to={link.path}
+                // style={{ color: "#202020" }}
                 className="text-decoration-none text-dark fw-bold flex-grow-1"
               >
                 {link.label}
@@ -71,8 +72,9 @@ const MobileNav = ({ links, isOpen, logo, handleClose }) => {
                   <NavLink
                     key={submenu.id}
                     to={submenu.path}
-                    className="text-decoration-none text-secondary"
+                    className="text-decoration-none"
                     onClick={handleClose}
+                    style={{ fontWeight: 900, color: "#333" }}
                   >
                     {submenu.label}
                   </NavLink>

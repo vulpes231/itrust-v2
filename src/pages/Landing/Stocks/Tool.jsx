@@ -107,30 +107,34 @@ const Tool = () => {
             margin: "0 auto",
           }}
         >
-          <div className="d-flex flex-column align-items-center justify-content-center">
+          <div className="d-flex flex-column align-items-center justify-content-center p-2 p-lg-0">
             <h3
               className="fw-bold mb-3"
               style={{
                 color: "#202020",
-                fontSize: "44px",
-                lineHeight: "1",
+                fontSize: window.innerWidth >= 562 ? "52px" : "28px",
+                maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                fontWeight: 900,
+                lineHeight: 1,
               }}
             >
               An excellent tool{" "}
             </h3>
             <span
               style={{
+                fontSize: window.innerWidth >= 562 ? "39px" : "22px",
+                maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                fontWeight: 300,
                 fontStyle: "italic",
-                lineHeight: "1",
-                fontSize: "35px",
+                lineHeight: 1,
               }}
             >
               For finding great stocks
             </span>
             <p
-              className="mb-0 mt-3 fs-16 text-left text-lg-center"
+              className="mb-0 mt-3 fs-16 text-center"
               style={{
-                // color: "#6c757d",
+                fontSize: "18px",
                 lineHeight: 1.8,
                 maxWidth: window.innerWidth > 562 ? "660px" : "100%",
               }}
@@ -142,7 +146,7 @@ const Tool = () => {
               and love.
             </p>
           </div>
-          <div className="row g-4 mt-5 pt-3">
+          <div className="row g-4 mt-5 pt-3 p-2 p-lg-0">
             {cardItems.map((item) => (
               <div key={item.id} className="col-12 col-lg-4 d-flex">
                 <div

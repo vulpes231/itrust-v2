@@ -35,7 +35,10 @@ const AutomatedInvesting = () => {
 
   return (
     <React.Fragment>
-      <div className="" style={{ maxWidth: "100vw", overflow: "hidden" }}>
+      <div
+        className="layout-wrapper landing"
+        style={{ maxWidth: "100vw", overflow: "hidden" }}
+      >
         <Navbar />
         <Automated />
         <Cards />

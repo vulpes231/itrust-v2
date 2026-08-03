@@ -3,10 +3,10 @@ import React from "react";
 const Indemnification = () => {
   return (
     <div>
-      <h4 className="fs-18" style={{ fontWeight: 800 }}>
+      <h4 className="fs-15" style={{ fontWeight: 800 }}>
         Indemnification
       </h4>
-      <p className="text-dark fs-18">
+      <p className="text-dark fs-15">
         You will indemnify and hold harmless Itrust and the Third Party
         Providers, and the officers, directors, agents, partners, employees,
         licensors, distributors, and representatives of Itrust and the Third

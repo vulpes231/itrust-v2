@@ -20,25 +20,38 @@ const How = () => {
             <div className="d-flex align-items-center justify-content-center flex-column mb-5 ">
               <h3
                 style={{
+                  color: "#202020",
+                  fontSize: window.innerWidth >= 562 ? "36px" : "22px",
+                  maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                   fontWeight: 800,
-                  fontSize: "36px",
-                  maxWidth: window.innerWidth > 562 ? "560px" : "100%",
                 }}
                 className="text-center "
               >
                 The building blocks of your financial journey
               </h3>
               <p
-                style={{ fontSize: "25px" }}
+                style={{
+                  fontSize: window.innerWidth >= 562 ? "36px" : "22px",
+                  maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                  fontWeight: 300,
+                  fontStyle: "italic",
+                }}
                 className="text-dark text-center text-lg-left"
               >
                 What you need to know about investing from the get-go.
               </p>
             </div>
 
-            <div className="row">
+            <div className="row p-2 p-lg-0">
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
+                <h3
+                  style={{
+                    color: "#202020",
+                    fontSize: window.innerWidth >= 562 ? "36px" : "22px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                    fontWeight: 800,
+                  }}
+                >
                   When should I start investing?
                 </h3>
               </div>

@@ -12,14 +12,15 @@ const WorkProcess = () => {
       <section className="section">
         <Container
           fluid
-          className="px-lg-4 py-5"
+          // className="px-5 px-lg-4 py-5"
           style={{
             maxWidth: getBodySize(window.innerWidth),
             margin: "0 auto",
+            padding: window.innerWidth >= 562 ? "0px" : "0px 30px",
           }}
         >
           <div
-            className="row rounded-4 p-5"
+            className="row rounded-4 p-3 p-lg-5"
             style={{
               backgroundImage: `url(${joinbg})`,
               backgroundPosition: "center",
@@ -31,9 +32,9 @@ const WorkProcess = () => {
             <div className="col-12 col-lg-6">
               <h2
                 style={{
-                  maxWidth: window.innerWidth >= 560 ? "400px" : "100%",
-                  fontSize: window.innerWidth >= 560 ? "43px" : "30px",
-                  fontWeight: 700, // instead of "bolder"
+                  maxWidth: window.innerWidth >= 562 ? "420px" : "100%",
+                  fontSize: window.innerWidth >= 562 ? "40px" : "24px",
+                  fontWeight: 800,
                   lineHeight: 1.2,
                 }}
                 className="text-white"
@@ -45,7 +46,7 @@ const WorkProcess = () => {
                   width: "155px",
                   height: "46px",
                 }}
-                className="btn bg-white pt-2 fw-bold"
+                className="btn bg-white mt-3 fw-bold"
               >
                 Get Started
               </button>

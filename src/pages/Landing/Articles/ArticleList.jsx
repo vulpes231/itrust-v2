@@ -36,9 +36,9 @@ const ArticleList = ({ activeTab }) => {
             margin: "0 auto",
           }}
         >
-          <div className="row g-4">
+          <div className="row g-5">
             {customArticles.length === 0 && (
-              <div className="text-center fw-bold">
+              <div className="text-center fw-bold text-dark">
                 No articles for the selected category.
               </div>
             )}
@@ -49,7 +49,7 @@ const ArticleList = ({ activeTab }) => {
                     <img
                       src={item.img}
                       alt=""
-                      className="img-fluid rounded-5"
+                      className="img-fluid rounded-4"
                       style={{
                         height: "220px",
                         width: "100%",

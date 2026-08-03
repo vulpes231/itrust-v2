@@ -22,8 +22,8 @@ const Bill = () => {
             margin: "0 auto",
           }}
         >
-          <div className="row mt-5 align-items-center gx-3 gx-lg-5">
-            <div className="col-12 col-lg-6 bg-light p-5 rounded-4 pe-lg-5">
+          <div className="row mt-5 align-items-center g-3 g-lg-5 p-2 p-lg-0">
+            <div className="col-12 col-lg-6 order-2 order-lg-1 bg-light p-5 rounded-4 pe-lg-5">
               <motion.img
                 src={bill}
                 alt="hero-img"
@@ -37,57 +37,57 @@ const Bill = () => {
                 }}
               />
             </div>
-            <div className="overflow-hidden">
-              <motion.div
-                className="col-12 col-lg-6"
-                variants={slideRight}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{
-                  once: false,
-                  amount: 0.3,
-                }}
-              >
-                <div className="ps-lg-5">
-                  <div className="d-flex gap-1 pb-4 mb-4">
-                    <div>
-                      <h3
-                        className="fw-bold mb-3"
-                        style={{
-                          color: "#202020",
-                          fontSize: "2rem",
-                          lineHeight: "1",
-                        }}
-                      >
-                        Optimize your cash today.
-                      </h3>
-                      <span
-                        style={{
-                          fontStyle: "italic",
-                          lineHeight: "1",
-                          fontSize: "35px",
-                        }}
-                      >
-                        Start saving for tomorrow.
-                      </span>
+            <motion.div
+              className="col-12 col-lg-6 order-1 order-lg-2 "
+              variants={slideRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{
+                once: false,
+                amount: 0.3,
+              }}
+            >
+              <div className="ps-lg-5">
+                <div className="d-flex gap-1 pb-4 mb-4">
+                  <div>
+                    <h3
+                      className="fw-bold mb-3"
+                      style={{
+                        color: "#202020",
+                        fontSize: window.innerWidth >= 562 ? "44px" : "30px",
+                        maxWidth: window.innerWidth >= 562 ? "520px" : "80%",
+                        fontWeight: 900,
+                      }}
+                    >
+                      Optimize your cash today.
+                    </h3>
+                    <p
+                      style={{
+                        fontStyle: "italic",
+                        lineHeight: "1",
+                        fontSize: window.innerWidth >= 562 ? "35px" : "26px",
+                        maxWidth: window.innerWidth >= 562 ? "520px" : "70%",
+                      }}
+                    >
+                      Start saving for tomorrow.
+                    </p>
 
-                      <p
-                        className="mb-0 mt-3 fs-16"
-                        style={{
-                          color: "#6c757d",
-                          lineHeight: 1.8,
-                          // fontSize: "1.1rem",
-                        }}
-                      >
-                        Set money aside for what matters to you. Create multiple
-                        savings goals and use our automated tools to help you
-                        achieve them.
-                      </p>
-                    </div>
+                    <p
+                      className="mb-0 mt-3 fs-16"
+                      style={{
+                        color: "#6c757d",
+                        lineHeight: 1.8,
+                        // fontSize: "1.1rem",
+                      }}
+                    >
+                      Set money aside for what matters to you. Create multiple
+                      savings goals and use our automated tools to help you
+                      achieve them.
+                    </p>
                   </div>
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
         </Container>
       </div>

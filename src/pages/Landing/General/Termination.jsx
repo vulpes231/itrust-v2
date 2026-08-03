@@ -3,10 +3,10 @@ import React from "react";
 const Termination = () => {
   return (
     <div>
-      <h4 className="fs-18" style={{ fontWeight: 800 }}>
+      <h4 className="fs-15" style={{ fontWeight: 800 }}>
         Termination; Modification
       </h4>
-      <p className="text-dark fs-18">
+      <p className="text-dark fs-15">
         You agree that, without notice, Itrust may terminate these Terms and
         Conditions, or suspend your access to the Service or the Content, with
         or without cause at any time and effective immediately. These Terms and

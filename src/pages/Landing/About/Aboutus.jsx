@@ -8,7 +8,7 @@ const Aboutus = () => {
       <section className="section">
         <Container
           fluid
-          className="px-lg-4 py-5"
+          className="px-lg-4"
           style={{
             maxWidth: getBodySize(window.innerWidth),
             margin: "0 auto",
@@ -17,16 +17,22 @@ const Aboutus = () => {
           <div className="d-flex flex-column gap-3 align-items-center justify-content-center mt-5">
             <h3
               style={{
-                color: "black",
-                fontSize: "44px",
-                maxWidth: window.innerWidth > 562 ? "450px" : "100%",
+                color: "#202020",
+                maxWidth: window.innerWidth >= 992 ? "520px" : "70%",
+                fontSize: window.innerWidth >= 562 ? "46px" : "28px",
+                fontWeight: 900,
               }}
             >
               About Us{" "}
             </h3>
             <p
-              style={{ maxWidth: window.innerWidth > 562 ? "450px" : "100%" }}
-              className="fs-18 text-center"
+              style={{
+                maxWidth: window.innerWidth > 562 ? "55%" : "100%",
+                fontSize: window.innerWidth >= 562 ? "24px" : "18px",
+                fontWeight: window.innerWidth >= 562 ? 300 : 400,
+                color: "#20202099",
+              }}
+              className="text-center"
             >
               We’re on a mission to democratize finance for all. At Itrust, our
               values are in service of our customers. We strive to uphold our

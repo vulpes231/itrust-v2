@@ -19,11 +19,11 @@ const Takeaway = () => {
               className="pt-4"
               style={{
                 color: "#202020",
-                fontSize: "44px",
+                fontSize: "26px",
                 lineHeight: 1,
                 fontStyle: "italic",
                 paddingTop: "80px",
-                //   maxWidth: window.innerWidth > 562 ? "00px" : "100%",
+                maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
               }}
             >
               Not sold on individual stocks?
@@ -36,9 +36,10 @@ const Takeaway = () => {
                 className="fw-bold mb-3"
                 style={{
                   color: "#202020",
-                  fontSize: "41px",
+                  fontSize: window.innerWidth >= 562 ? "36px" : "26px",
+                  maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                  fontWeight: 900,
                   lineHeight: 1,
-                  maxWidth: window.innerWidth > 562 ? "560px" : "100%",
                 }}
               >
                 Diversify your portfolio with the Automated Investing
@@ -65,9 +66,10 @@ const Takeaway = () => {
                 className="fw-bold mb-3"
                 style={{
                   color: "#202020",
-                  fontSize: "41px",
+                  fontSize: window.innerWidth >= 562 ? "36px" : "26px",
+                  maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                  fontWeight: 900,
                   lineHeight: 1,
-                  maxWidth: window.innerWidth > 562 ? "560px" : "100%",
                 }}
               >
                 Earn 4.50% APY with the Cash Account.

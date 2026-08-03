@@ -38,9 +38,16 @@ const Commission = () => {
               amount: 0.3,
             }}
           >
-            <div className="row">
+            <div className="row p-2 p-lg-0">
               <div className="col-12 col-lg-4">
-                <h3 style={{ fontSize: "34px", fontWeight: 500 }}>
+                <h3
+                  style={{
+                    color: "#202020",
+                    fontSize: window.innerWidth >= 562 ? "36px" : "22px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                    fontWeight: 900,
+                  }}
+                >
                   How do I build an investment strategy?
                 </h3>
               </div>

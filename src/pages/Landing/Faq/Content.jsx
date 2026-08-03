@@ -53,7 +53,7 @@ const Content = () => {
           margin: "0 auto",
         }}
       >
-        <div className="row">
+        <div className="row p-2 p-lg-0">
           <div className="col-12">
             <div className="mb-5">
               <h3
@@ -72,7 +72,7 @@ const Content = () => {
               <div className="d-flex justify-content-end position-relative">
                 <input
                   type="text"
-                  placeholder="Write yor question here..."
+                  placeholder="Write your question here..."
                   className="border-0 shadow py-2 px-4 rounded-2 text-muted fs-16"
                   style={{
                     minWidth: window.innerWidth >= 562 ? "50%" : "100%",

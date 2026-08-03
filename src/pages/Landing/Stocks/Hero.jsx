@@ -15,12 +15,84 @@ const Hero = () => {
             margin: "0 auto",
           }}
         >
-          <div className="d-flex flex-column flex-lg-row align-items center justify-content-center position-relative">
+          <div className="d-flex flex-column flex-lg-row align-items center justify-content-center d-lg-none">
+            <div
+            // style={{
+            //   position: "absolute",
+            //   top: window.innerWidth >= 562 ? "130px" : 0,
+            //   left: window.innerWidth >= 562 ? "200px" : 0,
+            // }}
+            >
+              <div className="text-center d-flex flex-column align-items-center justify-content-center">
+                <p
+                  style={{
+                    lineHeight: 0.5,
+                    fontWeight: 200,
+                    fontStyle: "italic",
+                    fontSize: "12px",
+                  }}
+                >
+                  Find stocks you know and stocks you don't...
+                </p>
+                <h3
+                  style={{
+                    maxWidth: "78%",
+                    fontWeight: 900,
+                    fontSize: "16px",
+                    lineHeight: 1,
+                  }}
+                >
+                  Discover stocks through investing themes & opportunities
+                </h3>
+              </div>
+            </div>
+            <img
+              src={stock}
+              className="img-fluid"
+              alt=""
+              style={{
+                maxWidth: window.innerWidth >= 562 ? "550px" : "100%",
+                height: "auto",
+              }}
+            />
+            <div
+            // style={{
+            //   position: window.innerWidth > 562 ? "absolute" : "initial",
+            //   bottom: 0,
+            //   right: window.innerWidth >= 562 ? "200px" : "",
+            // }}
+            >
+              <div className="d-flex flex-column align-items-center justify-content-center">
+                <p
+                  style={{
+                    lineHeight: 0.5,
+                    fontWeight: 200,
+                    fontStyle: "italic",
+                    fontSize: "12px",
+                  }}
+                >
+                  see our latest perspectives...
+                </p>
+                <h3
+                  style={{
+                    maxWidth: "78%",
+                    fontWeight: 900,
+                    fontSize: "16px",
+                    lineHeight: 1,
+                  }}
+                >
+                  Dive in with our built-in data
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          <div className="d-none d-lg-flex flex-column flex-lg-row align-items center justify-content-center position-relative">
             <div
               style={{
                 position: "absolute",
                 top: window.innerWidth >= 562 ? "130px" : 0,
-                left: window.innerWidth >= 562 ? "200px" : "",
+                left: window.innerWidth >= 562 ? "200px" : 0,
               }}
             >
               <div className="text-center d-flex flex-column align-items-center justify-content-center">

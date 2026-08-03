@@ -24,10 +24,12 @@ const Stock = () => {
         >
           <div className="d-flex flex-column align-items-center justify-content-center">
             <h2
-              className="fw-bolder mb-3 mt-4 lg-mt-0 text-center text-center text-lg-left"
+              className="mb-3 mt-4 lg-mt-0 text-center text-center text-lg-left"
               style={{
                 color: "#202020",
-                fontSize: "44px",
+                fontSize: window.innerWidth >= 562 ? "52px" : "28px",
+                maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                fontWeight: 900,
               }}
             >
               Smart stock Investing
@@ -47,8 +49,8 @@ const Stock = () => {
 
             <Link
               style={{
-                width: window.innerWidth > 562 ? "140px" : "89px",
-                height: window.innerWidth > 562 ? "44px" : "48px",
+                height: window.innerWidth > 562 ? "49px" : "45px",
+                width: window.innerWidth > 562 ? "170px" : "128px",
               }}
               className="btn btn-secondary fw-bold p-1 p-lg-2 d-flex align-items-center justify-content-center mt-5"
             >

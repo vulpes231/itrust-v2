@@ -30,7 +30,12 @@ const Cards = () => {
   ];
   return (
     <React.Fragment>
-      <div className="bg-secondary-subtle p-2 p-lg-5">
+      <div
+        className="bg-secondary-subtle p-2 p-lg-3 position-relative"
+        style={{
+          background: "linear-gradient(to bottom, #2f176f 0%, #5126BE 100%)",
+        }}
+      >
         <Container
           fluid
           className="px-lg-4"
@@ -39,42 +44,49 @@ const Cards = () => {
             margin: "0 auto",
           }}
         >
-          <div className="row mt-5 align-items-center gx-3 gx-lg-5">
-            {cardItems.map((item) => {
-              return (
-                <div key={item.id} className="col-12 col-lg-4 gy-4">
-                  <div
-                    className="d-flex flex-column justify-content-between gap-2 bg-white rounded-4 p-3"
-                    style={{ height: "400px" }}
-                  >
-                    <div>
-                      <img
-                        src={item.img}
-                        alt=""
-                        className="img-fluid"
-                        style={{
-                          width: "100%",
-                        }}
-                      />
-                      <h3 className="font-normal text-secondary fs-18 mt-3">
-                        {item.title}
-                      </h3>
-                      <p className="text-muted">{item.info}</p>
-                    </div>
-                    <Link
-                      style={{
-                        width: window.innerWidth > 562 ? "120px" : "89px",
-                        height: window.innerWidth > 562 ? "44px" : "48px",
-                      }}
-                      className="btn btn-secondary fw-bold p-1 p-lg-2 d-flex align-items-center justify-content-center"
-                      to={item.path}
-                    >
-                      Get Started
-                    </Link>
+          <img
+            src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+            alt=""
+            style={{ position: "absolute", top: "220px", left: 0 }}
+          />
+          <img
+            src="https://itrustinvestment.com/_nuxt/tiktik.0ZPUXRl6.svg"
+            alt=""
+            // className="position-absolute top-0 right-0"
+            style={{ position: "absolute", top: 0, right: 0 }}
+          />
+          <div className="row mt-5 mt-lg-0 align-items-stretch gx-3 gx-lg-5 pb-4">
+            {cardItems.map((item) => (
+              <div key={item.id} className="col-12 col-lg-4 gy-4 d-flex">
+                <div className="d-flex flex-column justify-content-between bg-white rounded-4 p-3 w-100">
+                  <div>
+                    <img
+                      src={item.img}
+                      alt=""
+                      className="img-fluid"
+                      style={{ width: "100%" }}
+                    />
+
+                    <h3 className="font-normal text-secondary fs-18 mt-3">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-muted">{item.info}</p>
                   </div>
+
+                  <Link
+                    style={{
+                      height: window.innerWidth > 562 ? "49px" : "45px",
+                      width: window.innerWidth > 562 ? "170px" : "128px",
+                    }}
+                    className="btn btn-secondary fw-bold p-1 p-lg-2 d-flex align-items-center justify-content-center"
+                    to={item.path}
+                  >
+                    Get Started
+                  </Link>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </Container>
       </div>

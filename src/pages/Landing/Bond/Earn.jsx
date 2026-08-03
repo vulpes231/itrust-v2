@@ -11,7 +11,7 @@ import { fadeUp, slideLeft, slideRight } from "../../../constants/variants";
 const Earn = () => {
   return (
     <React.Fragment>
-      <section className="section bg-light-subtle mt-5 " id="plans">
+      <section className="section bg-light " id="plans">
         <Container
           fluid
           className="px-lg-4"
@@ -21,15 +21,16 @@ const Earn = () => {
           }}
         >
           <div>
-            <div className="row mt-5 align-items-center gx-3 gx-lg-5">
-              <div className="col-12 col-lg-6 pe-lg-5">
-                <div className="mb-5">
+            <div className="row mt-2 align-items-center g-3 g-lg-5">
+              <div className="col-12 col-lg-6 order-2 order-lg-1 pe-lg-5">
+                <div className="">
                   <h3
                     className="fw-bold mb-3"
                     style={{
                       color: "#202020",
-                      fontSize: "44px",
-                      maxWidth: window.innerWidth > 562 ? "450px" : "100%",
+                      fontSize: window.innerWidth >= 562 ? "44px" : "24px",
+                      maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                      fontWeight: 900,
                     }}
                   >
                     Earn more on your extra cash with zero state taxes.
@@ -52,7 +53,7 @@ const Earn = () => {
                   </p>
                 </div>
               </div>
-              <div className="col-12 col-lg-6 pe-lg-5">
+              <div className="col-12 col-lg-6 pe-lg-5 order-1 order-lg-2">
                 <div className="overflow-hidden">
                   <motion.img
                     src={earn}

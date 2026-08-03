@@ -1,7 +1,7 @@
 const imageVariant = {
   hidden: {
     opacity: 0,
-    x: -80,
+    x: "-2%",
   },
   visible: {
     opacity: 1,
@@ -16,7 +16,7 @@ const imageVariant = {
 const textVariant = {
   hidden: {
     opacity: 0,
-    x: 80,
+    x: "2%",
   },
   visible: {
     opacity: 1,
@@ -30,7 +30,7 @@ const textVariant = {
 };
 
 const slideLeft = {
-  hidden: { opacity: 0, x: -80 },
+  hidden: { opacity: 0, x: "-2%" },
   visible: {
     opacity: 1,
     x: 0,
@@ -43,7 +43,7 @@ const slideLeft = {
 };
 
 const slideRight = {
-  hidden: { opacity: 0, x: 80 },
+  hidden: { opacity: 0, x: "2%" },
   visible: {
     opacity: 1,
     x: 0,

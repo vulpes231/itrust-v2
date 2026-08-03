@@ -3,10 +3,10 @@ import React from "react";
 const Communications = () => {
   return (
     <div>
-      <h4 className="fs-18" style={{ fontWeight: 800 }}>
+      <h4 className="fs-15" style={{ fontWeight: 800 }}>
         Communication
       </h4>
-      <p className="text-dark fs-18">
+      <p className="text-dark fs-15">
         By using the Service or the Content, you consent to any form of
         recording and retention of any communication, information and data
         exchanged between you and Itrust or its representatives or agents. All
@@ -19,7 +19,7 @@ const Communications = () => {
         stock or security. Without limitation, you agree not to do any of the
         following:
       </p>
-      <ol className="text-dark fs-18">
+      <ol className="text-dark fs-15">
         <li>
           upload, post, transmit or otherwise make available any Content that is
           unlawful, harmful, threatening, abusive, harassing, tortuous,

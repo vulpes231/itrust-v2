@@ -73,16 +73,28 @@ const Question = () => {
             <div className="col-12 col-lg-4">
               <div className="mb-5">
                 <h3
-                  className="mb-3 fw-bold text-white"
+                  className="fw-bold text-white"
                   style={{
-                    maxWidth: window.innerWidth >= 560 ? "300px" : "100%",
-                    fontSize: window.innerWidth >= 560 ? "43px" : "30px",
-                    fontWeight: 700, // instead of "bolder"
-                    lineHeight: 1.2,
+                    fontSize: window.innerWidth >= 562 ? "44px" : "30px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "250px",
+                    fontWeight: 900,
+                    lineHeight: 1.1,
                   }}
                 >
-                  A good investment starts with asking good questions.
+                  Don't save your questions.
                 </h3>
+                <span
+                  className="text-white"
+                  style={{
+                    fontSize: window.innerWidth >= 562 ? "32px" : "26px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                    fontWeight: 200,
+                    fontStyle: "italic",
+                    lineHeight: 1,
+                  }}
+                >
+                  We've got answers.
+                </span>
               </div>
             </div>
             <div
@@ -95,7 +107,7 @@ const Question = () => {
               }}
               className="col-12 col-lg-8"
             >
-              <div className="d-flex flex-column gap-3">
+              <div className="d-flex flex-column gap-3 px-2 px-lg-1">
                 {faqs.map((que) => {
                   return (
                     <motion.div
@@ -123,7 +135,7 @@ const Question = () => {
                           <span>{que.id}.</span>
                           <span className="fs-16">{que.question}</span>
                         </div>
-                        <span>
+                        <span className="text-secondary">
                           {currentQue === que.id ? <MdClose /> : <MdAdd />}
                         </span>
                       </div>
@@ -135,6 +147,18 @@ const Question = () => {
                     </motion.div>
                   );
                 })}
+                <div
+                  style={{ zIndex: 5000 }}
+                  className="d-flex justify-content-end mt-3 "
+                >
+                  <Link
+                    to={"/faq"}
+                    style={{ textDecoration: "underline" }}
+                    className="text-white fw-bold"
+                  >
+                    Learn more
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

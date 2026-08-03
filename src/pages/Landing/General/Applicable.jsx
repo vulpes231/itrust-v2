@@ -3,10 +3,10 @@ import React from "react";
 const Applicable = () => {
   return (
     <div>
-      <h4 className="fs-18" style={{ fontWeight: 800 }}>
+      <h4 className="fs-15" style={{ fontWeight: 800 }}>
         Applicable policies
       </h4>
-      <p className="text-dark fs-18">
+      <p className="text-dark fs-15">
         In addition to these Terms and Conditions, your access to and use of the
         Content and the Service is subject to Itrust’s then-current policies
         relating to the Content and the Service, including, without limitation,

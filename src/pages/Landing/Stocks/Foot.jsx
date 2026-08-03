@@ -12,28 +12,28 @@ const Foot = () => {
       <section className="section">
         <Container
           fluid
-          className="px-lg-4 py-5"
+          className="p-4"
           style={{
             maxWidth: getSize(window.innerWidth),
             margin: "0 auto",
           }}
         >
           <div
-            className=" bg-secondary-subtle rounded-4 p-5 text-white"
+            className="bg-secondary-subtle rounded-4 p-5 text-white"
             style={{
               backgroundImage: `url(${joinbg})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
-              // display: "inline-block",
-              // padding: "10px 16px",
             }}
           >
-            <div className="d-flex flex-column align-items-center justify-content-center">
+            <div className="d-flex flex-column align-items-center justify-content-center gap-3">
               <h2
                 style={{
-                  fontSize: window.innerWidth >= 560 ? "43px" : "30px",
-                  fontWeight: "bolder",
-                  lineHeight: "1",
+                  color: "#202020",
+                  fontSize: window.innerWidth >= 562 ? "36px" : "26px",
+                  maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                  fontWeight: 900,
+                  lineHeight: 1,
                 }}
                 className="text-white"
               >
@@ -49,8 +49,9 @@ const Foot = () => {
                 style={{
                   width: "155px",
                   height: "46px",
+                  fontWeight: 700,
                 }}
-                className="btn btn-secondary pt-2"
+                className="btn btn-light pt-2"
               >
                 Get Started
               </button>

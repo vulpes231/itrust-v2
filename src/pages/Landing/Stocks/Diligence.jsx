@@ -22,60 +22,59 @@ const Diligence = () => {
             margin: "0 auto",
           }}
         >
-          <div className="row mt-5 align-items-center gx-3 gx-lg-5">
-            <div className="overflow-hidden">
-              <motion.div
-                className="col-12 col-lg-6"
-                variants={slideLeft}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{
-                  once: false,
-                  amount: 0.3,
-                }}
-              >
-                <div className="ps-lg-5">
-                  <div className="d-flex gap-1 pb-4 mb-4">
-                    <div>
-                      <h3
-                        className="fw-bold mb-3"
-                        style={{
-                          color: "#202020",
-                          fontSize: "44px",
-                          lineHeight: 1,
-                        }}
-                      >
-                        Due Diligence
-                      </h3>
-                      <span
-                        className="fw-light"
-                        style={{
-                          color: "#202020",
-                          fontSize: "44px",
-                          lineHeight: 1,
-                          fontStyle: "italic",
-                        }}
-                      >
-                        Done for You
-                      </span>
+          <div className="row mt-5 align-items-center g-4 g-lg-5 p-2 p-lg-0">
+            <motion.div
+              className="col-12 col-lg-6 order-2 order-lg-1"
+              variants={slideLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{
+                once: false,
+                amount: 0.3,
+              }}
+            >
+              <div className="ps-lg-5">
+                <div className="d-flex gap-1">
+                  <div>
+                    <h3
+                      style={{
+                        color: "#202020",
+                        fontSize: window.innerWidth >= 562 ? "48px" : "28px",
+                        maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                        fontWeight: 900,
+                        lineHeight: 1,
+                      }}
+                    >
+                      Due Diligence
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: window.innerWidth >= 562 ? "32px" : "22px",
+                        maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                        fontWeight: 300,
+                        fontStyle: "italic",
+                        lineHeight: 1,
+                      }}
+                    >
+                      Done for You
+                    </p>
 
-                      <p
-                        className="mb-0 mt-3 fs-16"
-                        style={{
-                          color: "#6c757d",
-                          lineHeight: 1.8,
-                          maxWidth: window.innerWidth > 562 ? "370px" : "100%",
-                        }}
-                      >
-                        1,500+ stocks selected by our research team Learn more
-                        about each stock in a collection Spend less time
-                        micromanaging your investments
-                      </p>
-                    </div>
+                    <p
+                      className="mb-0 mt-3 fs-16"
+                      style={{
+                        color: "#6c757d",
+                        lineHeight: 1.8,
+                        maxWidth: window.innerWidth > 562 ? "370px" : "100%",
+                      }}
+                    >
+                      1,500+ stocks selected by our research team Learn more
+                      about each stock in a collection Spend less time
+                      micromanaging your investments
+                    </p>
                   </div>
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -84,19 +83,24 @@ const Diligence = () => {
                 once: false,
                 amount: 0.3,
               }}
-              style={{ background: "brown" }}
-              className="col-12 col-lg-6 pe-lg-5 rounded-4"
+              className="col-12 col-lg-6 order-1 order-lg-2 pe-lg-5 "
             >
-              <div className="d-flex align-items-center justify-content-center">
-                <img
-                  src={dil}
-                  alt="hero-img"
-                  className="img-fluid"
-                  style={{
-                    maxWidth: window.innerWidth > 562 ? "370px" : "100%",
-                    height: "auto",
-                  }}
-                />
+              <div className="px-3">
+                <div
+                  style={{ background: "brown" }}
+                  className="d-flex align-items-center justify-content-center rounded-4"
+                >
+                  <img
+                    src={dil}
+                    alt="hero-img"
+                    className="img-fluid"
+                    style={{
+                      maxWidth: window.innerWidth > 562 ? "400px" : "100%",
+                      height: "350px",
+                      backgroundSize: "fit",
+                    }}
+                  />
+                </div>
               </div>
             </motion.div>
           </div>

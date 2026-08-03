@@ -15,7 +15,14 @@ const HowTitle = () => {
           }}
         >
           <div className="d-flex justify-content-center align-items-center">
-            <h3 style={{ fontWeight: "bolder", fontSize: "40px" }}>
+            <h3
+              style={{
+                color: "#202020",
+                fontSize: window.innerWidth >= 562 ? "44px" : "30px",
+                maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                fontWeight: 900,
+              }}
+            >
               How to Invest
             </h3>
           </div>

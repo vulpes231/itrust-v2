@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 const Crypto = () => {
   return (
     <React.Fragment>
-      <section className="section bg-white" id="contact">
+      <section className="section" id="contact">
         <Container
           fluid
-          className="px-lg-4 py-5"
+          className="px-lg-4 pt-4"
           style={{
             maxWidth: getBodySize(window.innerWidth),
             margin: "0 auto",
@@ -17,10 +17,12 @@ const Crypto = () => {
         >
           <div className="d-flex flex-column align-items-center justify-content-center">
             <h2
-              className="fw-bolder mb-3 mt-4 lg-mt-0"
+              className="mb-3 mt-4 lg-mt-0"
               style={{
                 color: "#202020",
-                fontSize: "44px",
+                fontSize: window.innerWidth >= 562 ? "52px" : "28px",
+                maxWidth: window.innerWidth >= 992 ? "520px" : "100%",
+                fontWeight: 900,
               }}
             >
               Crypto Investing
@@ -34,13 +36,13 @@ const Crypto = () => {
               }}
             >
               Buy and sell Bitcoin, Ethereum, Dogecoin, and other
-              cryptocurrencies 24/7 and commission-free with Itrust Crypto.(sub)
+              cryptocurrencies 24/7 and commission-free with Itrust Crypto.
             </p>
 
             <Link
               style={{
-                width: window.innerWidth > 562 ? "140px" : "89px",
-                height: window.innerWidth > 562 ? "44px" : "48px",
+                height: window.innerWidth > 562 ? "49px" : "45px",
+                width: window.innerWidth > 562 ? "170px" : "128px",
               }}
               className="btn btn-secondary fw-bold p-1 p-lg-2 d-flex align-items-center justify-content-center mt-5"
             >

@@ -47,7 +47,7 @@ const CashFeatures = () => {
   ];
   return (
     <React.Fragment>
-      <div className="p-4 p-lg-5">
+      <div className="">
         <Container
           fluid
           className="px-lg-4"
@@ -60,7 +60,7 @@ const CashFeatures = () => {
             <h4 className="text-center text-uppercase fw-lighter fs-16">
               Cash features
             </h4>
-            <div className="row mt-5 align-items-center gx-3 gx-lg-5 mb-5">
+            <div className="row mt-5 align-items-center g-3 g-lg-5 mb-5 p-2 p-lg-0">
               {cashFeats.map((item) => {
                 return (
                   <div key={item.id} className="col-12 col-lg-4">
@@ -95,7 +95,7 @@ const CashFeatures = () => {
             <h4 className="text-center text-uppercase fw-lighter fs-16 mt-4">
               savings features
             </h4>
-            <div className="row mt-5 align-items-center gx-3 gx-lg-5">
+            <div className="row mt-5 align-items-center g-3 g-lg-5 p-2 p-lg-0">
               {savingsFeats.map((item) => {
                 return (
                   <div key={item.id} className="col-12 col-lg-4">
@@ -129,18 +129,21 @@ const CashFeatures = () => {
           {/* foooter */}
           <div className="mt-5">
             <div className="d-flex align-items-center flex-column justify-content-center">
-              <span
+              <p
                 style={{
+                  color: "#202020",
+                  fontSize: window.innerWidth >= 562 ? "35px" : "26px",
+                  maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                  fontWeight: 300,
                   fontStyle: "italic",
-                  lineHeight: "1",
-                  fontSize: "35px",
                 }}
+                className="text-center"
               >
                 Ready to get your money earning?
-              </span>
+              </p>
               <Link
                 style={{
-                  width: window.innerWidth > 562 ? "180px" : "89px",
+                  width: window.innerWidth > 562 ? "180px" : "120px",
                   height: window.innerWidth > 562 ? "50px" : "44px",
                 }}
                 className="btn btn-secondary fw-bold p-1 p-lg-2 d-flex align-items-center justify-content-center mt-4"
@@ -155,17 +158,21 @@ const CashFeatures = () => {
                 className="fw-bold mb-3 mt-4"
                 style={{
                   color: "#202020",
-                  fontSize: "44px",
-                  lineHeight: "1",
+                  fontSize: window.innerWidth >= 562 ? "44px" : "30px",
+                  maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                  fontWeight: 900,
                 }}
               >
                 Don’t just grow your savings.
               </h3>
               <span
                 style={{
+                  color: "#202020",
+                  fontSize: window.innerWidth >= 562 ? "35px" : "26px",
+                  maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                  fontWeight: 300,
+                  lineHeight: 1,
                   fontStyle: "italic",
-                  lineHeight: "1",
-                  fontSize: "38px",
                 }}
               >
                 Grow your spendings too.

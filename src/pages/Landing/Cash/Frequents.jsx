@@ -80,22 +80,15 @@ const Frequents = () => {
             style={{ position: "absolute", top: 0, right: 0 }}
           />
           <div className="row ">
-            <div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: false,
-                amount: 0.3,
-              }}
-              className="col-12 col-lg-4"
-            >
+            <div className="col-12 col-lg-4">
               <div className="mb-5">
                 <h3
-                  className="fw-bolder mb-3 mt-4 lg-mt-0 text-white"
+                  className="mt-4 lg-mt-0 text-white"
                   style={{
                     color: "#202020",
-                    fontSize: "44px",
+                    fontSize: window.innerWidth >= 562 ? "44px" : "30px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                    fontWeight: 900,
                   }}
                 >
                   Don’t save your questions.
@@ -103,25 +96,19 @@ const Frequents = () => {
                 <span
                   className="fw-light text-white"
                   style={{
-                    color: "#202020",
-                    fontSize: "44px",
+                    fontSize: window.innerWidth >= 562 ? "35px" : "26px",
+                    maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                    fontWeight: 300,
+                    fontStyle: "italic",
+                    lineHeight: 1,
                   }}
                 >
                   We’ve got answers.
                 </span>
               </div>
             </div>
-            <div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: false,
-                amount: 0.3,
-              }}
-              className="col-12 col-lg-8"
-            >
-              <div className="d-flex flex-column gap-3">
+            <div className="col-12 col-lg-8">
+              <div className="d-flex flex-column gap-3 px-2 px-lg-1">
                 {faqs.map((que) => {
                   return (
                     <motion.div
@@ -161,6 +148,18 @@ const Frequents = () => {
                     </motion.div>
                   );
                 })}
+                <div
+                  style={{ zIndex: 5000 }}
+                  className="d-flex justify-content-end mt-3 "
+                >
+                  <Link
+                    to={"/faq"}
+                    style={{ textDecoration: "underline" }}
+                    className="text-white fw-bold"
+                  >
+                    Learn more
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

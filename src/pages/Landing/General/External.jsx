@@ -3,10 +3,10 @@ import React from "react";
 const External = () => {
   return (
     <div>
-      <h4 className="fs-18" style={{ fontWeight: 800 }}>
+      <h4 className="fs-15" style={{ fontWeight: 800 }}>
         External Links
       </h4>
-      <p className="text-dark fs-18">
+      <p className="text-dark fs-15">
         Itrust and the Third Party Providers do not endorse and are not liable
         for any content, advertising, products, or other materials on or
         available through such sites or resources. You further acknowledge and

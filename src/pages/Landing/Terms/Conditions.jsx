@@ -22,7 +22,7 @@ const Conditions = () => {
             margin: "0 auto",
           }}
         >
-          <div>
+          <div className="p-3 p-lg-0">
             <h3
               style={{
                 fontWeight: 900,
@@ -33,7 +33,7 @@ const Conditions = () => {
               {" "}
               Terms &amp; Conditions
             </h3>
-            <p className="text-dark fs-18">
+            <p className="text-dark fs-15">
               Itrust Investment LLC (“Itrust Investment ”), a wholly-owned
               subsidiary of Itrust Asset Management a member of the Financial
               Industry Regulatory Authority (FINRA). With FINRA number is
@@ -41,7 +41,7 @@ const Conditions = () => {
               mobile application-based discount stock brokerage services to
               self-directed investors.
             </p>
-            <p className="text-dark fs-18">
+            <p className="text-dark fs-15">
               These Terms and Conditions are in addition to any other agreements
               between you and Itrust Investment (collectively, “Itrust”),
               including any customer or account agreements and any other
@@ -49,10 +49,10 @@ const Conditions = () => {
               services, content, tools, and information provided by Itrust.
             </p>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 General
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 The Itrust website and mobile application (collectively, the
                 “Service”) may include or make available certain content (the
                 “Content”). Content includes, without limitation: (1) account
@@ -81,10 +81,10 @@ const Conditions = () => {
               </p>
             </div>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 Acceptance of Terms and Conditions
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 By using the Service and the Content, you agree to follow and be
                 bound by these Terms and Conditions, including the policies
                 referenced herein. Customers of Itrust are granted additional
@@ -94,10 +94,10 @@ const Conditions = () => {
               </p>
             </div>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 Disclaimer and Limitations of Liability
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 The Content and the Service are provided on an “as is” and “as
                 available” basis. To the fullest extent permitted under
                 applicable law, Itrust and the Third Party Providers expressly
@@ -112,7 +112,7 @@ const Conditions = () => {
                 or approve any Third Party Content. Third Party Content is
                 provided for informational purposes only.{" "}
               </p>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 The Content is not intended to provide financial, legal, tax or
                 investment advice or recommendations. You are solely responsible
                 for determining whether any investment, investment strategy or
@@ -137,10 +137,10 @@ const Conditions = () => {
               </p>
             </div>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 No Recommendations or Investment Advice
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 Itrust Investment provides self-directed investors with discount
                 brokerage services, and does not make recommendations or offer
                 investment advice of any kind. You are solely responsible for

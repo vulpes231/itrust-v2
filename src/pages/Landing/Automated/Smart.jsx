@@ -18,7 +18,7 @@ const Smart = () => {
             margin: "0 auto",
           }}
         >
-          <div className="row mt-5 align-items-center gx-3 gx-lg-5">
+          <div className="row mt-5 align-items-center g-4 g-lg-5 p-2 p-lg-0">
             <motion.div
               className="col-12 col-lg-6"
               variants={slideLeft}
@@ -30,18 +30,18 @@ const Smart = () => {
               }}
             >
               <div className="ps-lg-5">
-                <div className="d-flex gap-1 pb-4 mb-4">
+                <div className="d-flex gap-1">
                   <div>
                     <h3
                       className="fw-bold mb-3"
                       style={{
                         color: "#202020",
-                        fontSize: "44px",
+                        fontSize: window.innerWidth >= 562 ? "44px" : "32px",
+                        // maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
+                        fontWeight: 900,
                       }}
                     >
-                      A smarter way to
-                      <br className="d-none d-lg-block" /> discover and buy
-                      stocks
+                      A smarter way to discover and buy stocks
                     </h3>
 
                     <p
@@ -61,25 +61,27 @@ const Smart = () => {
                 </div>
               </div>
             </motion.div>
-            <div className="col-12 col-lg-6 bg-info-subtle rounded-4 pe-lg-5">
-              <div className="d-flex align-items-center justify-content-center">
-                <motion.img
-                  src={smart}
-                  alt="hero-img"
-                  className="img-fluid"
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{
-                    once: false,
-                    amount: 0.3,
-                  }}
-                  style={{
-                    maxWidth: window.innerWidth > 562 ? "450px" : "100%",
-                    height: "auto",
-                    display: "block",
-                  }}
-                />
+            <div className="col-12 col-lg-6  pe-lg-5">
+              <div className="px-4">
+                <figure className="d-flex align-items-center justify-content-center bg-info-subtle rounded-4">
+                  <motion.img
+                    src={smart}
+                    alt="hero-img"
+                    className="img-fluid"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{
+                      once: false,
+                      amount: 0.3,
+                    }}
+                    style={{
+                      maxWidth: window.innerWidth > 562 ? "450px" : "100%",
+                      height: "350px",
+                      display: "block",
+                    }}
+                  />
+                </figure>
               </div>
             </div>
           </div>

@@ -3,10 +3,10 @@ import React from "react";
 const Law = () => {
   return (
     <div>
-      <h4 className="fs-18" style={{ fontWeight: 800 }}>
+      <h4 className="fs-15" style={{ fontWeight: 800 }}>
         Applicable Law and Venue;
       </h4>
-      <p className="text-dark fs-18">
+      <p className="text-dark fs-15">
         Severability You agree that these Terms and Conditions shall be governed
         by and interpreted in accordance with the laws of the State of
         California, without giving effect to principles of conflicts of law. Any

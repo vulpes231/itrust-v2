@@ -21,7 +21,7 @@ const Policies = () => {
             margin: "0 auto",
           }}
         >
-          <div>
+          <div className="p-3 p-lg-0">
             <h3
               style={{
                 fontWeight: 900,
@@ -31,7 +31,7 @@ const Policies = () => {
             >
               Privacy Policy
             </h3>
-            <p className="text-dark fs-18">
+            <p className="text-dark fs-15">
               At Itrust, we take privacy and security seriously. This Privacy
               Policy outlines how Itrust Financial LLC and its affiliates
               (collectively, the “Company,” “Itrust,” “we,” “our,” or “us”)
@@ -46,10 +46,10 @@ const Policies = () => {
               information we collect about you.
             </p>
             <div>
-              <p className="fs-18 text-dark">
+              <p className="fs-15 text-dark">
                 Click on the links below to jump to specific sections:
               </p>
-              <ul className="fs-18 text-dark">
+              <ul className="fs-15 text-dark">
                 <li>TYPES OF INFORMATION COLLECTED AND HOW WE COLLECT THEM</li>
                 <li>HOW WE USE YOUR INFORMATION</li>
                 <li>DISCLOSURES OF PERSONAL INFORMATION</li>
@@ -64,20 +64,20 @@ const Policies = () => {
               </ul>
             </div>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 TYPES OF INFORMATION COLLECTED AND HOW WE COLLECT THEM.{" "}
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 Personal Information You Provide:
               </p>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 We collect the following personal information you provide when
                 you use our Services, like when you sign up for an account,
                 request a transaction, enrol in a promotion or program, or
                 otherwise engage or communicate with us: Click on the links
                 below to jump to specific sections:
               </p>
-              <ol className="text-dark fs-18">
+              <ol className="text-dark fs-15">
                 <li>
                   Identity Data includes your full name, date of birth, gender,
                   identity numbers, and other data on government-issued
@@ -230,24 +230,24 @@ const Policies = () => {
               </ol>
             </div>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 Personal Information You Provide:
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 We collect the following personal information you provide when
                 you use our Services, like when you sign up for an account,
                 request a transaction, enrol in a promotion or program, or
                 otherwise engage or communicate with us:
               </p>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 Click on the links below to jump to specific sections:{" "}
               </p>
             </div>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 Acceptance of Terms and Conditions
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 By using the Service and the Content, you agree to follow and be
                 bound by these Terms and Conditions, including the policies
                 referenced herein. Customers of Itrust are granted additional
@@ -257,10 +257,10 @@ const Policies = () => {
               </p>
             </div>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 Disclaimer and Limitations of Liability
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 The Content and the Service are provided on an “as is” and “as
                 available” basis. To the fullest extent permitted under
                 applicable law, Itrust and the Third Party Providers expressly
@@ -276,7 +276,7 @@ const Policies = () => {
                 provided for informational purposes only.
               </p>
             </div>
-            <p className="text-dark fs-18">
+            <p className="text-dark fs-15">
               The Content is not intended to provide financial, legal, tax or
               investment advice or recommendations. You are solely responsible
               for determining whether any investment, investment strategy or
@@ -299,10 +299,10 @@ const Policies = () => {
               RELATING TO THE CONTENT OR THE SERVICE.
             </p>
             <div>
-              <h4 className="fs-18" style={{ fontWeight: 800 }}>
+              <h4 className="fs-15" style={{ fontWeight: 800 }}>
                 No Recommendations or Investment Advice{" "}
               </h4>
-              <p className="text-dark fs-18">
+              <p className="text-dark fs-15">
                 Itrust Investment provides self-directed investors with discount
                 brokerage services, and does not make recommendations or offer
                 investment advice of any kind. You are solely responsible for

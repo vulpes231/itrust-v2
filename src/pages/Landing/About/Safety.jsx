@@ -38,7 +38,7 @@ const Safety = () => {
           }}
         >
           <div className="row">
-            <div className="col-12 col-lg-6">
+            <div className="col-12 col-lg-6 order-2 order-lg-1">
               <img
                 src={about}
                 alt=""
@@ -47,8 +47,10 @@ const Safety = () => {
                 style={{ maxWidth: window.innerWidth > 562 ? "390px" : "100%" }}
               />
             </div>
-            <div className="col-12 col-lg-6 text-white">
-              <p className="text-uppercase fw-bold">– Safety First</p>
+            <div className="col-12 col-lg-6 text-white order-1 order-lg-2">
+              <p className="text-uppercase" style={{ fontWeight: 900 }}>
+                – Safety First
+              </p>
               <h3
                 className="fw-bold mb-3"
                 style={{
@@ -82,7 +84,7 @@ const Safety = () => {
             </div>
           </div>
           <div className="row mt-5">
-            <div className="col-12 col-lg-6">
+            <div className="col-12 col-lg-6 order-2 order-lg-1">
               <img
                 src={about}
                 alt=""
@@ -91,8 +93,10 @@ const Safety = () => {
                 style={{ maxWidth: window.innerWidth > 562 ? "390px" : "100%" }}
               />
             </div>
-            <div className="col-12 col-lg-6 text-white">
-              <p className="text-uppercase fw-bold">– Participation is Power</p>
+            <div className="col-12 col-lg-6 text-white order-1 order-lg-2">
+              <p className="text-uppercase" style={{ fontWeight: 900 }}>
+                – Participation is Power
+              </p>
               <h3
                 className="fw-bold mb-3"
                 style={{
