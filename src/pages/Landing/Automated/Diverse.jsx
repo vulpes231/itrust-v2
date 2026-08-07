@@ -63,7 +63,7 @@ const Diverse = () => {
                         fontWeight: 900,
                       }}
                     >
-                      Automated, diversifiedindex investing.
+                      Automated, diversified index investing.
                     </h3>
 
                     <p

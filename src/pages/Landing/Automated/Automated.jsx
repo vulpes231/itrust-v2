@@ -21,7 +21,7 @@ const Automated = () => {
               style={{
                 color: "#202020",
                 fontSize: window.innerWidth >= 562 ? "52px" : "28px",
-                maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+                // maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                 fontWeight: 900,
               }}
             >

@@ -21,9 +21,11 @@ import Profile from "./Profile";
 import Histories from "./Histories";
 import Landing from "./Landing";
 import TwoFa from "./Authentication/TwoFa";
+import ArticleDetail from "./Landing/ArticleDetail";
 
 export {
   Contact,
+  ArticleDetail,
   TwoFa,
   Deposit,
   Withdraw,

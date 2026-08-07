@@ -1,7 +1,11 @@
 import React from "react";
 import { Container } from "reactstrap";
-import { getBodySize, getSize } from "../../../constants";
+import { getBodySize, getSize, liveUrl } from "../../../constants";
 import { card1, card2, gift } from "../../../assets";
+
+import { useQuery } from "@tanstack/react-query";
+import { getArticles } from "../../../services/generic/articles";
+import { useNavigate } from "react-router-dom";
 
 const ArticleList = ({ activeTab }) => {
   const myArticles = [
@@ -21,10 +25,19 @@ const ArticleList = ({ activeTab }) => {
     },
   ];
 
-  const filteredArticles =
-    myArticles.filter((art) => art.category === activeTab) || [];
+  const { data: articles } = useQuery({
+    queryFn: getArticles,
+    queryKey: ["articles"],
+  });
 
-  const customArticles = activeTab === "all" ? myArticles : filteredArticles;
+  // console.log(articles);
+
+  const filteredArticles =
+    articles.filter((art) => art.topic === activeTab) || [];
+
+  const customArticles = activeTab === "all" ? articles : filteredArticles;
+
+  const navigate = useNavigate();
   return (
     <React.Fragment>
       <div>
@@ -42,26 +55,40 @@ const ArticleList = ({ activeTab }) => {
                 No articles for the selected category.
               </div>
             )}
-            {customArticles.map((item) => {
-              return (
-                <div className="col-12 col-lg-4" key={item.id}>
-                  <div className="d-flex flex-column gap-2 w-100 h-100">
-                    <img
-                      src={item.img}
-                      alt=""
-                      className="img-fluid rounded-4"
-                      style={{
-                        height: "220px",
-                        width: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                    <h4 className="text-secondary">{item.title}</h4>
-                    <p className="text-muted">{item.info.slice(0, 300)}...</p>
+            {customArticles &&
+              customArticles.length > 0 &&
+              customArticles.map((item) => {
+                return (
+                  <div
+                    className="col-12 col-lg-4"
+                    key={item._id}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      navigate(`/article/${item._id}`);
+                    }}
+                  >
+                    <div className="d-flex flex-column gap-2 w-100 h-100">
+                      <img
+                        src={`${liveUrl}${item.img}`}
+                        alt="article-img"
+                        className="img-fluid rounded-4 bg-light-subtle"
+                        style={{
+                          height: "220px",
+                          width: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <h4 className="text-secondary">{item.title}</h4>
+
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: item.content.slice(0, 300),
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </Container>
       </div>

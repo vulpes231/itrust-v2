@@ -23,6 +23,7 @@ import {
   Histories,
   Landing,
   TwoFa,
+  ArticleDetail,
 } from "../pages";
 
 import AutomatedInvesting from "../pages/Landing/Automated";
@@ -84,6 +85,7 @@ const publicRoutes = [
   { path: "/articles", component: <Articles /> },
   { path: "/terms-and-conditions", component: <Terms /> },
   { path: "/privacy-policy", component: <Privacy /> },
+  { path: "/article/:articleId", component: <ArticleDetail /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };
