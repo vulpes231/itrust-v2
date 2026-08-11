@@ -33,9 +33,12 @@ const ArticleList = ({ activeTab }) => {
   // console.log(articles);
 
   const filteredArticles =
-    articles.filter((art) => art.topic === activeTab) || [];
+    articles?.filter((art) => art.topic === activeTab) || [];
 
-  const customArticles = activeTab === "all" ? articles : filteredArticles;
+  const customArticles =
+    articles && articles.length > 0 && activeTab === "all"
+      ? articles
+      : filteredArticles;
 
   const navigate = useNavigate();
   return (

@@ -8,9 +8,9 @@ import { GoArrowRight, GoClock } from "react-icons/go";
 import FeatherIcon from "feather-icons-react";
 
 const MobileTransaction = ({ data }) => {
-  useEffect(() => {
-    if (data) console.log(data);
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) console.log(data);
+  // }, [data]);
   return (
     <div className="d-flex flex-column gap-3 w-100">
       {data && data.length > 0 ? (

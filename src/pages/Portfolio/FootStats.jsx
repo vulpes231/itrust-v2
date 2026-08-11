@@ -1,16 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { formatCurrency } from "../../constants";
+import { formatCurrency, getAccessToken } from "../../constants";
 import numeral from "numeral";
+import { useQuery } from "@tanstack/react-query";
+import { getUserInfo } from "../../services/user/user";
+import { getWalletInvestData } from "../../services/user/wallet";
 
-const FootStats = ({ activeWallet, walletData, cashAccount }) => {
-  // console.log(walletData);
+const FootStats = ({ activeWallet, cashAccount }) => {
+  const tk = getAccessToken();
+
+  const { data: user, isLoading: getUserLoading } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!tk,
+  });
+
+  const { data: walletData } = useQuery({
+    queryKey: ["walletdata"],
+    queryFn: getWalletInvestData,
+    enabled: !!tk,
+  });
+
+  // console.log(walletData, "footstats");
+
+  const planTotal =
+    user?.activePlans?.reduce((sum, plan) => {
+      return sum + plan.balance.total;
+    }, 0) ?? 0;
+
   const totalInv = walletData
     ? walletData[activeWallet?.slug]?.totalInvested
     : 0;
 
-  // +walletData[activeWallet?.slug]?.totalProfitLoss
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
       <Row className="px-3">
@@ -61,9 +83,10 @@ const FootStats = ({ activeWallet, walletData, cashAccount }) => {
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold">
               {" "}
-              {activeWallet?.balance?.available
-                ? formatCurrency(activeWallet.balance?.available)
-                : formatCurrency(0)}
+              {activeWallet?.balance?.available &&
+              activeWallet?.slug !== "brokerage"
+                ? formatCurrency(activeWallet?.balance?.available - planTotal)
+                : formatCurrency(activeWallet?.balance?.available)}
             </span>
             <span
               style={{ color: "#878A99" }}
@@ -80,7 +103,6 @@ const FootStats = ({ activeWallet, walletData, cashAccount }) => {
         >
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold">
-              {" "}
               {cashAccount?.balance?.total
                 ? formatCurrency(cashAccount.balance?.total)
                 : formatCurrency(0)}

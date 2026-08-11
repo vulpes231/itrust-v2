@@ -116,7 +116,7 @@ const AllTransactions = () => {
     });
   }, [transactions, filter]);
 
-  console.log(transformedData);
+  // console.log(transformedData);
 
   function getCurrencyImage(currency) {
     const images = {

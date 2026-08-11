@@ -7,6 +7,9 @@ const Widgets = ({ analytics, walletData, count }) => {
   const totalInv =
     walletData &&
     walletData?.default?.totalInvested + walletData.default?.totalProfitLoss;
+
+  // console.log(walletData);
+
   const marketWidgets = analytics && [
     {
       id: 1,
@@ -27,8 +30,10 @@ const Widgets = ({ analytics, walletData, count }) => {
     {
       id: 3,
       title: "Today's P&L",
-      counter: Number(analytics.totalProfit.toFixed(2).split(".")[0]) || 0,
-      decimal: analytics.totalProfit.toFixed(2).split(".")[1],
+      counter: Number(walletData?.default?.totalProfitLoss) || 0,
+      decimal: Number(walletData?.default?.totalProfitLoss)
+        .toFixed(2)
+        .split(".")[1],
       icon: "ri-arrow-right-up-fill",
       iconClass: analytics.totalProfit < 0 ? "danger" : "success",
     },

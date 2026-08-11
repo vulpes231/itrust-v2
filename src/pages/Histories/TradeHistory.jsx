@@ -49,7 +49,6 @@ const TradeHistory = ({ trades }) => {
         trade.status === "open"
           ? numeral(0).format("$0,0.00")
           : numeral(trade.performance?.totalReturn).format("$0,0.00"),
-
       symbol: trade?.asset?.symbol,
       percentChange: trade.performance?.totalReturnPercent?.toFixed(2) || 0,
       unrealizedPercentChange: parseFloat(0).toFixed(2),
@@ -164,6 +163,8 @@ const TradeHistory = ({ trades }) => {
     ],
     [],
   );
+
+  // console.log(trades);
 
   return (
     <React.Fragment>

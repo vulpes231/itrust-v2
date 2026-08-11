@@ -30,6 +30,8 @@ const Widgets = ({ wallets, user, walletData }) => {
     0,
   );
 
+  // console.log(walletData, "widgets");
+
   function convertToWidgetsData() {
     if (!investAccount || !walletData) return [];
 
@@ -49,7 +51,7 @@ const Widgets = ({ wallets, user, walletData }) => {
       {
         id: 2,
         label: "Today's P&L",
-        counter: investAccount.dailyProfit,
+        counter: walletData?.default?.totalProfitLoss,
         decimal: "2",
         prefix: "$",
         separator: ",",

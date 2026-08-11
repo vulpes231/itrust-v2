@@ -17,7 +17,6 @@ const PortfolioStatistics = ({
   const [range, setRange] = React.useState("ALL");
   const walletId = activeWallet?._id;
 
-  // console.log("walletId", walletId);
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
 
   const { data: chartData } = useQuery({
@@ -371,7 +370,7 @@ const PortfolioStatistics = ({
           </CardBody>
           <FootStats
             activeWallet={activeWallet}
-            walletData={walletData}
+            // walletData={walletData}
             cashAccount={cash}
           />
         </Card>

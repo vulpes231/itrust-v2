@@ -327,7 +327,7 @@ const Crypto = () => {
                       cashAccts={cashAccount}
                       toAccount={toAccount}
                       setToAccount={setToAccount}
-                      getWalletIcon={getWalletIcon}
+                      // getWalletIcon={getWalletIcon}
                     />
                   )}
                 </div>

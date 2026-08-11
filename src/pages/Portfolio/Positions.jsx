@@ -26,6 +26,8 @@ const Positions = ({ accounts }) => {
   const [filter, setFilter] = useState("all");
   const myPositions = positionData?.positions;
 
+  // console.log(myPositions);
+
   const filteredPositions = useMemo(() => {
     if (!myPositions) return [];
 

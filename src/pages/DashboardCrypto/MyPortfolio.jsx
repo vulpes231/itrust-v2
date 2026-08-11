@@ -18,6 +18,8 @@ import {
   getWalletColorBySlug,
   getWalletLogoBySlug,
 } from "../../constants";
+import { useQuery } from "@tanstack/react-query";
+import { getUserInfo } from "../../services/user/user";
 
 const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
   const [selectedWallet, setSelectedWallet] = useState("All");
@@ -25,6 +27,16 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
   const onWalletChange = (wallet) => {
     setSelectedWallet(wallet);
   };
+
+  const { data: user } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+  });
+
+  const planTotal =
+    user?.activePlans?.reduce((sum, plan) => {
+      return sum + plan.balance.total;
+    }, 0) ?? 0;
 
   const getFilteredWallets = () => {
     if (!wallets || wallets.length === 0) return [];
@@ -58,59 +70,6 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
     }
   };
 
-  const getAccountIcon = (value) => {
-    switch (value) {
-      case "cash account":
-        return (
-          <span
-            className="bg-secondary-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
-            style={{ width: "35px", height: "35px" }}
-          >
-            <i class="ri-wallet-line fs-20 text-secondary"></i>
-          </span>
-        );
-      case "automated investing":
-        return (
-          <span
-            className="bg-info-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
-            style={{ width: "35px", height: "35px" }}
-          >
-            <i class="ri-24-hours-line fs-20 text-info"></i>
-          </span>
-        );
-      case "individual brokerage":
-        return (
-          <span
-            className="bg-warning-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
-            style={{ width: "35px", height: "35px" }}
-          >
-            <i className="ri-bar-chart-2-line fs-20 text-warning"></i>
-          </span>
-        );
-      case "traditional ira":
-        return (
-          <span
-            className="bg-success-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
-            style={{ width: "35px", height: "35px" }}
-          >
-            <i className="ri-shield-line fs-20 text-success"></i>
-          </span>
-        );
-      case "health savings":
-        return (
-          <span
-            className="bg-light-subtle p-2 rounded-circle justify-content-center align-items-center d-flex"
-            style={{ width: "35px", height: "35px" }}
-          >
-            <i className="ri-service-line fs-20 "></i>
-          </span>
-        );
-      default:
-        return null;
-    }
-  };
-
-  // console.log(getFilteredWallets());
   return (
     <React.Fragment>
       <Col>
@@ -237,7 +196,11 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                             {formatCurrency(totalAccountBalance)}
                           </h6>
                           <p className="text-success fs-13 mb-0">
-                            {formatCurrency(wallet.balance.available)}
+                            {wallet.slug === "auto"
+                              ? formatCurrency(
+                                  wallet.balance.available - planTotal,
+                                )
+                              : formatCurrency(wallet.balance.available)}
                           </p>
                         </div>
                       </div>

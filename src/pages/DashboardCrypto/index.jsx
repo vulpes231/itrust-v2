@@ -46,6 +46,7 @@ const DashboardCrypto = () => {
     queryFn: getWalletInvestData,
     enabled: !!tk,
   });
+
   const { data: totalNetworth } = useQuery({
     queryKey: ["networth"],
     queryFn: getTotalNetworth,

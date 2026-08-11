@@ -39,6 +39,8 @@ const Holdings = () => {
 
   const allPositions = positionData?.positions || [];
 
+  // console.log(allPositions);
+
   const filteredPosition =
     filter === "all"
       ? allPositions

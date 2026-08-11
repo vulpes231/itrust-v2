@@ -17,6 +17,7 @@ import ErrorToast from "../../components/Common/ErrorToast";
 import { getAccessToken, liveUrl } from "../../constants";
 import numeral from "numeral";
 import { getUserWallets } from "../../services/user/wallet";
+import { getUserInfo } from "../../services/user/user";
 
 const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
   const [error, setError] = useState("");
@@ -34,6 +35,17 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
     queryKey: ["wallets"],
     enabled: !!tk,
   });
+
+  const { data: user } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!tk,
+  });
+
+  const planTotal =
+    user?.activePlans?.reduce((sum, plan) => {
+      return sum + plan.balance.total;
+    }, 0) ?? 0;
 
   const investAccount =
     accounts &&
@@ -58,7 +70,7 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
       return () => clearTimeout(tmt);
     }
   }, [mutation.isSuccess]);
-  console.log(plan);
+  // console.log(plan);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -168,9 +180,9 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
                 <Col className="mb-3 d-flex flex-column mt-5">
                   <span className="fs-13 text-muted">
                     Available to Invest:{" "}
-                    {numeral(investAccount?.balance?.available).format(
-                      "$0,0.00",
-                    )}
+                    {numeral(
+                      investAccount?.balance?.available - planTotal,
+                    ).format("$0,0.00")}
                   </span>
                   <Label>Amount to Invest</Label>
                   <Input
