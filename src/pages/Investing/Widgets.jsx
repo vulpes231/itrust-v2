@@ -51,7 +51,7 @@ const Widgets = ({ wallets, user, walletData }) => {
       {
         id: 2,
         label: "Today's P&L",
-        counter: walletData?.default?.totalProfitLoss,
+        counter: walletData?.["auto"]?.totalProfitLoss,
         decimal: "2",
         prefix: "$",
         separator: ",",
