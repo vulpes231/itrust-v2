@@ -19,8 +19,6 @@ import {
 import AssetGraph from "../Portfolio/AssetGraph";
 import { getUserTrades } from "../../services/user/trade";
 import { getAccessToken } from "../../constants";
-import { useLocation } from "react-router-dom";
-import ErrorToast from "../../components/Common/ErrorToast";
 import { getUserPositions } from "../../services/user/position";
 
 const DashboardCrypto = () => {
@@ -53,9 +51,10 @@ const DashboardCrypto = () => {
     enabled: !!tk,
   });
 
-  const { data: wallets = [], loading: isWalletLoading } = useQuery({
+  const { data: wallets = [], isLoading: isWalletLoading } = useQuery({
     queryFn: getUserWallets,
     queryKey: ["wallet"],
+    enabled: !!tk,
   });
 
   const { data: positionData } = useQuery({

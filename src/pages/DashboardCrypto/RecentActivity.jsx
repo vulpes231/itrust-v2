@@ -100,8 +100,12 @@ const RecentActivity = () => {
                         </h6>
                         <p className=" fs-13 mb-0 d-flex align-items-center gap-2 text-muted">
                           <span
-                            style={{ whiteSpace: "nowrap" }}
-                            className="fw-normal fs-10"
+                            style={{
+                              whiteSpace: "nowrap",
+                              fontSize:
+                                window.innerWidth > "562px" ? "16px" : "13px",
+                            }}
+                            className="fw-normal"
                           >
                             {" "}
                             {trx.method.mode === "BTC"
@@ -118,8 +122,12 @@ const RecentActivity = () => {
                             <GoArrowRight />
                           </span>
                           <span
-                            style={{ whiteSpace: "nowrap" }}
-                            className="fw-normal fs-10 text-capitalize"
+                            style={{
+                              whiteSpace: "nowrap",
+                              fontSize:
+                                window.innerWidth > "562px" ? "16px" : "13px",
+                            }}
+                            className="fw-normal text-capitalize"
                           >
                             {trx?.account}
                           </span>

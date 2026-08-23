@@ -18,12 +18,15 @@ const TransferForm = () => {
       <TrxCrumb title={"Transfer"} handleMove={() => window.history.back()} />
       <Row>
         <Col lg={9}>
+          <Card className="d-flex d-md-none">
+            <BalanceCard />
+          </Card>
           <Card>
             <Crypto />
           </Card>
         </Col>
         <Col lg={3}>
-          <Card>
+          <Card className="d-none d-md-flex">
             <BalanceCard />
           </Card>
           <Card>

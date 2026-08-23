@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
 
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
@@ -227,90 +227,91 @@ const MarkerCharts = ({ dataColors, series }) => {
 };
 
 const WidgetsCharts = ({ seriesData }) => {
-  const convertToSeriesData = (assetsArray) => {
-    if (!assetsArray) return [];
-    if (!Array.isArray(assetsArray)) assetsArray = [assetsArray];
+  const chart = useMemo(() => {
+    const asset = Array.isArray(seriesData) ? seriesData[0] : seriesData;
 
-    return assetsArray.map((asset) => {
-      const p = asset.priceData || {};
+    if (!asset) return null;
 
-      // Normalize common field names
-      const current = Number(p.current || p.price || p.last || 0);
-      const previousClose = Number(
-        p.previousClose ||
-          p.prevClose ||
-          p.previousDayClose ||
-          p.yesterdayClose ||
-          current,
-      );
+    const p = asset.priceData || {};
 
-      const isUp = current >= previousClose * 1.00001;
-      const color = isUp ? "#67b173" : "#f17171";
+    const current = Number(p.current || p.price || p.last || 0);
 
-      const data = [
-        p.open || previousClose,
-        p.dayLow || previousClose,
+    const previousClose = Number(
+      p.previousClose ||
+        p.prevClose ||
+        p.previousDayClose ||
+        p.yesterdayClose ||
         current,
-        p.dayHigh || current,
-        previousClose,
-      ].filter((v) => typeof v === "number" && !isNaN(v) && v > 0);
+    );
 
-      if (data.length < 2) {
-        data.push(current);
-      }
+    const values = [
+      Number(p.open || previousClose),
+      Number(p.dayLow || previousClose),
+      current,
+      Number(p.dayHigh || current),
+      previousClose,
+    ].filter((value) => Number.isFinite(value) && value > 0);
 
-      return {
-        name: asset.name || asset.symbol || "Asset",
-        data: data,
-        color: color,
-      };
-    });
-  };
+    if (values.length < 2) {
+      values.push(current);
+    }
 
-  const series = convertToSeriesData(seriesData);
+    const width = 130;
+    const height = 46;
+    const padding = 4;
 
-  const options = {
-    chart: {
-      width: 130,
-      height: 46,
-      type: "area",
-      sparkline: {
-        enabled: true,
-      },
-      toolbar: {
-        show: false,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "smooth",
-      width: 1.5,
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 1,
-        inverseColors: false,
-        opacityFrom: 0.6,
-        opacityTo: 0.05,
-        stops: [0, 90, 100],
-      },
-    },
-  };
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min || 1;
+
+    const points = values
+      .map((value, index) => {
+        const x =
+          padding + (index / (values.length - 1)) * (width - padding * 2);
+
+        const y =
+          height - padding - ((value - min) / range) * (height - padding * 2);
+
+        return `${x},${y}`;
+      })
+      .join(" ");
+
+    const isUp = current >= previousClose * 1.00001;
+
+    return {
+      points,
+      color: isUp ? "#67b173" : "#f17171",
+    };
+  }, [seriesData]);
+
+  if (!chart) return null;
 
   return (
-    <React.Fragment>
-      <ReactApexChart
-        dir="ltr"
-        options={options}
-        series={series}
-        type="area"
+    <div
+      style={{
+        width: "130px",
+        height: "46px",
+        overflow: "hidden",
+      }}
+    >
+      <svg
+        width="130"
         height="46"
-        className="apex-charts"
-      />
-    </React.Fragment>
+        viewBox="0 0 130 46"
+        style={{
+          display: "block",
+        }}
+      >
+        <polyline
+          points={chart.points}
+          fill="none"
+          stroke={chart.color}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
   );
 };
 

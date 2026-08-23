@@ -62,8 +62,8 @@ const Widgets1 = () => {
         >
           {assets &&
             assets.data &&
-            assets.data.map((item, key) => (
-              <SwiperSlide key={key}>
+            assets.data.map((item) => (
+              <SwiperSlide key={item._id || item.symbol}>
                 <Card>
                   <CardBody>
                     <div className="float-end">
@@ -86,6 +86,8 @@ const Widgets1 = () => {
                     <div className="d-flex align-items-center">
                       <img
                         src={item.imageUrl}
+                        loading="lazy"
+                        decoding="async"
                         className="bg-light rounded-circle p-1 avatar-xs img-fluid"
                         alt=""
                       />
@@ -100,7 +102,7 @@ const Widgets1 = () => {
                           {formatCurrency(item.priceData.current)}
                         </h5>
                         <p
-                          className={`fw-semibold mb-0 d-flex align-items-center gap-2 ${
+                          className={`fw-semibold mb-0 d-flex align-items-center gap-1 ${
                             item.priceData.changePercent > 0
                               ? "text-success"
                               : "text-danger"
@@ -116,11 +118,12 @@ const Widgets1 = () => {
                         </p>
                       </Col>
                       <Col xs={6}>
-                        <div className="apex-charts crypto-widget" dir="ltr">
-                          <WidgetsCharts
-                            seriesData={assets}
-                            // chartsColor={item.chartsColor}
-                          />
+                        <div
+                          style={{ overflow: "hidden" }}
+                          className=""
+                          dir="ltr"
+                        >
+                          <WidgetsCharts seriesData={item} />
                         </div>
                       </Col>
                     </Row>

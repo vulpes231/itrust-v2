@@ -295,10 +295,9 @@ const MyCurrencies = () => {
               </h4>
             </Col>
             <div className="col-auto ms-auto">
-              <div className="flex-shrink-0 d-flex align-items-center gap-2 ">
+              <div className="d-flex align-items-center gap-2 flex-wrap ">
                 <span style={{ color: "#878A99" }}>Filter by:</span>
 
-                {/* Asset Type Filter */}
                 <select
                   className="btn btn-soft-primary btn-sm text-capitalize"
                   name="assetFilter"
@@ -310,7 +309,6 @@ const MyCurrencies = () => {
                   <option value="etf">ETFs</option>
                 </select>
 
-                {/* 24H Change Button */}
                 <button
                   type="button"
                   onClick={() => handleSortChange("24h_change")}
@@ -323,7 +321,6 @@ const MyCurrencies = () => {
                   24H
                 </button>
 
-                {/* Watchlist Toggle Button */}
                 <button
                   type="button"
                   onClick={handleWatchlistFilter}
@@ -331,10 +328,9 @@ const MyCurrencies = () => {
                     showWatchlistOnly ? "btn-primary" : "btn-soft-primary"
                   }`}
                 >
-                  {"Watchlist"}
+                  Watchlist
                 </button>
 
-                {/* Top Gainers Button */}
                 <button
                   type="button"
                   onClick={() => handleSortChange("top_gainers")}
@@ -347,7 +343,6 @@ const MyCurrencies = () => {
                   Top Gainers
                 </button>
 
-                {/* Top Losers Button */}
                 <button
                   type="button"
                   onClick={() => handleSortChange("top_losers")}
@@ -360,7 +355,6 @@ const MyCurrencies = () => {
                   Top Losers
                 </button>
 
-                {/* Market Cap Button */}
                 <button
                   type="button"
                   onClick={() => handleSortChange("market_cap")}
