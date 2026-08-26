@@ -15,7 +15,7 @@ const HistoryManager = ({ activeHistoryTab, setActiveHistoryTab }) => {
   return (
     <React.Fragment>
       <Col className="d-flex flex-column gap-3">
-        <Col className="d-flex justify-content-end gap-2 ">
+        <Col className="d-flex align-items-center justify-content-md-end gap-2 flex-wrap ">
           {btns.map((btn) => {
             return (
               <button

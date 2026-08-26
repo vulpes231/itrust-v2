@@ -30,7 +30,7 @@ const PlanList = () => {
             </div>
           </Row>
           {showFilter && (
-            <Row className="p-3">
+            <Row className="p-3 d-flex flex-md-row flex-column gap-2">
               <Col lg={4}>
                 {" "}
                 <Input type="text" placeholder="Search plan" />

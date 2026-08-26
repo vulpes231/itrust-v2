@@ -9,7 +9,7 @@ import Statistics from "./Statistics";
 import VerifyAccountNotify from "../VerifyAccountNotify";
 import Holdings from "./Holdings";
 import RecentOrders from "./RecentOrders";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import {
   getTotalNetworth,
   getUserWallets,
@@ -32,7 +32,6 @@ const DashboardCrypto = () => {
     enabled: !!tk,
   });
 
-  const queryData = { limit: 7 };
   const { data: trades } = useQuery({
     queryKey: ["recentTrades"],
     queryFn: () => getUserTrades(),

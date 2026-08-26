@@ -19,8 +19,8 @@ import numeral from "numeral";
 const MarketStatus = ({ activeWallet, trades, accounts }) => {
   const [currentAccount, setCurrentAccount] = useState("all");
 
-  const handleAccountChange = (acct) => {
-    setCurrentAccount(acct);
+  const handleAccountChange = (e) => {
+    setCurrentAccount(e.target.value);
   };
 
   const transformedData = useMemo(() => {
@@ -168,9 +168,11 @@ const MarketStatus = ({ activeWallet, trades, accounts }) => {
     [],
   );
 
-  useEffect(() => {
-    if (activeWallet) setCurrentAccount(activeWallet.name);
-  }, [activeWallet]);
+  console.log(transformedData);
+
+  // useEffect(() => {
+  //   if (activeWallet) setCurrentAccount(activeWallet.name);
+  // }, [activeWallet]);
 
   const tradeAccts = (accounts || []).filter(
     (acct) => acct.name !== "investing",
@@ -181,7 +183,7 @@ const MarketStatus = ({ activeWallet, trades, accounts }) => {
       <Card>
         <CardHeader className="border-bottom-dashed d-flex align-items-center">
           <h4 className="card-title mb-0 flex-grow-1">Portfolio Holdings</h4>
-          <div>
+          {/* <div>
             <UncontrolledDropdown direction="start">
               <DropdownToggle
                 tag="button"
@@ -202,7 +204,6 @@ const MarketStatus = ({ activeWallet, trades, accounts }) => {
                 {tradeAccts &&
                   tradeAccts.length > 0 &&
                   tradeAccts.map((acct) => {
-                    // console.log(acct);
                     return (
                       <DropdownItem
                         key={acct._id}
@@ -215,24 +216,24 @@ const MarketStatus = ({ activeWallet, trades, accounts }) => {
                   })}
               </DropdownMenu>
             </UncontrolledDropdown>
-          </div>
-          {/* <div className="flex-shrink-0">
+          </div> */}
+          <div className="flex-shrink-0">
             <Input
               type="select"
               className="bg-secondary-subtle border-0 text-secondary outline-none"
               onChange={handleAccountChange}
               value={currentAccount}
             >
-              <option value="investing">All</option>
+              <option value="all">All</option>
               <option value="individual brokerage">Brokerage</option>
               <option value="automated investing">Automated Investing</option>
             </Input>
-          </div> */}
+          </div>
         </CardHeader>
         <CardBody>
           <TableContainer
             columns={columns}
-            data={transformedData.length > 0 ? transformedData : []}
+            data={transformedData}
             isGlobalFilter={false}
             isAddUserList={false}
             customPageSize={transformedData.length}

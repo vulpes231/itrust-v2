@@ -294,7 +294,7 @@ const Market = () => {
               </h4>
             </Col>
             <div className="col-auto ms-auto">
-              <div className="flex-shrink-0 d-flex align-items-center gap-2 ">
+              <div className="d-flex align-items-center gap-2 flex-wrap">
                 <span style={{ color: "#878A99" }}>Filter by:</span>
 
                 {/* Asset Type Filter */}

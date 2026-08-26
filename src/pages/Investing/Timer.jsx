@@ -78,7 +78,7 @@ const Timer = ({ end }) => {
   };
 
   return (
-    <Row>
+    <Row className="d-flex align-items-center flex-wrap">
       <Col className="d-flex flex-column">
         <label htmlFor="" className="text-muted fs-10">
           Years
@@ -135,7 +135,7 @@ const Timer = ({ end }) => {
           <span>:</span>
         </div>
       </Col>
-      <Col className="d-flex flex-column">
+      <Col className="d-flex flex-column mt-3 mt-md-0">
         <label htmlFor="" className="text-muted fs-10">
           Seconds
         </label>
