@@ -20,7 +20,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { logo } from "../../assets";
 import { loginUser } from "../../services/auth/login";
-import withRouter from "../../Components/Common/withRouter";
+import withRouter from "../../components/Common/withRouter";
 
 const Login = (props) => {
   const [form, setForm] = useState({ email: "", password: "" });

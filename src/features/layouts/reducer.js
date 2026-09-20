@@ -12,7 +12,7 @@ import {
   leftSidebarImageTypes,
   preloaderTypes,
   sidebarVisibilitytypes,
-} from "../../Components/constants/layout";
+} from "../../components/constants/layout";
 
 export const initialState = {
   layoutType: layoutTypes.HORIZONTAL,

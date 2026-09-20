@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Alert, Col } from "reactstrap";
-import BreadCrumb from "../../Components/Common/BreadCrumb";
+import BreadCrumb from "../../components/Common/BreadCrumb";
 import MyCurrencies from "./MyCurrencies";
 import MyPortfolio from "./MyPortfolio";
 import RecentActivity from "./RecentActivity";

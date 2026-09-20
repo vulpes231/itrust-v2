@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Col, Container, Row } from "reactstrap";
 import PortfolioStatistics from "./PortfolioStatistics";
 import MarketStatus from "./MarketStatus";
-import BreadCrumb from "../../Components/Common/BreadCrumb";
+import BreadCrumb from "../../components/Common/BreadCrumb";
 import VerifyAccountNotify from "../VerifyAccountNotify";
 import BalanceCard from "./BalanceCard";
 import { getAccessToken } from "../../constants";

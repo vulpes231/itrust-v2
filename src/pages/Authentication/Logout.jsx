@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import withRouter from "../../Components/Common/withRouter";
+import withRouter from "../../components/Common/withRouter";
 import { logoutUser } from "../../services/auth/logout";
 import { Toast, ToastBody, ToastHeader } from "reactstrap";
 

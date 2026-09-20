@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Container, Row } from "reactstrap";
-import BreadCrumb from "../../Components/Common/BreadCrumb";
+import BreadCrumb from "../../components/Common/BreadCrumb";
 import Saving from "./Saving";
 import VerifyAccountNotify from "../VerifyAccountNotify";
 

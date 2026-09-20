@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Col, Collapse, Row } from "reactstrap";
-import withRouter from "../../Components/Common/withRouter";
+import withRouter from "../../components/Common/withRouter";
 import navdata from "../LayoutMenuData";
 import { withTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";

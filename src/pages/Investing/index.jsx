@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Col, Container } from "reactstrap";
-import BreadCrumb from "../../Components/Common/BreadCrumb";
+import BreadCrumb from "../../components/Common/BreadCrumb";
 import Widgets from "./Widgets";
 import PlanList from "./PlanList";
 import VerifyAccountNotify from "../VerifyAccountNotify";
