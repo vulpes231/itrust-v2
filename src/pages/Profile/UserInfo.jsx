@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Col } from "reactstrap";
-import { avatar1 } from "../../assets";
+import { avatar1, defUser } from "../../assets";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const UserInfo = ({ user }) => {
@@ -30,7 +30,7 @@ const UserInfo = ({ user }) => {
   return (
     <Card className="p-4 d-flex flex-column gap-3">
       <Col className="d-flex flex-column align-items-center gap-2">
-        <img src={avatar1} alt="user" width={50} className="rounded-circle" />
+        <img src={defUser} alt="user" width={50} className="rounded-circle" />
         <span className="d-flex flex-column align-items-center justify-content-center">
           <h4 className="lh-sm text-capitalize">
             {user?.personalInfo?.firstName} {user?.personalInfo?.lastName}{" "}

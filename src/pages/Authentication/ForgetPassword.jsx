@@ -75,126 +75,126 @@ const ForgetPasswordPage = (props) => {
   }, [error]);
 
   return (
-    <ParticlesAuth>
-      <div
-        className="auth-page-content d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Container style={{ height: "100%" }} className="">
-          {step === 1 && (
-            <Row className="d-flex align-items-center justify-content-center">
-              <Col md={8} lg={6} xl={5}>
-                <Card className="mt-4">
-                  <CardBody className="p-4">
-                    <div className="text-center mt-2 d-flex flex-column gap-4 align-items-center justify-content-center">
-                      <div>
-                        <Link to="/" className="d-inline-block auth-logo">
-                          <img src={logo} alt="" height="36" width={"112"} />
-                        </Link>
-                      </div>
-                      <div className="d-flex flex-column align-items-center justify-content-center">
-                        <h5 className="text-primary">Forgot Password?</h5>
-                        <p className="text-muted">Reset password with itrust</p>
-                      </div>
+    // <ParticlesAuth>
+
+    // </ParticlesAuth>
+    <div
+      className="auth-page-content d-flex align-items-center justify-content-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <Container style={{ height: "100%" }} className="">
+        {step === 1 && (
+          <Row className="d-flex align-items-center justify-content-center">
+            <Col md={8} lg={6} xl={5}>
+              <Card className="mt-4">
+                <CardBody className="p-4">
+                  <div className="text-center mt-2 d-flex flex-column gap-4 align-items-center justify-content-center">
+                    <div>
+                      {/* <Link to="/" className="d-inline-block auth-logo">
+                      <img src={logo} alt="" height="36" width={"112"} />
+                    </Link> */}
+                      <h3 className="fw-bold">Reset Password</h3>
                     </div>
+                    <div className="d-flex flex-column align-items-center justify-content-center">
+                      <h5 className="text-primary">Forgot Password?</h5>
+                      <p className="text-muted">Reset password with itrust</p>
+                    </div>
+                  </div>
 
-                    {sendPasswordResetCode.isSuccess && (
-                      <Alert color="success">Code Sent.</Alert>
-                    )}
+                  {sendPasswordResetCode.isSuccess && (
+                    <Alert color="success">Code Sent.</Alert>
+                  )}
 
-                    {!sendPasswordResetCode.isSuccess ||
-                      (!error && (
-                        <Alert
-                          className="border-0 alert-warning text-center mb-2 mx-2"
-                          role="alert"
-                        >
-                          Enter your registered email and instructions will be
-                          sent to you!
-                        </Alert>
-                      ))}
-                    <div className="p-2">
-                      <Form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          validation.handleSubmit();
-                          return false;
-                        }}
+                  {!sendPasswordResetCode.isSuccess ||
+                    (!error && (
+                      <Alert
+                        className="border-0 alert-warning text-center mb-2 mx-2"
+                        role="alert"
                       >
-                        <div className="mb-4">
-                          <Label className="form-label">Email</Label>
-                          <Input
-                            name="email"
-                            autoComplete="off"
-                            className="form-control"
-                            placeholder="Enter email"
-                            type="email"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.email || ""}
-                            invalid={
-                              validation.touched.email &&
-                              validation.errors.email
-                                ? true
-                                : false
-                            }
-                          />
-                          {validation.touched.email &&
-                          validation.errors.email ? (
-                            <FormFeedback type="invalid">
-                              <div>{validation.errors.email}</div>
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-
-                        <div className="text-center mt-4">
-                          <button
-                            className="btn btn-secondary w-100 d-flex align-items-center gap-2 justify-content-center"
-                            type="submit"
-                            disabled={sendPasswordResetCode.isPending}
-                          >
-                            {sendPasswordResetCode.isPending && (
-                              <Spinner size={"sm"} />
-                            )}
-                            Send Reset Code
-                          </button>
-                        </div>
-                      </Form>
-                    </div>
-                  </CardBody>
-                </Card>
-
-                <div className="mt-4 text-center">
-                  <p className="mb-0">
-                    Wait, I remember my password...{" "}
-                    <Link
-                      to="/login"
-                      className="fw-semibold text-primary text-decoration-underline"
+                        Enter your registered email and instructions will be
+                        sent to you!
+                      </Alert>
+                    ))}
+                  <div className="p-2">
+                    <Form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        validation.handleSubmit();
+                        return false;
+                      }}
                     >
-                      {" "}
-                      Click here{" "}
-                    </Link>{" "}
-                  </p>
-                </div>
-              </Col>
-            </Row>
-          )}
-          {step === 2 && (
-            <Row className="d-flex align-items-center justify-content-center">
-              <Col md={8} lg={6} xl={5}>
-                <ForgetPassOtp handleStep={handleStep} />
-              </Col>
-            </Row>
-          )}
-          {step === 3 && (
-            <Row className="d-flex align-items-center justify-content-center">
-              <Col md={8} lg={6} xl={5}>
-                <ChangePass handleStep={handleStep} />
-              </Col>
-            </Row>
-          )}
-        </Container>
-      </div>
-    </ParticlesAuth>
+                      <div className="mb-4">
+                        <Label className="form-label">Email</Label>
+                        <Input
+                          name="email"
+                          autoComplete="off"
+                          className="form-control"
+                          placeholder="Enter email"
+                          type="email"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.email || ""}
+                          invalid={
+                            validation.touched.email && validation.errors.email
+                              ? true
+                              : false
+                          }
+                        />
+                        {validation.touched.email && validation.errors.email ? (
+                          <FormFeedback type="invalid">
+                            <div>{validation.errors.email}</div>
+                          </FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="text-center mt-4">
+                        <button
+                          className="btn btn-secondary w-100 d-flex align-items-center gap-2 justify-content-center"
+                          type="submit"
+                          disabled={sendPasswordResetCode.isPending}
+                        >
+                          {sendPasswordResetCode.isPending && (
+                            <Spinner size={"sm"} />
+                          )}
+                          Send Reset Code
+                        </button>
+                      </div>
+                    </Form>
+                  </div>
+                </CardBody>
+              </Card>
+
+              <div className="mt-4 text-center">
+                <p className="mb-0">
+                  Wait, I remember my password...{" "}
+                  <Link
+                    to="/login"
+                    className="fw-semibold text-primary text-decoration-underline"
+                  >
+                    {" "}
+                    Click here{" "}
+                  </Link>{" "}
+                </p>
+              </div>
+            </Col>
+          </Row>
+        )}
+        {step === 2 && (
+          <Row className="d-flex align-items-center justify-content-center">
+            <Col md={8} lg={6} xl={5}>
+              <ForgetPassOtp handleStep={handleStep} />
+            </Col>
+          </Row>
+        )}
+        {step === 3 && (
+          <Row className="d-flex align-items-center justify-content-center">
+            <Col md={8} lg={6} xl={5}>
+              <ChangePass handleStep={handleStep} />
+            </Col>
+          </Row>
+        )}
+      </Container>
+    </div>
   );
 };
 

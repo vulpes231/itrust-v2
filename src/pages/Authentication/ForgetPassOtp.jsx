@@ -106,9 +106,10 @@ const ForgetPassOtp = ({ handleStep }) => {
         <CardBody className="p-4">
           <div className="text-center mt-2 d-flex flex-column gap-4 align-items-center justify-content-center">
             <div>
-              <Link to="/" className="d-inline-block auth-logo">
+              {/* <Link to="/" className="d-inline-block auth-logo">
                 <img src={logo} alt="" height="36" width={"112"} />
-              </Link>
+              </Link> */}
+              <h3 className="fw-bold">Reset Password</h3>
             </div>
             <div className="d-flex flex-column align-items-center justify-content-center">
               <h5 className="text-primary">Confirm Reset Password Code</h5>

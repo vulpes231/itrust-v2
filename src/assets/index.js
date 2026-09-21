@@ -66,9 +66,11 @@ import about from "./landing/about.png";
 import pri from "./landing/pri.png";
 import rad from "./landing/rad.png";
 import joinbg from "./landing/joinbg.png";
+import defUser from "./def-user.png";
 
 export {
   logo,
+  defUser,
   joinbg,
   about,
   pri,

@@ -5,7 +5,7 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from "reactstrap";
-import { avatar1 } from "../../assets";
+import { avatar1, defUser } from "../../assets";
 import { useQuery } from "@tanstack/react-query";
 import { getAccessToken } from "../../constants";
 import { getUserInfo } from "../../services/user/user";
@@ -20,6 +20,7 @@ const ProfileDropdown = () => {
     queryFn: getUserInfo,
     enabled: !!token,
   });
+
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
     setIsProfileDropdown(!isProfileDropdown);
@@ -35,8 +36,9 @@ const ProfileDropdown = () => {
           <span className="d-flex align-items-center">
             <img
               className="rounded-circle header-profile-user"
-              src={avatar1}
+              src={defUser}
               alt="Header Avatar"
+              loading="lazy"
             />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">

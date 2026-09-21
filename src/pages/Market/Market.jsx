@@ -287,15 +287,24 @@ const Market = () => {
         <CardHeader className="border-bottom-dashed">
           <Row className="align-items-center">
             <Col xs={3}>
-              <h4 className="card-title mb-0 flex-grow-1">
+              <h4 className="card-title mb-3 mb-md-0 flex-grow-1 text-nowrap mt-1 mt-md-0">
                 {showWatchlistOnly
                   ? "My Watchlist"
                   : `${assetFilter.charAt(0).toUpperCase() + assetFilter.slice(1)}s`}
               </h4>
             </Col>
             <div className="col-auto ms-auto">
-              <div className="d-flex align-items-center gap-2 flex-wrap">
-                <span style={{ color: "#878A99" }}>Filter by:</span>
+              <div className="d-flex  align-items-center gap-2 flex-wrap">
+                <span
+                  className="w-100 d-flex d-md-none"
+                  style={{ color: "#878A99" }}
+                >
+                  Filter by:
+                </span>
+
+                <span className="d-none d-md-flex" style={{ color: "#878A99" }}>
+                  Filter by:
+                </span>
 
                 {/* Asset Type Filter */}
                 <select

@@ -124,7 +124,7 @@ const VerifyEmail = () => {
                 <CardBody className="p-4">
                   <div className="text-center mb-4 d-flex align-items-center justify-content-center flex-column gap-2">
                     <Link to="/dashboard" className="auth-logo mb-4">
-                      <img src={logo} alt="" height="30" width={"120"} />
+                      <h3 className="fw-bold">Verify Your Email</h3>
                     </Link>
                     <div
                       className="bg-secondary-subtle d-flex align-items-center justify-content-center"

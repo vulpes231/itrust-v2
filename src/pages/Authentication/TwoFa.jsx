@@ -120,9 +120,7 @@ const TwoFa = () => {
           <Row>
             <Col lg={12}>
               <div className="text-center mt-sm-5 mb-4 text-white-50">
-                <Link to="/dashboard" className="auth-logo">
-                  <img src={logo} alt="" height="20" />
-                </Link>
+                <h3 className="fw-bold">Two Factor Authentication</h3>
                 <p className="mt-3 fs-16 fw-semibold">Authenticate Login</p>
               </div>
             </Col>
