@@ -145,7 +145,7 @@ const HorizontalLayout = (props) => {
     if (error) {
       const tmt = setTimeout(() => {
         setError("");
-        window.location.href = "/dashboard";
+        // window.location.href = "/dashboard";
       }, 2000);
       return () => clearTimeout(tmt);
     }

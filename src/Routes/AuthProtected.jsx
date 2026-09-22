@@ -4,8 +4,6 @@ import { setAuthorization } from "../helpers/apiHelper";
 import { useProfile } from "../hooks/userHooks";
 import { useMutation } from "@tanstack/react-query";
 import { logoutUser } from "../services/auth/logout";
-import ErrorToast from "../components/Common/ErrorToast";
-import { allowedRoutesIfNotVerified } from "../constants";
 
 const publicRoutes = ["/login", "/twofactor"];
 
@@ -32,20 +30,9 @@ const AuthProtected = ({ children }) => {
   const twoFaActivated = userProfile?.accountStatus?.twoFaActivated;
 
   const isAuthenticated = !loading && !!token;
-  const isKycApproved = kycStatus === "approved";
+
   const needsTwoFaVerification = twoFaActivated && !twoFaVerified;
   const isOnTwoFaPage = location.pathname === "/twofactor";
-
-  const isRouteAllowedForUnverified = allowedRoutesIfNotVerified.includes(
-    location.pathname,
-  );
-
-  const shouldBlockAccess =
-    isAuthenticated &&
-    userProfile &&
-    !isKycApproved &&
-    !isRouteAllowedForUnverified &&
-    !needsTwoFaVerification;
 
   const shouldRedirectToContact =
     !loading &&
@@ -54,19 +41,6 @@ const AuthProtected = ({ children }) => {
     !isProfileComplete &&
     !routesAllowedForIncompleteProfile.includes(location.pathname) &&
     !needsTwoFaVerification;
-
-  useEffect(() => {
-    if (shouldBlockAccess) {
-      setShowBlockToast(true);
-
-      const timer = setTimeout(() => {
-        navigate("/dashboard", { replace: true });
-        setShowBlockToast(false);
-      }, 1500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [shouldBlockAccess, navigate]);
 
   useEffect(() => {
     if (!loading) {
@@ -94,16 +68,6 @@ const AuthProtected = ({ children }) => {
 
   if (!loading && !token) {
     return <Navigate to="/login" replace />;
-  }
-
-  // Show toast + children (current page) when access is blocked
-  if (showBlockToast) {
-    return (
-      <>
-        <ErrorToast errorMsg="Profile Verification Required!" />
-        {children}
-      </>
-    );
   }
 
   return <>{children}</>;

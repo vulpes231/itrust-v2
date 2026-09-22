@@ -126,8 +126,10 @@ const EditContactInfo = ({ isOpen, handleToggle, user }) => {
                 <Input
                   type="text"
                   name="email"
+                  className="bg-light"
                   onChange={validation.handleChange}
                   value={validation.values.email}
+                  readOnly
                 />
               </Col>
             </Row>
