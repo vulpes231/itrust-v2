@@ -16,7 +16,9 @@ import DividendHistory from "./DividendHistory";
 const Histories = () => {
   const token = getAccessToken();
 
-  const [activeHistoryTab, setActiveHistoryTab] = useState("all");
+  const [activeHistoryTab, setActiveHistoryTab] = useState(() => {
+    return sessionStorage.getItem("historyTab") || "all";
+  });
 
   const { data: trxAnalytics } = useQuery({
     queryFn: getTransactionAnalytics,
@@ -25,9 +27,10 @@ const Histories = () => {
   });
 
   const queryData = { limit: 7 };
+
   const { data: trades } = useQuery({
     queryKey: ["recentTrades"],
-    queryFn: () => getUserTrades(),
+    queryFn: () => getUserTrades({ sortBy: "createdAt" }),
     enabled: !!token,
   });
 
@@ -41,33 +44,48 @@ const Histories = () => {
     activeTradesLength: activeTrades?.length,
   };
 
+  const handleHistoryTabChange = (tab) => {
+    setActiveHistoryTab(tab);
+    sessionStorage.setItem("historyTab", tab);
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           <BreadCrumb title="History" pageTitle="Activities" />
+
           <VerifyAccountNotify />
+
           <Widgets analytics={trxAnalytics} tradeInfo={tradesAnalytic} />
+
           <HistoryManager
             activeHistoryTab={activeHistoryTab}
-            setActiveHistoryTab={setActiveHistoryTab}
+            setActiveHistoryTab={handleHistoryTabChange}
           />
+
           {activeHistoryTab === "all" && (
             <TransactionHistory filter={activeHistoryTab} />
           )}
+
           {activeHistoryTab === "trade" && <TradeHistory trades={trades} />}
+
           {activeHistoryTab === "deposit" && (
             <TransactionHistory filter={activeHistoryTab} />
           )}
+
           {activeHistoryTab === "transfer" && (
             <TransactionHistory filter={activeHistoryTab} />
           )}
+
           {activeHistoryTab === "withdrawal" && (
             <TransactionHistory filter={activeHistoryTab} />
           )}
+
           {activeHistoryTab === "dividend" && (
             <DividendHistory dividends={[]} />
           )}
+
           {activeHistoryTab === "savings" && (
             <TransactionHistory filter={activeHistoryTab} />
           )}

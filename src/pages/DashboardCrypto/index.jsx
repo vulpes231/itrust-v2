@@ -32,9 +32,11 @@ const DashboardCrypto = () => {
     enabled: !!tk,
   });
 
+  const [sort, setSort] = useState("createdAt");
+
   const { data: trades } = useQuery({
-    queryKey: ["recentTrades"],
-    queryFn: () => getUserTrades(),
+    queryKey: ["recentTrades", sort],
+    queryFn: () => getUserTrades({ sortBy: sort }),
     enabled: !!tk,
   });
 
@@ -61,6 +63,8 @@ const DashboardCrypto = () => {
     queryFn: () => getUserPositions(),
     enabled: !!tk,
   });
+
+  // console.log(trades);
 
   return (
     <React.Fragment>

@@ -40,7 +40,7 @@ const TradeHistory = ({ trades }) => {
         }` || "Unknown",
       img: trade?.asset?.img || "/default-coin.png",
       account: trade?.wallet?.name || "/default-coin.png",
-      amount: numeral(trade?.execution?.amount).format("$0,0.00"),
+      amount: numeral(Number(trade?.execution?.amount || 0)).format("$0,0.00"),
       quantity: parseFloat(trade?.execution?.quantity).toFixed(4),
       currentValue: numeral(trade?.performance?.currentValue).format("$0,0.00"),
       unrealizedProfit:
@@ -147,7 +147,7 @@ const TradeHistory = ({ trades }) => {
             <RealizedPL
               value={cell.getValue()}
               percent={cell.row.original.percentChange}
-              percent={cell.row.original.unrealizedPercentChange}
+              // percent={cell.row.original.unrealizedPercentChange}
             />
           );
         },

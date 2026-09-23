@@ -84,7 +84,7 @@ const getWalletColorBySlug = (slug) => {
     case "savings3":
       return "#f17171";
     case "retirement1":
-      return "#261cb6";
+      return "#7C3AED";
     case "retirement2":
       return "#468927";
     case "retirement3":

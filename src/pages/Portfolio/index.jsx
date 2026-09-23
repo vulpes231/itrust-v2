@@ -61,7 +61,7 @@ const Portfolio = () => {
   const queryData = { limit: 7 };
   const { data: trades } = useQuery({
     queryKey: ["recentTrades"],
-    queryFn: () => getUserTrades(),
+    queryFn: () => getUserTrades({ sortBy: "createdAt" }),
     enabled: !!tk,
   });
 

@@ -54,7 +54,7 @@ const HistoryManager = ({ activeHistoryTab, setActiveHistoryTab }) => {
             </Input>
           </Col>
           <Col md={5} />
-          <Col className="d-flex align-items-center gap-2" md={3}>
+          <Col className="d-flex align-items-center gap-2 mt-2 mt-md-0" md={3}>
             <Input type="text" placeholder="Search for transactions..." />
             <button className="btn btn-secondary">filter</button>
           </Col>

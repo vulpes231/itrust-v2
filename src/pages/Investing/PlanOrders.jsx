@@ -4,23 +4,7 @@ import { getUserTrades } from "../../services/user/trade";
 import { getAccessToken } from "../../constants";
 import numeral from "numeral";
 
-const PlanOrders = ({ planId, planName }) => {
-  const tk = getAccessToken();
-  const {
-    data: orders,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["orders", planId],
-    queryFn: getUserTrades,
-    enabled: !!tk,
-  });
-
-  const planOrders = useMemo(() => {
-    if (!orders || orders.length === 0) return [];
-    return orders.filter((ord) => ord.planId === planId);
-  }, [orders, planId]);
-
+const PlanOrders = ({ planId, planName, planOrders, isLoading, error }) => {
   // console.log(planOrders);
 
   const renderTableRows = useMemo(() => {

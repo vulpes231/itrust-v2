@@ -27,7 +27,8 @@ const TwoFa = () => {
   const [error, setError] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
 
-  const sessionEmail = sessionStorage.getItem("email_registered");
+  const sessionEmail = JSON.parse(sessionStorage.getItem("user"))?.credentials
+    ?.email;
 
   const resendMutation = useMutation({
     mutationFn: sendAuthCode,

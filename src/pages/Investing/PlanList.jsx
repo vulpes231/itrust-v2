@@ -3,7 +3,7 @@ import { Card, Col, Input, Row } from "reactstrap";
 import Plans from "./Plans";
 
 const PlanList = () => {
-  const [showFilter, setShowFilter] = useState(true);
+  const [showFilter, setShowFilter] = useState(false);
   const [status, setStatus] = useState("all");
   const [risk, setRisk] = useState("all");
 

@@ -10,7 +10,7 @@ import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 const RecentOrders = ({ trades }) => {
   const filteredTrades = trades && trades.length && trades.slice(0, 5);
 
-  // console.log(filteredTrades);
+  // console.log(trades);
   return (
     <React.Fragment>
       <Col>

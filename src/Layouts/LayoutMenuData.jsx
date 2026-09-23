@@ -155,7 +155,7 @@ const Navdata = () => {
     },
   ];
 
-  const loginType = sessionStorage.getItem("loginType");
+  const loginType = JSON.parse(sessionStorage.getItem("user"))?.loginType;
 
   const isSuperUser = loginType === "superuser";
 
@@ -166,6 +166,14 @@ const Navdata = () => {
       : true;
 
   const isProfileComplete = user?.accountStatus?.isProfileComplete;
+
+  // console.log({
+  //   loginType,
+  //   isSuperUser,
+  //   user,
+  //   isProfileComplete,
+  //   isTwoFaRequirementMet,
+  // });
   return (
     <React.Fragment>
       {user && isProfileComplete && isTwoFaRequirementMet ? menuItems : []}

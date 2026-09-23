@@ -139,7 +139,11 @@ const AllPlans = ({ plans, style }) => {
                   <Col xs={6} className="d-flex flex-column px-4">
                     <span
                       className={style.large}
-                      style={{ color: style.green, fontSize: "32px" }}
+                      style={{
+                        color: style.green,
+                        fontSize: "32px",
+                        whiteSpace: "nowrap",
+                      }}
                     >
                       {plan?.performance?.expectedReturnPercent}%
                     </span>

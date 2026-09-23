@@ -170,7 +170,7 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
                     </Label>
                     <p>
                       <span
-                        className={` ${plan?.planType === "conservative" ? "text-secondary bg-secondary-subtle" : plan?.planType === "moderate" ? "text-warning bg-warning-subtle" : "text-danger bg-danger-subtle"} text-capitalize fs-11 fw-regular px-3 py-1 rounded-1`}
+                        className={` ${plan?.planType === "conservative" ? "text-secondary bg-secondary-subtle" : plan?.planType === "moderate" ? "text-warning bg-warning-subtle" : "text-danger bg-danger-subtle"} text-capitalize fs-11 fw-regular px-3 py-1 rounded-1 text-nowrap`}
                       >
                         {plan?.planType}
                       </span>

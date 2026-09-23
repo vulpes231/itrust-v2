@@ -24,6 +24,12 @@ const AuthProtected = ({ children }) => {
 
   const [showBlockToast, setShowBlockToast] = useState(false);
 
+  const userLoginType = JSON.parse(sessionStorage.getItem("user"))?.loginType;
+
+  const isSuperUser = userLoginType === "superuser";
+
+  // console.log(userLoginType);
+
   const kycStatus = userProfile?.identityVerification?.kycStatus;
   const isProfileComplete = userProfile?.accountStatus?.isProfileComplete;
   const twoFaVerified = userProfile?.accountStatus?.twoFaVerified;
@@ -53,7 +59,13 @@ const AuthProtected = ({ children }) => {
   }, [loading, token, userProfile, location.pathname, navigate]);
 
   // Two-factor redirects
-  if (!loading && isAuthenticated && needsTwoFaVerification && !isOnTwoFaPage) {
+  if (
+    !isSuperUser &&
+    !loading &&
+    isAuthenticated &&
+    needsTwoFaVerification &&
+    !isOnTwoFaPage
+  ) {
     return <Navigate to="/twofactor" replace />;
   }
 

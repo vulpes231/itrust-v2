@@ -353,6 +353,13 @@ const Register = () => {
                   </Link>{" "}
                 </p>
               </div>
+              <div className="d-flex align-items-center justify-content-center gap-3 mt-4">
+                <Link to={"/privacy-policy"}>Privacy</Link>
+                <span>|</span>
+                <Link to={"/terms-and-conditions"}>Terms of Use</Link>
+                <span>|</span>
+                <Link to={"/faq"}>F.A.Q</Link>
+              </div>
             </Col>
           </Row>
         </Container>

@@ -13,10 +13,9 @@ const Timer = ({ end }) => {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const now = new Date(); // Current time
+      const now = new Date();
       const endDate = new Date(end);
 
-      // Calculate difference in milliseconds
       let difference = endDate - now;
 
       if (difference <= 0) {
@@ -31,7 +30,6 @@ const Timer = ({ end }) => {
         return;
       }
 
-      // Calculate years, months, days, etc.
       const years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365));
       difference -= years * (1000 * 60 * 60 * 24 * 365);
 
@@ -50,97 +48,97 @@ const Timer = ({ end }) => {
       const seconds = Math.floor(difference / 1000);
 
       setTimeLeft({
-        years: years,
-        months: months,
-        days: days,
-        hours: hours,
-        minutes: minutes,
-        seconds: seconds,
+        years,
+        months,
+        days,
+        hours,
+        minutes,
+        seconds,
       });
     };
 
-    // Calculate immediately
     calculateTimeLeft();
 
-    // Update every second
     const timer = setInterval(calculateTimeLeft, 1000);
 
-    // Cleanup interval on component unmount
     return () => clearInterval(timer);
-  }, [end]); // Only depend on end date
+  }, [end]);
 
-  // Helper function to format numbers with leading zeros
   const formatNumber = (num) => {
     if (num === undefined || num === null) {
       return "00";
     }
+
     return num.toString().padStart(2, "0");
   };
 
   return (
-    <Row className="d-flex align-items-center flex-wrap">
-      <Col className="d-flex flex-column">
-        <label htmlFor="" className="text-muted fs-10">
-          Years
-        </label>
-        <div>
-          <span className="bg-secondary fs-15 fw-semibold text-light p-2 text-center rounded-1">
+    <Row className="d-flex align-items-center flex-nowrap g-0">
+      <Col className="d-flex flex-column px-1 px-md-2">
+        <label className="text-muted fs-10 mb-1">Years</label>
+
+        <div className="d-flex align-items-center">
+          <span className="bg-secondary fs-14 fs-md-15 fw-semibold text-light p-1 p-md-2 text-center rounded-1">
             {formatNumber(timeLeft.years)}
           </span>
-          <span>:</span>
+
+          <span className="ms-1">:</span>
         </div>
       </Col>
 
-      <Col className="d-flex flex-column">
-        <label htmlFor="" className="text-muted fs-10">
-          Months
-        </label>
-        <div>
-          <span className="bg-secondary fs-15 fw-semibold text-light p-2 text-center rounded-1">
+      <Col className="d-flex flex-column px-1 px-md-2">
+        <label className="text-muted fs-10 mb-1">Months</label>
+
+        <div className="d-flex align-items-center">
+          <span className="bg-secondary fs-14 fs-md-15 fw-semibold text-light p-1 p-md-2 text-center rounded-1">
             {formatNumber(timeLeft.months)}
           </span>
-          <span>:</span>
+
+          <span className="ms-1">:</span>
         </div>
       </Col>
-      <Col className="d-flex flex-column">
-        <label htmlFor="" className="text-muted fs-10">
-          Days
-        </label>
-        <div>
-          <span className="bg-secondary fs-15 fw-semibold text-light p-2 text-center rounded-1">
+
+      <Col className="d-flex flex-column px-1 px-md-2">
+        <label className="text-muted fs-10 mb-1">Days</label>
+
+        <div className="d-flex align-items-center">
+          <span className="bg-secondary fs-14 fs-md-15 fw-semibold text-light p-1 p-md-2 text-center rounded-1">
             {formatNumber(timeLeft.days)}
           </span>
-          <span>:</span>
+
+          <span className="ms-1">:</span>
         </div>
       </Col>
-      <Col className="d-flex flex-column">
-        <label htmlFor="" className="text-muted fs-10">
-          Hours
-        </label>
-        <div>
-          <span className="bg-secondary fs-15 fw-semibold text-light p-2 text-center rounded-1">
+
+      <Col className="d-flex flex-column px-1 px-md-2">
+        <label className="text-muted fs-10 mb-1">Hours</label>
+
+        <div className="d-flex align-items-center">
+          <span className="bg-secondary fs-14 fs-md-15 fw-semibold text-light p-1 p-md-2 text-center rounded-1">
             {formatNumber(timeLeft.hours)}
           </span>
-          <span>:</span>
+
+          <span className="ms-1">:</span>
         </div>
       </Col>
-      <Col className="d-flex flex-column">
-        <label htmlFor="" className="text-muted fs-10">
-          Minutes
-        </label>
-        <div>
-          <span className="bg-secondary fs-15 fw-semibold text-light p-2 text-center rounded-1">
+
+      <Col className="d-flex flex-column px-1 px-md-2">
+        <label className="text-muted fs-10 mb-1">Minutes</label>
+
+        <div className="d-flex align-items-center">
+          <span className="bg-secondary fs-14 fs-md-15 fw-semibold text-light p-1 p-md-2 text-center rounded-1">
             {formatNumber(timeLeft.minutes)}
           </span>
-          <span>:</span>
+
+          <span className="ms-1">:</span>
         </div>
       </Col>
-      <Col className="d-flex flex-column mt-3 mt-md-0">
-        <label htmlFor="" className="text-muted fs-10">
-          Seconds
-        </label>
-        <div>
-          <span className="bg-secondary fs-15 fw-semibold text-light p-2 text-center rounded-1">
+
+      <Col className="d-flex flex-column px-1 px-md-2">
+        <label className="text-muted fs-10 mb-1">Seconds</label>
+
+        <div className="d-flex align-items-center">
+          <span className="bg-secondary fs-14 fs-md-15 fw-semibold text-light p-1 p-md-2 text-center rounded-1">
             {formatNumber(timeLeft.seconds)}
           </span>
         </div>

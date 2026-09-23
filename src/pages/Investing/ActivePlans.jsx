@@ -1,8 +1,8 @@
 import { capitalize } from "lodash";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Card, Col, Label, Row } from "reactstrap";
 import { cash } from "../../assets";
-import { formatCurrency, liveUrl } from "../../constants";
+import { formatCurrency, getAccessToken, liveUrl } from "../../constants";
 import { GoDotFill } from "react-icons/go";
 import { FaArrowUp } from "react-icons/fa";
 import numeral from "numeral";
@@ -11,10 +11,43 @@ import { MdArrowOutward } from "react-icons/md";
 import { format } from "date-fns";
 import Timer from "./Timer";
 import PlanOrders from "./PlanOrders";
+import { useQuery } from "@tanstack/react-query";
+import { getUserTrades } from "../../services/user/trade";
 
 const ActivePlans = ({ plans, style }) => {
   const [showCard, setShowCard] = useState(false);
-  const [showOrders, setShowOrders] = useState(false);
+  const [showOrders, setShowOrders] = useState(true);
+  const [selectedPlanId, setSelectedPlanId] = useState("");
+
+  const tk = getAccessToken();
+
+  const {
+    data: orders,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["orders"],
+    queryFn: () => getUserTrades({ sortBy: "createdAt" }), //{ sortBy: "createdAt" }
+    enabled: !!tk,
+  });
+
+  const planOrders = useMemo(() => {
+    if (!orders || orders.length === 0) return [];
+    // console.log(orders);
+    return orders.filter((ord) => ord.planId === selectedPlanId);
+  }, [orders, selectedPlanId]);
+
+  // console.log(planOrders);
+
+  const totalInvestmentValue = planOrders?.reduce((sum, plan) => {
+    return sum + plan.performance.currentValue;
+  }, 0);
+
+  const totalReturnValue = planOrders?.reduce((sum, plan) => {
+    return sum + plan.performance.totalReturn;
+  }, 0);
+
+  // console.log(totalInvestmentValue);
 
   return (
     <React.Fragment>
@@ -50,8 +83,13 @@ const ActivePlans = ({ plans, style }) => {
                       </span>
                     </div>
                   </div>
-                  <div onClick={() => setShowCard(!showCard)}>
-                    {showCard ? <IoIosArrowDown /> : <IoIosArrowUp />}
+                  <div
+                    onClick={() => {
+                      setSelectedPlanId(plan.planId);
+                      setShowCard(!showCard);
+                    }}
+                  >
+                    {showCard ? <IoIosArrowUp /> : <IoIosArrowDown />}
                   </div>
                 </Col>
                 {showCard && (
@@ -99,21 +137,9 @@ const ActivePlans = ({ plans, style }) => {
                               Returns
                             </Label>
                             <p className="fs-15 fw-semibold">
-                              {numeral(plan.performance.totalReturn).format(
-                                "$0,0.00",
-                              )}
+                              {numeral(totalReturnValue).format("$0,0.00")}
                             </p>
                           </Col>
-                          <Col xs={6} md={3}>
-                            <Label className="text-muted fs-14 fw-regular">
-                              24h Returns
-                            </Label>
-                            <p className="fs-15 fw-semibold">
-                              {plan.performance.dailyReturn}%
-                            </p>
-                          </Col>
-                        </Row>
-                        <Row>
                           <Col xs={6} md={3}>
                             <Label className="text-muted fs-14 fw-regular">
                               Win Rate
@@ -122,6 +148,8 @@ const ActivePlans = ({ plans, style }) => {
                               {plan.analytics.winRate}%
                             </p>
                           </Col>
+                        </Row>
+                        <Row>
                           <Col xs={6} md={3}>
                             <Label className="text-muted fs-14 fw-regular">
                               AUM(USD)
@@ -152,6 +180,14 @@ const ActivePlans = ({ plans, style }) => {
                               {format(plan.end, "dd MMM yyyy")}
                             </p>
                           </Col>
+                          <Col xs={6} md={3}>
+                            <Label className="text-muted fs-14 fw-regular">
+                              Investment Value
+                            </Label>
+                            <p className="fs-15 fw-semibold">
+                              {numeral(totalInvestmentValue).format("$0,0.00")}
+                            </p>
+                          </Col>
                         </Row>
                       </div>
                     </Col>
@@ -162,15 +198,17 @@ const ActivePlans = ({ plans, style }) => {
                           onClick={() => setShowOrders(!showOrders)}
                           className="btn bg-secondary-subtle text-secondary"
                         >
-                          Close Orders{" "}
-                          {!showOrders ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                          {showOrders ? "Close Orders" : "View Orders"}
+                          {/* {!showOrders ? <IoIosArrowUp /> : <IoIosArrowDown />} */}
                         </button>
                       </div>
                       {showOrders && (
                         <div>
                           <PlanOrders
-                            planId={plan.planId}
                             planName={plan.name}
+                            planOrders={planOrders}
+                            isLoading={isLoading}
+                            error={error}
                           />
                         </div>
                       )}

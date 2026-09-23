@@ -22,9 +22,10 @@ async function closePosition(formData) {
   }
 }
 
-async function getUserTrades() {
+async function getUserTrades(queryData) {
+  const { sortBy } = queryData;
   try {
-    const response = await api.get("/trade");
+    const response = await api.get(`/trade/?sortBy=${sortBy}`);
     // console.log(response.data);
     return response.data;
   } catch (error) {
