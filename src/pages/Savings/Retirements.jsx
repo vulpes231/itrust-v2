@@ -59,7 +59,7 @@ const Retirements = ({ analytics, accts, cashAcct }) => {
                 </span>
                 <span className="d-flex flex-column">
                   <span className="fw-bold fs-15">Retirement Accounts</span>
-                  <span className="fw-regular text-muted fs-15">
+                  <span className="fw-regular fs-15">
                     {analytics?.retireAcctLength || 0} Accounts <GoDotFill />{" "}
                     {formatCurrency(analytics?.retirementBalance || 0)}
                   </span>

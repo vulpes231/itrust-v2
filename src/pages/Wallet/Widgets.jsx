@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Row } from "reactstrap";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactionAnalytics } from "../../services/user/transactions";
-import { formatCurrency, getAccessToken } from "../../constants";
+import {
+  formatCurrency,
+  getAccessToken,
+  getWalletColorBySlug,
+  getWalletLogoBySlug,
+} from "../../constants";
 import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
 import { brief, cash } from "../../assets";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -157,7 +162,15 @@ const Widgets = () => {
             <div className="bg-light text-muted py-2 px-3 rounded-2 d-flex flex-column gap-3 ">
               <span className="d-flex gap-5 justify-content-between">
                 <span className="fs-13 fs-md-14">
-                  <img src={cash} alt="" /> Total Deposited:
+                  <i
+                    style={
+                      {
+                        // color: getWalletColorBySlug("cash"),
+                      }
+                    }
+                    className={getWalletLogoBySlug("cash")}
+                  />
+                  Total Deposited:
                 </span>
                 <span className="d-flex align-items-center gap-1">
                   <HiMiniArrowDownTray className="text-success" />
@@ -168,7 +181,15 @@ const Widgets = () => {
               </span>
               <span className="d-flex gap-5 justify-content-between ">
                 <span className="fs-13 fs-md-14">
-                  <img src={cash} alt="" /> Total Withdrawals:
+                  <i
+                    style={
+                      {
+                        // color: getWalletColorBySlug("cash"),
+                      }
+                    }
+                    className={getWalletLogoBySlug("cash")}
+                  />
+                  Total Withdrawals:
                 </span>
                 <span className="d-flex align-items-center gap-1">
                   <HiMiniArrowUpTray className="text-danger" />

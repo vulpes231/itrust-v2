@@ -19,7 +19,7 @@ import binance from "./bin.png";
 import metamask from "./meta.png";
 import trust from "./twall.png";
 import walletconn from "./wcon.png";
-import brief from "./brief.gif";
+import brief from "./brief2.gif";
 import savings from "./savings.gif";
 import automated from "./landing/automated.png";
 import hero from "./landing/hero.png";
