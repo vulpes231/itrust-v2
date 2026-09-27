@@ -155,7 +155,7 @@ const Navdata = () => {
     },
   ];
 
-  const loginType = JSON.parse(sessionStorage.getItem("user"))?.loginType;
+  const loginType = JSON.parse(localStorage.getItem("loginType"));
 
   const isSuperUser = loginType === "superuser";
 

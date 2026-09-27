@@ -27,8 +27,9 @@ const TwoFa = () => {
   const [error, setError] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
 
-  const sessionEmail = JSON.parse(sessionStorage.getItem("user"))?.credentials
-    ?.email;
+  const sessionUser = JSON.parse(sessionStorage.getItem("user"));
+
+  const sessionEmail = sessionUser ? sessionUser.credentials?.email : "";
 
   const resendMutation = useMutation({
     mutationFn: sendAuthCode,
@@ -42,7 +43,7 @@ const TwoFa = () => {
     mutationFn: verifyTwoFa,
     onError: (err) => setError(err.message),
     onSuccess: () => {
-      sessionStorage.removeItem("email_registered");
+      // sessionStorage.removeItem("email_registered");
       window.location.href = "/dashboard";
     },
   });

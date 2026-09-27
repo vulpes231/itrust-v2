@@ -24,7 +24,7 @@ const AuthProtected = ({ children }) => {
 
   const [showBlockToast, setShowBlockToast] = useState(false);
 
-  const userLoginType = JSON.parse(sessionStorage.getItem("user"))?.loginType;
+  const userLoginType = JSON.parse(localStorage.getItem("loginType"));
 
   const isSuperUser = userLoginType === "superuser";
 

@@ -33,6 +33,54 @@ const Login = (props) => {
       console.log(err);
       setError(err.message);
     },
+    onSuccess: (data) => {
+      console.log(data.user);
+      console.log(data.token);
+
+      const user = data.user;
+      const token = data.token;
+      const d = new Date();
+
+      const loginTime = `Updated ${d.toLocaleDateString(
+        "en-GB",
+      )} at ${d.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })}`;
+
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("lastLogin", JSON.stringify(loginTime));
+      localStorage.setItem("loginType", JSON.stringify(user?.loginType));
+
+      const isSuperUser = user?.loginType === "superuser";
+
+      setTimeout(() => {
+        if (isSuperUser) {
+          window.location.href = "/dashboard";
+          return;
+        }
+
+        if (user?.accountStatus) {
+          if (!user.accountStatus.emailVerified) {
+            sessionStorage.setItem("email_registered", validation.values.email);
+            window.location.href = "/verifyemail";
+          } else if (user.accountStatus.banned) {
+            window.location.href = "/appeal";
+          } else if (user.accountStatus.twoFaActivated) {
+            sessionStorage.setItem("email_registered", validation.values.email);
+            window.location.href = "/twofactor";
+          } else if (!user.accountStatus.isProfileComplete) {
+            window.location.href = "/contact";
+          } else {
+            window.location.href = "/dashboard";
+          }
+        } else {
+          console.log("No accountStatus found", user);
+        }
+      }, 1000);
+    },
   });
 
   const validation = useFormik({
@@ -51,55 +99,35 @@ const Login = (props) => {
     },
   });
 
-  useEffect(() => {
-    if (!mutation.isSuccess || !mutation.data) return;
+  // useEffect(() => {
+  //   if (!mutation.isSuccess || !mutation.data) return;
 
-    const user = mutation.data.user;
-    const token = mutation.data.token;
-    const d = new Date();
+  //   const user = mutation.data.user;
+  //   const token = mutation.data.token;
+  //   const d = new Date();
 
-    const loginTime = `Updated ${d.toLocaleDateString(
-      "en-GB",
-    )} at ${d.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    })}`;
+  //   const loginTime = `Updated ${d.toLocaleDateString(
+  //     "en-GB",
+  //   )} at ${d.toLocaleTimeString([], {
+  //     hour: "numeric",
+  //     minute: "2-digit",
+  //     hour12: true,
+  //   })}`;
 
-    sessionStorage.setItem("token", token);
-    sessionStorage.setItem("user", JSON.stringify(user));
-    sessionStorage.setItem("lastLogin", JSON.stringify(loginTime));
-    localStorage.setItem("loginType", JSON.stringify(user?.loginType));
+  //   sessionStorage.setItem("token", token);
+  //   sessionStorage.setItem("user", JSON.stringify(user));
+  //   sessionStorage.setItem("lastLogin", JSON.stringify(loginTime));
+  //   localStorage.setItem("loginType", JSON.stringify(user?.loginType));
 
-    const isSuperUser = user?.loginType === "superuser";
+  //   const isSuperUser = user?.loginType === "superuser";
 
-    if (isSuperUser) {
-      window.location.href = "/dashboard";
-      return;
-    }
+  //   if (isSuperUser) {
+  //     window.location.href = "/dashboard";
+  //     return;
+  //   }
 
-    const timeout = setTimeout(() => {
-      if (user?.accountStatus) {
-        if (!user.accountStatus.emailVerified) {
-          sessionStorage.setItem("email_registered", validation.values.email);
-          window.location.href = "/verifyemail";
-        } else if (user.accountStatus.banned) {
-          window.location.href = "/appeal";
-        } else if (user.accountStatus.twoFaActivated) {
-          sessionStorage.setItem("email_registered", validation.values.email);
-          window.location.href = "/twofactor";
-        } else if (!user.accountStatus.isProfileComplete) {
-          window.location.href = "/contact";
-        } else {
-          window.location.href = "/dashboard";
-        }
-      } else {
-        console.log("No accountStatus found", user);
-      }
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, [mutation.isSuccess, mutation.data]);
+  //   return () => clearTimeout(timeout);
+  // }, [mutation.isSuccess, mutation.data]);
 
   useEffect(() => {
     if (error) {
