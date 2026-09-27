@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@lordicon/react": "^1.11.0",
+    "@marsidev/react-turnstile": "^1.6.1",
     "@reduxjs/toolkit": "^2.10.1",
     "@south-paw/react-vector-maps": "^3.2.0",
     "@tanstack/match-sorter-utils": "^8.19.4",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Row,
   Col,
@@ -23,9 +23,12 @@ import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "../../services/auth/register";
 import SuccessToast from "../../components/Common/SuccessToast";
 import ErrorToast from "../../components/Common/ErrorToast";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 const Register = () => {
+  const turnstileRef = useRef(null);
   const history = useNavigate();
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [error, setError] = useState("");
   const [passwordShow, setPasswordShow] = useState(false);
   const [confirmPasswordShow, setConfirmPasswordShoww] = useState(false);
@@ -33,8 +36,9 @@ const Register = () => {
   const mutation = useMutation({
     mutationFn: registerUser,
     onError: (err) => {
-      // console.log(err);
       setError(err.message);
+      setTurnstileToken("");
+      turnstileRef.current?.reset();
     },
   });
 
@@ -48,6 +52,7 @@ const Register = () => {
       username: "",
       password: "",
       confirm_password: "",
+      website: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
@@ -60,7 +65,15 @@ const Register = () => {
         .oneOf([Yup.ref("password")], "Confirm Password Doesn't Match"),
     }),
     onSubmit: (values) => {
-      mutation.mutate(values);
+      if (!turnstileToken) {
+        setError("Please complete the verification.");
+        return;
+      }
+
+      mutation.mutate({
+        ...values,
+        turnstileToken,
+      });
     },
   });
 
@@ -230,6 +243,20 @@ const Register = () => {
                           </FormFeedback>
                         ) : null}
                       </div>
+                      <Input
+                        type="text"
+                        name="website"
+                        tabIndex="-1"
+                        autoComplete="off"
+                        style={{
+                          position: "absolute",
+                          left: "-9999px",
+                          width: "1px",
+                          height: "1px",
+                        }}
+                        value={validation.values.website || ""}
+                        onChange={validation.handleChange}
+                      />
 
                       <div className="mb-3 position-relative auth-pass-inputgroup">
                         <Label htmlFor="userpassword" className="form-label">
@@ -313,6 +340,21 @@ const Register = () => {
                           <i className="ri-eye-fill align-middle"></i>
                         </button>
                       </div>
+                      <Turnstile
+                        ref={turnstileRef}
+                        siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                        onSuccess={(token) => {
+                          setTurnstileToken(token);
+                        }}
+                        onExpire={() => {
+                          console.log("TURNSTILE EXPIRED");
+                          setTurnstileToken("");
+                        }}
+                        onError={(error) => {
+                          console.error("TURNSTILE ERROR:", error);
+                          setTurnstileToken("");
+                        }}
+                      />
 
                       <div className="mb-4">
                         <p className="mb-0 fs-12 text-muted fst-italic d-flex gap-1">
@@ -330,7 +372,7 @@ const Register = () => {
                         <button
                           className="btn btn-secondary w-100"
                           type="submit"
-                          disabled={mutation.isPending}
+                          disabled={mutation.isPending || !turnstileToken}
                         >
                           {mutation.isPending
                             ? "Creating Account..."
