@@ -24,6 +24,7 @@ import { registerUser } from "../../services/auth/register";
 import SuccessToast from "../../components/Common/SuccessToast";
 import ErrorToast from "../../components/Common/ErrorToast";
 import { Turnstile } from "@marsidev/react-turnstile";
+import AuthNav from "./AuthNav";
 
 const Register = () => {
   const turnstileRef = useRef(null);
@@ -103,11 +104,12 @@ const Register = () => {
 
   return (
     <React.Fragment>
-      {/* <ParticlesAuth>
-       
-      </ParticlesAuth> */}
-      <div className="auth-page-content">
-        <Container style={{ marginBottom: "50px" }}>
+      <div
+        className="auth-page-content d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <AuthNav />
+        <Container style={{ marginBottom: "50px", marginTop: "100px" }}>
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
               <Card className="mt-4">
@@ -360,7 +362,7 @@ const Register = () => {
                         <p className="mb-0 fs-12 text-muted fst-italic d-flex gap-1">
                           By registering you agree to the Itrust
                           <Link
-                            to="#"
+                            to="/terms-and-conditions"
                             className="text-primary text-decoration-underline fst-normal fw-medium"
                           >
                             Terms of Use

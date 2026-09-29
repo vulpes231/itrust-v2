@@ -81,8 +81,7 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
       entry: "",
       stoploss: "",
       takeprofit: "",
-      leverage:
-        tradeType.id === "leverage" || tradeType.id === "stoploss" ? "2" : "",
+      leverage: tradeType.id === "leverage" ? "1" : "",
       executionType: tradeType.id,
     },
     validationSchema: Yup.object({
@@ -385,6 +384,30 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
         ) : null}
       </Col>
 
+      {validation.values.executionType === "leverage" && (
+        <Col className="mb-3 mt-3">
+          <Label htmlFor="amount" className="form-label">
+            Leverage <span className="text-danger">*</span>
+          </Label>
+
+          <div className="d-flex flex-column gap-2">
+            <Input
+              name="leverage"
+              type="text"
+              // placeholder="$0.00"
+              onChange={validation.handleChange}
+              onBlur={validation.handleBlur}
+              value={validation.values.leverage || ""}
+              invalid={
+                validation.touched.leverage && validation.errors.leverage
+                  ? true
+                  : false
+              }
+              autoComplete="off"
+            />
+          </div>
+        </Col>
+      )}
       <Col className="mb-3 mt-3">
         <Label htmlFor="amount" className="form-label">
           Amount <span className="text-danger">*</span>

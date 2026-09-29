@@ -35,7 +35,7 @@ const style = {
 
 const Plans = ({ status = "all", risk = "all" }) => {
   const [activeTab, setActiveTab] = useState(() => {
-    return sessionStorage.getItem("investTab") || "plans";
+    return sessionStorage.getItem("investTab") || "active" || "plans";
   });
 
   const { data: plans = [] } = useQuery({

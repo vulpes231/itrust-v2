@@ -15,8 +15,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserTrades } from "../../services/user/trade";
 
 const ActivePlans = ({ plans, style }) => {
-  const [showCard, setShowCard] = useState(false);
-  const [showOrders, setShowOrders] = useState(true);
+  const [showCard, setShowCard] = useState(true);
+  const [showOrders, setShowOrders] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState("");
 
   const tk = getAccessToken();
@@ -46,6 +46,8 @@ const ActivePlans = ({ plans, style }) => {
   const totalReturnValue = planOrders?.reduce((sum, plan) => {
     return sum + plan.performance.totalReturn;
   }, 0);
+
+  // const over
 
   // console.log(totalInvestmentValue);
 
@@ -185,7 +187,9 @@ const ActivePlans = ({ plans, style }) => {
                               Investment Value
                             </Label>
                             <p className="fs-15 fw-semibold">
-                              {numeral(totalInvestmentValue).format("$0,0.00")}
+                              {numeral(
+                                plan.balance.total + totalReturnValue,
+                              ).format("$0,0.00")}
                             </p>
                           </Col>
                         </Row>

@@ -26,7 +26,10 @@ const PendingWithdrawal = ({ analytics }) => {
           >
             Pending Withdrawals
           </span>
-          <span style={{ fontWeight: "500", fontSize: "24.5px" }}>
+          <span
+            style={{ fontWeight: "500", fontSize: "24.5px" }}
+            className="text-body"
+          >
             {formatCurrency(analytics?.pendingWithdrawal)}
           </span>
           <span

@@ -2,16 +2,13 @@ import numeral from "numeral";
 import React from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 import { Card, CardBody, Col, Row } from "reactstrap";
-import { getWalletAnalytics } from "../../services/user/wallet";
-import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "../../constants";
-
 import { FaChartLine } from "react-icons/fa6";
 
 const AssetGraph = ({ count, walletAnalytics, walletData }) => {
   const totalInv = walletData ? walletData["default"]?.totalInvested : 0;
 
-  // console.log(walletData);
+  // console.log(walletAnalytics);
   return (
     <Card>
       <CardBody className="px-4">
@@ -31,18 +28,18 @@ const AssetGraph = ({ count, walletAnalytics, walletData }) => {
             <p
               style={{ width: "80px" }}
               className={`${
-                walletData?.default?.totalProfitLoss < 0
+                walletAnalytics?.totalProfitPercent < 0
                   ? "text-danger bg-danger-subtle"
                   : "text-success bg-success-subtle"
               } px-2 py-1 rounded-1 fs-13 d-flex align-items-center justify-content-center gap-1`}
             >
-              {walletData?.default?.totalProfitLoss > 0 ? (
+              {walletAnalytics?.totalProfitPercent > 0 ? (
                 <FaArrowUp size={10} />
               ) : (
                 <FaArrowDown size={10} />
               )}
-              {walletData?.default?.totalProfitLoss
-                ? parseFloat(walletData?.default?.totalProfitLoss).toFixed(2)
+              {walletAnalytics?.totalProfitPercent
+                ? parseFloat(walletAnalytics?.totalProfitPercent).toFixed(2)
                 : parseFloat(0).toFixed(2)}
               %
             </p>

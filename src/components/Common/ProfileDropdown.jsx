@@ -25,6 +25,7 @@ const ProfileDropdown = () => {
   const toggleProfileDropdown = () => {
     setIsProfileDropdown(!isProfileDropdown);
   };
+
   return (
     <React.Fragment>
       <Dropdown
@@ -63,6 +64,12 @@ const ProfileDropdown = () => {
             <Link to={"/history"} className="text-dark">
               <i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
               <span className="align-middle">History</span>
+            </Link>
+          </DropdownItem>
+          <DropdownItem>
+            <Link to={"/tiers"} className="text-dark">
+              <i className="ri-vip-diamond-line text-muted fs-16 align-middle me-1"></i>
+              <span className="align-middle">Tiers</span>
             </Link>
           </DropdownItem>
 

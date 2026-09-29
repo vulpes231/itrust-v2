@@ -24,6 +24,7 @@ import {
   Landing,
   TwoFa,
   ArticleDetail,
+  Tiers,
 } from "../pages";
 
 import AutomatedInvesting from "../pages/Landing/Automated";
@@ -64,6 +65,7 @@ const authProtectedRoutes = [
   { path: "/open-account", component: <OpenAccount /> },
   { path: "/automated-investing", component: <Investing /> },
   { path: "/history", component: <Histories /> },
+  { path: "/tiers", component: <Tiers /> },
 ];
 
 const publicRoutes = [

@@ -22,6 +22,7 @@ import Histories from "./Histories";
 import Landing from "./Landing";
 import TwoFa from "./Authentication/TwoFa";
 import ArticleDetail from "./Landing/ArticleDetail";
+import Tiers from "./Tiers";
 
 export {
   Contact,
@@ -48,4 +49,5 @@ export {
   Profile,
   Histories,
   Landing,
+  Tiers,
 };

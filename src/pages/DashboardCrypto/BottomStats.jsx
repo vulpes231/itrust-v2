@@ -17,6 +17,7 @@ const BottomStats = ({ walletAnalytics, walletData }) => {
       <Row className="px-3">
         <Col
           //
+          style={{ border: "solid 1px #dedede" }}
           className="border-1 border-dotted p-2"
           md={4}
         >
@@ -31,7 +32,11 @@ const BottomStats = ({ walletAnalytics, walletData }) => {
             </span>
           </div>
         </Col>
-        <Col md={4} className="border-1 border-dotted p-2">
+        <Col
+          style={{ border: "solid 1px #dedede" }}
+          md={4}
+          className="border-1 border-dotted p-2"
+        >
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold">
               {" "}
@@ -44,7 +49,11 @@ const BottomStats = ({ walletAnalytics, walletData }) => {
             </span>
           </div>
         </Col>
-        <Col md={4} className="border-1 border-dotted p-2">
+        <Col
+          style={{ border: "solid 1px #dedede" }}
+          md={4}
+          className="border-1 border-dotted p-2"
+        >
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold">
               {walletAnalytics

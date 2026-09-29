@@ -26,7 +26,10 @@ const PendingDeposit = ({ analytics }) => {
           >
             Pending Deposits
           </span>
-          <span style={{ fontWeight: "500", fontSize: "24.5px" }}>
+          <span
+            className="text-body "
+            style={{ fontWeight: "500", fontSize: "24.5px" }}
+          >
             {formatCurrency(analytics?.pendingDeposit)}
           </span>
           <span

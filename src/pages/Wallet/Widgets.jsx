@@ -159,44 +159,29 @@ const Widgets = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-light text-muted py-2 px-3 rounded-2 d-flex flex-column gap-3 ">
-              <span className="d-flex gap-5 justify-content-between">
-                <span className="fs-13 fs-md-14">
-                  <i
-                    style={
-                      {
-                        // color: getWalletColorBySlug("cash"),
-                      }
-                    }
-                    className={getWalletLogoBySlug("cash")}
-                  />
-                  Total Deposited:
-                </span>
-                <span className="d-flex align-items-center gap-1">
-                  <HiMiniArrowDownTray className="text-success" />
+            {/* total container */}
+            <div className="d-none d-md-flex">
+              <span
+                style={{ border: "1px solid #dedede" }}
+                className="d-flex gap-2 flex-column align-items-start border-1 border-dotted bg-light-subtle py-2 px-2 px-md-4"
+              >
+                <h5 className="fs-13 fs-md-14 text-muted">Total Deposits</h5>
+                <h4 className="d-flex align-items-center gap-1 fw-normal fw-md-bold">
                   {trxAnalytics
                     ? formatCurrency(trxAnalytics.totalDeposit)
                     : formatCurrency(0)}
-                </span>
+                </h4>
               </span>
-              <span className="d-flex gap-5 justify-content-between ">
-                <span className="fs-13 fs-md-14">
-                  <i
-                    style={
-                      {
-                        // color: getWalletColorBySlug("cash"),
-                      }
-                    }
-                    className={getWalletLogoBySlug("cash")}
-                  />
-                  Total Withdrawals:
-                </span>
-                <span className="d-flex align-items-center gap-1">
-                  <HiMiniArrowUpTray className="text-danger" />
+              <span
+                style={{ border: "1px solid #dedede" }}
+                className="d-flex gap-2 flex-column align-items-start border-1 border-dotted bg-light-subtle py-2 px-2 px-md-4"
+              >
+                <h5 className="fs-13 fs-md-14 text-muted">Total Withdrawals</h5>
+                <h4 className="d-flex align-items-center gap-1 fw-normal fw-md-bold">
                   {trxAnalytics
                     ? formatCurrency(trxAnalytics.totalWithdrawal)
                     : formatCurrency(0)}
-                </span>
+                </h4>
               </span>
             </div>
           </div>
@@ -213,6 +198,31 @@ const Widgets = () => {
             <Link className="btn btn-danger" to={"/withdraw"}>
               Withdraw
             </Link>
+          </div>
+          {/* mobile total container */}
+          <div className="d-flex d-md-none">
+            <span
+              style={{ border: "1px solid #dedede" }}
+              className="d-flex gap-2 flex-column align-items-start border-1 border-dotted bg-light-subtle py-2 px-2 px-md-4"
+            >
+              <h5 className="fs-13 fs-md-14 text-muted">Total Deposits</h5>
+              <h4 className="d-flex align-items-center gap-1 fw-normal fw-md-bold">
+                {trxAnalytics
+                  ? formatCurrency(trxAnalytics.totalDeposit)
+                  : formatCurrency(0)}
+              </h4>
+            </span>
+            <span
+              style={{ border: "1px solid #dedede" }}
+              className="d-flex gap-2 flex-column align-items-start border-1 border-dotted bg-light-subtle py-2 px-2 px-md-4"
+            >
+              <h5 className="fs-13 fs-md-14 text-muted">Total Withdrawals</h5>
+              <h4 className="d-flex align-items-center gap-1 fw-normal fw-md-bold">
+                {trxAnalytics
+                  ? formatCurrency(trxAnalytics.totalWithdrawal)
+                  : formatCurrency(0)}
+              </h4>
+            </span>
           </div>
         </div>
       </Card>
