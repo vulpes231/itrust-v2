@@ -202,22 +202,28 @@ const Widgets = () => {
           {/* mobile total container */}
           <div className="d-flex d-md-none">
             <span
-              style={{ border: "1px solid #dedede" }}
+              style={{ border: "1px solid #dedede", width: "100%" }}
               className="d-flex gap-2 flex-column align-items-start border-1 border-dotted bg-light-subtle py-2 px-2 px-md-4"
             >
               <h5 className="fs-13 fs-md-14 text-muted">Total Deposits</h5>
-              <h4 className="d-flex align-items-center gap-1 fw-normal fw-md-bold">
+              <h4
+                className="d-flex align-items-center gap-1 fw-normal fs-18"
+                style={{ fontWeight: 700 }}
+              >
                 {trxAnalytics
                   ? formatCurrency(trxAnalytics.totalDeposit)
                   : formatCurrency(0)}
               </h4>
             </span>
             <span
-              style={{ border: "1px solid #dedede" }}
+              style={{ border: "1px solid #dedede", width: "100%" }}
               className="d-flex gap-2 flex-column align-items-start border-1 border-dotted bg-light-subtle py-2 px-2 px-md-4"
             >
-              <h5 className="fs-13 fs-md-14 text-muted">Total Withdrawals</h5>
-              <h4 className="d-flex align-items-center gap-1 fw-normal fw-md-bold">
+              <h5 className="fs-13 fs-md-18 text-muted">Total Withdrawals</h5>
+              <h4
+                className="d-flex align-items-center gap-1 fw-normal fs-18"
+                style={{ fontWeight: 700 }}
+              >
                 {trxAnalytics
                   ? formatCurrency(trxAnalytics.totalWithdrawal)
                   : formatCurrency(0)}

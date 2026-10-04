@@ -182,6 +182,10 @@ const TierList = () => {
     (trx) => trx.type === "withdraw" && trx.status === "pending",
   );
 
+  // console.log(pendingWithdrawals);
+
+  console.log(user?.accountTier?.isCodeActivated);
+
   const showTierOption =
     user?.accountTier?.isCodeActivated && pendingWithdrawals.length > 0;
 

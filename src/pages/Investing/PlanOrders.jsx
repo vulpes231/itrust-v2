@@ -9,6 +9,7 @@ const PlanOrders = ({
   isLoading,
   error,
 }) => {
+  // console.log(planOrders);
   const ITEMS_PER_PAGE = 10;
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -153,7 +154,13 @@ const PlanOrders = ({
                   </td>
 
                   {/* Realized P&L */}
-                  <td>${(order.extra || 0).toFixed(2)}</td>
+                  <td>
+                    $
+                    {(order.status === "closed"
+                      ? numeral(order.performance.totalReturn).format("$0,0.00")
+                      : 0
+                    ).toFixed(2)}
+                  </td>
 
                   {/* Status */}
                   <td>

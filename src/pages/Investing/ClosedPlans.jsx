@@ -12,7 +12,7 @@ const ClosedPlans = ({ plans, style }) => {
           plans.length > 0 &&
           plans.map((plan) => {
             return (
-              <Col lg={4}>
+              <Col key={plan._id} lg={4}>
                 <Card className="d-flex flex-column gap-3 py-3">
                   <div className="d-flex align-items-center gap-3 px-4 py-2">
                     <span className="bg-light">

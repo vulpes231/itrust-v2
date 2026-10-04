@@ -33,7 +33,6 @@ const OrderHistory = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [activeOrderTab, setActiveOrderTab] = useState("trades");
 
-  const queryData = { limit: 7 };
   const { data: trades } = useQuery({
     queryKey: ["recentTrades"],
     queryFn: () => getUserTrades({ sortBy: "createdAt" }),
@@ -192,15 +191,17 @@ const OrderHistory = () => {
     [],
   );
 
+  // console.log(filter, statusFilter, transformedData);
+
   return (
     <React.Fragment>
       <Card>
         <CardHeader>
-          <Row className="align-items-center">
-            <Col xs={3}>
+          <div className="align-items-center">
+            <div className="mb-3">
               <h4 className="card-title mb-0 flex-grow-1">Order History</h4>
-            </Col>
-            <div className="col-auto ms-auto">
+            </div>
+            <div className="">
               <div className="flex-shrink-0 d-flex align-items-center gap-2 ">
                 <Input type="text" placeholder="Search for orders" />
                 <button
@@ -208,16 +209,16 @@ const OrderHistory = () => {
                   onClick={() => setShowFilter(!showFilter)}
                   className="btn btn-secondary"
                 >
-                  filter
+                  Filter
                 </button>
               </div>
             </div>
-          </Row>
+          </div>
         </CardHeader>
         <CardBody>
           {showFilter && (
-            <Col className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-2 w-full">
+            <Col className="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 gap-md-0">
+              <div className="d-flex flex-column flex-md-row align-items-md-center gap-2 w-full">
                 <span style={{ whiteSpace: "nowrap" }}>Sort by:</span>
                 <Input
                   type="select"
@@ -242,7 +243,7 @@ const OrderHistory = () => {
                 >
                   <option value="all">All Status</option>
                   <option value="open">Open</option>
-                  <option value="close">Closed</option>
+                  <option value="closed">Closed</option>
                 </Input>
               </div>
               <div className="d-flex gap-2">
@@ -272,12 +273,19 @@ const OrderHistory = () => {
         </CardBody>
 
         <CardBody>
+          {/* <div>{transformedData.length} records</div>
+
+          {transformedData.map((item) => (
+            <div key={item._id}>
+              {item.date} - {item.name} - {item.status}
+            </div>
+          ))} */}
           <TableContainer
             columns={columns}
-            data={transformedData.length > 0 ? transformedData : []}
+            data={transformedData}
             isGlobalFilter={false}
             isAddUserList={false}
-            customPageSize={transformedData.length}
+            customPageSize={10}
             className="custom-header-css"
             divClass="table-responsive table-card mb-3"
             tableClass="align-middle table-nowrap"

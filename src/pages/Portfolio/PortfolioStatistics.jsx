@@ -196,6 +196,35 @@ const PortfolioStatistics = ({
           tools: { zoom: true, zoomin: true, zoomout: true, reset: true },
         },
       },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            xaxis: {
+              tickAmount:
+                range === "1D"
+                  ? 6
+                  : range === "1W"
+                    ? 5
+                    : range === "1M"
+                      ? 6
+                      : range === "1Y"
+                        ? 6
+                        : 6,
+
+              labels: {
+                rotate: 0,
+                rotateAlways: false,
+                hideOverlappingLabels: true,
+                trim: true,
+                style: {
+                  fontSize: "10px",
+                },
+              },
+            },
+          },
+        },
+      ],
       colors: portfolioStatisticsColors,
       dataLabels: { enabled: false },
       fill: {

@@ -16,7 +16,7 @@ import { getUserTrades } from "../../services/user/trade";
 
 const ActivePlans = ({ plans, style }) => {
   const [showCard, setShowCard] = useState(true);
-  const [showOrders, setShowOrders] = useState(false);
+  const [showOrders, setShowOrders] = useState(null);
   const [selectedPlanId, setSelectedPlanId] = useState("");
 
   const tk = getAccessToken();
@@ -27,29 +27,14 @@ const ActivePlans = ({ plans, style }) => {
     error,
   } = useQuery({
     queryKey: ["orders"],
-    queryFn: () => getUserTrades({ sortBy: "createdAt" }), //{ sortBy: "createdAt" }
+    queryFn: () => getUserTrades({ sortBy: "createdAt" }),
     enabled: !!tk,
   });
 
-  const planOrders = useMemo(() => {
-    if (!orders || orders.length === 0) return [];
-    // console.log(orders);
-    return orders.filter((ord) => ord.planId === selectedPlanId);
-  }, [orders, selectedPlanId]);
+  // console.log("selectedPlanId:", selectedPlanId);
+  // console.log("orders:", orders);
 
   // console.log(planOrders);
-
-  const totalInvestmentValue = planOrders?.reduce((sum, plan) => {
-    return sum + plan.performance.currentValue;
-  }, 0);
-
-  const totalReturnValue = planOrders?.reduce((sum, plan) => {
-    return sum + plan.performance.totalReturn;
-  }, 0);
-
-  // const over
-
-  // console.log(totalInvestmentValue);
 
   return (
     <React.Fragment>
@@ -57,7 +42,20 @@ const ActivePlans = ({ plans, style }) => {
         {plans &&
           plans.length > 0 &&
           plans.map((plan) => {
-            // console.log(plan);
+            const planOrders = orders?.filter(
+              (ord) =>
+                ord.wallet?.slug === "auto" && ord.planId === plan.planId,
+            );
+
+            const totalReturnValue = planOrders.reduce(
+              (sum, order) => sum + (order.performance?.totalReturn || 0),
+              0,
+            );
+
+            const totalInvestmentValue = planOrders.reduce(
+              (sum, order) => sum + (order.performance?.currentValue || 0),
+              0,
+            );
             return (
               <Card key={plan._id}>
                 <Col className="d-flex align-items-center justify-content-between p-3">
@@ -199,14 +197,20 @@ const ActivePlans = ({ plans, style }) => {
                       <hr className="text-muted" />
                       <div className="px-4 py-3 d-flex justify-content-end">
                         <button
-                          onClick={() => setShowOrders(!showOrders)}
+                          onClick={() =>
+                            setShowOrders((prev) =>
+                              prev === plan._id ? null : plan._id,
+                            )
+                          }
                           className="btn bg-secondary-subtle text-secondary"
                         >
-                          {showOrders ? "Close Orders" : "View Orders"}
+                          {showOrders === plan._id
+                            ? "Close Orders"
+                            : "View Orders"}
                           {/* {!showOrders ? <IoIosArrowUp /> : <IoIosArrowDown />} */}
                         </button>
                       </div>
-                      {showOrders && (
+                      {showOrders === plan._id && (
                         <div>
                           <PlanOrders
                             planName={plan.name}
