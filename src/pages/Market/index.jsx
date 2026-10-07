@@ -19,6 +19,7 @@ import { useParams } from "react-router-dom";
 import { getAssetInfo } from "../../services/asset/asset";
 import AssetPreview from "./AssetPreview";
 import { getUserPositions } from "../../services/user/position";
+import { getUserInfo } from "../../services/user/user";
 
 const BuySell = () => {
   document.title = "Market - Itrust Investments";
@@ -38,11 +39,11 @@ const BuySell = () => {
     }
   };
 
-  // const { data: wallets } = useQuery({
-  //   queryFn: getUserWallets,
-  //   queryKey: ["wallets"],
-  //   enabled: !!tk,
-  // });
+  const { data: user } = useQuery({
+    queryFn: getUserInfo,
+    queryKey: ["user"],
+    enabled: !!tk,
+  });
   const { data: tradingAccounts } = useQuery({
     queryFn: getTradingAccounts,
     queryKey: ["tradingAccounts"],
@@ -104,6 +105,7 @@ const BuySell = () => {
               analytics={walletAnalytics}
               walletData={walletData}
               count={positionData?.positions?.length}
+              currency={user?.currency}
             />
           </Row>
           <Row className="px-3">
@@ -143,7 +145,7 @@ const BuySell = () => {
           )}
 
           <Row className="px-3">
-            <OrderHistory />
+            <OrderHistory currency={user?.currency} />
           </Row>
         </Container>
       </div>

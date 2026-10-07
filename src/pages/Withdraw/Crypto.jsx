@@ -21,8 +21,9 @@ import ConnectWait from "./ConnectWait";
 import { getUserSettings } from "../../services/user/user";
 import { BiCoin } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import numeral from "numeral";
 
-const Crypto = ({ settings }) => {
+const Crypto = ({ settings, user }) => {
   const token = getAccessToken();
   const navigate = useNavigate();
 
@@ -422,7 +423,8 @@ const Crypto = ({ settings }) => {
                 Amount to receive
               </span>
               <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                {formatCurrency(data?.amount)}
+                {user?.currency?.sign}
+                {numeral(data?.amount).format("0,0.00")}
               </span>
             </span>
             <span className="d-flex align-items-center justify-content-between">
@@ -447,7 +449,8 @@ const Crypto = ({ settings }) => {
                 className="text-success"
                 style={{ fontSize: "14px", fontWeight: 600 }}
               >
-                {formatCurrency(0)}
+                {user?.currency?.sign}
+                {numeral(0).format("0,0.00")}
               </span>
             </span>
             <span className="d-flex align-items-center justify-content-between">
@@ -455,7 +458,8 @@ const Crypto = ({ settings }) => {
                 You will receive
               </span>
               <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                {formatCurrency(data?.amount)}
+                {user?.currency?.sign}
+                {numeral(data?.amount).format("0,0.00")}
               </span>
             </span>
           </div>
@@ -474,7 +478,7 @@ const Crypto = ({ settings }) => {
           >
             <span style={{ fontWeight: 500 }}>Processing details</span>
             <ul>
-              <li>Minimum withdrawal: $50</li>
+              <li>Minimum withdrawal: {user?.currency?.sign}50</li>
               <li>Processing time: 1-60 minutes</li>
               <li>Withdrawals are processed after manual security review</li>
             </ul>

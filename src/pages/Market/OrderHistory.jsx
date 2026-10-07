@@ -25,7 +25,7 @@ import {
 import { format } from "date-fns";
 import numeral from "numeral";
 
-const OrderHistory = () => {
+const OrderHistory = ({ currency }) => {
   const tk = getAccessToken();
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilter, setShowFilter] = useState(true);

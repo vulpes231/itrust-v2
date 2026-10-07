@@ -174,7 +174,8 @@ const Form = ({
                       setAmount(btn);
                     }}
                   >
-                    ${btn}
+                    {currency?.sign}
+                    {btn}
                   </button>
                 );
               })}

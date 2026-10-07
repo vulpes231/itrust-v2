@@ -1,15 +1,13 @@
 import { capitalize } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Card, Col, Row } from "reactstrap";
-import { cash } from "../../assets";
-import { formatCurrency, liveUrl } from "../../constants";
-import { useMutation } from "@tanstack/react-query";
-import { activatePlan } from "../../services/user/invest";
+import { liveUrl } from "../../constants";
 import ErrorToast from "../../components/Common/ErrorToast";
 import SuccessToast from "../../components/Common/SuccessToast";
 import ActivatePlanModal from "./ActivatePlanModal";
+import numeral from "numeral";
 
-const AllPlans = ({ plans, style }) => {
+const AllPlans = ({ plans, style, currency }) => {
   const [error, setError] = useState("");
   const [selectedPlan, setSelectedPlan] = useState("");
   const [showActivateModal, setShowActivateModal] = useState(false);
@@ -63,7 +61,8 @@ const AllPlans = ({ plans, style }) => {
                       Min Investment
                     </span>
                     <span className={style.medium}>
-                      {formatCurrency(plan?.minInvestment)}
+                      {currency?.sign}
+                      {numeral(plan?.minInvestment).format("0,0.00")}
                     </span>
                   </Col>
                   <Col xs={6} className="d-flex flex-column px-4">

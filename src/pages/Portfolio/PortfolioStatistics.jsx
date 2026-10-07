@@ -13,6 +13,8 @@ const PortfolioStatistics = ({
   cash,
   analytics,
   currentNetWorth = 0,
+  currency,
+  user,
 }) => {
   const [range, setRange] = React.useState("ALL");
   const walletId = activeWallet?._id;
@@ -399,8 +401,10 @@ const PortfolioStatistics = ({
           </CardBody>
           <FootStats
             activeWallet={activeWallet}
-            // walletData={walletData}
+            walletData={walletData}
             cashAccount={cash}
+            user={user}
+            currency={currency}
           />
         </Card>
       </Col>

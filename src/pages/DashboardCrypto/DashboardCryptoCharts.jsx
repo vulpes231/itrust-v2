@@ -3,11 +3,24 @@ import ReactApexChart from "react-apexcharts";
 
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 import {
-  formatCurrency,
+  // formatCurrency,
   getTotalProfit,
   getWalletColorBySlug,
 } from "../../constants";
 import { capitalize } from "lodash";
+import numeral from "numeral";
+
+const formatCurrency = (currency, value) => {
+  const numericValue = Number(value) || 0;
+
+  if (numericValue < 0) {
+    return `-${currency?.sign || ""}${numeral(Math.abs(numericValue)).format(
+      "0,0.00",
+    )}`;
+  }
+
+  return `${currency?.sign || ""}${numeral(numericValue).format("0,0.00")}`;
+};
 
 const PortfolioCharts = ({
   series,
@@ -17,6 +30,7 @@ const PortfolioCharts = ({
   walletData,
   walletAnalytics,
   networth,
+  currency,
 }) => {
   const getChartData = () => {
     if (!chartData || chartData.length === 0) return [100];
@@ -96,12 +110,12 @@ const PortfolioCharts = ({
               formatter: function (val) {
                 const totalBalance = getTotalBalance();
                 if (totalBalance === 0) {
-                  return "$0.00";
+                  return formatCurrency(currency, 0);
                 }
                 if (selectedWallet === "All") {
                   return "$" + val;
                 }
-                return formatCurrency(getTotalBalance());
+                return formatCurrency(currency, getTotalBalance());
               },
             },
             total: {
@@ -114,7 +128,7 @@ const PortfolioCharts = ({
               color: "#9599ad",
               fontWeight: 500,
               formatter: function (w) {
-                return formatCurrency(getTotalBalance());
+                return formatCurrency(currency, getTotalBalance());
               },
             },
           },

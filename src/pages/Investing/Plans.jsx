@@ -33,7 +33,7 @@ const style = {
   green: "#67B173",
 };
 
-const Plans = ({ status = "all", risk = "all" }) => {
+const Plans = ({ status = "all", risk = "all", currency }) => {
   const [activeTab, setActiveTab] = useState(() => {
     return sessionStorage.getItem("investTab") || "active" || "plans";
   });
@@ -50,24 +50,32 @@ const Plans = ({ status = "all", risk = "all" }) => {
 
   const userActivePlans = user?.activePlans || [];
 
+  const userOpenPlans = userActivePlans.filter(
+    (plan) => plan?.status === "open",
+  );
+
   const userClosedPlans = userActivePlans.filter(
     (plan) => plan?.status === "closed",
   );
 
-  const userActivePlanLength = userActivePlans.length;
+  const userActivePlanLength = userOpenPlans.length;
   const userClosedPlanLength = userClosedPlans.length;
 
   const activeAll = tabs.filter((tb) => tb.id !== "closed");
   const all = tabs.filter((tb) => tb.id === "plans");
 
-  const tabsToShow =
-    userActivePlanLength > 0 && userClosedPlanLength > 0
-      ? tabs
-      : userActivePlanLength > 0
-        ? activeAll
-        : all;
+  const tabsToShow = tabs.filter((tab) => {
+    if (tab.id === "active") {
+      return userActivePlanLength > 0;
+    }
 
-  // Only validate the saved tab AFTER user data has loaded.
+    if (tab.id === "closed") {
+      return userClosedPlanLength > 0;
+    }
+
+    return true;
+  });
+
   useEffect(() => {
     if (!isUserLoaded) return;
 
@@ -88,7 +96,7 @@ const Plans = ({ status = "all", risk = "all" }) => {
 
   const getFilteredPlans = () => {
     if (status === "all") return userActivePlans;
-    if (status === "active") return userActivePlans;
+    if (status === "active") return userOpenPlans;
     if (status === "closed") return userClosedPlans;
 
     return [];
@@ -127,15 +135,27 @@ const Plans = ({ status = "all", risk = "all" }) => {
 
       <TabContent activeTab={activeTab}>
         <TabPane tabId="plans">
-          <AllPlans style={style} plans={filteredByRiskPlans} />
+          <AllPlans
+            style={style}
+            plans={filteredByRiskPlans}
+            currency={currency}
+          />
         </TabPane>
 
         <TabPane tabId="active">
-          <ActivePlans style={style} plans={filteredPlans} />
+          <ActivePlans
+            style={style}
+            plans={filteredPlans}
+            currency={currency}
+          />
         </TabPane>
 
         <TabPane tabId="closed">
-          <ClosedPlans style={style} plans={filteredPlans} />
+          <ClosedPlans
+            style={style}
+            plans={filteredPlans}
+            currency={currency}
+          />
         </TabPane>
       </TabContent>
     </React.Fragment>

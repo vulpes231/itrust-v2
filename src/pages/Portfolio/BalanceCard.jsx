@@ -4,8 +4,15 @@ import { Card, Col, Input, Row } from "reactstrap";
 import { format } from "date-fns";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { formatCurrency } from "../../constants";
+import numeral from "numeral";
 
-const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
+const BalanceCard = ({
+  activeWallet,
+  handleChange,
+  wallets,
+  walletData,
+  currency,
+}) => {
   if (!activeWallet || !wallets || wallets.length === 0) {
     return (
       <Card>
@@ -57,9 +64,10 @@ const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
           </div>
           <div className="d-flex align-items-center justify-content-between gap-3">
             <h3>
+              {currency?.sign}
               {activeWallet?.balance?.total
-                ? formatCurrency(totalWalletBalance)
-                : formatCurrency(0)}
+                ? numeral(totalWalletBalance).format("0,0.00")
+                : numeral(0).format("0,0.00")}
             </h3>
             <span
               className={`px-3 py-1 fs-10 fw-light rounded-1 d-flex ${
@@ -83,8 +91,7 @@ const BalanceCard = ({ activeWallet, handleChange, wallets, walletData }) => {
           </div>
           <span
             style={{ color: "#878A99" }}
-            className="fs-11 fw-light"
-            style={{ whiteSpace: "nowrap" }}
+            className="fs-11 fw-light text-nowrap"
           >
             Update at {`${format(Date.now(), "dd/MM/yyyy hh:mm a")}`}
           </span>

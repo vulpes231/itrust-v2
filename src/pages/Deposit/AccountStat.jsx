@@ -3,6 +3,7 @@ import { Label } from "reactstrap";
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { formatCurrency } from "../../constants";
 import { CiCalendar } from "react-icons/ci";
+import numeral from "numeral";
 
 const CustomSpan = ({ children }) => {
   return (
@@ -36,7 +37,7 @@ const CustomRow = ({ children }) => {
   );
 };
 
-const AccountStat = ({ analytics }) => {
+const AccountStat = ({ analytics, currency }) => {
   // console.log(analytics);
   return (
     <div>
@@ -79,7 +80,10 @@ const AccountStat = ({ analytics }) => {
           </span>
           <CustomSpan>
             <Title>Total Deposited</Title>
-            <Small>{formatCurrency(analytics?.totalDeposit)}</Small>
+            <Small>
+              {currency?.sign}
+              {numeral(analytics?.totalDeposit).format("0,0.00")}
+            </Small>
           </CustomSpan>
         </CustomRow>
         <CustomRow>
@@ -97,7 +101,10 @@ const AccountStat = ({ analytics }) => {
           </span>
           <CustomSpan>
             <Title>This Month</Title>
-            <Small>{formatCurrency(analytics?.monthlyDeposit)}</Small>
+            <Small>
+              {currency?.sign}
+              {numeral(analytics?.monthlyDeposit).format("0,0.00")}
+            </Small>
           </CustomSpan>
         </CustomRow>
       </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Label } from "reactstrap";
 import { formatCurrency } from "../../constants";
+import numeral from "numeral";
 
 const CustomRow = ({ children }) => {
   return (
@@ -17,7 +18,7 @@ const CustomRow = ({ children }) => {
   );
 };
 
-const DepositLimit = ({ userSettings, globalSettings, active }) => {
+const DepositLimit = ({ userSettings, globalSettings, active, currency }) => {
   const bankLimits =
     userSettings?.limits?.deposit?.bank ?? globalSettings?.depositLimits?.bank;
   const cryptoLimits =
@@ -49,9 +50,10 @@ const DepositLimit = ({ userSettings, globalSettings, active }) => {
             Minimum Deposit
           </b>
           <small style={{ fontWeight: 500 }}>
+            {currency?.sign}
             {active === "crypto"
-              ? formatCurrency(cryptoLimits?.min ?? 0)
-              : formatCurrency(bankLimits?.min ?? 0)}
+              ? numeral(cryptoLimits?.min ?? 0).format("0,0.00")
+              : numeral(bankLimits?.min ?? 0).format("0,0.00")}
           </small>
         </CustomRow>
 
@@ -60,9 +62,10 @@ const DepositLimit = ({ userSettings, globalSettings, active }) => {
             Maximum Deposit
           </b>
           <small style={{ fontWeight: 500 }}>
+            {currency?.sign}
             {active === "crypto"
-              ? formatCurrency(cryptoLimits?.max ?? 0)
-              : formatCurrency(bankLimits?.max ?? 0)}
+              ? numeral(cryptoLimits?.max ?? 0).format("0,0.00")
+              : numeral(bankLimits?.max ?? 0).format("0,0.00")}
           </small>
         </CustomRow>
       </div>

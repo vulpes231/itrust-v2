@@ -11,7 +11,7 @@ import numeral from "numeral";
 import { GoClock } from "react-icons/go";
 import { MdOutlineCancel, MdOutlineCheckCircle } from "react-icons/md";
 
-const RecentActivity = () => {
+const RecentActivity = ({ currency }) => {
   const queryData = { limit: 7 };
   const { data: trnxs } = useQuery({
     queryKey: ["recent"],
@@ -155,9 +155,10 @@ const RecentActivity = () => {
                             : trx.type === "withdraw"
                               ? `-`
                               : null}
+                          {currency?.sign}
                           {trx?.amount
-                            ? numeral(trx.amount).format("$0,0.00")
-                            : formatCurrency(0)}
+                            ? numeral(trx.amount).format("0,0.00")
+                            : numeral(0).format("0,0.00")}
                         </p>
                       </div>
                     </div>

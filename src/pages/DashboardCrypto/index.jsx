@@ -20,6 +20,7 @@ import AssetGraph from "../Portfolio/AssetGraph";
 import { getUserTrades } from "../../services/user/trade";
 import { getAccessToken } from "../../constants";
 import { getUserPositions } from "../../services/user/position";
+import { getUserInfo } from "../../services/user/user";
 
 const DashboardCrypto = () => {
   document.title = "Dashboard - Itrust Investments";
@@ -37,6 +38,12 @@ const DashboardCrypto = () => {
   const { data: trades } = useQuery({
     queryKey: ["recentTrades", sort],
     queryFn: () => getUserTrades({ sortBy: sort }),
+    enabled: !!tk,
+  });
+
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserInfo(),
     enabled: !!tk,
   });
 
@@ -66,6 +73,8 @@ const DashboardCrypto = () => {
 
   // console.log(trades);
 
+  // console.log(user);
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -80,6 +89,7 @@ const DashboardCrypto = () => {
                 analytics={walletAnalytics}
                 walletData={walletData}
                 currentNetWorth={totalNetworth}
+                currency={user?.currency}
               />
               <Widgets1 />
               <MyCurrencies />
@@ -90,15 +100,16 @@ const DashboardCrypto = () => {
                 walletData={walletData}
                 walletAnalytics={walletAnalytics}
                 networth={totalNetworth}
+                user={user}
               />
-              <Holdings />
+              <Holdings currency={user?.currency} />
               <AssetGraph
                 count={positionData?.positions?.length}
                 walletAnalytics={walletAnalytics}
                 walletData={walletData}
               />
-              <RecentActivity />
-              <RecentOrders trades={trades} />
+              <RecentActivity currency={user?.currency} />
+              <RecentOrders trades={trades} currency={user?.currency} />
             </Col>
           </Row>
         </Container>

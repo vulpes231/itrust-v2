@@ -9,7 +9,6 @@ import {
 } from "reactstrap";
 
 import { PortfolioCharts } from "./DashboardCryptoCharts";
-import { auto, broke, btc, cash, dash, eth, ltc } from "../../assets";
 
 import { capitalize } from "lodash";
 import {
@@ -18,20 +17,20 @@ import {
   getWalletColorBySlug,
   getWalletLogoBySlug,
 } from "../../constants";
-import { useQuery } from "@tanstack/react-query";
-import { getUserInfo } from "../../services/user/user";
+import numeral from "numeral";
 
-const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
+const MyPortfolio = ({
+  wallets,
+  walletData,
+  walletAnalytics,
+  networth,
+  user,
+}) => {
   const [selectedWallet, setSelectedWallet] = useState("All");
 
   const onWalletChange = (wallet) => {
     setSelectedWallet(wallet);
   };
-
-  const { data: user } = useQuery({
-    queryFn: getUserInfo,
-    queryKey: ["user"],
-  });
 
   const planTotal =
     user?.activePlans?.reduce((sum, plan) => {
@@ -124,6 +123,7 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                 chartLabels={getChartLabels()}
                 walletAnalytics={walletAnalytics}
                 networth={networth}
+                currency={user?.currency}
               />
             </div>
 
@@ -192,15 +192,19 @@ const MyPortfolio = ({ wallets, walletData, walletAnalytics, networth }) => {
                           </p>
                         </div>
                         <div className="flex-shrink-0 text-end">
-                          <h6 className="mb-1">
-                            {formatCurrency(totalAccountBalance)}
+                          <h6 className="mb-1 text-nowrap">
+                            {user?.currency?.sign}
+                            {numeral(totalAccountBalance).format("0,0.00")}
                           </h6>
-                          <p className="text-success fs-13 mb-0">
+                          <p className="text-success fs-13 mb-0 text-nowrap">
+                            {user?.currency?.sign}{" "}
                             {wallet.slug === "auto"
-                              ? formatCurrency(
+                              ? numeral(
                                   wallet.balance.available - planTotal,
-                                )
-                              : formatCurrency(wallet.balance.available)}
+                                ).format("0,0.00")
+                              : numeral(wallet.balance.available).format(
+                                  "0,0.00",
+                                )}
                           </p>
                         </div>
                       </div>

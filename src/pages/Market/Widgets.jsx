@@ -3,7 +3,7 @@ import CountUp from "react-countup";
 import { Card, CardBody, Col } from "reactstrap";
 import { LuCircleDollarSign } from "react-icons/lu";
 
-const Widgets = ({ analytics, walletData, count }) => {
+const Widgets = ({ analytics, walletData, count, currency }) => {
   const totalInv =
     walletData &&
     walletData?.default?.totalInvested + walletData.default?.totalProfitLoss;
@@ -68,7 +68,7 @@ const Widgets = ({ analytics, walletData, count }) => {
                           : ""
                       }`}
                     >
-                      {item.id !== 1 && "$"}
+                      {item.id !== 1 && `${currency?.sign}`}
                       <span className="counter-value">
                         <CountUp
                           start={0}
@@ -79,7 +79,6 @@ const Widgets = ({ analytics, walletData, count }) => {
                       <small className="fs-14">
                         {item.id !== 1 && "."}
                         {item.decimal}
-                        {/* {item.decimal && "k"} */}
                       </small>
                     </h2>
                   </div>

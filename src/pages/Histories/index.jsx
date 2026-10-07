@@ -11,6 +11,7 @@ import HistoryManager from "./HistoryManager";
 import TransactionHistory from "./TransactionHistory";
 import TradeHistory from "./TradeHistory";
 import DividendHistory from "./DividendHistory";
+import { getUserInfo } from "../../services/user/user";
 // import SavingHistory from "./SavingsHistory";
 
 const Histories = () => {
@@ -31,6 +32,12 @@ const Histories = () => {
   const { data: trades } = useQuery({
     queryKey: ["recentTrades"],
     queryFn: () => getUserTrades({ sortBy: "createdAt" }),
+    enabled: !!token,
+  });
+
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserInfo(),
     enabled: !!token,
   });
 
@@ -57,7 +64,11 @@ const Histories = () => {
 
           <VerifyAccountNotify />
 
-          <Widgets analytics={trxAnalytics} tradeInfo={tradesAnalytic} />
+          <Widgets
+            analytics={trxAnalytics}
+            tradeInfo={tradesAnalytic}
+            currency={user?.currency}
+          />
 
           <HistoryManager
             activeHistoryTab={activeHistoryTab}
@@ -65,21 +76,33 @@ const Histories = () => {
           />
 
           {activeHistoryTab === "all" && (
-            <TransactionHistory filter={activeHistoryTab} />
+            <TransactionHistory
+              filter={activeHistoryTab}
+              currency={user?.currency}
+            />
           )}
 
           {activeHistoryTab === "trade" && <TradeHistory trades={trades} />}
 
           {activeHistoryTab === "deposit" && (
-            <TransactionHistory filter={activeHistoryTab} />
+            <TransactionHistory
+              filter={activeHistoryTab}
+              currency={user?.currency}
+            />
           )}
 
           {activeHistoryTab === "transfer" && (
-            <TransactionHistory filter={activeHistoryTab} />
+            <TransactionHistory
+              filter={activeHistoryTab}
+              currency={user?.currency}
+            />
           )}
 
           {activeHistoryTab === "withdrawal" && (
-            <TransactionHistory filter={activeHistoryTab} />
+            <TransactionHistory
+              filter={activeHistoryTab}
+              currency={user?.currency}
+            />
           )}
 
           {activeHistoryTab === "dividend" && (
@@ -87,7 +110,10 @@ const Histories = () => {
           )}
 
           {activeHistoryTab === "savings" && (
-            <TransactionHistory filter={activeHistoryTab} />
+            <TransactionHistory
+              filter={activeHistoryTab}
+              currency={user?.currency}
+            />
           )}
         </Container>
       </div>

@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import { formatCurrency } from "../../constants";
 import numeral from "numeral";
 
-const BottomStats = ({ walletAnalytics, walletData }) => {
+const BottomStats = ({ walletAnalytics, walletData, currency }) => {
   const totalInv = walletData ? walletData["default"]?.totalInvested : 0;
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
@@ -22,10 +22,11 @@ const BottomStats = ({ walletAnalytics, walletData }) => {
           md={4}
         >
           <div className="d-flex flex-column">
-            <span className="fs-17 fw-semibold">
+            <span className="fs-17 fw-semibold text-nowrap">
+              {currency?.sign}
               {walletAnalytics
-                ? numeral(totalInv).format("$0,0.00")
-                : formatCurrency(0)}
+                ? numeral(totalInv).format("0,0.00")
+                : numeral(0).format("0,0.00")}
             </span>
             <span className="text-capitalize text-muted fs-14 fw-normal">
               total investments
@@ -38,11 +39,12 @@ const BottomStats = ({ walletAnalytics, walletData }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <span className="fs-17 fw-semibold">
+            <span className="fs-17 fw-semibold text-nowrap">
               {" "}
+              {currency?.sign}
               {walletAnalytics
-                ? numeral(walletAnalytics?.totalSavings).format("$0,0.00")
-                : formatCurrency(0)}
+                ? numeral(walletAnalytics?.totalSavings).format("0,0.00")
+                : numeral(0).format("0,0.00")}
             </span>
             <span className="text-capitalize text-muted fs-14 fw-normal">
               total savings
@@ -55,10 +57,11 @@ const BottomStats = ({ walletAnalytics, walletData }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <span className="fs-17 fw-semibold">
+            <span className="fs-17 fw-semibold text-nowrap">
+              {currency?.sign}{" "}
               {walletAnalytics
-                ? numeral(walletAnalytics?.cashBalance).format("$0,0.00")
-                : formatCurrency(0)}
+                ? numeral(walletAnalytics?.cashBalance).format("0,0.00")
+                : numeral(0).format("0,0.00")}
             </span>
             <span className="text-capitalize text-muted fs-14 fw-normal">
               cash balance

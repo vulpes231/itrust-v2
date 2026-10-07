@@ -21,7 +21,7 @@ import SuccessToast from "../../components/Common/SuccessToast";
 import * as Yup from "yup";
 import { openPosition } from "../../services/user/trade";
 
-const BuyForm = ({ tradeType, wallets, activeTab }) => {
+const BuyForm = ({ tradeType, wallets, activeTab, currency }) => {
   const units = [
     { id: 1, label: "25%", percent: 25 },
     { id: 2, label: "50%", percent: 50 },
@@ -374,7 +374,8 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
         </Input>
         {selectedAcct && (
           <div className="mt-2">
-            Buy Power: {formatCurrency(selectedAcct.balance.available)}
+            Buy Power: {currency?.sign}
+            {numeral(selectedAcct.balance.available).format("0,0.00")}
           </div>
         )}
         {validation.touched.walletId && validation.errors.walletId ? (
@@ -582,7 +583,7 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
               </p>
             </div>
             <div className="flex-shrink-0">
-              <h6 className="mb-0">$1.08</h6>
+              <h6 className="mb-0">{currency?.sign}1.08</h6>
             </div>
           </div>
           <div className="d-flex">
@@ -591,7 +592,8 @@ const BuyForm = ({ tradeType, wallets, activeTab }) => {
             </div>
             <div className="flex-shrink-0">
               <h6 className="mb-0">
-                {numeral(validation.values.amount).format("$0, 0.00") ||
+                {currency?.sign}
+                {numeral(validation.values.amount).format("0,0.00") ||
                   parseFloat(0).toFixed(2)}
               </h6>
             </div>

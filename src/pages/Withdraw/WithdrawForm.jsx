@@ -65,12 +65,15 @@ const WithdrawForm = () => {
         <Col lg={9}>
           <div className="d-flex d-md-none flex-column">
             <Card>
-              <BalanceCard />
+              <BalanceCard currency={user?.currency} />
             </Card>
             <Card
               className={`bg-warning-subtle ${analytics?.pendingWithdrawal > 0 ? "d-flex" : "d-none"}`}
             >
-              <PendingWithdrawal analytics={analytics} />
+              <PendingWithdrawal
+                analytics={analytics}
+                currency={user?.currency}
+              />
             </Card>
           </div>
           <Card>
@@ -84,29 +87,33 @@ const WithdrawForm = () => {
             ) : activeView === "crypto" ? (
               <Crypto settings={settings} user={user} />
             ) : activeView === "bank" ? (
-              <Bank settings={settings} />
+              <Bank settings={settings} currency={user?.currency} />
             ) : null}
           </Card>
         </Col>
         <Col lg={3}>
           <div className="d-none d-md-flex flex-column">
             <Card>
-              <BalanceCard />
+              <BalanceCard currency={user?.currency} />
             </Card>
             <Card
               className={`bg-warning-subtle ${analytics?.pendingWithdrawal > 0 ? "d-flex" : "d-none"}`}
             >
-              <PendingWithdrawal analytics={analytics} />
+              <PendingWithdrawal
+                analytics={analytics}
+                currency={user?.currency}
+              />
             </Card>
           </div>
           <Card>
-            <WithdrawStat analytics={analytics} />
+            <WithdrawStat analytics={analytics} currency={user?.currency} />
           </Card>
           <Card>
             <WithdrawalLimits
               userSettings={user?.settings}
               globalSettings={settings}
               active={activeView}
+              currency={user?.currency}
             />
           </Card>
         </Col>

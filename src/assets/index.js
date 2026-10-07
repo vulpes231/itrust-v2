@@ -1,4 +1,5 @@
 import logo from "./itrust.svg";
+import darklogo from "./dark-logo.png";
 import cash from "./cash.svg";
 import broke from "./broke.svg";
 import auto from "./auto.svg";
@@ -72,6 +73,7 @@ export {
   logo,
   defUser,
   joinbg,
+  darklogo,
   about,
   pri,
   rad,

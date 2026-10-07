@@ -28,7 +28,7 @@ import Deposit from "../Deposit";
 import Withdraw from "../Withdraw";
 import Transfer from "../Transfer";
 
-const TransactionHistory = ({ filter }) => {
+const TransactionHistory = ({ filter, currency }) => {
   const token = getAccessToken();
 
   const { data: transactions, isLoading: getTransactionLoading } = useQuery({
@@ -94,8 +94,8 @@ const TransactionHistory = ({ filter }) => {
         from: transaction.method?.mode || "Unknown",
         to: transaction.account || "Unknown",
         details: transaction.memo || "No details",
-        amount: `$${transaction.amount}`,
-        amount1: `${transaction.amount} USD`,
+        amount: `${currency?.sign}${transaction.amount}`,
+        amount1: `${transaction.amount} ${currency?.symbol}`,
         status: transaction.status,
         type: transaction.type,
         tag: transaction.tag,

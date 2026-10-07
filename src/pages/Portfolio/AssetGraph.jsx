@@ -5,7 +5,7 @@ import { Card, CardBody, Col, Row } from "reactstrap";
 import { formatCurrency } from "../../constants";
 import { FaChartLine } from "react-icons/fa6";
 
-const AssetGraph = ({ count, walletAnalytics, walletData }) => {
+const AssetGraph = ({ count, walletAnalytics, walletData, currency }) => {
   const totalInv = walletData ? walletData["default"]?.totalInvested : 0;
 
   // console.log(walletAnalytics);
@@ -21,9 +21,10 @@ const AssetGraph = ({ count, walletAnalytics, walletData }) => {
               total asset owned ({count || 0})
             </span>
             <h4 className="fs-28 fw-semibold">
+              {currency?.sign}
               {walletData
-                ? numeral(totalInv).format("$0,0.00")
-                : formatCurrency(0)}
+                ? numeral(totalInv).format("0,0.00")
+                : numeral(0).format("0,0.00")}
             </h4>
             <p
               style={{ width: "80px" }}

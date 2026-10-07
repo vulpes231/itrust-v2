@@ -10,8 +10,9 @@ import {
 import { Label } from "reactstrap";
 import { GoDotFill } from "react-icons/go";
 import { capitalize } from "lodash";
+import numeral from "numeral";
 
-const AccountList = () => {
+const AccountList = ({ currency }) => {
   const token = getAccessToken();
 
   const { data: wallets } = useQuery({
@@ -106,7 +107,8 @@ const AccountList = () => {
                       fontSize: "14px",
                     }}
                   >
-                    {formatCurrency(wallet.balance.available)}
+                    {currency?.sign}
+                    {numeral(wallet.balance.available).format("0,0.00")}
                   </span>
                 </div>
               );

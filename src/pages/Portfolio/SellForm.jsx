@@ -26,7 +26,7 @@ import {
 import { getUserPositions } from "../../services/user/position";
 import { getAssetInfo } from "../../services/asset/asset";
 
-const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
+const SellForm = ({ tradeType, wallets, activeTab, walletData, currency }) => {
   const units = [
     { id: 1, label: "25", amount: 25 },
     { id: 2, label: "50", amount: 50 },
@@ -547,7 +547,11 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
               </p>
             </div>
             <div className="flex-shrink-0">
-              <h6 className="mb-0">{formatter.format(calculatedAmount.fee)}</h6>
+              <h6 className="mb-0">
+                {" "}
+                {currency?.sign}
+                {numeral(calculatedAmount.fee).format("0,0.00")}
+              </h6>
             </div>
           </div>
 
@@ -557,7 +561,8 @@ const SellForm = ({ tradeType, wallets, activeTab, walletData }) => {
             </div>
             <div className="flex-shrink-0">
               <h6 className="mb-0 fw-bold">
-                {formatter.format(validation.values.amount)}
+                {currency?.sign}
+                {numeral(validation.values.amount).format("0,0.00")}
               </h6>
             </div>
           </div>

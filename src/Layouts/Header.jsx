@@ -9,7 +9,7 @@ import LightDark from "../components/Common/LightDark";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { changeSidebarVisibility } from "../features/layouts/thunk";
-import { logo } from "../assets";
+import { darklogo, logo } from "../assets";
 import { getAccessToken } from "../constants";
 
 const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
@@ -133,10 +133,10 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                   className="logo logo-light"
                 >
                   <span className="logo-sm">
-                    <img src={logo} alt="" style={{ width: "100px" }} />
+                    <img src={darklogo} alt="" style={{ width: "100px" }} />
                   </span>
                   <span className="logo-lg">
-                    <img src={logo} alt="" style={{ width: "100px" }} />
+                    <img src={darklogo} alt="" style={{ width: "100px" }} />
                   </span>
                 </Link>
               </div>

@@ -39,7 +39,7 @@ const allowedTypes = [
   { id: "leverage", label: "Leverage Order" },
 ];
 
-const TradeCard = ({ walletData, tradingAccounts }) => {
+const TradeCard = ({ walletData, tradingAccounts, currency }) => {
   const [activeTab, setActiveTab] = useState("buy");
 
   const [tradeType, setTradeType] = useState({
@@ -132,6 +132,7 @@ const TradeCard = ({ walletData, tradingAccounts }) => {
               tradeType={tradeType}
               wallets={tradingAccounts}
               activeTab={activeTab}
+              currency={currency}
             />
           </TabPane>
 
@@ -141,6 +142,7 @@ const TradeCard = ({ walletData, tradingAccounts }) => {
               wallets={tradingAccounts}
               activeTab={activeTab}
               walletData={walletData}
+              currency={currency}
             />
           </TabPane>
         </TabContent>

@@ -46,7 +46,7 @@ const Investing = () => {
             <Widgets user={user} walletData={walletData} wallets={wallets} />
           </Col>
           <Col>
-            <PlanList />
+            <PlanList currency={user?.currency} />
           </Col>
         </Container>
       </div>

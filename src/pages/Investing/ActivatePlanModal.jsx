@@ -131,7 +131,8 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
                       Min Investment
                     </Label>
                     <p className="fw-semibold fs-15">
-                      {numeral(plan?.minInvestment).format("$0,0.0")}
+                      {user?.currency?.sign}
+                      {numeral(plan?.minInvestment).format("0,0.0")}
                     </p>
                   </Col>
                   <Col xs={6} md={4}>
@@ -179,10 +180,10 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
                 </Row>
                 <Col className="mb-3 d-flex flex-column mt-5">
                   <span className="fs-13 text-muted">
-                    Available to Invest:{" "}
+                    Available to Invest: {user?.currency?.sign}
                     {numeral(
                       investAccount?.balance?.available - planTotal,
-                    ).format("$0,0.00")}
+                    ).format("0,0.00")}
                   </span>
                   <Label>Amount to Invest</Label>
                   <Input

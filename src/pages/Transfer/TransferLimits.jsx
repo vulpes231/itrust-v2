@@ -1,6 +1,7 @@
 import React from "react";
 import { Label } from "reactstrap";
 import { formatCurrency } from "../../constants";
+import numeral from "numeral";
 
 const CustomRow = ({ children }) => {
   return (
@@ -17,7 +18,7 @@ const CustomRow = ({ children }) => {
   );
 };
 
-const TransferLimits = () => {
+const TransferLimits = ({ currency }) => {
   return (
     <div>
       <Label
@@ -48,19 +49,28 @@ const TransferLimits = () => {
           <b className="text-muted" style={{ fontWeight: 300 }}>
             Minimum Transfer
           </b>
-          <small style={{ fontWeight: 500 }}>{formatCurrency(50)}</small>
+          <small style={{ fontWeight: 500 }}>
+            {currency?.sign}
+            {numeral(50).format("0,0.00")}
+          </small>
         </CustomRow>
         <CustomRow>
           <b className="text-muted" style={{ fontWeight: 300 }}>
             Daily Limit
           </b>
-          <small style={{ fontWeight: 500 }}>{formatCurrency(1000)}</small>
+          <small style={{ fontWeight: 500 }}>
+            {currency?.sign}
+            {numeral(1000).format("0,0.00")}
+          </small>
         </CustomRow>
         <CustomRow>
           <b className="text-muted" style={{ fontWeight: 300 }}>
             Monthly Limit
           </b>
-          <small style={{ fontWeight: 500 }}>{formatCurrency(3000)}</small>
+          <small style={{ fontWeight: 500 }}>
+            {currency?.sign}
+            {numeral(3000).format("0,0.00")}
+          </small>
         </CustomRow>
       </div>
     </div>

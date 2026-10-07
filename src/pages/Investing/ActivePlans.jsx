@@ -14,7 +14,7 @@ import PlanOrders from "./PlanOrders";
 import { useQuery } from "@tanstack/react-query";
 import { getUserTrades } from "../../services/user/trade";
 
-const ActivePlans = ({ plans, style }) => {
+const ActivePlans = ({ plans, style, currency }) => {
   const [showCard, setShowCard] = useState(true);
   const [showOrders, setShowOrders] = useState(null);
   const [selectedPlanId, setSelectedPlanId] = useState("");
@@ -47,12 +47,12 @@ const ActivePlans = ({ plans, style }) => {
                 ord.wallet?.slug === "auto" && ord.planId === plan.planId,
             );
 
-            const totalReturnValue = planOrders.reduce(
+            const totalReturnValue = planOrders?.reduce(
               (sum, order) => sum + (order.performance?.totalReturn || 0),
               0,
             );
 
-            const totalInvestmentValue = planOrders.reduce(
+            const totalInvestmentValue = planOrders?.reduce(
               (sum, order) => sum + (order.performance?.currentValue || 0),
               0,
             );
@@ -78,7 +78,8 @@ const ActivePlans = ({ plans, style }) => {
                           <GoDotFill />
                         </p>
                         <p>
-                          {numeral(plan.balance.available).format("$0,0.00")}
+                          {currency?.sign}
+                          {numeral(plan.balance.available).format("0,0.00")}
                         </p>
                       </span>
                     </div>
@@ -128,8 +129,9 @@ const ActivePlans = ({ plans, style }) => {
                             <Label className="text-muted fs-14 fw-regular">
                               Amount Invested
                             </Label>
-                            <p className="fs-15 fw-semibold">
-                              {numeral(plan.balance.total).format("$0,0.00")}
+                            <p className="fs-15 fw-semibold text-nowrap">
+                              {currency?.sign}
+                              {numeral(plan.balance.total).format("0,0.00")}
                             </p>
                           </Col>
                           <Col xs={6} md={3}>
@@ -185,9 +187,10 @@ const ActivePlans = ({ plans, style }) => {
                               Investment Value
                             </Label>
                             <p className="fs-15 fw-semibold">
+                              {currency?.sign}
                               {numeral(
                                 plan.balance.total + totalReturnValue,
-                              ).format("$0,0.00")}
+                              ).format("0,0.00")}
                             </p>
                           </Col>
                         </Row>
@@ -217,6 +220,7 @@ const ActivePlans = ({ plans, style }) => {
                             planOrders={planOrders}
                             isLoading={isLoading}
                             error={error}
+                            currency={currency}
                           />
                         </div>
                       )}

@@ -13,6 +13,7 @@ const Statistics = ({
   analytics,
   walletData,
   currentNetWorth = 0,
+  currency,
 }) => {
   const [range, setRange] = React.useState("ALL");
   const portfolioStatisticsColors = getChartColorsArray(dataColors);
@@ -357,7 +358,11 @@ const Statistics = ({
     <React.Fragment>
       <Col>
         <Card>
-          <TopStats walletAnalytics={analytics} networth={currentNetWorth} />
+          <TopStats
+            walletAnalytics={analytics}
+            networth={currentNetWorth}
+            currency={currency}
+          />
           <CardHeader>
             <div className="d-flex flex-column gap-2 gap-md-0 flex-md-row align-items-md-center">
               <div className="flex-grow-1">
@@ -391,7 +396,11 @@ const Statistics = ({
               />
             </div>
           </CardBody>
-          <BottomStats walletAnalytics={analytics} walletData={walletData} />
+          <BottomStats
+            walletAnalytics={analytics}
+            walletData={walletData}
+            currency={currency}
+          />
         </Card>
       </Col>
     </React.Fragment>

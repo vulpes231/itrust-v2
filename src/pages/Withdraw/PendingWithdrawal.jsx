@@ -1,8 +1,9 @@
 import React from "react";
 import { FiAlertTriangle } from "react-icons/fi";
 import { formatCurrency } from "../../constants";
+import numeral from "numeral";
 
-const PendingWithdrawal = ({ analytics }) => {
+const PendingWithdrawal = ({ analytics, currency }) => {
   return (
     <React.Fragment>
       <div
@@ -30,7 +31,8 @@ const PendingWithdrawal = ({ analytics }) => {
             style={{ fontWeight: "500", fontSize: "24.5px" }}
             className="text-body"
           >
-            {formatCurrency(analytics?.pendingWithdrawal)}
+            {currency?.sign}
+            {numeral(analytics?.pendingWithdrawal).format("0,0.00")}
           </span>
           <span
             className="text-warning"

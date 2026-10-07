@@ -58,12 +58,12 @@ const DepositForm = () => {
         <Col lg={9}>
           <div className="d-flex d-md-none flex-column">
             <Card>
-              <BalanceCard />
+              <BalanceCard currency={user?.currency} />
             </Card>
             <Card
               className={`bg-warning-subtle ${analytics?.pendingDeposit > 0 ? "d-flex" : "d-none"}`}
             >
-              <PendingDeposit analytics={analytics} />
+              <PendingDeposit analytics={analytics} currency={user?.currency} />
             </Card>
           </div>
 
@@ -83,6 +83,7 @@ const DepositForm = () => {
               <Bank
                 settings={settings}
                 userBank={user?.settings?.bankDetails}
+                currency={user?.currency}
               />
             ) : null}
           </Card>
@@ -90,23 +91,24 @@ const DepositForm = () => {
         <Col lg={3}>
           <div className="d-none d-md-flex flex-column">
             <Card>
-              <BalanceCard />
+              <BalanceCard currency={user?.currency} />
             </Card>
             <Card
               className={`bg-warning-subtle ${analytics?.pendingDeposit > 0 ? "d-flex" : "d-none"}`}
             >
-              <PendingDeposit analytics={analytics} />
+              <PendingDeposit analytics={analytics} currency={user?.currency} />
             </Card>
           </div>
 
           <Card>
-            <AccountStat analytics={analytics} />
+            <AccountStat analytics={analytics} currency={user?.currency} />
           </Card>
           <Card>
             <DepositLimit
               userSettings={user?.settings}
               globalSettings={settings}
               active={activeView}
+              currency={user?.currency}
             />
           </Card>
         </Col>

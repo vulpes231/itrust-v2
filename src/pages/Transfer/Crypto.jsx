@@ -25,6 +25,7 @@ import CashAccounts from "./CashAccounts";
 import OtherAccounts from "./OtherAccounts";
 import ChoseAccount from "./ChosenAccount";
 import { useNavigate } from "react-router-dom";
+import numeral from "numeral";
 
 const buttons = [
   "100",
@@ -37,7 +38,7 @@ const buttons = [
   "100000",
 ];
 
-const Crypto = () => {
+const Crypto = ({ currency }) => {
   const [error, setError] = useState("");
   const [selectedAccount, setSelectedAccount] = useState("");
   const [accountSelected, setAccountSelected] = useState(false);
@@ -169,7 +170,7 @@ const Crypto = () => {
                 setAccountSelected={setAccountSelected}
                 accountSelected={accountSelected}
                 setToAccount={setToAccount}
-                // getWalletIcon={getWalletIcon}
+                currency={currency}
               />
             ) : (
               wallets &&
@@ -236,7 +237,8 @@ const Crypto = () => {
                           }}
                           className="text-muted"
                         >
-                          Balance: {formatCurrency(wallet.balance.available)}
+                          Balance: {currency?.sign}
+                          {numeral(wallet.balance.available).format("0,0.00")}
                         </span>
                       </div>
                     </div>
@@ -302,7 +304,8 @@ const Crypto = () => {
                           setAmt(btn);
                         }}
                       >
-                        ${btn}
+                        {currency?.sign}
+                        {btn}
                       </button>
                     );
                   })}
@@ -321,13 +324,14 @@ const Crypto = () => {
                       otherAccts={otherAccounts}
                       toAccount={toAccount}
                       setToAccount={setToAccount}
+                      currency={currency}
                     />
                   ) : (
                     <CashAccounts
                       cashAccts={cashAccount}
                       toAccount={toAccount}
                       setToAccount={setToAccount}
-                      // getWalletIcon={getWalletIcon}
+                      currency={currency}
                     />
                   )}
                 </div>

@@ -4,46 +4,15 @@ import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Row } from "reactstrap";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactionAnalytics } from "../../services/user/transactions";
-import {
-  formatCurrency,
-  getAccessToken,
-  getWalletColorBySlug,
-  getWalletLogoBySlug,
-} from "../../constants";
-import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
+import { formatCurrency, getAccessToken } from "../../constants";
+import { getUserWallets } from "../../services/user/wallet";
 import { brief, cash } from "../../assets";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { format } from "date-fns";
-import { FaArrowUpFromBracket } from "react-icons/fa6";
-import { HiMiniArrowDownTray, HiMiniArrowUpTray } from "react-icons/hi2";
+import { getUserInfo } from "../../services/user/user";
+import numeral from "numeral";
 
-const Widgets = () => {
-  const token = getAccessToken();
-
-  const { data: analytics } = useQuery({
-    queryFn: getTransactionAnalytics,
-    queryKey: ["trnxAnalytics"],
-    enabled: !!token,
-  });
-
-  const { data: walletAnalytics } = useQuery({
-    queryFn: getWalletAnalytics,
-    queryKey: ["walletAnalytics"],
-    enabled: !!token,
-  });
-
-  const { data: wallets } = useQuery({
-    queryFn: getUserWallets,
-    queryKey: ["wallets"],
-    enabled: !!token,
-  });
-
-  const { data: trxAnalytics } = useQuery({
-    queryFn: getTransactionAnalytics,
-    queryKey: ["trxAnalytics"],
-    enabled: !!token,
-  });
-
+const Widgets = ({ wallets, user, trxAnalytics }) => {
   const cashAccount =
     wallets &&
     wallets.length > 0 &&
@@ -87,8 +56,9 @@ const Widgets = () => {
                           fontWeight: 600,
                           // color: "#495057",
                         }}
+                        className="text-nowrap"
                       >
-                        ${" "}
+                        {user?.currency?.sign}
                         <CountUp
                           start={0}
                           end={wholePart}
@@ -167,9 +137,10 @@ const Widgets = () => {
               >
                 <h5 className="fs-13 fs-md-14 text-muted">Total Deposits</h5>
                 <h4 className="d-flex align-items-center gap-1 fw-normal fw-md-bold">
+                  {user?.currency?.sign}
                   {trxAnalytics
-                    ? formatCurrency(trxAnalytics.totalDeposit)
-                    : formatCurrency(0)}
+                    ? numeral(trxAnalytics.totalDeposit).format("0,0.00")
+                    : numeral(0).format("0,0.00")}
                 </h4>
               </span>
               <span
@@ -178,9 +149,10 @@ const Widgets = () => {
               >
                 <h5 className="fs-13 fs-md-14 text-muted">Total Withdrawals</h5>
                 <h4 className="d-flex align-items-center gap-1 fw-normal fw-md-bold">
+                  {user?.currency?.sign}
                   {trxAnalytics
-                    ? formatCurrency(trxAnalytics.totalWithdrawal)
-                    : formatCurrency(0)}
+                    ? numeral(trxAnalytics.totalWithdrawal).format("0,0.00")
+                    : numeral(0).format("0,0.00")}
                 </h4>
               </span>
             </div>
@@ -210,9 +182,10 @@ const Widgets = () => {
                 className="d-flex align-items-center gap-1 fw-normal fs-18"
                 style={{ fontWeight: 700 }}
               >
+                {user?.currency?.sign}
                 {trxAnalytics
-                  ? formatCurrency(trxAnalytics.totalDeposit)
-                  : formatCurrency(0)}
+                  ? numeral(trxAnalytics.totalDeposit).format("0,0.00")
+                  : numeral(0).format("0,0.00")}
               </h4>
             </span>
             <span
@@ -224,9 +197,10 @@ const Widgets = () => {
                 className="d-flex align-items-center gap-1 fw-normal fs-18"
                 style={{ fontWeight: 700 }}
               >
+                {user?.currency?.sign}
                 {trxAnalytics
-                  ? formatCurrency(trxAnalytics.totalWithdrawal)
-                  : formatCurrency(0)}
+                  ? numeral(trxAnalytics.totalWithdrawal).format("0,0.00")
+                  : numeral(0).format("0,0.00")}
               </h4>
             </span>
           </div>
@@ -237,4 +211,3 @@ const Widgets = () => {
 };
 
 export default Widgets;
-// justify-content-end

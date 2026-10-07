@@ -3,7 +3,7 @@ import React from "react";
 import CountUp from "react-countup";
 import { Card, CardBody, Col, Row } from "reactstrap";
 
-const Widgets = ({ analytics, tradeInfo }) => {
+const Widgets = ({ analytics, tradeInfo, currency }) => {
   const historyWidgets = analytics && [
     {
       id: 1,
@@ -72,7 +72,7 @@ const Widgets = ({ analytics, tradeInfo }) => {
                       </h6>
 
                       <h2 className="mb-0">
-                        {isCurrency && "$"}
+                        {isCurrency && currency?.sign}
 
                         <span className="counter-value">
                           <CountUp

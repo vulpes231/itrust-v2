@@ -1,29 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { formatCurrency, getAccessToken } from "../../constants";
 import numeral from "numeral";
-import { useQuery } from "@tanstack/react-query";
-import { getUserInfo } from "../../services/user/user";
-import { getWalletInvestData } from "../../services/user/wallet";
 
-const FootStats = ({ activeWallet, cashAccount }) => {
-  const tk = getAccessToken();
-
-  const { data: user, isLoading: getUserLoading } = useQuery({
-    queryFn: getUserInfo,
-    queryKey: ["user"],
-    enabled: !!tk,
-  });
-
-  const { data: walletData } = useQuery({
-    queryKey: ["walletdata"],
-    queryFn: getWalletInvestData,
-    enabled: !!tk,
-  });
-
-  // console.log(walletData, "footstats");
-
+const FootStats = ({
+  activeWallet,
+  cashAccount,
+  currency,
+  user,
+  walletData,
+}) => {
   const planTotal =
     user?.activePlans?.reduce((sum, plan) => {
       return sum + plan.balance.total;
@@ -43,7 +28,10 @@ const FootStats = ({ activeWallet, cashAccount }) => {
         >
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold">
-              {walletData ? formatCurrency(totalInv) : formatCurrency(0)}
+              {currency?.sign}
+              {walletData
+                ? numeral(totalInv).format("0,0.00")
+                : numeral(0).format("0,0.00")}
             </span>
             <span
               style={{ color: "#878A99" }}
@@ -60,12 +48,12 @@ const FootStats = ({ activeWallet, cashAccount }) => {
         >
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold">
-              {" "}
+              {currency?.sign}
               {walletData
-                ? formatCurrency(
+                ? numeral(
                     walletData[activeWallet?.slug]?.totalProfitLoss,
-                  )
-                : formatCurrency(0)}
+                  ).format("0,0.00")
+                : numeral(0).format("0,0.00")}
             </span>
             <span
               style={{ color: "#878A99" }}
@@ -82,11 +70,13 @@ const FootStats = ({ activeWallet, cashAccount }) => {
         >
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold">
-              {" "}
+              {currency?.sign}
               {activeWallet?.balance?.available &&
               activeWallet?.slug !== "brokerage"
-                ? formatCurrency(activeWallet?.balance?.available - planTotal)
-                : formatCurrency(activeWallet?.balance?.available)}
+                ? numeral(activeWallet?.balance?.available - planTotal).format(
+                    "0,0.00",
+                  )
+                : numeral(activeWallet?.balance?.available).format("0,0.00")}
             </span>
             <span
               style={{ color: "#878A99" }}
@@ -103,9 +93,10 @@ const FootStats = ({ activeWallet, cashAccount }) => {
         >
           <div className="d-flex flex-column">
             <span className="fs-17 fw-semibold">
+              {currency?.sign}
               {cashAccount?.balance?.total
-                ? formatCurrency(cashAccount.balance?.total)
-                : formatCurrency(0)}
+                ? numeral(cashAccount.balance?.total).format("0,0.00")
+                : numeral(0).format("0,0.00")}
             </span>
             <span
               style={{ color: "#878A99" }}
@@ -125,8 +116,9 @@ const FootStats = ({ activeWallet, cashAccount }) => {
             >
               <div className="d-flex flex-column">
                 <span className="fs-17 fw-semibold">
-                  {formatCurrency(activeWallet?.balance?.available) ||
-                    formatCurrency(0)}
+                  {currency?.sign}
+                  {numeral(activeWallet?.balance?.available).format("0,0.00") ||
+                    numeral(0).format("0,0.00")}
                 </span>
                 <span
                   style={{ color: "#878A99" }}
@@ -143,9 +135,9 @@ const FootStats = ({ activeWallet, cashAccount }) => {
             >
               <div className="d-flex flex-column">
                 <span className="fs-17 fw-semibold">
-                  {" "}
-                  {formatCurrency(activeWallet?.marginDebt) ||
-                    formatCurrency(0)}
+                  {currency?.sign}
+                  {numeral(activeWallet?.marginDebt).format("0,0.00") ||
+                    numeral(0).format("0,0.00")}
                 </span>
                 <span
                   style={{ color: "#878A99" }}

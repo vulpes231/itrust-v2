@@ -23,8 +23,9 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 import { PiCopyLight } from "react-icons/pi";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import numeral from "numeral";
 
-const Bank = ({ settings, userBank }) => {
+const Bank = ({ settings, userBank, currency }) => {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
   const [fileError, setFileError] = useState("");
@@ -150,8 +151,13 @@ const Bank = ({ settings, userBank }) => {
                 // lineHeight: 2,
               }}
             >
-              Send exactly <b>{formatCurrency(data?.amount)}</b> to the account
-              below
+              Send exactly{" "}
+              <b>
+                {" "}
+                {currency?.sign}
+                {numeral(data?.amount).format("0,0.00")}
+              </b>{" "}
+              to the account below
             </span>
           </CustomSpan>
         </FlexRow>
@@ -436,7 +442,8 @@ const Bank = ({ settings, userBank }) => {
               <span
                 style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
               >
-                {formatCurrency(data?.amount)}
+                {currency?.sign}
+                {numeral(data?.amount).format("0,0.00")}
               </span>
             </span>
 
@@ -450,7 +457,8 @@ const Bank = ({ settings, userBank }) => {
                 className="text-success"
                 style={{ fontSize: "14px", fontWeight: 600 }}
               >
-                {formatCurrency(0)}
+                {currency?.sign}
+                {numeral(0).format("0,0.00")}
               </span>
             </span>
             <span className="d-flex align-items-center justify-content-between">
@@ -462,7 +470,8 @@ const Bank = ({ settings, userBank }) => {
               <span
                 style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
               >
-                {formatCurrency(data?.amount)}
+                {currency?.sign}
+                {numeral(data?.amount).format("0,0.00")}
               </span>
             </span>
           </div>

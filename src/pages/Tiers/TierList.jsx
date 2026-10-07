@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { useQuery } from "@tanstack/react-query";
 
 import { Card, Col, Row, Spinner } from "reactstrap";
@@ -40,24 +39,12 @@ const getTierIcon = (tag) => {
   }
 };
 
-const TierList = () => {
+const TierList = ({ currency }) => {
   const token = getAccessToken();
 
   const [error, setError] = useState("");
-
-  const [isActiveTier, setIsActiveTier] = useState(() => {
-    if (typeof window === "undefined") {
-      return null;
-    }
-
-    return sessionStorage.getItem("isActiveTier");
-  });
-
   const [showTier, setShowTier] = useState(false);
 
-  /*
-   * Get tiers
-   */
   const {
     data: tiers = [],
     isLoading: getTiersLoading,
@@ -68,9 +55,6 @@ const TierList = () => {
     enabled: !!token,
   });
 
-  /*
-   * Get transaction analytics
-   */
   const {
     data: trxAnalytics,
     isLoading: getAnalyticsLoading,
@@ -81,27 +65,26 @@ const TierList = () => {
     enabled: !!token,
   });
 
-  /*
-   * Get user
-   */
-  const { data: user } = useQuery({
+  const {
+    data: user,
+    isLoading: getUserLoading,
+    isError: getUserError,
+  } = useQuery({
     queryKey: ["user"],
     queryFn: getUserInfo,
     enabled: !!token,
   });
 
-  /*
-   * Get transactions
-   */
-  const { data: transactions = [] } = useQuery({
+  const {
+    data: transactions = [],
+    isLoading: getTransactionsLoading,
+    isError: getTransactionsError,
+  } = useQuery({
     queryKey: ["transactions"],
     queryFn: getTransactions,
     enabled: !!token,
   });
 
-  /*
-   * Clear error after 3 seconds
-   */
   useEffect(() => {
     if (!error) {
       return;
@@ -114,84 +97,19 @@ const TierList = () => {
     return () => clearTimeout(timer);
   }, [error]);
 
-  /*
-   * Calculate active tier
-   */
-  useEffect(() => {
-    if (!tiers.length || !trxAnalytics) {
-      return;
-    }
+  const sortedTiers = [...tiers];
 
-    const totalDeposit = Number(trxAnalytics.totalDeposit || 0);
+  const currentTier = Number(user?.accountTier?.currentTier) || 0;
 
-    /*
-     * Sort from lowest minimum deposit
-     * to highest.
-     */
-    const sortedTiers = [...tiers].sort(
-      (a, b) => Number(a.minDeposit || 0) - Number(b.minDeposit || 0),
-    );
+  const activeTierIndex = currentTier > 0 ? currentTier - 1 : -1;
 
-    /*
-     * Find the highest tier the user
-     * currently qualifies for.
-     */
-    let activeTier = sortedTiers[0];
-
-    for (const tier of sortedTiers) {
-      const minimumDeposit = Number(tier.minDeposit || 0);
-
-      if (totalDeposit >= minimumDeposit) {
-        activeTier = tier;
-      } else {
-        break;
-      }
-    }
-
-    if (!activeTier) {
-      return;
-    }
-
-    const tierIdentifier = activeTier.tag || activeTier._id;
-
-    if (tierIdentifier !== isActiveTier) {
-      setIsActiveTier(tierIdentifier);
-
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("isActiveTier", tierIdentifier);
-      }
-    }
-  }, [tiers, trxAnalytics, isActiveTier]);
-
-  /*
-   * IMPORTANT:
-   * Calculate this BEFORE the conditional returns.
-   */
-  const sortedTiers = [...tiers].sort(
-    (a, b) => Number(a.minDeposit || 0) - Number(b.minDeposit || 0),
-  );
-
-  const activeTierIndex = sortedTiers.findIndex(
-    (tier) => (tier.tag || tier._id) === isActiveTier,
-  );
-
-  /*
-   * Pending withdrawals
-   */
   const pendingWithdrawals = transactions.filter(
     (trx) => trx.type === "withdraw" && trx.status === "pending",
   );
 
-  // console.log(pendingWithdrawals);
-
-  console.log(user?.accountTier?.isCodeActivated);
-
   const showTierOption =
     user?.accountTier?.isCodeActivated && pendingWithdrawals.length > 0;
 
-  /*
-   * Get tier code
-   */
   const handleGetTier = () => {
     if (!trxAnalytics || !user) {
       setError("An error occurred. Try again later.");
@@ -199,7 +117,13 @@ const TierList = () => {
       return;
     }
 
-    const activeTier = tiers.find((tier) => tier.tag === isActiveTier);
+    if (activeTierIndex === -1) {
+      setError("Active tier not found.");
+
+      return;
+    }
+
+    const activeTier = sortedTiers[activeTierIndex];
 
     if (!activeTier) {
       setError("Active tier not found.");
@@ -212,7 +136,7 @@ const TierList = () => {
       Number(activeTier.minDeposit) ||
       0;
 
-    const totalDeposited = Number(trxAnalytics.totalDeposit || 0);
+    const totalDeposited = Number(trxAnalytics.totalDeposit) || 0;
 
     if (totalDeposited >= minimumDeposit) {
       setShowTier(true);
@@ -221,9 +145,6 @@ const TierList = () => {
     }
   };
 
-  /*
-   * Upgrade handler
-   */
   const handleUpgrade = (tier) => {
     const tierIdentifier = tier.tag || tier._id;
 
@@ -232,10 +153,12 @@ const TierList = () => {
     // Upgrade API goes here.
   };
 
-  /*
-   * Loading
-   */
-  if (getTiersLoading || getAnalyticsLoading) {
+  if (
+    getTiersLoading ||
+    getAnalyticsLoading ||
+    getUserLoading ||
+    getTransactionsLoading
+  ) {
     return (
       <div className="d-flex justify-content-center align-items-center py-5">
         <Spinner />
@@ -243,10 +166,12 @@ const TierList = () => {
     );
   }
 
-  /*
-   * Error
-   */
-  if (getTiersError || getAnalyticsError) {
+  if (
+    getTiersError ||
+    getAnalyticsError ||
+    getUserError ||
+    getTransactionsError
+  ) {
     return (
       <div className="text-center py-5">
         <p className="text-danger mb-0">
@@ -256,9 +181,6 @@ const TierList = () => {
     );
   }
 
-  /*
-   * No tiers
-   */
   if (!tiers.length) {
     return (
       <div className="text-center py-5">
@@ -294,14 +216,28 @@ const TierList = () => {
             const isUpgrade = activeTierIndex !== -1 && index > activeTierIndex;
 
             return (
-              <Col key={tier._id} md={6} lg={4} className="mb-4 mt-3">
+              <Col
+                key={tier._id || tierIdentifier}
+                md={6}
+                lg={4}
+                className="mb-4 mt-3"
+              >
                 <Card
-                  style={{ minHeight: "450px" }}
-                  className={`p-4 h-100 d-flex flex-column justify-content-between ${
-                    isActive
-                      ? "bg-secondary-subtle border border-secondary"
-                      : ""
-                  }`}
+                  style={{
+                    minHeight: "450px",
+                  }}
+                  className={`
+                    p-4
+                    h-100
+                    d-flex
+                    flex-column
+                    justify-content-between
+                    ${
+                      isActive
+                        ? "bg-secondary-subtle border border-secondary"
+                        : ""
+                    }
+                  `}
                 >
                   <div>
                     {/* Header */}
@@ -328,7 +264,8 @@ const TierList = () => {
                     {/* Threshold */}
                     <div className="mt-4">
                       <h3 className="mb-1">
-                        {numeral(tier.threshold).format("$0,0")}
+                        {currency?.sign}
+                        {numeral(tier.threshold).format("0,0")}
                       </h3>
 
                       <p className="text-muted mb-0">Account Threshold</p>
@@ -346,16 +283,20 @@ const TierList = () => {
 
                           return (
                             <span
-                              key={`${tier._id}-feature-${featureIndex}`}
+                              key={`
+                                  ${tier._id}
+                                  -feature-
+                                  ${featureIndex}
+                                `}
                               className="d-flex gap-2 align-items-center text-muted"
                             >
                               <FaCircleCheck className="text-success flex-shrink-0" />
 
                               <span>
                                 {hasMinimumDeposit
-                                  ? `${feature} - ${numeral(
+                                  ? `${feature} - ${currency?.sign}${numeral(
                                       tier.minDeposit,
-                                    ).format("$0,0")}`
+                                    ).format("0,0")}`
                                   : feature}
                               </span>
                             </span>
@@ -370,16 +311,17 @@ const TierList = () => {
                       <button
                         type="button"
                         onClick={handleGetTier}
-                        className={`btn ${
-                          showTierOption ? "btn-danger" : "btn-secondary"
-                        }`}
+                        className={`
+                          btn
+                          ${showTierOption ? "btn-danger" : "btn-secondary"}
+                        `}
                         disabled={!showTierOption}
                       >
                         {showTierOption ? "Get Tier Code" : "Current Tier"}
                       </button>
                     ) : isPassed /*
-                       * Don't show anything for
-                       * tiers the user has passed.
+                       * Don't show anything for tiers
+                       * already passed.
                        */ ? null : isUpgrade ? (
                       <button
                         type="button"

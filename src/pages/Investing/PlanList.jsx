@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, Col, Input, Row } from "reactstrap";
 import Plans from "./Plans";
 
-const PlanList = () => {
+const PlanList = ({ currency }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [status, setStatus] = useState("all");
   const [risk, setRisk] = useState("all");
@@ -68,7 +68,7 @@ const PlanList = () => {
         </Card>
       </Col>
       <Col className="my-3">
-        <Plans status={status} risk={risk} />
+        <Plans status={status} risk={risk} currency={currency} />
       </Col>
     </React.Fragment>
   );

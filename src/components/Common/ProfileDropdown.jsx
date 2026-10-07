@@ -69,7 +69,7 @@ const ProfileDropdown = () => {
           <DropdownItem>
             <Link to={"/tiers"} className="text-body">
               <i className="ri-vip-diamond-line text-muted fs-16 align-middle me-1"></i>
-              <span className="align-middle">Tiers</span>
+              <span className="align-middle">Account Tier</span>
             </Link>
           </DropdownItem>
 

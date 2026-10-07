@@ -161,7 +161,8 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
                       setAmount(btn);
                     }}
                   >
-                    ${btn}
+                    {currency?.sign}
+                    {btn}
                   </button>
                 );
               })}

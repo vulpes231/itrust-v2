@@ -6,17 +6,29 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import CountUp from "react-countup";
 import { brief } from "../../assets";
 
-const BalanceCard = () => {
+const BalanceCard = ({ currency }) => {
   const token = getAccessToken();
   const [wholePart, setWholePart] = useState(0);
   const [decimalPart, setDecimalPart] = useState("00");
   const [showBalance, setShowBalance] = useState(true);
+  const [sign, setSign] = useState("");
 
   const { data: walletAnalytics } = useQuery({
     queryFn: getWalletAnalytics,
     queryKey: ["walletAnalytics"],
     enabled: !!token,
   });
+
+  // console.log(currency);
+
+  useEffect(() => {
+    if (!currency) return;
+
+    console.log(currency);
+    if (currency) {
+      setSign(currency.sign);
+    }
+  }, [currency]);
 
   useEffect(() => {
     if (walletAnalytics) {
@@ -47,7 +59,8 @@ const BalanceCard = () => {
           }}
         >
           <span style={{ fontSize: "24.5px", fontWeight: "500" }}>
-            $ <CountUp start={0} end={wholePart} duration={2} separator="," />
+            {currency?.sign}
+            <CountUp start={0} end={wholePart} duration={2} separator="," />
           </span>
           <span
             style={{
@@ -99,7 +112,7 @@ const BalanceCard = () => {
         className="text-muted"
         style={{ fontSize: "14px", fontWeight: "200" }}
       >
-        Cash Balance(USD)
+        Cash Balance({currency?.symbol})
       </span>
     </div>
   );

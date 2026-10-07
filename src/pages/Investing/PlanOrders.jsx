@@ -156,10 +156,9 @@ const PlanOrders = ({
                   {/* Realized P&L */}
                   <td>
                     $
-                    {(order.status === "closed"
+                    {order.status === "closed"
                       ? numeral(order.performance.totalReturn).format("$0,0.00")
-                      : 0
-                    ).toFixed(2)}
+                      : 0}
                   </td>
 
                   {/* Status */}

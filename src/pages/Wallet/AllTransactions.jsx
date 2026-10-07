@@ -34,7 +34,7 @@ import PendingDropDown from "./PendingDropDown";
 import MobileTransaction from "./MobileTransaction";
 import numeral from "numeral";
 
-const AllTransactions = () => {
+const AllTransactions = ({ currency }) => {
   const token = getAccessToken();
 
   const { data: transactions, isLoading: getTransactionLoading } = useQuery({
@@ -50,7 +50,7 @@ const AllTransactions = () => {
   const handleFilter = (e) => {
     setFilter(e.target.value);
   };
-  // console.log(transactions);
+
   const transformedData = useMemo(() => {
     if (!transactions) return [];
 
@@ -103,8 +103,8 @@ const AllTransactions = () => {
         from: transaction.method?.mode || "Unknown",
         to: transaction.account || "Unknown",
         details: transaction.memo || "No details",
-        amount: numeral(transaction.amount).format("$0,0.00"),
-        amount1: `${transaction.amount} USD`,
+        amount: `${currency?.sign}${numeral(transaction.amount).format("0,0.00")}`,
+        amount1: `${transaction.amount} ${currency?.symbol}`,
         status: transaction.status,
         type: transaction.type,
         tag: transaction.tag || "cash",
@@ -115,8 +115,6 @@ const AllTransactions = () => {
       };
     });
   }, [transactions, filter]);
-
-  // console.log(transformedData);
 
   function getCurrencyImage(currency) {
     const images = {

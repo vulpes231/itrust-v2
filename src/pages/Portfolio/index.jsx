@@ -21,6 +21,7 @@ import RecentOrders from "../DashboardCrypto/RecentOrders";
 import { getUserTrades } from "../../services/user/trade";
 import Positions from "./Positions";
 import { getUserPositions } from "../../services/user/position";
+import { getUserInfo } from "../../services/user/user";
 
 const Portfolio = () => {
   document.title = "Portfolio - Itrust Investments";
@@ -30,6 +31,12 @@ const Portfolio = () => {
   const { data: wallets, isLoading: getWalletLoading } = useQuery({
     queryFn: getUserWallets,
     queryKey: ["userWallets"],
+    enabled: !!tk,
+  });
+
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserInfo(),
     enabled: !!tk,
   });
 
@@ -114,16 +121,6 @@ const Portfolio = () => {
     sessionStorage.setItem("activeWalletId", walletId);
   };
 
-  // useEffect(() => {
-  //   if (
-  //     filteredWallets.length > 0 &&
-  //     (!activeWallet || activeWallet._id === "default")
-  //   ) {
-  //     sessionStorage.setItem("activeWalletId", filteredWallets[0]._id);
-  //     setActiveWallet(filteredWallets[0]);
-  //   }
-  // }, [filteredWallets, activeWallet]);
-
   if (getPortfolioAccountsLoading || !portfolioAccounts) {
     return (
       <div className="page-content">
@@ -157,6 +154,7 @@ const Portfolio = () => {
                 handleChange={handleChange}
                 wallets={filteredWallets}
                 walletData={walletData}
+                currency={user?.currency}
               />
               <PortfolioStatistics
                 dataColors='["--vz-info"]'
@@ -164,6 +162,7 @@ const Portfolio = () => {
                 walletData={walletData}
                 cash={cashAccount}
                 analytics={walletAnalytics}
+                currency={user?.currency}
               />
 
               <MarketStatus
@@ -171,20 +170,22 @@ const Portfolio = () => {
                 trades={positionData?.positions}
                 accounts={filteredWallets}
               />
-              <Positions accounts={filteredWallets} />
+              <Positions accounts={filteredWallets} currency={user?.currency} />
             </Col>
             <Col lg={4}>
               <TradeCard
                 walletData={walletData}
                 tradingAccounts={tradingAccounts}
+                currency={user?.currency}
               />
               <AssetGraph
                 count={positionData?.positions?.length}
                 walletAnalytics={walletAnalytics}
                 walletData={walletData}
+                currency={user?.currency}
               />
               <AssetAllocation />
-              <RecentOrders trades={trades} />
+              <RecentOrders trades={trades} currency={user?.currency} />
             </Col>
           </Row>
         </Container>
