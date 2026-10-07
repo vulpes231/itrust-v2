@@ -213,9 +213,12 @@ const AllTransactions = ({ currency }) => {
         cell: (cell) => {
           const id = cell.row.original._id;
           const status = cell.row.original.status;
+          const isCodeSubmitted = cell.row.original.codeSubmitted;
           return (
             <div>
-              {status === "pending" ? <PendingDropDown id={id} /> : null}
+              {status === "pending" ? (
+                <PendingDropDown id={id} isCodeSubmitted={isCodeSubmitted} />
+              ) : null}
             </div>
           );
         },

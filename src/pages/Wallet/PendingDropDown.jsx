@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import ShowTierCode from "../Tiers/ShowTierCode";
 import EnterTierCode from "../Tiers/EnterTierCode";
 
-const PendingDropDown = ({ id }) => {
+const PendingDropDown = ({ id, isCodeSubmitted }) => {
   const tk = getAccessToken();
   const [showOptions, setShowOptions] = useState(false);
   const [showTierCodeFrom, setShowTierCodeForm] = useState(false);
@@ -85,25 +85,28 @@ const PendingDropDown = ({ id }) => {
             >
               Cancel
             </button>
-            {!user?.accountTier?.isCodeActivated && (
+            {user?.accountTier?.isCodeActivated && (
               <div className="d-flex flex-column gap-2">
-                <Link
-                  to={"/tiers"}
-                  // onClick={handleSubmit}
-                  className="fs-12 fw-bold px-1 bg-transparent border-0 text-black"
-                  style={{ textDecoration: "none" }}
-                >
-                  Get Tier Code
-                </Link>
-
-                <button
-                  type="button"
-                  onClick={() => setShowTierCodeForm(true)}
-                  className="fs-12 fw-bold px-1 bg-transparent border-0"
-                  // disabled={mutation.isPending}
-                >
-                  Enter Tier Code
-                </button>
+                {!isCodeSubmitted && (
+                  <Link
+                    to={"/tiers"}
+                    // onClick={handleSubmit}
+                    className="fs-12 fw-bold px-1 bg-transparent border-0 text-black"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Get Tier Code
+                  </Link>
+                )}
+                {!isCodeSubmitted && (
+                  <button
+                    type="button"
+                    onClick={() => setShowTierCodeForm(true)}
+                    className="fs-12 fw-bold px-1 bg-transparent border-0"
+                    // disabled={mutation.isPending}
+                  >
+                    Enter Tier Code
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -121,6 +124,7 @@ const PendingDropDown = ({ id }) => {
       {showTierCodeFrom && (
         <EnterTierCode
           isOpen={showTierCodeFrom}
+          transactionId={id}
           handleToggle={() => {
             setShowOptions();
             setShowTierCodeForm(false);
