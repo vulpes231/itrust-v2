@@ -114,8 +114,11 @@ const Login = (props) => {
         className="auth-page-content d-flex align-items-center justify-content-center"
         style={{ minHeight: "100vh" }}
       >
-        <AuthNav />
-        <Container style={{ height: "100%" }} className="">
+        <div>
+          {" "}
+          <AuthNav />
+        </div>
+        <Container style={{ height: "100%", marginTop: "100px" }} className="">
           <Col className="w-100 mt-3">
             <Card style={{ maxWidth: "500px", margin: "0 auto" }}>
               <CardBody className="p-4">

@@ -338,22 +338,25 @@ const TierList = ({ currency }) => {
           })}
         </Row>
 
-        <Col className="bg-danger-subtle text-danger d-flex gap-2 p-3 rounded-3 mb-4 mt-4">
-          <div>
-            <CiCircleAlert />
-          </div>
-          <div className="d-flex flex-column gap-1">
-            <h5 className="text-danger">Important</h5>
-            <p style={{ lineHeight: 1.5 }} className="fs-14">
-              To get tier code, please ensure your account meets the required
-              minimum deposit and account threshold. If the current deposited
-              balance is below the required minimum deposit, You'll need to
-              deposit the remaining amount before requesting your tier code.
-              Please verify your total deposited amount carefully before
-              proceeding
-            </p>
-          </div>
-        </Col>
+        {error ===
+          "You've not met the required deposit of your account tier." && (
+          <Col className="bg-danger-subtle text-danger d-flex gap-2 p-3 rounded-3 mb-4 mt-4">
+            <div>
+              <CiCircleAlert />
+            </div>
+            <div className="d-flex flex-column gap-1">
+              <h5 className="text-danger">Important</h5>
+              <p style={{ lineHeight: 1.5 }} className="fs-14">
+                To get tier code, please ensure your account meets the required
+                minimum deposit and account threshold. If the current deposited
+                balance is below the required minimum deposit, You'll need to
+                deposit the remaining amount before requesting your tier code.
+                Please verify your total deposited amount carefully before
+                proceeding
+              </p>
+            </div>
+          </Col>
+        )}
       </div>
 
       {/* Tier Code Modal */}

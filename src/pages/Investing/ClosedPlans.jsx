@@ -120,20 +120,20 @@ const ClosedPlans = ({ plans, style }) => {
                           plan.type === "conservative"
                             ? "bg-primary-subtle"
                             : plan.type === "aggressive"
-                            ? "bg-danger-subtle"
-                            : plan.type === "moderate"
-                            ? "bg-warning-subtle"
-                            : null
+                              ? "bg-danger-subtle"
+                              : plan.type === "moderate"
+                                ? "bg-warning-subtle"
+                                : null
                         }`}
                         style={{
                           color:
                             plan.type === "conservative"
                               ? "#5162be"
                               : plan.type === "aggressive"
-                              ? "#F17171"
-                              : plan.type === "moderate"
-                              ? "#FFC84B"
-                              : null,
+                                ? "#F17171"
+                                : plan.type === "moderate"
+                                  ? "#FFC84B"
+                                  : null,
                           width: "98px",
                         }}
                       >
@@ -147,12 +147,16 @@ const ClosedPlans = ({ plans, style }) => {
                     <Col xs={6} className="d-flex flex-column px-4">
                       <span
                         className={style.large}
-                        style={{ color: style.green, fontSize: "32px" }}
+                        style={{
+                          color: style.green,
+                          fontSize: "32px",
+                          whiteSpace: "nowrap",
+                        }}
                       >
                         {plan.analytics.expectedReturn}%
                       </span>
                       <span
-                        style={{ color: style.light }}
+                        style={{ color: style.light, whiteSpace: "nowrap" }}
                         className={style.slim}
                       >
                         Expected returns
