@@ -36,6 +36,9 @@ const ActivePlans = ({ plans, style, currency }) => {
 
   // console.log(planOrders);
 
+  // console.log(plans);
+  // console.log(orders.filter((pl) => pl.wallet.slug === "auto"));
+
   return (
     <React.Fragment>
       <Row className="g-4 p-3">
@@ -43,8 +46,7 @@ const ActivePlans = ({ plans, style, currency }) => {
           plans.length > 0 &&
           plans.map((plan) => {
             const planOrders = orders?.filter(
-              (ord) =>
-                ord.wallet?.slug === "auto" && ord.planId === plan.planId,
+              (ord) => ord.wallet?.slug === "auto" && ord.plan.id === plan._id,
             );
 
             const totalReturnValue = planOrders?.reduce(
@@ -79,7 +81,9 @@ const ActivePlans = ({ plans, style, currency }) => {
                         </p>
                         <p>
                           {currency?.sign}
-                          {numeral(plan.balance.available).format("0,0.00")}
+                          {numeral(
+                            plan.balance.total + totalReturnValue,
+                          ).format("0,0.00")}
                         </p>
                       </span>
                     </div>

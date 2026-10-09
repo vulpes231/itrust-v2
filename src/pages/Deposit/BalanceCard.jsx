@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAccessToken } from "../../constants";
-import { getWalletAnalytics } from "../../services/user/wallet";
+import { getUserWallets, getWalletAnalytics } from "../../services/user/wallet";
 import { useQuery } from "@tanstack/react-query";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import CountUp from "react-countup";
@@ -13,31 +13,22 @@ const BalanceCard = ({ currency }) => {
   const [showBalance, setShowBalance] = useState(true);
   const [sign, setSign] = useState("");
 
-  const { data: walletAnalytics } = useQuery({
-    queryFn: getWalletAnalytics,
-    queryKey: ["walletAnalytics"],
+  const { data: wallets = [] } = useQuery({
+    queryFn: getUserWallets,
+    queryKey: ["wallets"],
     enabled: !!token,
   });
 
-  // console.log(currency);
+  const cashAccount = wallets.find((acct) => acct.slug === "cash");
 
   useEffect(() => {
-    if (!currency) return;
-
-    console.log(currency);
-    if (currency) {
-      setSign(currency.sign);
-    }
-  }, [currency]);
-
-  useEffect(() => {
-    if (walletAnalytics) {
-      const formatted = walletAnalytics.availableBalance.toFixed(2);
+    if (cashAccount) {
+      const formatted = cashAccount.balance.available.toFixed(2);
       const [whole, decimal] = formatted.split(".");
       setWholePart(parseInt(whole));
       setDecimalPart(decimal);
     }
-  }, [walletAnalytics]);
+  }, [cashAccount]);
 
   return (
     <div

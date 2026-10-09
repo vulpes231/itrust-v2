@@ -107,7 +107,7 @@ const Plans = ({ status = "all", risk = "all", currency }) => {
     sessionStorage.setItem("investTab", tabId);
   };
 
-  const getFilteredPlans = () => {
+  const getFilteredPlans = (status) => {
     if (status === "all") return userActivePlans;
     if (status === "active") return userOpenPlans;
     if (status === "closed") return userClosedPlans;
@@ -115,7 +115,7 @@ const Plans = ({ status = "all", risk = "all", currency }) => {
     return [];
   };
 
-  const filteredPlans = getFilteredPlans();
+  const filteredPlans = getFilteredPlans(status);
 
   const getFilteredByRiskPlans = () => {
     if (!plans || plans.length === 0) return [];
@@ -158,7 +158,7 @@ const Plans = ({ status = "all", risk = "all", currency }) => {
         <TabPane tabId="active">
           <ActivePlans
             style={style}
-            plans={filteredPlans}
+            plans={userOpenPlans}
             currency={currency}
           />
         </TabPane>
@@ -166,7 +166,7 @@ const Plans = ({ status = "all", risk = "all", currency }) => {
         <TabPane tabId="closed">
           <ClosedPlans
             style={style}
-            plans={filteredPlans}
+            plans={userClosedPlans}
             currency={currency}
           />
         </TabPane>

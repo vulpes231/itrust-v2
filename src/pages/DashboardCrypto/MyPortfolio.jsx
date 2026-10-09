@@ -33,9 +33,11 @@ const MyPortfolio = ({
   };
 
   const planTotal =
-    user?.activePlans?.reduce((sum, plan) => {
-      return sum + plan.balance.total;
-    }, 0) ?? 0;
+    user?.activePlans
+      ?.filter((pl) => pl.status === "active")
+      .reduce((sum, plan) => {
+        return sum + plan.balance.total;
+      }, 0) ?? 0;
 
   const getFilteredWallets = () => {
     if (!wallets || wallets.length === 0) return [];
@@ -200,7 +202,7 @@ const MyPortfolio = ({
                             {user?.currency?.sign}{" "}
                             {wallet.slug === "auto"
                               ? numeral(
-                                  wallet.balance.available - planTotal,
+                                  wallet.balance.available, //- planTotal
                                 ).format("0,0.00")
                               : numeral(wallet.balance.available).format(
                                   "0,0.00",

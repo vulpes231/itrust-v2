@@ -181,10 +181,11 @@ const ActivatePlanModal = ({ handleToggle, isOpen, plan }) => {
                 <Col className="mb-3 d-flex flex-column mt-5">
                   <span className="fs-13 text-muted">
                     Available to Invest: {user?.currency?.sign}
-                    {numeral(
-                      investAccount?.balance?.available - planTotal,
-                    ).format("0,0.00")}
-                  </span>
+                    {numeral(investAccount?.balance?.available).format(
+                      "0,0.00",
+                    )}
+                  </span>{" "}
+                  {/* //- planTotal */}
                   <Label>Amount to Invest</Label>
                   <Input
                     type="text"
