@@ -11,6 +11,7 @@ import { Label } from "reactstrap";
 import { GoDotFill } from "react-icons/go";
 import { capitalize } from "lodash";
 import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
 
 const AccountList = ({ currency }) => {
   const token = getAccessToken();
@@ -106,8 +107,9 @@ const AccountList = ({ currency }) => {
                       fontWeight: 600,
                       fontSize: "14px",
                     }}
+                    className="d-flex align-items-center"
                   >
-                    {currency?.sign}
+                    <CurrencySign />
                     {numeral(wallet.balance.available).format("0,0.00")}
                   </span>
                 </div>

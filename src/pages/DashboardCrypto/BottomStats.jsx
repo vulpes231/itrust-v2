@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { formatCurrency } from "../../constants";
-import numeral from "numeral";
 
-const BottomStats = ({ walletAnalytics, walletData, currency }) => {
+import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
+
+const BottomStats = ({ walletAnalytics, walletData }) => {
   const totalInv = walletData ? walletData["default"]?.totalInvested : 0;
   return (
     <Col className="p-3 bg-light-subtle mb-3 d-flex flex-column gap-3">
@@ -22,8 +23,8 @@ const BottomStats = ({ walletAnalytics, walletData, currency }) => {
           md={4}
         >
           <div className="d-flex flex-column">
-            <span className="fs-17 fw-semibold text-nowrap">
-              {currency?.sign}
+            <span className="fs-17 fw-semibold text-nowrap d-flex align-items-center">
+              <CurrencySign />
               {walletAnalytics
                 ? numeral(totalInv).format("0,0.00")
                 : numeral(0).format("0,0.00")}
@@ -39,9 +40,9 @@ const BottomStats = ({ walletAnalytics, walletData, currency }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <span className="fs-17 fw-semibold text-nowrap">
+            <span className="fs-17 fw-semibold text-nowrap d-flex align-items-center">
               {" "}
-              {currency?.sign}
+              <CurrencySign />
               {walletAnalytics
                 ? numeral(walletAnalytics?.totalSavings).format("0,0.00")
                 : numeral(0).format("0,0.00")}
@@ -57,8 +58,8 @@ const BottomStats = ({ walletAnalytics, walletData, currency }) => {
           className="border-1 border-dotted p-2"
         >
           <div className="d-flex flex-column">
-            <span className="fs-17 fw-semibold text-nowrap">
-              {currency?.sign}{" "}
+            <span className="fs-17 fw-semibold text-nowrap d-flex align-items-center">
+              <CurrencySign />
               {walletAnalytics
                 ? numeral(walletAnalytics?.cashBalance).format("0,0.00")
                 : numeral(0).format("0,0.00")}

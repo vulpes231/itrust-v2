@@ -22,6 +22,7 @@ import { getUserSettings } from "../../services/user/user";
 import { BiCoin } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
 
 const Crypto = ({ settings, user }) => {
   const token = getAccessToken();
@@ -422,8 +423,11 @@ const Crypto = ({ settings, user }) => {
               >
                 Amount to receive
               </span>
-              <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                {user?.currency?.sign}
+              <span
+                className="d-flex align-items-center"
+                style={{ fontSize: "14px", fontWeight: 600 }}
+              >
+                <CurrencySign />
                 {numeral(data?.amount).format("0,0.00")}
               </span>
             </span>
@@ -446,10 +450,10 @@ const Crypto = ({ settings, user }) => {
                 Network Fee
               </span>
               <span
-                className="text-success"
+                className="text-success d-flex align-items-center"
                 style={{ fontSize: "14px", fontWeight: 600 }}
               >
-                {user?.currency?.sign}
+                <CurrencySign />
                 {numeral(0).format("0,0.00")}
               </span>
             </span>
@@ -457,8 +461,11 @@ const Crypto = ({ settings, user }) => {
               <span style={{ fontSize: "14px", fontWeight: 500 }}>
                 You will receive
               </span>
-              <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                {user?.currency?.sign}
+              <span
+                className="d-flex align-items-center"
+                style={{ fontSize: "14px", fontWeight: 600 }}
+              >
+                <CurrencySign />
                 {numeral(data?.amount).format("0,0.00")}
               </span>
             </span>
@@ -478,7 +485,10 @@ const Crypto = ({ settings, user }) => {
           >
             <span style={{ fontWeight: 500 }}>Processing details</span>
             <ul>
-              <li>Minimum withdrawal: {user?.currency?.sign}50</li>
+              <li className="d-flex align-items-center">
+                Minimum withdrawal: <CurrencySign />
+                50
+              </li>
               <li>Processing time: 1-60 minutes</li>
               <li>Withdrawals are processed after manual security review</li>
             </ul>

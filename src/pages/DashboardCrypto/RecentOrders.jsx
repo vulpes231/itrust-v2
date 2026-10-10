@@ -6,8 +6,9 @@ import { format } from "date-fns";
 import { GoArrowRight } from "react-icons/go";
 import numeral from "numeral";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
+import CurrencySign from "../CurrencySign";
 
-const RecentOrders = ({ trades, currency }) => {
+const RecentOrders = ({ trades }) => {
   const filteredTrades = trades && trades.length && trades.slice(0, 5);
 
   // console.log(trades);
@@ -102,19 +103,21 @@ const RecentOrders = ({ trades, currency }) => {
                         </span>
                       </div>
                       <div className="flex-shrink-0 text-end">
-                        <p className={`fs-15 fw-medium mb-0  `}>
-                          {currency?.sign}
+                        <span
+                          className={`fs-15 fw-medium mb-0 d-flex align-items-center  `}
+                        >
+                          <CurrencySign />
                           {trade.execution.amount
                             ? numeral(trade.execution.amount).format("0,0.00")
                             : numeral(0).format("0,0.00")}
-                        </p>
+                        </span>
                         <span
                           className={`${
                             safeValue < 0 ? "text-danger" : "text-success"
-                          } d-flex align-items-center gap-1`}
+                          } d-flex align-items-center`}
                         >
                           {safeValue < 0 ? "-" : ""}
-                          {currency?.sign}
+                          <CurrencySign />
                           {numeral(Math.abs(safeValue)).format("0,0.00")}
                         </span>
                       </div>

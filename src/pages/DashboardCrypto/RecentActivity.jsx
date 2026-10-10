@@ -10,8 +10,9 @@ import { GoArrowRight } from "react-icons/go";
 import numeral from "numeral";
 import { GoClock } from "react-icons/go";
 import { MdOutlineCancel, MdOutlineCheckCircle } from "react-icons/md";
+import CurrencySign from "../CurrencySign";
 
-const RecentActivity = ({ currency }) => {
+const RecentActivity = () => {
   const queryData = { limit: 7 };
   const { data: trnxs } = useQuery({
     queryKey: ["recent"],
@@ -139,8 +140,8 @@ const RecentActivity = ({ currency }) => {
                         </span>
                       </div>
                       <div className="flex-shrink-0 text-end">
-                        <p
-                          className={`fs-15 fw-medium mb-0  ${
+                        <span
+                          className={`fs-15 fw-medium mb-0 d-flex align-items-center  ${
                             trx.type === "deposit"
                               ? `text-success`
                               : trx.type === "transfer"
@@ -155,11 +156,11 @@ const RecentActivity = ({ currency }) => {
                             : trx.type === "withdraw"
                               ? `-`
                               : null}
-                          {currency?.sign}
+                          <CurrencySign />
                           {trx?.amount
                             ? numeral(trx.amount).format("0,0.00")
                             : numeral(0).format("0,0.00")}
-                        </p>
+                        </span>
                       </div>
                     </div>
                   );

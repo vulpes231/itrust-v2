@@ -4,6 +4,7 @@ import { IoTrendingUpSharp } from "react-icons/io5";
 import { formatCurrency } from "../../constants";
 import { CiCalendar } from "react-icons/ci";
 import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
 
 const CustomSpan = ({ children }) => {
   return (
@@ -20,7 +21,11 @@ const Title = ({ children }) => {
   );
 };
 const Small = ({ children }) => {
-  return <small style={{ fontWeight: 500 }}>{children}</small>;
+  return (
+    <small className="d-flex align-items-center" style={{ fontWeight: 500 }}>
+      {children}
+    </small>
+  );
 };
 
 const CustomRow = ({ children }) => {
@@ -79,7 +84,7 @@ const WithdrawStat = ({ analytics, currency }) => {
           <CustomSpan>
             <Title>Total Payout</Title>
             <Small>
-              {currency?.sign}
+              <CurrencySign />
               {numeral(analytics?.totalWithdrawal).format("0,0.00")}
             </Small>
           </CustomSpan>
@@ -99,7 +104,7 @@ const WithdrawStat = ({ analytics, currency }) => {
           <CustomSpan>
             <Title>This Month</Title>
             <Small>
-              {currency?.sign}
+              <CurrencySign />
               {numeral(analytics?.monthlyWithdrawal).format("0,0.00")}
             </Small>
           </CustomSpan>

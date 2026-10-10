@@ -6,8 +6,9 @@ import { format } from "date-fns";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 
 import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
 
-const TopStats = ({ walletAnalytics, networth, currency }) => {
+const TopStats = ({ walletAnalytics, networth }) => {
   return (
     <Row className="p-3">
       <Col md={3}>
@@ -20,9 +21,9 @@ const TopStats = ({ walletAnalytics, networth, currency }) => {
           </div>
         </div>
         <div className="d-flex align-items-center justify-content-between gap-2">
-          <span className="fs-24 fw-semibold">
-            {" "}
-            {`${currency?.sign}${numeral(networth).format("0,0.00")}`}
+          <span className="fs-24 fw-semibold d-flex align-items-center">
+            <CurrencySign />
+            {numeral(networth).format("0,0.00")}
           </span>
           <span
             className={`px-3 py-1  fs-10 fw-light rounded-1 d-flex gap-1 ${

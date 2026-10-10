@@ -6,6 +6,7 @@ import { GoDotFill } from "react-icons/go";
 import { FaDollarSign } from "react-icons/fa";
 import { CenterSpan, CustomSpan, FlexRow } from "./DepositUtils";
 import ErrorToast from "../../components/Common/ErrorToast";
+import CurrencySign from "../CurrencySign";
 
 const buttons = [
   "100",
@@ -169,12 +170,12 @@ const Form = ({
                     }}
                     key={idx}
                     type="button"
-                    className="btn bg-light mt-2 text-muted fs-10"
+                    className="btn bg-light mt-2 text-muted fs-10 d-flex align-items-center justify-content-center"
                     onClick={() => {
                       setAmount(btn);
                     }}
                   >
-                    {currency?.sign}
+                    <CurrencySign />
                     {btn}
                   </button>
                 );

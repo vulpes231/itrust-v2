@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import CountUp from "react-countup";
 import { brief } from "../../assets";
+import CurrencySign from "../CurrencySign";
 
 const BalanceCard = ({ currency }) => {
   const token = getAccessToken();
@@ -49,8 +50,11 @@ const BalanceCard = ({ currency }) => {
             alignItems: "baseline",
           }}
         >
-          <span style={{ fontSize: "24.5px", fontWeight: "500" }}>
-            {currency?.sign}
+          <span
+            className="d-flex align-items-center"
+            style={{ fontSize: "24.5px", fontWeight: "500" }}
+          >
+            <CurrencySign />
             <CountUp start={0} end={wholePart} duration={2} separator="," />
           </span>
           <span
@@ -103,7 +107,7 @@ const BalanceCard = ({ currency }) => {
         className="text-muted"
         style={{ fontSize: "14px", fontWeight: "200" }}
       >
-        Cash Balance({currency?.symbol})
+        Cash Balance {currency?.symbol ? `(${currency?.symbol})` : null}
       </span>
     </div>
   );

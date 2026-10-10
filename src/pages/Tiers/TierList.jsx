@@ -22,6 +22,7 @@ import { getUserInfo } from "../../services/user/user";
 
 import ShowTierCode from "./ShowTierCode";
 import ErrorToast from "../../components/Common/ErrorToast";
+import CurrencySign from "../CurrencySign";
 
 const getTierIcon = (tag) => {
   switch (tag) {
@@ -263,8 +264,8 @@ const TierList = ({ currency }) => {
 
                     {/* Threshold */}
                     <div className="mt-4">
-                      <h3 className="mb-1">
-                        {currency?.sign}
+                      <h3 className="mb-1 d-flex align-items-center">
+                        <CurrencySign />
                         {numeral(tier.threshold).format("0,0")}
                       </h3>
 
@@ -294,7 +295,7 @@ const TierList = ({ currency }) => {
 
                               <span>
                                 {hasMinimumDeposit
-                                  ? `${feature} - ${currency?.sign}${numeral(
+                                  ? `${feature} - ${currency?.sign ?? null}${numeral(
                                       tier.minDeposit,
                                     ).format("0,0")}`
                                   : feature}

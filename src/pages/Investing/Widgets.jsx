@@ -7,11 +7,8 @@ import { BiSolidBadgeDollar } from "react-icons/bi";
 import { TbCircleArrowUpRight } from "react-icons/tb";
 import { PiArrowUpRightFill } from "react-icons/pi";
 import { IoFlashSharp } from "react-icons/io5";
-import {
-  getUserWallets,
-  getWalletInvestData,
-} from "../../services/user/wallet";
 import { getAccessToken } from "../../constants";
+import CurrencySign from "../CurrencySign";
 
 const Widgets = ({ wallets, user, walletData }) => {
   const tk = getAccessToken();
@@ -23,14 +20,14 @@ const Widgets = ({ wallets, user, walletData }) => {
 
   const userPlans = (user && user.activePlans) || [];
 
+  // const activePlanLength = userPlans.filter(pl => pl.status === "active")
+
   const activePlans = userPlans.filter((plan) => plan.status === "active");
 
   const totalInvested = activePlans.reduce(
     (sum, plan) => sum + (plan.balance?.total || 0),
     0,
   );
-
-  // console.log(walletData, "widgets");
 
   function convertToWidgetsData() {
     if (!investAccount || !walletData) return [];
@@ -60,7 +57,7 @@ const Widgets = ({ wallets, user, walletData }) => {
       {
         id: 3,
         label: "Active Plans",
-        counter: userPlans?.length || 0,
+        counter: activePlans?.length || 0,
         icon: <IoFlashSharp />,
       },
       {
@@ -74,25 +71,6 @@ const Widgets = ({ wallets, user, walletData }) => {
       },
     ];
   }
-
-  const getIcon = (id) => {
-    switch (id) {
-      case 1:
-        return "ri-money-dollar-circle-fill";
-      case 2:
-        return "ri-arrow-right-up-fill";
-      case 3:
-        return "ri-flashlight-fill";
-      case 4:
-        return "ri-arrow-right-up-fill";
-      case 5:
-        return "ri-flashlight-fill";
-      case 6:
-        return "ri-hand-coin-fill";
-      default:
-        return null;
-    }
-  };
 
   const getColorBgColor = (id) => {
     switch (id) {
@@ -144,13 +122,14 @@ const Widgets = ({ wallets, user, walletData }) => {
                       >
                         {item.label}
                       </p>
-                      <h2 className="counter-value">
+                      <h2 className="counter-value d-flex align-items-center">
+                        {item.id !== 3 && <CurrencySign />}
                         <CountUp
                           start={0}
                           end={item.counter}
                           decimals={item?.decimal}
                           separator={item?.separator}
-                          prefix={item?.prefix}
+                          // prefix={item?.prefix}
                           duration={3}
                         />
                       </h2>

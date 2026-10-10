@@ -2,6 +2,7 @@ import React from "react";
 import { Label } from "reactstrap";
 import { formatCurrency } from "../../constants";
 import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
 
 const CustomRow = ({ children }) => {
   return (
@@ -46,11 +47,14 @@ const TransferLimits = ({ currency }) => {
         }}
       >
         <CustomRow>
-          <b className="text-muted" style={{ fontWeight: 300 }}>
+          <b className="text-muted " style={{ fontWeight: 300 }}>
             Minimum Transfer
           </b>
-          <small style={{ fontWeight: 500 }}>
-            {currency?.sign}
+          <small
+            className="d-flex align-items-center"
+            style={{ fontWeight: 500 }}
+          >
+            <CurrencySign />
             {numeral(50).format("0,0.00")}
           </small>
         </CustomRow>
@@ -58,17 +62,23 @@ const TransferLimits = ({ currency }) => {
           <b className="text-muted" style={{ fontWeight: 300 }}>
             Daily Limit
           </b>
-          <small style={{ fontWeight: 500 }}>
-            {currency?.sign}
+          <small
+            className="d-flex align-items-center"
+            style={{ fontWeight: 500 }}
+          >
+            <CurrencySign />
             {numeral(1000).format("0,0.00")}
           </small>
         </CustomRow>
         <CustomRow>
-          <b className="text-muted" style={{ fontWeight: 300 }}>
+          <b className="text-muted " style={{ fontWeight: 300 }}>
             Monthly Limit
           </b>
-          <small style={{ fontWeight: 500 }}>
-            {currency?.sign}
+          <small
+            className="d-flex align-items-center"
+            style={{ fontWeight: 500 }}
+          >
+            <CurrencySign />
             {numeral(3000).format("0,0.00")}
           </small>
         </CustomRow>

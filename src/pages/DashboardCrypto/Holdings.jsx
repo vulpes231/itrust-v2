@@ -19,8 +19,9 @@ import {
   getPortfolioAccounts,
   getTradingAccounts,
 } from "../../services/user/wallet";
+import CurrencySign from "../CurrencySign";
 
-const Holdings = ({ currency }) => {
+const Holdings = () => {
   const tk = getAccessToken();
   const [filter, setFilter] = useState("all");
 
@@ -142,8 +143,8 @@ const Holdings = ({ currency }) => {
                       </span>
                     </Col>
                     <Col className="d-flex flex-column align-items-end">
-                      <h6 className="fs-15 text-nowrap">
-                        {currency?.sign}
+                      <h6 className="fs-15 text-nowrap d-flex align-items-center">
+                        <CurrencySign />
                         {numeral(trade.currentValue).format("0,0.00")}
                       </h6>
                       <div
@@ -153,9 +154,9 @@ const Holdings = ({ currency }) => {
                             : "text-success"
                         }`}
                       >
-                        <span className="text-nowrap">
+                        <span className="text-nowrap d-flex align-items-center">
                           {safeValue < 0 ? "-" : ""}
-                          {currency?.sign}
+                          <CurrencySign />
                           {numeral(Math.abs(safeValue)).format("0,0.00")}
                         </span>
                         <span>
@@ -169,8 +170,8 @@ const Holdings = ({ currency }) => {
                 );
               })}
           </Col>
-          <button className="btn w-100 btn-success mt-3">
-            {currency?.sign}
+          <button className="btn w-100 btn-success mt-3 d-flex align-items-center justify-content-center">
+            <CurrencySign />
             {numeral(overall).format("0,0.00")}
           </button>
         </CardBody>

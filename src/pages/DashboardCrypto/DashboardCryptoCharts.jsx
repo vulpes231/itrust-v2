@@ -14,12 +14,12 @@ const formatCurrency = (currency, value) => {
   const numericValue = Number(value) || 0;
 
   if (numericValue < 0) {
-    return `-${currency?.sign || ""}${numeral(Math.abs(numericValue)).format(
+    return `-${currency?.sign || null}${numeral(Math.abs(numericValue)).format(
       "0,0.00",
     )}`;
   }
 
-  return `${currency?.sign || ""}${numeral(numericValue).format("0,0.00")}`;
+  return `${currency?.sign || null}${numeral(numericValue).format("0,0.00")}`;
 };
 
 const PortfolioCharts = ({

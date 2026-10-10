@@ -89,7 +89,6 @@ const DashboardCrypto = () => {
                 analytics={walletAnalytics}
                 walletData={walletData}
                 currentNetWorth={totalNetworth}
-                currency={user?.currency}
               />
               <Widgets1 />
               <MyCurrencies />
@@ -102,14 +101,14 @@ const DashboardCrypto = () => {
                 networth={totalNetworth}
                 user={user}
               />
-              <Holdings currency={user?.currency} />
+              <Holdings />
               <AssetGraph
                 count={positionData?.positions?.length}
                 walletAnalytics={walletAnalytics}
                 walletData={walletData}
               />
-              <RecentActivity currency={user?.currency} />
-              <RecentOrders trades={trades} currency={user?.currency} />
+              <RecentActivity />
+              <RecentOrders trades={trades} />
             </Col>
           </Row>
         </Container>

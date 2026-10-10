@@ -18,6 +18,7 @@ import {
   getWalletLogoBySlug,
 } from "../../constants";
 import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
 
 const MyPortfolio = ({
   wallets,
@@ -194,12 +195,12 @@ const MyPortfolio = ({
                           </p>
                         </div>
                         <div className="flex-shrink-0 text-end">
-                          <h6 className="mb-1 text-nowrap">
-                            {user?.currency?.sign}
+                          <h6 className="mb-1 text-nowrap d-flex align-items-center">
+                            <CurrencySign />
                             {numeral(totalAccountBalance).format("0,0.00")}
                           </h6>
-                          <p className="text-success fs-13 mb-0 text-nowrap">
-                            {user?.currency?.sign}{" "}
+                          <span className="text-success fs-13 mb-0 text-nowrap d-flex align-items-center">
+                            <CurrencySign />{" "}
                             {wallet.slug === "auto"
                               ? numeral(
                                   wallet.balance.available, //- planTotal
@@ -207,7 +208,7 @@ const MyPortfolio = ({
                               : numeral(wallet.balance.available).format(
                                   "0,0.00",
                                 )}
-                          </p>
+                          </span>
                         </div>
                       </div>
                     </div>

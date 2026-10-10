@@ -24,8 +24,9 @@ import { PiCopyLight } from "react-icons/pi";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
 
-const Bank = ({ settings, userBank, currency }) => {
+const Bank = ({ settings, userBank }) => {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
   const [fileError, setFileError] = useState("");
@@ -154,7 +155,7 @@ const Bank = ({ settings, userBank, currency }) => {
               Send exactly{" "}
               <b>
                 {" "}
-                {currency?.sign}
+                <CurrencySign />
                 {numeral(data?.amount).format("0,0.00")}
               </b>{" "}
               to the account below
@@ -440,9 +441,10 @@ const Bank = ({ settings, userBank, currency }) => {
                 Amount to Send
               </span>
               <span
+                className="d-flex align-items-center"
                 style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
               >
-                {currency?.sign}
+                <CurrencySign />
                 {numeral(data?.amount).format("0,0.00")}
               </span>
             </span>
@@ -454,10 +456,10 @@ const Bank = ({ settings, userBank, currency }) => {
                 Processing Fee
               </span>
               <span
-                className="text-success"
+                className="text-success d-flex align-items-center"
                 style={{ fontSize: "14px", fontWeight: 600 }}
               >
-                {currency?.sign}
+                <CurrencySign />
                 {numeral(0).format("0,0.00")}
               </span>
             </span>
@@ -468,9 +470,10 @@ const Bank = ({ settings, userBank, currency }) => {
                 You will receive
               </span>
               <span
+                className="d-flex align-items-center"
                 style={{ color: "#495057", fontSize: "14px", fontWeight: 600 }}
               >
-                {currency?.sign}
+                <CurrencySign />
                 {numeral(data?.amount).format("0,0.00")}
               </span>
             </span>

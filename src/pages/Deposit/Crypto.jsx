@@ -16,6 +16,7 @@ import { PiCopyLight } from "react-icons/pi";
 import Barcode from "./Barcode";
 import { useNavigate } from "react-router-dom";
 import numeral from "numeral";
+import CurrencySign from "../CurrencySign";
 
 const methods = [
   { id: "btc", label: "Bitcoin", network: "BTC", img: btc, symbol: "BTC" },
@@ -247,8 +248,8 @@ const Crypto = ({ settings, user }) => {
               >
                 <span>
                   Send{" "}
-                  <b>
-                    {user?.currency?.sign}
+                  <b className="d-flex align-items-center">
+                    <CurrencySign />
                     {numeral(data?.amount).format("0,0.00")}
                   </b>{" "}
                   in <b>{selectedMode?.symbol}</b> to the address below{" "}
@@ -375,8 +376,9 @@ const Crypto = ({ settings, user }) => {
                       fontSize: "14px",
                       fontWeight: 600,
                     }}
+                    className="d-flex align-items-center"
                   >
-                    {user?.currency?.sign}
+                    <CurrencySign />
                     {numeral(data?.amount).format("0,0.00")}
                   </span>
                 </span>
@@ -410,10 +412,10 @@ const Crypto = ({ settings, user }) => {
                     Network Fee
                   </span>
                   <span
-                    className="text-success"
+                    className="text-success d-flex align-items-center"
                     style={{ fontSize: "14px", fontWeight: 600 }}
                   >
-                    {user?.currency?.sign}
+                    <CurrencySign />
                     {numeral(0).format("0,0.00")}
                   </span>
                 </span>
@@ -431,8 +433,9 @@ const Crypto = ({ settings, user }) => {
                       fontSize: "14px",
                       fontWeight: 600,
                     }}
+                    className="d-flex align-items-center"
                   >
-                    {user?.currency?.sign}
+                    <CurrencySign />
                     {numeral(data?.amount).format("0,0.00")}
                   </span>
                 </span>
