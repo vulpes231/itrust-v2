@@ -42,7 +42,7 @@ const Commission = () => {
               <div className="col-12 col-lg-4">
                 <h3
                   style={{
-                    color: "#202020",
+                    // color: "#202020",
                     fontSize: window.innerWidth >= 562 ? "36px" : "22px",
                     maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                     fontWeight: 900,
@@ -52,7 +52,7 @@ const Commission = () => {
                 </h3>
               </div>
               <div className="col-12 col-lg-8">
-                <p className="fs-16 text-dark">
+                <p className="fs-16 text-muted">
                   Popular investment options today include stocks, crypto, gold,
                   bonds and ETFs, which are all registered with the U.S.
                   Securities and Exchange
@@ -73,13 +73,13 @@ const Commission = () => {
                         >
                           <FaArrowRight size={10} />
                         </span>
-                        <span className="text-dark fs-16"> {an}</span>
+                        <span className="text-muted fs-16"> {an}</span>
                       </span>
                     );
                   })}
                 </div>
                 <div className="mt-5">
-                  <p className="fs-16 text-dark">
+                  <p className="fs-16 text-muted">
                     Popular investment options today include stocks, crypto,
                     gold, bonds and ETFs, which are all registered with the U.S.
                     Securities and Exchange

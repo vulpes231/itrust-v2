@@ -17,7 +17,7 @@ const HowTitle = () => {
           <div className="d-flex justify-content-center align-items-center">
             <h3
               style={{
-                color: "#202020",
+                // color: "#202020",
                 fontSize: window.innerWidth >= 562 ? "44px" : "30px",
                 maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
                 fontWeight: 900,

@@ -2,16 +2,51 @@ import React, { useState, useEffect, useRef } from "react";
 import { Collapse, Container, NavbarToggler, NavLink } from "reactstrap";
 import Scrollspy from "react-scrollspy";
 import { Link, useLocation } from "react-router-dom";
-import { logo } from "../../assets";
+import { darklogo, logo } from "../../assets";
 import { MdArrowDropDown, MdClose, MdMenu } from "react-icons/md";
 import MobileNav from "./mobilenav";
 import Logo from "./logo";
 import { getSize } from "../../constants";
+import { changeLayoutMode } from "../../features/layouts/thunk";
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import LightDark from "../../components/Common/LightDark";
 
 const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [navClass, setnavClass] = useState("");
   const [openSubmenu, setOpenSubmenu] = useState(null);
+
+  const dispatch = useDispatch();
+  const selectLayoutState = (state) => state.Layout;
+
+  const selectLayoutProperties = createSelector(
+    selectLayoutState,
+    (layout) => ({
+      layoutModeType: layout.layoutModeType,
+    }),
+  );
+  // Inside your component
+  const { layoutModeType } = useSelector(selectLayoutProperties);
+
+  /*
+    layout settings
+    */
+  useEffect(() => {
+    if (layoutModeType) {
+      window.dispatchEvent(new Event("resize"));
+
+      dispatch(changeLayoutMode(layoutModeType));
+    }
+  }, [layoutModeType, dispatch]);
+  /*
+    call dark/light mode
+    */
+  const onChangeLayoutMode = (value) => {
+    if (changeLayoutMode) {
+      dispatch(changeLayoutMode(value));
+    }
+  };
 
   const subRef = useRef();
 
@@ -123,7 +158,7 @@ const Navbar = () => {
   return (
     <React.Fragment>
       <header
-        className={`bg-white position-fixed top-0 px-4 py-3 py-lg-4 ${navClass}`}
+        className={`${layoutModeType === "light" ? "bg-white" : "bg-body"} position-fixed top-0 px-4 py-3 py-lg-2 ${navClass}`}
         id="navbar"
         style={{ zIndex: 1500, width: "100vw" }}
       >
@@ -134,7 +169,7 @@ const Navbar = () => {
             margin: "0 auto",
           }}
         >
-          <Logo logo={logo} />
+          <Logo logo={layoutModeType === "light" ? logo : darklogo} />
           <div className="d-none d-lg-flex align-items-center gap-5">
             {navlinks.map((link) => (
               <div
@@ -153,8 +188,8 @@ const Navbar = () => {
               >
                 <Link
                   to={`${link.path}`}
-                  style={{ color: "#505050" }}
-                  className="fw-normal fs-16 d-flex align-items-center px-lg-2"
+                  // style={{ color: "#505050" }}
+                  className="fw-normal fs-16 d-flex align-items-center px-lg-2 text-body"
                   onClick={(e) => {
                     if (link.submenus.length) {
                       if (!isDesktop()) {
@@ -198,6 +233,10 @@ const Navbar = () => {
             ))}
           </div>
           <div className="d-flex align-items-center gap-4 gap-lg-5">
+            <LightDark
+              layoutMode={layoutModeType}
+              onChangeLayoutMode={onChangeLayoutMode}
+            />
             <span className="d-block">
               <Link
                 style={{

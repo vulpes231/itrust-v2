@@ -38,7 +38,7 @@ const Diligence = () => {
                   <div>
                     <h3
                       style={{
-                        color: "#202020",
+                        // color: "#202020",
                         fontSize: window.innerWidth >= 562 ? "48px" : "28px",
                         maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                         fontWeight: 900,

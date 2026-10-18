@@ -107,7 +107,7 @@ const Content = () => {
                   />
 
                   <span
-                    className={`fs-16 ${tb.id === tab ? "text-secondary" : ""}`}
+                    className={`fs-16 ${tb.id === tab ? "text-secondary" : "text-body"}`}
                   >
                     {tb.label}
                   </span>

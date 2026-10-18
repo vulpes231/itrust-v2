@@ -45,6 +45,10 @@ const CashFeatures = () => {
       img: cat,
     },
   ];
+
+  const theme = localStorage.getItem("layoutMode");
+
+  // console.log(theme);
   return (
     <React.Fragment>
       <div className="">
@@ -65,17 +69,17 @@ const CashFeatures = () => {
                 return (
                   <div key={item.id} className="col-12 col-lg-4">
                     <div
-                      className="d-flex flex-column justify-content-between gap-2 bg-white rounded-3 p-4 shadow-lg"
+                      className={`d-flex flex-column justify-content-between gap-2 border ${theme === "light" ? "bg-white" : "bg-body"} rounded-3 p-4 shadow-lg`}
                       // style={{ height: "400px" }}
                     >
                       <div>
                         <h3
-                          className="font-bolder"
+                          className="font-bolder text-body"
                           style={{ fontSize: "26px" }}
                         >
                           {item.title}
                         </h3>
-                        <p className="fs-16 text-dark">{item.info}</p>
+                        <p className="fs-16 text-muted">{item.info}</p>
                       </div>
                       <img
                         src={item.img}
@@ -100,7 +104,7 @@ const CashFeatures = () => {
                 return (
                   <div key={item.id} className="col-12 col-lg-4">
                     <div
-                      className="d-flex flex-column justify-content-between gap-2 bg-white rounded-3 p-4 shadow-lg"
+                      className={`d-flex flex-column justify-content-between gap-2 border ${theme === "light" ? "bg-white" : "bg-body"} rounded-3 p-4 shadow-lg`}
                       // style={{ height: "400px" }}
                     >
                       <div>
@@ -110,7 +114,7 @@ const CashFeatures = () => {
                         >
                           {item.title}
                         </h3>
-                        <p className="fs-16 text-dark">{item.info}</p>
+                        <p className="fs-16 text-muted">{item.info}</p>
                       </div>
                       <img
                         src={item.img}
@@ -131,7 +135,7 @@ const CashFeatures = () => {
             <div className="d-flex align-items-center flex-column justify-content-center">
               <p
                 style={{
-                  color: "#202020",
+                  // color: "#202020",
                   fontSize: window.innerWidth >= 562 ? "35px" : "26px",
                   maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
                   fontWeight: 300,
@@ -157,7 +161,7 @@ const CashFeatures = () => {
               <h3
                 className="fw-bold mb-3 mt-4"
                 style={{
-                  color: "#202020",
+                  // color: "#202020",
                   fontSize: window.innerWidth >= 562 ? "44px" : "30px",
                   maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
                   fontWeight: 900,
@@ -167,7 +171,7 @@ const CashFeatures = () => {
               </h3>
               <span
                 style={{
-                  color: "#202020",
+                  // color: "#202020",
                   fontSize: window.innerWidth >= 562 ? "35px" : "26px",
                   maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
                   fontWeight: 300,

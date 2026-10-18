@@ -17,7 +17,7 @@ const Aboutus = () => {
           <div className="d-flex flex-column gap-3 align-items-center justify-content-center mt-5">
             <h3
               style={{
-                color: "#202020",
+                // color: "#202020",
                 maxWidth: window.innerWidth >= 992 ? "520px" : "70%",
                 fontSize: window.innerWidth >= 562 ? "46px" : "28px",
                 fontWeight: 900,
@@ -30,7 +30,7 @@ const Aboutus = () => {
                 maxWidth: window.innerWidth > 562 ? "55%" : "100%",
                 fontSize: window.innerWidth >= 562 ? "24px" : "18px",
                 fontWeight: window.innerWidth >= 562 ? 300 : 400,
-                color: "#20202099",
+                // color: "#20202099",
               }}
               className="text-center"
             >

@@ -17,6 +17,7 @@ import {
 
 import { format } from "date-fns";
 import numeral from "numeral";
+import MobileTrade from "./MobileTrade";
 
 const TradeHistory = ({ trades }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -172,26 +173,34 @@ const TradeHistory = ({ trades }) => {
         <CardHeader>
           <Row className="align-items-center">
             <Col xs={3}>
-              <h4 className="card-title mb-0 flex-grow-1">Order History</h4>
+              <h4 className="card-title mb-0 flex-grow-1 text-nowrap">
+                Order History
+              </h4>
             </Col>
           </Row>
         </CardHeader>
 
         <CardBody>
-          <TableContainer
-            columns={columns}
-            data={transformedData.length > 0 ? transformedData : []}
-            isGlobalFilter={false}
-            isAddUserList={false}
-            customPageSize={transformedData.length}
-            className="custom-header-css"
-            divClass="table-responsive table-card mb-3"
-            tableClass="align-middle table-nowrap"
-            theadClass="table-light text-muted"
-            // isLoading={getAssetsLoading}
-            // pagination={pagination}
-            // onPageChange={handlePageChange}
-          />
+          <div className="d-none d-md-flex flex-md-column">
+            <TableContainer
+              columns={columns}
+              data={transformedData.length > 0 ? transformedData : []}
+              isGlobalFilter={false}
+              isAddUserList={false}
+              customPageSize={transformedData.length}
+              className="custom-header-css"
+              divClass="table-responsive table-card mb-3"
+              tableClass="align-middle table-nowrap"
+              theadClass="table-light text-muted"
+              // isLoading={getAssetsLoading}
+              // pagination={pagination}
+              // onPageChange={handlePageChange}
+            />
+          </div>
+
+          <div className="d-flex d-md-none " style={{ marginBottom: "50px" }}>
+            <MobileTrade trades={transformedData} />
+          </div>
         </CardBody>
       </Card>
     </React.Fragment>

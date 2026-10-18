@@ -50,7 +50,7 @@ const Counter = () => {
                       <h3
                         className="fw-bold mb-3 mt-4 lg-mt-0"
                         style={{
-                          color: "#202020",
+                          // color: "#202020",
                           fontSize: "2rem",
                         }}
                       >

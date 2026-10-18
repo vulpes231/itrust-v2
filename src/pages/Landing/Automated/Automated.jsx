@@ -15,13 +15,15 @@ const Automated = () => {
             margin: "0 auto",
           }}
         >
-          <div className="d-flex flex-column align-items-center justify-content-center ">
+          <div
+            style={{ marginTop: "40px" }}
+            className="d-flex flex-column align-items-center justify-content-center "
+          >
             <h2
               className="mb-3 mt-4 lg-mt-0 text-center"
               style={{
-                color: "#202020",
                 fontSize: window.innerWidth >= 562 ? "52px" : "28px",
-                // maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
+
                 fontWeight: 900,
               }}
             >

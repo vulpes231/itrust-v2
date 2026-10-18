@@ -81,10 +81,12 @@ const Plans = () => {
                       <img src={st.img} alt="" width={150} />
                       <h3
                         className="fw-bolder mb-3 fs-18"
-                        style={{
-                          color: "#202020",
-                          // fontSize: "2rem",
-                        }}
+                        style={
+                          {
+                            // color: "#202020",
+                            // fontSize: "2rem",
+                          }
+                        }
                       >
                         {st.title}
                       </h3>

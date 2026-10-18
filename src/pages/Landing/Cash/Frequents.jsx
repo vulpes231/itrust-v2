@@ -85,7 +85,7 @@ const Frequents = () => {
                 <h3
                   className="mt-4 lg-mt-0 text-white"
                   style={{
-                    color: "#202020",
+                    // color: "#202020",
                     fontSize: window.innerWidth >= 562 ? "44px" : "30px",
                     maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
                     fontWeight: 900,
@@ -120,7 +120,7 @@ const Frequents = () => {
                         once: false,
                         amount: 0.3,
                       }}
-                      className="d-flex flex-column bg-white  p-3 rounded-4 text-dark"
+                      className="d-flex flex-column bg-body  p-3 rounded-4 text-dark"
                     >
                       <div
                         onClick={() => {
@@ -133,8 +133,10 @@ const Frequents = () => {
                         className="d-flex justify-content-between align-items-center"
                       >
                         <div className="d-flex align-items-center gap-3">
-                          <span>{que.id}.</span>
-                          <span className="fs-16">{que.question}</span>
+                          <span className="text-body">{que.id}.</span>
+                          <span className="fs-16 text-body">
+                            {que.question}
+                          </span>
                         </div>
                         <span className="text-secondary">
                           {currentQue === que.id ? <MdClose /> : <MdAdd />}

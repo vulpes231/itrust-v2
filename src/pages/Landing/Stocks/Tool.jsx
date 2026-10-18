@@ -111,7 +111,7 @@ const Tool = () => {
             <h3
               className="fw-bold mb-3"
               style={{
-                color: "#202020",
+                // color: "#202020",
                 fontSize: window.innerWidth >= 562 ? "52px" : "28px",
                 maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                 fontWeight: 900,
@@ -151,7 +151,7 @@ const Tool = () => {
               <div key={item.id} className="col-12 col-lg-4 d-flex">
                 <div
                   style={{ boxShadow: "0 6px 18px rgba(0, 0, 0, 0.18)" }}
-                  className="bg-white rounded-4 p-3 h-100 w-100 d-flex flex-column"
+                  className="card border rounded-4 p-3 h-100 w-100 d-flex flex-column"
                 >
                   <div className="d-flex flex-column align-items-center gap-2 flex-grow-1">
                     <h4 className="fw-bold fs-16">{item.count}</h4>
@@ -160,7 +160,7 @@ const Tool = () => {
                     </h3>
 
                     <p
-                      className="text-center text-dark flex-grow-1"
+                      className="text-center text-muted flex-grow-1"
                       style={{ maxWidth: "300px" }}
                     >
                       {item.info}

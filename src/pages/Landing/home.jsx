@@ -43,19 +43,19 @@ const Home = () => {
               <div className="d-flex flex-column align-items-center align-items-lg-start">
                 <h1
                   style={{
-                    fontWeight: "black",
-                    color: "#000000",
+                    fontWeight: 600,
+                    // color: "#000000",
                     fontSize: windowWidth > 992 ? "60px" : "25px",
                     fontFamily: "arial",
                   }}
-                  className="mb-3"
+                  className="mb-3 text-body"
                 >
                   Invest the way you want to
                 </h1>
                 <p
-                  className="fs-17 text-center text-lg-start"
+                  className="fs-17 text-center text-lg-start text-muted"
                   style={{
-                    color: "#505050",
+                    // color: "#505050",
                     lineHeight: windowWidth >= 992 ? "2" : "1.5",
                     maxWidth: windowWidth >= 992 ? "520px" : "100%",
                   }}

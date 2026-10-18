@@ -1,6 +1,6 @@
 import React from "react";
 
-//constants
+// constants
 import { layoutModeTypes } from "../../components/constants/layout";
 
 const LightDark = ({ layoutMode, onChangeLayoutMode }) => {
@@ -9,10 +9,15 @@ const LightDark = ({ layoutMode, onChangeLayoutMode }) => {
       ? layoutModeTypes["LIGHTMODE"]
       : layoutModeTypes["DARKMODE"];
 
+  const handleThemeChange = () => {
+    localStorage.setItem("theme", mode);
+    onChangeLayoutMode(mode);
+  };
+
   return (
-    <div className="ms-1 header-item d-none d-sm-flex">
+    <div className="ms-1 header-item d-flex">
       <button
-        onClick={() => onChangeLayoutMode(mode)}
+        onClick={handleThemeChange}
         type="button"
         className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode"
       >

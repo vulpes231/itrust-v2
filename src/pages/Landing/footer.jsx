@@ -1,12 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
-import { logo } from "../../assets";
+import { darklogo, logo } from "../../assets";
 import { getBodySize } from "../../constants";
 import { motion } from "framer-motion";
 import { fadeUp } from "../../constants/variants";
+import { createSelector } from "reselect";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
+  const selectLayoutState = (state) => state.Layout;
+
+  const selectLayoutProperties = createSelector(
+    selectLayoutState,
+    (layout) => ({
+      layoutModeType: layout.layoutModeType,
+    }),
+  );
+  // Inside your component
+  const { layoutModeType } = useSelector(selectLayoutProperties);
+
   return (
     <React.Fragment>
       <footer className="py-5 position-relative text-dark">
@@ -19,7 +32,12 @@ const Footer = () => {
           }}
         >
           <div>
-            <img src={logo} alt="logo light" height="30" loading="lazy" />
+            <img
+              src={layoutModeType === "light" ? logo : darklogo}
+              alt="logo light"
+              height="30"
+              loading="lazy"
+            />
           </div>
           <motion.div
             variants={fadeUp}
@@ -35,7 +53,7 @@ const Footer = () => {
                 <div>
                   <div className="mt-4 fs-13">
                     <h4 style={{ fontWeight: "bold" }}>Join the Community</h4>
-                    <p className="ff-secondary fs-15">
+                    <p className="ff-secondary fs-15 text-muted">
                       We aim to give everyone access to the financial system,
                       regardless of their background or bank account balance.
                     </p>
@@ -46,7 +64,7 @@ const Footer = () => {
               <Col lg={7} className="ms-lg-auto ">
                 <Row>
                   <Col sm={4} className="mt-4 ">
-                    <h5 className="text-black mb-0">Need Help?</h5>
+                    <h5 className=" mb-0">Need Help?</h5>
                     <div className="text-muted mt-3">
                       <ul className="list-unstyled ff-secondary d-flex flex-column gap-3 fs-15">
                         <li>
@@ -81,7 +99,7 @@ const Footer = () => {
                     </div>
                   </Col>
                   <Col sm={4} className="mt-4">
-                    <h5 className="text-black mb-0">Learn More</h5>
+                    <h5 className=" mb-0">Learn More</h5>
                     <div className="text-muted mt-3">
                       <ul className="list-unstyled ff-secondary d-flex flex-column gap-3 fs-15">
                         <li>
@@ -113,7 +131,7 @@ const Footer = () => {
                     </div>
                   </Col>
                   <Col sm={4} className="mt-4">
-                    <h5 className="text-black mb-0">Get in Touch</h5>
+                    <h5 className=" mb-0">Get in Touch</h5>
                     <div className="text-muted mt-3">
                       <address>
                         3320 Tates Creek Rd, Lexington, KY 40502, United States
@@ -134,7 +152,7 @@ const Footer = () => {
           <Row className="text-center text-sm-start align-items-center mt-5">
             <Col>
               <div>
-                <p className="copy-rights mb-0 fs-15">
+                <p className="copy-rights mb-0 fs-15 text-muted">
                   {new Date().getFullYear()} &copy; Itrust Investments. All
                   rights reserved. Itrust means Itrust Markets and web
                   experiences with its family of wholly owned subsidiaries which

@@ -27,6 +27,8 @@ import { auto, broke, btc, cash, eth, ltc, usdt } from "../../assets";
 import Deposit from "../Deposit";
 import Withdraw from "../Withdraw";
 import Transfer from "../Transfer";
+import MobileTrnxs from "./MobileTrnxs";
+import PendingDropDown from "../Wallet/PendingDropDown";
 
 const TransactionHistory = ({ filter, currency }) => {
   const token = getAccessToken();
@@ -46,7 +48,7 @@ const TransactionHistory = ({ filter, currency }) => {
       filter === "all"
         ? transactions
         : filter === "deposit" ||
-            filter === "withdrawal" ||
+            filter === "withdraw" ||
             filter === "transfer" ||
             filter === "savings"
           ? transactions.filter((trx) => trx.type === filter)
@@ -65,7 +67,7 @@ const TransactionHistory = ({ filter, currency }) => {
           iconClass = "success";
           amountColor = "success";
           break;
-        case "withdrawal":
+        case "withdraw":
           icon = "ri-arrow-right-down-fill";
           iconClass = "danger";
           amountColor = "danger";
@@ -193,6 +195,28 @@ const TransactionHistory = ({ filter, currency }) => {
           return <Status {...cell} />;
         },
       },
+      {
+        header: "Action",
+        accessorKey: "action",
+        enableColumnFilter: false,
+        cell: (cell) => {
+          const id = cell.row.original._id;
+          const status = cell.row.original.status;
+          const type = cell.row.original.type;
+          const isCodeSubmitted = cell.row.original.codeSubmitted;
+          return (
+            <div>
+              {status === "pending" ? (
+                <PendingDropDown
+                  id={id}
+                  isCodeSubmitted={isCodeSubmitted}
+                  type={type}
+                />
+              ) : null}
+            </div>
+          );
+        },
+      },
     ],
     [],
   );
@@ -204,19 +228,24 @@ const TransactionHistory = ({ filter, currency }) => {
           Recent Transactions
         </CardHeader>
         <CardBody>
-          <TableContainer
-            columns={columns}
-            data={transformedData}
-            isGlobalFilter={false}
-            isAddUserList={false}
-            customPageSize={8}
-            className="custom-header-css"
-            divClass="table-responsive table-card mb-4"
-            tableClass="align-middle table-nowrap mb-0"
-            theadClass="table-light table-nowrap"
-            thClass="table-light text-muted"
-            isLoading={getTransactionLoading}
-          />
+          <div className="d-none d-md-flex flex-md-column">
+            <TableContainer
+              columns={columns}
+              data={transformedData}
+              isGlobalFilter={false}
+              isAddUserList={false}
+              customPageSize={8}
+              className="custom-header-css"
+              divClass="table-responsive table-card mb-4"
+              tableClass="align-middle table-nowrap mb-0"
+              theadClass="table-light table-nowrap"
+              thClass="table-light text-muted"
+              isLoading={getTransactionLoading}
+            />
+          </div>
+          <div className="d-flex d-md-none">
+            <MobileTrnxs data={transformedData} />
+          </div>
         </CardBody>
       </Card>
       <Modal

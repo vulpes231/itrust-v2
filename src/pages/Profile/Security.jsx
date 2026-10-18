@@ -15,6 +15,7 @@ import { updateTwoFactor } from "../../services/user/user";
 import SuccessToast from "../../components/Common/SuccessToast";
 import ErrorToast from "../../components/Common/ErrorToast";
 import ChangeEmail from "./Updates/ChangeEmail";
+import TwoFaToast from "../../components/Common/TwoFaToast";
 
 const Security = ({ user }) => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -154,13 +155,18 @@ const Security = ({ user }) => {
           handleToggle={() => setShowEmailModal(false)}
         />
       )}
-      {twoFactorMutation.isSuccess && (
-        <SuccessToast
-          isTwoFa={!user?.accountStatus?.twoFaActivated}
-          successMsg={`You've ${!user?.accountStatus?.twoFaActivated ? "enabled" : "disabled"} 2FA on your account`}
-          onClose={() => twoFactorMutation.reset()}
-        />
-      )}
+      {twoFactorMutation.isSuccess &&
+        (action === "enable" ? (
+          <SuccessToast
+            successMsg="You've enabled 2FA on your account"
+            onClose={() => twoFactorMutation.reset()}
+          />
+        ) : (
+          <TwoFaToast
+            successMsg="You've disabled 2FA on your account"
+            onClose={() => twoFactorMutation.reset()}
+          />
+        ))}
       {error && <ErrorToast errorMsg={error} onClose={() => setError("")} />}
     </Card>
   );

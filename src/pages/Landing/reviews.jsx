@@ -118,10 +118,12 @@ const Reviews = () => {
                       </span>
                       <h3
                         className="fw-normal mb-3 fs-28"
-                        style={{
-                          color: "#202020",
-                          // fontSize: "2rem",
-                        }}
+                        style={
+                          {
+                            // color: "#202020",
+                            // fontSize: "2rem",
+                          }
+                        }
                       >
                         "{rev.title}"
                       </h3>

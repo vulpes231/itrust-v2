@@ -67,7 +67,7 @@ const Tile = () => {
                   <div key={foot.id} className="col-12 col-lg-3">
                     <div className="d-flex flex-column gap-2 align-items-center justify-content-between text-center">
                       <h3 style={{ fontWeight: "bolder" }}>{foot.title}</h3>
-                      <p className="fs-16 text-dark">{foot.info}</p>
+                      <p className="fs-16 text-muted">{foot.info}</p>
                     </div>
                   </div>
                 );

@@ -28,7 +28,7 @@ const General = ({ currentQue, setCurrentQue }) => {
                 once: false,
                 amount: 0.3,
               }}
-              className="d-flex flex-column bg-white p-3 rounded-4 text-dark"
+              className="d-flex flex-column bg-body p-3 rounded-4 text-dark"
             >
               <div
                 onClick={() => {
@@ -41,8 +41,8 @@ const General = ({ currentQue, setCurrentQue }) => {
                 className="d-flex justify-content-between align-items-center"
               >
                 <div className="d-flex align-items-center gap-3">
-                  <span>{que.id}.</span>
-                  <span className="fs-16">{que.question}</span>
+                  <span className=" text-body">{que.id}.</span>
+                  <span className="fs-16 text-body">{que.question}</span>
                 </div>
                 <span>{currentQue === que.id ? <MdClose /> : <MdAdd />}</span>
               </div>

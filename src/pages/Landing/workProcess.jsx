@@ -46,7 +46,7 @@ const WorkProcess = () => {
                   width: "155px",
                   height: "46px",
                 }}
-                className="btn bg-white mt-3 fw-bold"
+                className="btn bg-body mt-3 fw-bold"
               >
                 Get Started
               </button>

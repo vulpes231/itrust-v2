@@ -17,7 +17,8 @@ import {
 export const initialState = {
   layoutType: layoutTypes.HORIZONTAL,
   leftSidebarType: leftSidebarTypes.LIGHT,
-  layoutModeType: layoutModeTypes.LIGHTMODE,
+  layoutModeType:
+    localStorage.getItem("layoutMode") || layoutModeTypes.LIGHTMODE,
   layoutWidthType: layoutWidthTypes.FLUID,
   layoutPositionType: layoutPositionTypes.FIXED,
   topbarThemeType: topbarThemeTypes.LIGHT,

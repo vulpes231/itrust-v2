@@ -18,7 +18,7 @@ const Takeaway = () => {
             <p
               className="pt-4"
               style={{
-                color: "#202020",
+                // color: "#202020",
                 fontSize: "26px",
                 lineHeight: 1,
                 fontStyle: "italic",
@@ -35,7 +35,7 @@ const Takeaway = () => {
               <h3
                 className="fw-bold mb-3"
                 style={{
-                  color: "#202020",
+                  // color: "#202020",
                   fontSize: window.innerWidth >= 562 ? "36px" : "26px",
                   maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                   fontWeight: 900,
@@ -65,7 +65,7 @@ const Takeaway = () => {
               <h3
                 className="fw-bold mb-3"
                 style={{
-                  color: "#202020",
+                  // color: "#202020",
                   fontSize: window.innerWidth >= 562 ? "36px" : "26px",
                   maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                   fontWeight: 900,

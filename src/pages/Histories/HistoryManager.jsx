@@ -6,7 +6,7 @@ const btns = [
   { id: "trade", label: "trade orders" },
   { id: "dividend", label: "dividends" },
   { id: "deposit", label: "deposits" },
-  { id: "withdrawal", label: "withdrawals" },
+  { id: "withdraw", label: "withdrawals" },
   { id: "transfer", label: "transfers" },
   { id: "savings", label: "savings & contributions" },
 ];

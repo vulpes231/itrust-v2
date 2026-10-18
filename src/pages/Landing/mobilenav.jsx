@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { MdArrowDropDown, MdClose } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import Logo from "./logo";
+import { createSelector } from "reselect";
+import { useSelector } from "react-redux";
+import { darklogo } from "../../assets";
 
 const MobileNav = ({ links, isOpen, logo, handleClose }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null);
@@ -9,6 +12,17 @@ const MobileNav = ({ links, isOpen, logo, handleClose }) => {
   const toggleSubmenu = (id) => {
     setOpenSubmenu((prev) => (prev === id ? null : id));
   };
+
+  const selectLayoutState = (state) => state.Layout;
+
+  const selectLayoutProperties = createSelector(
+    selectLayoutState,
+    (layout) => ({
+      layoutModeType: layout.layoutModeType,
+    }),
+  );
+  // Inside your component
+  const { layoutModeType } = useSelector(selectLayoutProperties);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -28,7 +42,7 @@ const MobileNav = ({ links, isOpen, logo, handleClose }) => {
   return (
     <div
       ref={menuRef}
-      className="d-lg-none position-fixed top-0 start-0 vh-100 bg-white p-4 shadow-xl"
+      className="d-lg-none position-fixed top-0 start-0 vh-100 bg-body p-4 shadow-xl"
       style={{
         width: "75%",
         zIndex: 2000,
@@ -39,7 +53,7 @@ const MobileNav = ({ links, isOpen, logo, handleClose }) => {
     >
       <div className="d-flex flex-column gap-4 mt-2">
         <div className="d-flex align-items-center justify-content-between">
-          <Logo logo={logo} />
+          <Logo logo={layoutModeType === "light" ? logo : darklogo} />
           <span onClick={handleClose}>
             <MdClose size={20} />
           </span>
@@ -58,7 +72,7 @@ const MobileNav = ({ links, isOpen, logo, handleClose }) => {
               <NavLink
                 to={link.path}
                 // style={{ color: "#202020" }}
-                className="text-decoration-none text-dark fw-bold flex-grow-1"
+                className="text-decoration-none text-body fw-bold flex-grow-1"
               >
                 {link.label}
               </NavLink>

@@ -40,7 +40,7 @@ const Earn = () => {
                       <h3
                         className="fw-bold mb-3 text-center text-lg-start"
                         style={{
-                          color: "#202020",
+                          // color: "#202020",
                           fontSize: window.innerWidth >= 562 ? "44px" : "30px",
                           maxWidth: window.innerWidth >= 992 ? "520px" : "70%",
                           fontWeight: 900,

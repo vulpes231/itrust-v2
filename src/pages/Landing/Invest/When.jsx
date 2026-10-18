@@ -41,7 +41,7 @@ const When = () => {
               <div className="col-12 col-lg-4">
                 <h3
                   style={{
-                    color: "#202020",
+                    // color: "#202020",
                     fontSize: window.innerWidth >= 562 ? "36px" : "22px",
                     maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                     fontWeight: 800,
@@ -51,7 +51,7 @@ const When = () => {
                 </h3>
               </div>
               <div className="col-12 col-lg-8">
-                <p className="fs-16 text-dark">
+                <p className="fs-16 text-muted">
                   Just as you can’t build a house without a blueprint, you
                   should formulate a strategy before you start investing. First,
                   set aside some money to invest in your future. Begin investing
@@ -74,7 +74,7 @@ const When = () => {
                         >
                           <FaArrowRight size={10} />
                         </span>
-                        <span className="text-dark fs-16"> {an}</span>
+                        <span className="text-muted fs-16"> {an}</span>
                       </span>
                     );
                   })}

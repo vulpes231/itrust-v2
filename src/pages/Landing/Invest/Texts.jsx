@@ -45,7 +45,7 @@ const Texts = () => {
               <div className="col-12 col-lg-4">
                 <h3
                   style={{
-                    color: "#202020",
+                    // color: "#202020",
                     fontSize: window.innerWidth >= 562 ? "36px" : "22px",
                     maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                     fontWeight: 900,
@@ -55,7 +55,7 @@ const Texts = () => {
                 </h3>
               </div>
               <div className="col-12 col-lg-8">
-                <p className="fs-16 text-dark">
+                <p className="fs-16 text-muted">
                   You can invest in stocks, crypto, options and ETF’s for less
                   than $100, while mutual funds often ask you to invest at least
                   $1,000. A share of stock can range in price from a few dollars
@@ -80,7 +80,7 @@ const Texts = () => {
               <div className="col-12 col-lg-4">
                 <h3
                   style={{
-                    color: "#202020",
+                    // color: "#202020",
                     fontSize: window.innerWidth >= 562 ? "36px" : "22px",
                     maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                     fontWeight: 900,
@@ -90,7 +90,7 @@ const Texts = () => {
                 </h3>
               </div>
               <div className="col-12 col-lg-8">
-                <p className="fs-16 text-dark">
+                <p className="fs-16 text-muted">
                   At Itrust Investment, we partner with financial professionals
                   across the World to ensure they have the proper tools and
                   materials to assist you in building a financial plan and
@@ -113,7 +113,7 @@ const Texts = () => {
               <div className="col-12 col-lg-4">
                 <h3
                   style={{
-                    color: "#202020",
+                    // color: "#202020",
                     fontSize: window.innerWidth >= 562 ? "36px" : "22px",
                     maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                     fontWeight: 900,
@@ -141,7 +141,7 @@ const Texts = () => {
                     );
                   })}
                 </div>
-                <p className="fs-16 text-dark">
+                <p className="fs-16 text-muted">
                   Your account will be set up automatically, verify your account
                   by submitting ID and make a deposit to your cash account to
                   start investing with us.
@@ -161,7 +161,7 @@ const Texts = () => {
               <div className="col-12 col-lg-4">
                 <h3
                   style={{
-                    color: "#202020",
+                    // color: "#202020",
                     fontSize: window.innerWidth >= 562 ? "36px" : "22px",
                     maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                     fontWeight: 900,
@@ -171,7 +171,7 @@ const Texts = () => {
                 </h3>
               </div>
               <div className="col-12 col-lg-8">
-                <p className="fs-16 text-dark">
+                <p className="fs-16 text-muted">
                   When you’re considering your options for investing with Itrust
                   Investment, either through a financial professional or direct
                   access, it’s important to consider the benefits associated
@@ -191,7 +191,7 @@ const Texts = () => {
                         >
                           <FaArrowRight size={10} />
                         </span>
-                        <span className="text-dark fs-16"> {an}</span>
+                        <span className="text-muted fs-16"> {an}</span>
                       </span>
                     );
                   })}

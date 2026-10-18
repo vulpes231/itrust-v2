@@ -57,7 +57,7 @@ const Create = () => {
                     <h3
                       className="fw-bold mb-3"
                       style={{
-                        color: "#202020",
+                        // color: "#202020",
                         fontSize: window.innerWidth >= 562 ? "44px" : "24px",
                         maxWidth: window.innerWidth >= 562 ? "520px" : "70%",
                         fontWeight: 900,

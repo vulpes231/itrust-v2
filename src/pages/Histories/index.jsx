@@ -98,7 +98,7 @@ const Histories = () => {
             />
           )}
 
-          {activeHistoryTab === "withdrawal" && (
+          {activeHistoryTab === "withdraw" && (
             <TransactionHistory
               filter={activeHistoryTab}
               currency={user?.currency}

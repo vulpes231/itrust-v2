@@ -54,7 +54,7 @@ const ArticleList = ({ activeTab }) => {
         >
           <div className="row g-5">
             {customArticles.length === 0 && (
-              <div className="text-center fw-bold text-dark">
+              <div className="text-center fw-bold text-muted">
                 No articles for the selected category.
               </div>
             )}

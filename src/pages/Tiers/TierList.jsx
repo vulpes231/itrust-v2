@@ -87,7 +87,10 @@ const TierList = ({ currency }) => {
   });
 
   useEffect(() => {
-    if (!error) {
+    if (
+      !error ||
+      error === "You've not met the required deposit of your account tier."
+    ) {
       return;
     }
 
@@ -370,7 +373,11 @@ const TierList = ({ currency }) => {
       )}
 
       {/* Error */}
-      {error && <ErrorToast errorMsg={error} onClose={() => setError("")} />}
+      {error &&
+        error !==
+          "You've not met the required deposit of your account tier." && (
+          <ErrorToast errorMsg={error} onClose={() => setError("")} />
+        )}
     </React.Fragment>
   );
 };

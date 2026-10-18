@@ -144,7 +144,7 @@ const ArticleBody = ({ activeTab, setActiveTab }) => {
               Learn from our diverse collection of blogs and articles
             </h3>
             <p
-              className="text-dark fs-16 text-center"
+              className="text-muted fs-16 text-center"
               style={{ maxWidth: window.innerWidth > 562 ? "560px" : "100%" }}
             >
               What you need to know about investing and saving and retirement

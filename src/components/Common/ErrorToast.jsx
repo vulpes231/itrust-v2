@@ -6,7 +6,14 @@ const ErrorToast = ({ errorMsg, isOpen = true, onClose }) => {
     <div
       isOpen={isOpen}
       className="alert border-0 alert-danger"
-      style={{ position: "fixed", top: "100px", right: "10px", zIndex: "1500" }}
+      style={{
+        position: "fixed",
+        top: "100px",
+        right: "10px",
+        zIndex: "1500",
+        maxWidth: "250px",
+        width: "100%",
+      }}
     >
       {errorMsg}
     </div>

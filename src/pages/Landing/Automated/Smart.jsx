@@ -35,7 +35,7 @@ const Smart = () => {
                     <h3
                       className="fw-bold mb-3"
                       style={{
-                        color: "#202020",
+                        // color: "#202020",
                         fontSize: window.innerWidth >= 562 ? "44px" : "32px",
                         // maxWidth: window.innerWidth >= 562 ? "520px" : "90%",
                         fontWeight: 900,

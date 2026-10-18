@@ -16,11 +16,11 @@ const How = () => {
             margin: "0 auto",
           }}
         >
-          <div className="bg-white">
+          <div className="">
             <div className="d-flex align-items-center justify-content-center flex-column mb-5 ">
               <h3
                 style={{
-                  color: "#202020",
+                  // color: "#202020",
                   fontSize: window.innerWidth >= 562 ? "36px" : "22px",
                   maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                   fontWeight: 800,
@@ -36,7 +36,7 @@ const How = () => {
                   fontWeight: 300,
                   fontStyle: "italic",
                 }}
-                className="text-dark text-center text-lg-left"
+                className="text-muted text-center text-lg-left"
               >
                 What you need to know about investing from the get-go.
               </p>
@@ -46,7 +46,7 @@ const How = () => {
               <div className="col-12 col-lg-4">
                 <h3
                   style={{
-                    color: "#202020",
+                    // color: "#202020",
                     fontSize: window.innerWidth >= 562 ? "36px" : "22px",
                     maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                     fontWeight: 800,
@@ -55,7 +55,7 @@ const How = () => {
                   When should I start investing?
                 </h3>
               </div>
-              <div className="col-12 col-lg-8 fs-16 text-dark">
+              <div className="col-12 col-lg-8 fs-16 text-muted">
                 <p>
                   If you invest now, you’ll have a better chance to realizing a
                   return on your investment. According to the Social Security

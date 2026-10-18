@@ -1,24 +1,52 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Collapse, Container, NavbarToggler, NavLink } from "reactstrap";
-import Scrollspy from "react-scrollspy";
+
 import { Link, useLocation } from "react-router-dom";
-import { logo } from "../../assets";
-import { MdArrowDropDown, MdClose, MdMenu } from "react-icons/md";
+import { darklogo, logo } from "../../assets";
 import { getSize } from "../../constants";
 import MobileAuth from "./MobileAuth";
 import Logo from "../Landing/logo";
+import LightDark from "../../components/Common/LightDark";
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { changeLayoutMode } from "../../features/layouts/thunk";
 
 const AuthNav = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [navClass, setnavClass] = useState("");
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
-  const subRef = useRef();
+  const dispatch = useDispatch();
+  const selectLayoutState = (state) => state.Layout;
 
-  const openMenu = (e) => {
-    e.stopPropagation();
-    setMobileMenu(true);
+  const selectLayoutProperties = createSelector(
+    selectLayoutState,
+    (layout) => ({
+      layoutModeType: layout.layoutModeType,
+    }),
+  );
+  // Inside your component
+  const { layoutModeType } = useSelector(selectLayoutProperties);
+
+  /*
+    layout settings
+    */
+  useEffect(() => {
+    if (layoutModeType) {
+      window.dispatchEvent(new Event("resize"));
+
+      dispatch(changeLayoutMode(layoutModeType));
+    }
+  }, [layoutModeType, dispatch]);
+  /*
+    call dark/light mode
+    */
+  const onChangeLayoutMode = (value) => {
+    if (changeLayoutMode) {
+      dispatch(changeLayoutMode(value));
+    }
   };
+
+  const subRef = useRef();
 
   const closeMenu = () => {
     setMobileMenu(false);
@@ -26,18 +54,10 @@ const AuthNav = () => {
 
   const isDesktop = () => window.innerWidth >= 992;
 
-  const toggleSubmenu = (id) => {
-    if (!isDesktop()) {
-      setOpenSubmenu((prev) => (prev === id ? null : id));
-    }
-  };
-
   useEffect(() => {
     window.addEventListener("scroll", scrollNavigation, true);
     return () => window.removeEventListener("scroll", scrollNavigation, true);
   }, []);
-
-  const [activeLink, setActiveLink] = useState();
 
   const scrollNavigation = () => {
     var scrollup = document.documentElement.scrollTop;
@@ -93,10 +113,6 @@ const AuthNav = () => {
     },
   ];
 
-  const returnNull = () => {
-    return;
-  };
-
   const location = useLocation();
 
   useEffect(() => {
@@ -123,7 +139,7 @@ const AuthNav = () => {
   return (
     <React.Fragment>
       <header
-        className={`bg-white position-fixed top-0 px-4 py-3 py-lg-4 ${navClass}`}
+        className={`position-fixed top-0 px-4 py-3 py-lg-4 ${navClass}`}
         id="navbar"
         style={{ zIndex: 1500, width: "100vw" }}
       >
@@ -134,43 +150,43 @@ const AuthNav = () => {
             margin: "0 auto",
           }}
         >
-          <Logo logo={logo} />
+          <Logo logo={layoutModeType === "light" ? logo : darklogo} />
 
-          <div className="d-flex align-items-center gap-4 gap-lg-5">
-            <span className="d-block">
-              <Link
-                style={{
-                  width: isDesktop() ? "125px" : "85px",
-                  height: isDesktop() ? "48px" : "44px",
-                  // backgroundColor: isDesktop() ? "green" : "red",
-                }}
-                className="btn btn-secondary fw-bold p-1 p-lg-2 d-flex align-items-center justify-content-center"
-                to={
-                  location.pathname.includes("/login")
-                    ? "/register"
-                    : location.pathname.includes("/register")
-                      ? "/login"
-                      : location.pathname.includes("/forgot-password")
+          <div className="d-flex gap-2">
+            <LightDark
+              layoutMode={layoutModeType}
+              onChangeLayoutMode={onChangeLayoutMode}
+            />
+
+            <div className="d-flex align-items-center gap-4 gap-lg-5">
+              <span className="d-block">
+                <Link
+                  style={{
+                    width: isDesktop() ? "125px" : "85px",
+                    height: isDesktop() ? "48px" : "44px",
+                  }}
+                  className="btn btn-secondary fw-bold p-1 p-lg-2 d-flex align-items-center justify-content-center"
+                  to={
+                    location.pathname.includes("/login")
+                      ? "/register"
+                      : location.pathname.includes("/register")
                         ? "/login"
-                        : "#"
-                }
-              >
-                {" "}
-                {location.pathname.includes("/login")
-                  ? "Sign Up"
-                  : location.pathname.includes("/register")
-                    ? "Sign In"
-                    : location.pathname.includes("/forgot-password")
+                        : location.pathname.includes("/forgot-password")
+                          ? "/login"
+                          : "#"
+                  }
+                >
+                  {" "}
+                  {location.pathname.includes("/login")
+                    ? "Sign Up"
+                    : location.pathname.includes("/register")
                       ? "Sign In"
-                      : ""}
-              </Link>
-            </span>
-            {/* <span
-              className="d-block d-lg-none"
-              onClick={mobileMenu ? undefined : openMenu}
-            >
-              <MdMenu size={22} />
-            </span> */}
+                      : location.pathname.includes("/forgot-password")
+                        ? "Sign In"
+                        : ""}
+                </Link>
+              </span>
+            </div>
           </div>
         </nav>
 

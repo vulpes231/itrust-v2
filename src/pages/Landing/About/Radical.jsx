@@ -53,7 +53,7 @@ const Radical = () => {
               <h3
                 className="fw-bold mb-3"
                 style={{
-                  color: "black",
+                  // color: "black",
                   fontSize: "32px",
                   maxWidth: window.innerWidth > 562 ? "450px" : "100%",
                 }}
@@ -61,7 +61,7 @@ const Radical = () => {
                 We exist to make our customers happy
               </h3>
               <p
-                className="fs-16 text-dark"
+                className="fs-16 text-muted"
                 style={{ maxWidth: window.innerWidth > 562 ? "450px" : "100%" }}
               >
                 From the early days of Itrust, we have prioritized getting
@@ -72,7 +72,7 @@ const Radical = () => {
                 find it.
               </p>
               <p
-                className="fs-16 text-dark"
+                className="fs-16 text-muted"
                 style={{ maxWidth: window.innerWidth > 562 ? "450px" : "100%" }}
               >
                 We never stop asking how we can make our product better, and we
@@ -81,7 +81,7 @@ const Radical = () => {
                 well-intentioned
               </p>
               <p
-                className="fs-16 text-dark"
+                className="fs-16 text-muted"
                 style={{ maxWidth: window.innerWidth > 562 ? "450px" : "100%" }}
               >
                 We delight our customers and take pride in our work. Otherwise,

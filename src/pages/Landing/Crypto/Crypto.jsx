@@ -19,7 +19,7 @@ const Crypto = () => {
             <h2
               className="mb-3 mt-4 lg-mt-0"
               style={{
-                color: "#202020",
+                // color: "#202020",
                 fontSize: window.innerWidth >= 562 ? "52px" : "28px",
                 maxWidth: window.innerWidth >= 992 ? "520px" : "100%",
                 fontWeight: 900,

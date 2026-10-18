@@ -72,10 +72,12 @@ const Client = () => {
                       <div>
                         <h3
                           className="fw-bold mb-3"
-                          style={{
-                            color: "#202020",
-                            // fontSize: "2rem",
-                          }}
+                          style={
+                            {
+                              // color: "#202020",
+                              // fontSize: "2rem",
+                            }
+                          }
                         >
                           {it.title}
                         </h3>

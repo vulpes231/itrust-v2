@@ -55,7 +55,7 @@ const How = () => {
                   <h3
                     className="mb-3 fw-bold text-center"
                     style={{
-                      color: "#202020",
+                      // color: "#202020",
                       fontSize: window.innerWidth >= 562 ? "44px" : "30px",
                       maxWidth: window.innerWidth >= 992 ? "520px" : "70%",
                       fontWeight: 900,
@@ -91,7 +91,7 @@ const How = () => {
 
                     <h3
                       className="fw-bolder mb-3 fs-18 text-center"
-                      style={{ color: "#202020" }}
+                      // style={{ color: "#202020" }}
                     >
                       {st.title}
                     </h3>

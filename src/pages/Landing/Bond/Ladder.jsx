@@ -57,7 +57,7 @@ const Ladder = () => {
                     <h3
                       className="mb-3 mt-2 mt-lg-0"
                       style={{
-                        color: "#202020",
+                        // color: "#202020",
                         fontSize: window.innerWidth >= 562 ? "44px" : "24px",
                         maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                         fontWeight: 900,
@@ -102,7 +102,7 @@ const Ladder = () => {
                     <h3
                       className="fw-bold mb-3"
                       style={{
-                        color: "#202020",
+                        // color: "#202020",
                         fontSize: window.innerWidth >= 562 ? "44px" : "24px",
                         maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                         fontWeight: 900,
@@ -158,7 +158,7 @@ const Ladder = () => {
                     <h3
                       className="fw-bold mb-3"
                       style={{
-                        color: "#202020",
+                        // color: "#202020",
                         fontSize: window.innerWidth >= 562 ? "44px" : "24px",
                         maxWidth: window.innerWidth >= 562 ? "520px" : "100%",
                         fontWeight: 900,

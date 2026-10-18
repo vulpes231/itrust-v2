@@ -8,9 +8,17 @@ import VerticalLayout from "../Layouts/index";
 //routes
 import { authProtectedRoutes, publicRoutes } from "./allRoutes";
 import { AuthProtected } from "./AuthProtected";
+import { useDispatch } from "react-redux";
+import { initializeLayoutMode } from "../features/layouts/thunk";
 
 const Index = () => {
   const { pathname } = useLocation();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initializeLayoutMode());
+  }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

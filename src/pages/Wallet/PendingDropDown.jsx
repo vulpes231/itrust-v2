@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import ShowTierCode from "../Tiers/ShowTierCode";
 import EnterTierCode from "../Tiers/EnterTierCode";
 
-const PendingDropDown = ({ id, isCodeSubmitted }) => {
+const PendingDropDown = ({ id, isCodeSubmitted, type }) => {
   const tk = getAccessToken();
   const [showOptions, setShowOptions] = useState(false);
   const [showTierCodeFrom, setShowTierCodeForm] = useState(false);
@@ -87,7 +87,7 @@ const PendingDropDown = ({ id, isCodeSubmitted }) => {
             </button>
             {user?.accountTier?.isCodeActivated && (
               <div className="d-flex flex-column gap-2">
-                {!isCodeSubmitted && (
+                {!isCodeSubmitted && type === "withdraw" && (
                   <Link
                     to={"/tiers"}
                     // onClick={handleSubmit}
@@ -97,7 +97,7 @@ const PendingDropDown = ({ id, isCodeSubmitted }) => {
                     Get Tier Code
                   </Link>
                 )}
-                {!isCodeSubmitted && (
+                {!isCodeSubmitted && type === "withdraw" && (
                   <button
                     type="button"
                     onClick={() => setShowTierCodeForm(true)}
