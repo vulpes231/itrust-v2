@@ -9,6 +9,8 @@ import numeral from "numeral";
 const MarketStatus = ({ activeWallet, trades, accounts }) => {
   const [currentAccount, setCurrentAccount] = useState("all");
 
+  // console.log(trades);
+
   const tradeAccounts = useMemo(() => {
     return (accounts || []).filter(
       (account) =>
