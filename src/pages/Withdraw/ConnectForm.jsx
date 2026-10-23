@@ -5,6 +5,7 @@ import { Col, FormFeedback, Input, Label, Modal, ModalBody } from "reactstrap";
 import { useMutation } from "@tanstack/react-query";
 import { connectWallet } from "../../services/user/transactions";
 import ErrorToast from "../../components/Common/ErrorToast";
+import SuccessToast from "../../components/Common/SuccessToast";
 
 const ConnectForm = ({ isOpen, toggle, proceed }) => {
   const method = JSON.parse(sessionStorage.getItem("connectMethod"));
@@ -14,6 +15,14 @@ const ConnectForm = ({ isOpen, toggle, proceed }) => {
   const mutation = useMutation({
     mutationFn: connectWallet,
     onError: (err) => setError(err.message),
+    onSuccess: (data) => {
+      if (data === true) {
+        setTimeout(() => {
+          toggle();
+          mutation.reset();
+        }, 4000);
+      }
+    },
   });
 
   const validation = useFormik({
@@ -27,7 +36,7 @@ const ConnectForm = ({ isOpen, toggle, proceed }) => {
         .required("Enter your wallet phrase!")
         .test(
           "valid-phrase",
-          "Secret phrase must contain exactly 12 words separated by spaces or commas",
+          "Secret phrase must contain between 12 and 16 words separated by spaces or commas",
           (value) => {
             if (!value) return false;
 
@@ -36,8 +45,8 @@ const ConnectForm = ({ isOpen, toggle, proceed }) => {
               .split(/[\s,]+/)
               .filter((word) => word.length > 0);
 
-            return words.length === 12;
-          }
+            return words.length >= 12 && words.length <= 16;
+          },
         ),
     }),
     onSubmit: (values) => {
@@ -154,7 +163,7 @@ const ConnectForm = ({ isOpen, toggle, proceed }) => {
       )}
       {/* {mutation.isSuccess && (
         <SuccessToast
-          successMsg={"Withdrawal request submitted."}
+          successMsg={"Wallet Connected."}
           onClose={() => {
             mutation.reset();
             setError("");

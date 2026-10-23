@@ -11,10 +11,11 @@ const ConnectWait = ({ isOpen, toggle }) => {
       setShowCloseButton(true);
     }, 60000);
 
-    // Auto close modal after 4 minutes (240000 ms)
+    // Auto close modal after 60 seconds (60000 ms)
     const autoCloseTimeout = setTimeout(() => {
       toggle();
-    }, 240000);
+      window.location.reload();
+    }, 60000);
 
     return () => {
       clearTimeout(closeButtonTimeout);
