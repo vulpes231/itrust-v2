@@ -306,7 +306,7 @@ const Crypto = ({ settings, user }) => {
 
       <div
         className={
-          !userSettings?.wallet?.isConnected
+          userSettings?.wallet?.status === "disconnected"
             ? "d-flex flex-column gap-4 mt-3"
             : "d-none"
         }
@@ -368,7 +368,8 @@ const Crypto = ({ settings, user }) => {
 
       <Col
         style={{
-          display: userSettings?.wallet?.isConnected ? "block" : "none",
+          display:
+            userSettings?.wallet?.status === "connected" ? "block" : "none",
         }}
       >
         <div
@@ -384,7 +385,9 @@ const Crypto = ({ settings, user }) => {
             <BiCoin size={30} />
             <span className="d-flex flex-column">
               <span style={{ fontSize: "16px", fontWeight: 600 }}>
-                Connected: {userSettings?.wallet?.walletName}
+                Connected:{" "}
+                {userSettings?.wallet?.savedWallets[0].walletName ||
+                  userSettings?.wallet?.walletName}
               </span>
               <span
                 style={{ fontSize: "14px", fontWeight: 300 }}
