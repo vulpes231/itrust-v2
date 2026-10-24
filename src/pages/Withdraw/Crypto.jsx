@@ -23,10 +23,12 @@ import { BiCoin } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import numeral from "numeral";
 import CurrencySign from "../CurrencySign";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Crypto = ({ settings, user }) => {
   const token = getAccessToken();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [error, setError] = useState("");
   const [selectedMode, setSelectedMode] = useState("");
@@ -39,9 +41,18 @@ const Crypto = ({ settings, user }) => {
     setShowForm(!showForm);
   };
 
-  const handleShowWait = () => {
+  const { data: userSettings } = useQuery({
+    queryFn: getUserSettings,
+    queryKey: ["userSettings"],
+    enabled: !!token,
+  });
+
+  const handleShowWait = async () => {
     setShowForm(!showForm);
-    setShowWaiting(!showWaiting);
+    await queryClient.invalidateQueries({
+      queryKey: ["userSettings"],
+      refetchType: "active",
+    });
   };
 
   const handleToggle = () => {
@@ -53,6 +64,14 @@ const Crypto = ({ settings, user }) => {
     setSelectedMode(asset);
   };
 
+  const closeModal = async () => {
+    sessionStorage.removeItem("connectMethod");
+    await queryClient.invalidateQueries({
+      queryKey: ["userSettings"],
+      refetchType: "active",
+    });
+  };
+
   const cryptoMutation = useMutation({
     mutationFn: () => withdrawFund(cryptoValidation.values),
     onError: (err) => setError(err.message),
@@ -61,12 +80,6 @@ const Crypto = ({ settings, user }) => {
   const disconnectMutation = useMutation({
     mutationFn: disconnectWallet,
     onError: (err) => setError(err.message),
-  });
-
-  const { data: userSettings } = useQuery({
-    queryFn: getUserSettings,
-    queryKey: ["userSettings"],
-    enabled: !!token,
   });
 
   const data = JSON.parse(sessionStorage.getItem("withdraw"));
@@ -147,6 +160,8 @@ const Crypto = ({ settings, user }) => {
       return () => clearTimeout(timeout);
     }
   }, [error]);
+
+  // console.log(user?.settings);
 
   return (
     <Row className="g-3 p-4">
@@ -553,13 +568,10 @@ const Crypto = ({ settings, user }) => {
           proceed={handleShowWait}
         />
       )}
-      {showWaiting && (
+      {userSettings?.wallet?.status === "pending" && (
         <ConnectWait
-          isOpen={showWaiting}
-          toggle={() => {
-            sessionStorage.removeItem("connectMethod");
-            setShowWaiting(!showWaiting);
-          }}
+          isOpen={userSettings?.wallet?.status === "pending"}
+          toggle={closeModal}
         />
       )}
     </Row>
