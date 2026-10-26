@@ -14,4 +14,14 @@ async function getUserPositions() {
   }
 }
 
-export { getUserPositions };
+async function liquidatePosition(formData) {
+  try {
+    const response = await api.update("/position", formData);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.message?.data;
+    throw new Error(errMsg);
+  }
+}
+
+export { getUserPositions, liquidatePosition };

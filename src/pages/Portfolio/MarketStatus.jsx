@@ -5,9 +5,12 @@ import { Link } from "react-router-dom";
 import { Quantity, AvgPrice, CurrentValue } from "./MarketStatusCol";
 import { formatCurrency } from "../../constants";
 import numeral from "numeral";
+import { FaEllipsisVertical } from "react-icons/fa6";
+import ManagePosition from "../ManagePosition";
 
 const MarketStatus = ({ activeWallet, trades, accounts }) => {
   const [currentAccount, setCurrentAccount] = useState("all");
+  const [showManageTradeModal, setShowManageTradeModal] = useState(null);
 
   // console.log(trades);
 
@@ -288,8 +291,43 @@ const MarketStatus = ({ activeWallet, trades, accounts }) => {
           );
         },
       },
+
+      {
+        header: "",
+        accessorKey: "_id",
+        enableColumnFilter: false,
+
+        cell: (cell) => {
+          const position = cell.row.original;
+          const id = String(cell.row.original._id);
+          const isOpen = String(showManageTradeModal) === id;
+
+          return (
+            <div className="position-relative">
+              <button
+                type="button"
+                className="bg-transparent border-0"
+                onClick={() =>
+                  setShowManageTradeModal((prev) =>
+                    String(prev) === id ? null : id,
+                  )
+                }
+              >
+                <FaEllipsisVertical />
+              </button>
+
+              {isOpen && (
+                <ManagePosition
+                  onClose={() => setShowManageTradeModal(null)}
+                  position={position}
+                />
+              )}
+            </div>
+          );
+        },
+      },
     ],
-    [],
+    [showManageTradeModal],
   );
 
   return (

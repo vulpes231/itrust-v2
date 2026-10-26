@@ -12,6 +12,16 @@ async function openPosition(formData) {
   }
 }
 
+async function closeSingleTrade(formData) {
+  try {
+    const response = await api.update("/trade", formData);
+    return response.data;
+  } catch (error) {
+    const errMsg = error.response?.message?.data;
+    throw new Error(errMsg);
+  }
+}
+
 async function closePosition(formData) {
   try {
     const response = await api.create("/trade/sell", formData);
@@ -61,4 +71,5 @@ export {
   getTradeAnalytics,
   closePosition,
   searchTrades,
+  closeSingleTrade,
 };

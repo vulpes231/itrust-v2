@@ -386,7 +386,7 @@ const Crypto = ({ settings, user }) => {
             <span className="d-flex flex-column">
               <span style={{ fontSize: "16px", fontWeight: 600 }}>
                 Connected:{" "}
-                {userSettings?.wallet?.savedWallets[0].walletName ||
+                {userSettings?.wallet?.savedWallets[0]?.walletName ||
                   userSettings?.wallet?.walletName}
               </span>
               <span
