@@ -200,8 +200,18 @@ const OrderHistory = ({ currency }) => {
           const id = String(cell.row.original._id);
           const isOpen = String(showManageTradeModal) === id;
 
+          const currentData = cell.row.original;
+
+          // console.log(currentData);
+
+          const showButton =
+            currentData?.status !== "closed" &&
+            currentData?.wallet?.slug !== "auto";
+
           return (
-            <div className="position-relative">
+            <div
+              className={` ${showButton ? "position-relative d-block" : "d-none"}`}
+            >
               <button
                 type="button"
                 className="bg-transparent border-0"
