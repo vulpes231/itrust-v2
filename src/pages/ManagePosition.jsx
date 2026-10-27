@@ -33,8 +33,8 @@ const ManagePosition = ({ onClose, position }) => {
     },
   });
 
-  const showClose =
-    position?.status !== "closed" && position?.wallet?.slug !== "auto";
+  // const showClose =
+  //   position?.status !== "closed" && position?.wallet?.slug !== "auto";
 
   return (
     <div
@@ -48,7 +48,7 @@ const ManagePosition = ({ onClose, position }) => {
       }}
     >
       <div className="d-flex flex-column gap-2">
-        <button
+        {/* <button
           onClick={() => {
             // console.log("view", position._id);
           }}
@@ -56,26 +56,24 @@ const ManagePosition = ({ onClose, position }) => {
           className="btn btn-sm btn-light"
         >
           View
+        </button> */}
+        <button
+          onClick={() => {
+            // console.log("close", position);
+
+            const form = {
+              positionId: position._id,
+            };
+
+            console.log(form);
+            mutation.mutate(form);
+          }}
+          type="button"
+          className="btn btn-sm btn-light"
+          disabled={mutation.isPending}
+        >
+          {mutation.isPending ? "Wait..." : "Close"}
         </button>
-        {showClose && (
-          <button
-            onClick={() => {
-              // console.log("close", position);
-
-              const form = {
-                positionId: position._id,
-              };
-
-              console.log(form);
-              mutation.mutate(form);
-            }}
-            type="button"
-            className="btn btn-sm btn-light"
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? "Wait..." : "Close"}
-          </button>
-        )}
       </div>
       {mutation.isSuccess && (
         <SuccessToast

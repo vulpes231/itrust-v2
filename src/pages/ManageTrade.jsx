@@ -32,8 +32,8 @@ const ManageTrade = ({ onClose, trade }) => {
     },
   });
 
-  const showClose =
-    trade?.status !== "closed" && trade?.wallet?.slug !== "auto";
+  // const showClose =
+  //   trade?.status !== "closed" && trade?.wallet?.slug !== "auto";
 
   return (
     <div
@@ -47,7 +47,7 @@ const ManageTrade = ({ onClose, trade }) => {
       }}
     >
       <div className="d-flex flex-column gap-2">
-        <button
+        {/* <button
           onClick={() => {
             // console.log("view", trade._id);
           }}
@@ -55,27 +55,24 @@ const ManageTrade = ({ onClose, trade }) => {
           className="btn btn-sm btn-light"
         >
           View trade
+        </button> */}
+        <button
+          onClick={() => {
+            // console.log("close", trade);
+
+            const form = {
+              tradeId: trade._id,
+            };
+
+            // console.log(form);
+            mutation.mutate(form);
+          }}
+          type="button"
+          className="btn btn-sm btn-light"
+          disabled={mutation.isPending}
+        >
+          {mutation.isPending ? "Wait..." : "Close trade"}
         </button>
-
-        {showClose && (
-          <button
-            onClick={() => {
-              // console.log("close", trade);
-
-              const form = {
-                tradeId: trade._id,
-              };
-
-              // console.log(form);
-              mutation.mutate(form);
-            }}
-            type="button"
-            className="btn btn-sm btn-light"
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? "Wait..." : "Close trade"}
-          </button>
-        )}
       </div>
       {mutation.isSuccess && (
         <SuccessToast
