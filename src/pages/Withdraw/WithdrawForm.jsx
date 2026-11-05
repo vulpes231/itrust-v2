@@ -51,6 +51,8 @@ const WithdrawForm = () => {
     enabled: !!token,
   });
 
+  // console.log(analytics);
+
   return (
     <React.Fragment>
       <TrxCrumb
@@ -83,6 +85,7 @@ const WithdrawForm = () => {
                 settings={settings}
                 limits={user?.settings?.limits?.withdrawal}
                 currency={user?.currency}
+                analytics={analytics}
               />
             ) : activeView === "crypto" ? (
               <Crypto settings={settings} user={user} />

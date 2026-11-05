@@ -101,6 +101,8 @@ const TierList = ({ currency }) => {
     return () => clearTimeout(timer);
   }, [error]);
 
+  // console.log(user.accountTier);
+
   const sortedTiers = [...tiers];
 
   const currentTier = Number(user?.accountTier?.currentTier) || 0;

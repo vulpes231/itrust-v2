@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
 import { capitalize } from "lodash";
 import { formatCurrency } from "../../constants";
 import { format } from "date-fns";
 import { GoArrowRight } from "react-icons/go";
 import numeral from "numeral";
-import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
+import {
+  FaArrowTrendDown,
+  FaArrowTrendUp,
+  FaEllipsisVertical,
+} from "react-icons/fa6";
 import CurrencySign from "../CurrencySign";
+import ManageTrade from "../ManageTrade";
+import ManageMobileTrade from "../ManageMobileTrade";
 
 const RecentOrders = ({ trades }) => {
   const filteredTrades = trades && trades.length && trades.slice(0, 5);
 
-  // console.log(trades);
+  const [showTradeMenu, setShowTradeMenu] = useState("");
+
   return (
     <React.Fragment>
       <Col>
@@ -26,6 +33,8 @@ const RecentOrders = ({ trades }) => {
                   const value = Number(trade?.performance?.totalReturn) || 0;
 
                   const safeValue = Math.abs(value) < 0.005 ? 0 : value;
+
+                  const displayTradeMenu = trade.status === "open";
                   return (
                     <div
                       key={trade._id}
@@ -121,6 +130,25 @@ const RecentOrders = ({ trades }) => {
                           {numeral(Math.abs(safeValue)).format("0,0.00")}
                         </span>
                       </div>
+                      {displayTradeMenu && (
+                        <div className="position-relative">
+                          <button
+                            onClick={() => setShowTradeMenu(trade._id)}
+                            // style={{ border: "none" }}
+                            type="button"
+                            className="bg-transparent border-0"
+                          >
+                            {" "}
+                            <FaEllipsisVertical />
+                          </button>
+                          {showTradeMenu === trade._id && (
+                            <ManageMobileTrade
+                              trade={trade}
+                              onClose={() => setShowTradeMenu("")}
+                            />
+                          )}
+                        </div>
+                      )}
                     </div>
                   );
                 })

@@ -32,9 +32,6 @@ const ManageTrade = ({ onClose, trade }) => {
     },
   });
 
-  // const showClose =
-  //   trade?.status !== "closed" && trade?.wallet?.slug !== "auto";
-
   return (
     <div
       ref={dropdownRef}

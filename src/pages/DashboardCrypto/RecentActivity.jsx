@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
 import FeatherIcon from "feather-icons-react";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +11,8 @@ import numeral from "numeral";
 import { GoClock } from "react-icons/go";
 import { MdOutlineCancel, MdOutlineCheckCircle } from "react-icons/md";
 import CurrencySign from "../CurrencySign";
-
+import { FaEllipsisVertical } from "react-icons/fa6";
+import ManageTrans from "../ManageTrans";
 const RecentActivity = () => {
   const queryData = { limit: 7 };
   const { data: trnxs } = useQuery({
@@ -20,6 +21,8 @@ const RecentActivity = () => {
   });
 
   const filteredtrnxs = trnxs && trnxs.length && trnxs.slice(0, 5);
+
+  const [showMenu, setShowMenu] = useState(false);
 
   // console.log(filteredtrnxs);
   return (
@@ -34,6 +37,7 @@ const RecentActivity = () => {
             <div className="p-3">
               {filteredtrnxs && filteredtrnxs.length > 0 ? (
                 filteredtrnxs.map((trx) => {
+                  const displayMenu = trx.status === "pending";
                   return (
                     <div
                       key={trx._id}
@@ -79,19 +83,24 @@ const RecentActivity = () => {
                                   : "Transfer"}
                           </span>
                           <span
+                            style={{ whiteSpace: "nowrap" }}
                             className={`fs-10 px-2 py-1 rounded-1 text-capitalize d-flex align-items-center gap-1 ${
                               trx.status === "processed"
                                 ? `bg-success-subtle text-success`
-                                : trx.status === "pending"
-                                  ? `bg-warning-subtle text-warning`
-                                  : trx.status === "cancelled"
-                                    ? `bg-danger-subtle text-danger`
-                                    : null
+                                : trx.status === "in process"
+                                  ? `bg-info-subtle text-info`
+                                  : trx.status === "pending"
+                                    ? `bg-warning-subtle text-warning`
+                                    : trx.status === "cancelled"
+                                      ? `bg-danger-subtle text-danger`
+                                      : null
                             }`}
                           >
                             {trx.status === "processed" ? (
                               <MdOutlineCheckCircle />
                             ) : trx.status === "pending" ? (
+                              <GoClock />
+                            ) : trx.status === "in process" ? (
                               <GoClock />
                             ) : trx.status === "cancelled" ? (
                               <MdOutlineCancel />
@@ -162,6 +171,25 @@ const RecentActivity = () => {
                             : numeral(0).format("0,0.00")}
                         </span>
                       </div>
+                      {displayMenu && (
+                        <div className="relative">
+                          <button
+                            style={{ border: "none" }}
+                            type="btn bg-transparent"
+                            onClick={() => setShowMenu(trx._id)}
+                          >
+                            {" "}
+                            <FaEllipsisVertical />
+                          </button>
+                          {showMenu === trx._id && (
+                            <ManageTrans
+                              isOpen={showMenu}
+                              trxId={trx?._id}
+                              onClose={() => setShowMenu(false)}
+                            />
+                          )}
+                        </div>
+                      )}
                     </div>
                   );
                 })

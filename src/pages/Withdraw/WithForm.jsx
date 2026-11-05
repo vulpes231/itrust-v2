@@ -34,7 +34,7 @@ const paymentMethods = [
   },
 ];
 
-const WithForm = ({ handleView, limits, settings, currency }) => {
+const WithForm = ({ handleView, limits, settings, currency, analytics }) => {
   const [selectedMethod, setSelectedMethod] = useState("crypto");
 
   const [amount, setAmount] = useState("");
@@ -47,6 +47,11 @@ const WithForm = ({ handleView, limits, settings, currency }) => {
 
   function handleConfirm(e) {
     e.preventDefault();
+
+    if (analytics?.pendingWithdrawal > 0) {
+      setError("You have a pending request!");
+      return;
+    }
 
     if (!amount) {
       setError("Amount required!");
