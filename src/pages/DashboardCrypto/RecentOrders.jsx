@@ -30,9 +30,17 @@ const RecentOrders = ({ trades }) => {
             <div className="p-3">
               {filteredTrades && filteredTrades.length > 0 ? (
                 filteredTrades.map((trade) => {
-                  const value = Number(trade?.performance?.totalReturn) || 0;
+                  const totalReturn =
+                    Number(trade?.performance?.totalReturn) || 0;
+                  const extra = Number(trade?.extra) || 0;
+                  const leverage = Number(trade?.execution?.leverage) || 1;
 
-                  const safeValue = Math.abs(value) < 0.005 ? 0 : value;
+                  const leveragedExtra = extra * leverage;
+
+                  const adjustedReturn = totalReturn - extra + leveragedExtra;
+
+                  const safeValue =
+                    Math.abs(adjustedReturn) < 0.005 ? 0 : adjustedReturn;
 
                   const displayTradeMenu = trade.status === "open";
                   return (
@@ -78,6 +86,7 @@ const RecentOrders = ({ trades }) => {
                           >
                             {trade.status}
                           </span>
+                          {/* <span>{trade.execution.leverage || "-"}</span> */}
                         </h6>
                         <p className=" fs-13 mb-0 d-flex align-items-center gap-2 text-muted">
                           <span

@@ -35,9 +35,17 @@ const MobileTrade = ({ trades }) => {
           <div className="">
             {filteredTrades.length > 0 ? (
               filteredTrades.map((trade) => {
-                const value = Number(trade?.performance?.totalReturn) || 0;
+                const totalReturn =
+                  Number(trade?.performance?.totalReturn) || 0;
+                const extra = Number(trade?.extra) || 0;
+                const leverage = Number(trade?.execution?.leverage) || 1;
 
-                const safeValue = Math.abs(value) < 0.005 ? 0 : value;
+                const leveragedExtra = extra * leverage;
+
+                const adjustedReturn = totalReturn - extra + leveragedExtra;
+
+                const safeValue =
+                  Math.abs(adjustedReturn) < 0.005 ? 0 : adjustedReturn;
 
                 return (
                   <div

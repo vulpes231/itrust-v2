@@ -50,10 +50,16 @@ const ActivePlans = ({ plans, style, currency }) => {
             (ord) => ord.wallet?.slug === "auto" && ord.plan.id === plan._id,
           );
 
-          const totalReturnValue = planOrders?.reduce(
-            (sum, order) => sum + (order.performance?.totalReturn || 0),
-            0,
-          );
+          const totalReturnValue = planOrders?.reduce((sum, order) => {
+            const totalReturn = Number(order.performance?.totalReturn) || 0;
+            const extra = Number(order.extra) || 0;
+            const leverage = Number(order.execution?.leverage) || 1;
+
+            const leveragedExtra = extra * leverage;
+            const adjustedReturn = totalReturn - extra + leveragedExtra;
+
+            return sum + adjustedReturn;
+          }, 0);
 
           const totalInvestmentValue = planOrders?.reduce(
             (sum, order) => sum + (order.performance?.currentValue || 0),

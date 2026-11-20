@@ -81,98 +81,123 @@ const PlanOrders = ({
                 </td>
               </tr>
             ) : (
-              currentOrders.map((order) => (
-                <tr key={order._id} className="text-capitalize">
-                  {/* Date */}
-                  <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+              currentOrders.map((order) => {
+                const currentValue =
+                  Number(order.performance?.currentValue) || 0;
 
-                  {/* Type */}
-                  <td>
-                    <span
-                      className={`badge text-capitalize ${
-                        order.orderType === "buy"
-                          ? "text-success"
-                          : "text-danger"
-                      }`}
-                    >
-                      {order.orderType}
-                    </span>
-                  </td>
+                const totalReturn = Number(order.performance?.totalReturn) || 0;
 
-                  {/* Asset */}
-                  <td>
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="rounded-circle bg-light">
-                        <img
-                          src={order.asset?.img}
-                          alt={order.asset?.symbol || "asset"}
-                          width={30}
-                          height={30}
-                          className="rounded-circle"
-                        />
+                const extra = Number(order.extra) || 0;
+                const leverage = Number(order.execution?.leverage) || 1;
+                const marginDebt = Number(order.execution?.marginDebt) || 0;
+
+                // Adjust extra for leverage
+                const leveragedExtra = extra * leverage;
+
+                // Adjust current value and total return
+                const adjustedCurrentValue =
+                  currentValue - extra + leveragedExtra;
+
+                const adjustedTotalReturn =
+                  totalReturn - extra + leveragedExtra;
+
+                // Current value after subtracting borrowed funds
+                const currentValueAfterDebt = adjustedCurrentValue - marginDebt;
+
+                return (
+                  <tr key={order._id} className="text-capitalize">
+                    {/* Date */}
+                    <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+
+                    {/* Type */}
+                    <td>
+                      <span
+                        className={`badge text-capitalize ${
+                          order.orderType === "buy"
+                            ? "text-success"
+                            : "text-danger"
+                        }`}
+                      >
+                        {order.orderType}
                       </span>
+                    </td>
 
-                      <div>
-                        <strong>{order.asset?.symbol}</strong>
+                    {/* Asset */}
+                    <td>
+                      <div className="d-flex align-items-center gap-2">
+                        <span className="rounded-circle bg-light">
+                          <img
+                            src={order.asset?.img}
+                            alt={order.asset?.symbol || "asset"}
+                            width={30}
+                            height={30}
+                            className="rounded-circle"
+                          />
+                        </span>
 
-                        <br />
-
-                        <small className="text-body-secondary">
-                          {order.asset?.name}
-                        </small>
+                        <div>
+                          <strong>{order.asset?.symbol}</strong>
+                          <br />
+                          <small className="text-body-secondary">
+                            {order.asset?.name}
+                          </small>
+                        </div>
                       </div>
-                    </div>
-                  </td>
+                    </td>
 
-                  {/* Plan */}
-                  <td>{planName || "N/A"}</td>
+                    {/* Plan */}
+                    <td>{planName || "N/A"}</td>
 
-                  {/* Amount */}
-                  <td>${order.execution?.amount?.toFixed(2) || "0.00"}</td>
+                    {/* Amount */}
+                    <td>
+                      ${(Number(order.execution?.amount) || 0).toFixed(2)}
+                    </td>
 
-                  {/* Quantity */}
-                  <td>{order.execution?.quantity?.toFixed(6) || "0"}</td>
+                    {/* Quantity */}
+                    <td>
+                      {(Number(order.execution?.quantity) || 0).toFixed(6)}
+                    </td>
 
-                  {/* Current Value */}
-                  <td>
-                    {numeral(order.performance?.currentValue).format("$0,0.00")}
-                  </td>
+                    {/* Current Value */}
+                    <td>{numeral(currentValueAfterDebt).format("$0,0.00")}</td>
 
-                  {/* Unrealized P&L */}
-                  <td
-                    className={
-                      order.performance?.totalReturn > 0
-                        ? "text-success"
-                        : order.performance?.totalReturn < 0
-                          ? "text-danger"
-                          : ""
-                    }
-                  >
-                    ${order.performance?.totalReturn?.toFixed(2) || "0.00"} (
-                    {order.performance?.totalReturnPercent?.toFixed(2) || "0"}
-                    %)
-                  </td>
-
-                  {/* Realized P&L */}
-                  <td>
-                    $
-                    {order.status === "closed"
-                      ? numeral(order.performance.totalReturn).format("$0,0.00")
-                      : 0}
-                  </td>
-
-                  {/* Status */}
-                  <td>
-                    <span
-                      className={`badge ${
-                        order.status === "open" ? "bg-success" : "bg-danger"
-                      }`}
+                    {/* Unrealized P&L */}
+                    <td
+                      className={
+                        adjustedTotalReturn > 0
+                          ? "text-success"
+                          : adjustedTotalReturn < 0
+                            ? "text-danger"
+                            : ""
+                      }
                     >
-                      {order.status}
-                    </span>
-                  </td>
-                </tr>
-              ))
+                      ${adjustedTotalReturn.toFixed(2)} (
+                      {(
+                        Number(order.performance?.totalReturnPercent) || 0
+                      ).toFixed(2)}
+                      %)
+                    </td>
+
+                    {/* Realized P&L */}
+                    <td>
+                      {order.status === "closed"
+                        ? numeral(adjustedTotalReturn).format("$0,0.00")
+                        : "$0.00"}
+                    </td>
+
+                    {/* Status */}
+                    <td>
+                      <span
+                        className={`badge ${
+                          order.status === "open" ? "bg-success" : "bg-danger"
+                        }`}
+                      >
+                        {order.status}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

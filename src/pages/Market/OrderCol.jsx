@@ -1,3 +1,4 @@
+import numeral from "numeral";
 import React from "react";
 
 const Date = (cell) => {
@@ -57,7 +58,26 @@ const Quantity = (cell) => {
 };
 
 const CurrentValue = (cell) => {
-  return <React.Fragment>{cell.getValue()}</React.Fragment>;
+  const currentValue =
+    Number(cell?.row?.original?.performance?.currentValue) || 0;
+
+  // console.log(currentValue);
+
+  const extra = Number(cell?.row?.original?.extra) || 0;
+
+  const leverage = Number(cell?.row?.original?.execution?.leverage) || 1;
+
+  const marginDebt = Number(cell?.row?.original?.execution?.marginDebt) || 0;
+
+  // console.log(currentValue, leverage, extra, marginDebt);
+
+  const leveragedExtra = extra * leverage;
+
+  const adjustedValue = currentValue - extra + leveragedExtra;
+
+  const total = adjustedValue - marginDebt;
+
+  return <>{numeral(total).format("$0,0.00")}</>;
 };
 
 const UnrealizedPL = ({ value, percent }) => {
@@ -75,11 +95,20 @@ const UnrealizedPL = ({ value, percent }) => {
   );
 };
 
-const RealizedPL = ({ value, percent }) => {
+const RealizedPL = ({ cell, value, percent }) => {
+  const totalReturn = value || 0;
+  const extra = Number(cell?.row?.original?.extra) || 0;
+  const leverage = Number(cell?.row?.original?.execution?.leverage) || 1;
+
+  const leveragedExtra = extra * leverage;
+
+  // console.log(totalReturn, extra, leverage);
+
+  const adjustedReturn = totalReturn - extra + leveragedExtra;
   return (
     <React.Fragment>
       <div className="d-flex gap-2 flex-column">
-        <span>{value}</span>
+        <span>{numeral(adjustedReturn).format("$0,0.00")}</span>
         <span
           className={`${percent < 0 ? "text-danger" : "text-success"} fs-12`}
         >

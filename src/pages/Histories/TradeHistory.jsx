@@ -46,13 +46,13 @@ const TradeHistory = ({ trades }) => {
       account: trade?.wallet?.name || "/default-coin.png",
       amount: numeral(Number(trade?.execution?.amount || 0)).format("$0,0.00"),
       quantity: parseFloat(trade?.execution?.quantity).toFixed(4),
-      currentValue: numeral(trade?.performance?.currentValue).format("$0,0.00"),
+      currentValue: trade?.performance?.currentValue,
       unrealizedProfit:
         numeral(trade.performance?.totalReturn).format("$0,0.00") || 0,
       realizedProfit:
         trade.status === "open"
           ? numeral(0).format("$0,0.00")
-          : numeral(trade.performance?.totalReturn).format("$0,0.00"),
+          : trade.performance?.totalReturn,
       symbol: trade?.asset?.symbol,
       percentChange: trade.performance?.totalReturnPercent?.toFixed(2) || 0,
       unrealizedPercentChange: parseFloat(0).toFixed(2),
@@ -151,7 +151,7 @@ const TradeHistory = ({ trades }) => {
             <RealizedPL
               value={cell.getValue()}
               percent={cell.row.original.percentChange}
-              // percent={cell.row.original.unrealizedPercentChange}
+              cell={cell}
             />
           );
         },
