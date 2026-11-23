@@ -32,12 +32,8 @@ const RecentOrders = ({ trades }) => {
                 filteredTrades.map((trade) => {
                   const totalReturn =
                     Number(trade?.performance?.totalReturn) || 0;
-                  const extra = Number(trade?.extra) || 0;
-                  const leverage = Number(trade?.execution?.leverage) || 1;
 
-                  const leveragedExtra = extra * leverage;
-
-                  const adjustedReturn = totalReturn - extra + leveragedExtra;
+                  const adjustedReturn = totalReturn;
 
                   const safeValue =
                     Math.abs(adjustedReturn) < 0.005 ? 0 : adjustedReturn;

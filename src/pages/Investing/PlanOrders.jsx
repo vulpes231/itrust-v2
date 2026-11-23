@@ -95,11 +95,9 @@ const PlanOrders = ({
                 const leveragedExtra = extra * leverage;
 
                 // Adjust current value and total return
-                const adjustedCurrentValue =
-                  currentValue - extra + leveragedExtra;
+                const adjustedCurrentValue = currentValue;
 
-                const adjustedTotalReturn =
-                  totalReturn - extra + leveragedExtra;
+                const adjustedTotalReturn = totalReturn;
 
                 // Current value after subtracting borrowed funds
                 const currentValueAfterDebt = adjustedCurrentValue - marginDebt;

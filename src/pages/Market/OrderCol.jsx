@@ -61,19 +61,9 @@ const CurrentValue = (cell) => {
   const currentValue =
     Number(cell?.row?.original?.performance?.currentValue) || 0;
 
-  // console.log(currentValue);
-
-  const extra = Number(cell?.row?.original?.extra) || 0;
-
-  const leverage = Number(cell?.row?.original?.execution?.leverage) || 1;
-
   const marginDebt = Number(cell?.row?.original?.execution?.marginDebt) || 0;
 
-  // console.log(currentValue, leverage, extra, marginDebt);
-
-  const leveragedExtra = extra * leverage;
-
-  const adjustedValue = currentValue - extra + leveragedExtra;
+  const adjustedValue = currentValue;
 
   const total = adjustedValue - marginDebt;
 
@@ -97,14 +87,8 @@ const UnrealizedPL = ({ value, percent }) => {
 
 const RealizedPL = ({ cell, value, percent }) => {
   const totalReturn = value || 0;
-  const extra = Number(cell?.row?.original?.extra) || 0;
-  const leverage = Number(cell?.row?.original?.execution?.leverage) || 1;
 
-  const leveragedExtra = extra * leverage;
-
-  // console.log(totalReturn, extra, leverage);
-
-  const adjustedReturn = totalReturn - extra + leveragedExtra;
+  const adjustedReturn = totalReturn;
   return (
     <React.Fragment>
       <div className="d-flex gap-2 flex-column">

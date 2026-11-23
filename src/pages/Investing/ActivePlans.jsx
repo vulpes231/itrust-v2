@@ -52,12 +52,8 @@ const ActivePlans = ({ plans, style, currency }) => {
 
           const totalReturnValue = planOrders?.reduce((sum, order) => {
             const totalReturn = Number(order.performance?.totalReturn) || 0;
-            const extra = Number(order.extra) || 0;
-            const leverage = Number(order.execution?.leverage) || 1;
 
-            const leveragedExtra = extra * leverage;
-            const adjustedReturn = totalReturn - extra + leveragedExtra;
-
+            const adjustedReturn = totalReturn;
             return sum + adjustedReturn;
           }, 0);
 
