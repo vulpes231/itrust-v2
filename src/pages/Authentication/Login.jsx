@@ -24,6 +24,7 @@ import AuthNav from "./AuthNav";
 const Login = (props) => {
   document.title = "Login - Itrust Investments";
   const [form, setForm] = useState({ email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [passwordShow, setPasswordShow] = useState(false);
 
@@ -95,9 +96,24 @@ const Login = (props) => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", values.email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
+
       mutation.mutate(values);
     },
   });
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+
+    if (rememberedEmail) {
+      validation.setFieldValue("email", rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -160,7 +176,7 @@ const Login = (props) => {
                             ? true
                             : false
                         }
-                        autoComplete="off"
+                        autoComplete="username"
                       />
                       {validation.touched.email && validation.errors.email ? (
                         <FormFeedback type="invalid">
@@ -193,6 +209,7 @@ const Login = (props) => {
                               ? true
                               : false
                           }
+                          autoComplete="current-password"
                         />
                         {validation.touched.password &&
                         validation.errors.password ? (
@@ -215,9 +232,11 @@ const Login = (props) => {
                       <Input
                         className="form-check-input"
                         type="checkbox"
-                        value=""
                         id="auth-remember-check"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
                       />
+
                       <Label
                         className="form-check-label"
                         htmlFor="auth-remember-check"

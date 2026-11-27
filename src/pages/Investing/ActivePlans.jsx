@@ -162,7 +162,9 @@ const ActivePlans = ({ plans, style, currency }) => {
                             Returns
                           </Label>
 
-                          <p className="fs-15 fw-semibold">
+                          <p
+                            className={`fs-15 fw-semibold ${totalReturnValue < 0 ? "text-danger" : "text-success"}`}
+                          >
                             {numeral(totalReturnValue).format("$0,0.00")}
                           </p>
                         </Col>

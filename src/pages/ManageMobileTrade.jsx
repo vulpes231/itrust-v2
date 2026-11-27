@@ -54,8 +54,9 @@ const ManageMobileTrade = ({ onClose, trade }) => {
             // console.log(form);
             mutation.mutate(form);
           }}
+          style={{ backgroundColor: "transparent" }}
           type="button"
-          className="btn btn-sm btn-light"
+          className="btn btn-sm "
           disabled={mutation.isPending}
         >
           {mutation.isPending ? "Wait..." : "Close trade"}

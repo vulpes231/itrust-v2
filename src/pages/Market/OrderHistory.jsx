@@ -26,6 +26,7 @@ import { FaEllipsisVertical } from "react-icons/fa6";
 import { format } from "date-fns";
 import numeral from "numeral";
 import ManageTrade from "../ManageTrade";
+import MobileTrades from "./MobileTrades";
 
 const OrderHistory = ({ currency }) => {
   const tk = getAccessToken();
@@ -242,7 +243,7 @@ const OrderHistory = ({ currency }) => {
 
   return (
     <React.Fragment>
-      <Card>
+      <Card className="mb-4">
         <CardHeader>
           <div className="align-items-center">
             <div className="mb-3">
@@ -320,27 +321,25 @@ const OrderHistory = ({ currency }) => {
         </CardBody>
 
         <CardBody>
-          {/* <div>{transformedData.length} records</div>
-
-          {transformedData.map((item) => (
-            <div key={item._id}>
-              {item.date} - {item.name} - {item.status}
-            </div>
-          ))} */}
-          <TableContainer
-            columns={columns}
-            data={transformedData}
-            isGlobalFilter={false}
-            isAddUserList={false}
-            customPageSize={10}
-            className="custom-header-css"
-            divClass="table-responsive table-card mb-3"
-            tableClass="align-middle table-nowrap"
-            theadClass="table-light text-muted"
-            // isLoading={getAssetsLoading}
-            // pagination={pagination}
-            // onPageChange={handlePageChange}
-          />
+          <div className="d-none d-md-flex flex-md-column">
+            <TableContainer
+              columns={columns}
+              data={transformedData}
+              isGlobalFilter={false}
+              isAddUserList={false}
+              customPageSize={10}
+              className="custom-header-css"
+              divClass="table-responsive table-card mb-3"
+              tableClass="align-middle table-nowrap"
+              theadClass="table-light text-muted"
+              // isLoading={getAssetsLoading}
+              // pagination={pagination}
+              // onPageChange={handlePageChange}
+            />
+          </div>
+          <div className="d-flex d-md-none">
+            <MobileTrades trades={transformedData} />
+          </div>
         </CardBody>
       </Card>
     </React.Fragment>

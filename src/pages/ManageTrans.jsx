@@ -39,8 +39,13 @@ const ManageTrans = ({ isOpen, trxId, onClose }) => {
   return (
     <div
       ref={modalRef}
-      style={{ position: "absolute", top: "90px" }}
-      className="bg-white text-body"
+      style={{
+        position: "absolute",
+        top: "90px",
+        right: "10px",
+        // backgroundColor: "transparent",
+      }}
+      className="bg-white py-2 px-4 shadow rounded-2"
     >
       <button
         type="button"
@@ -51,6 +56,7 @@ const ManageTrans = ({ isOpen, trxId, onClose }) => {
           const data = { transactionId: trxId };
           mutation.mutate(data);
         }}
+        className="bg-transparent border-0 text-body d-flex gap-2"
       >
         {mutation.isPending && <Spinner size="sm" />}
         Cancel

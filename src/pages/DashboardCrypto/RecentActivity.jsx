@@ -149,8 +149,8 @@ const RecentActivity = () => {
                         </span>
                       </div>
                       <div className="flex-shrink-0 text-end">
-                        <span
-                          className={`fs-15 fw-medium mb-0 d-flex align-items-center  ${
+                        <div
+                          className={`fs-15 fw-medium mb-0 d-flex align-items-center gap-2  ${
                             trx.type === "deposit"
                               ? `text-success`
                               : trx.type === "transfer"
@@ -160,36 +160,44 @@ const RecentActivity = () => {
                                   : "text-info"
                           }`}
                         >
-                          {trx.type === "deposit"
-                            ? `+`
-                            : trx.type === "withdraw"
-                              ? `-`
-                              : null}
-                          <CurrencySign />
-                          {trx?.amount
-                            ? numeral(trx.amount).format("0,0.00")
-                            : numeral(0).format("0,0.00")}
-                        </span>
-                      </div>
-                      {displayMenu && (
-                        <div className="relative">
-                          <button
-                            style={{ border: "none" }}
-                            type="btn bg-transparent"
-                            onClick={() => setShowMenu(trx._id)}
-                          >
+                          <div className="d-flex align-items-center">
                             {" "}
-                            <FaEllipsisVertical />
-                          </button>
-                          {showMenu === trx._id && (
-                            <ManageTrans
-                              isOpen={showMenu}
-                              trxId={trx?._id}
-                              onClose={() => setShowMenu(false)}
-                            />
-                          )}
+                            {trx.type === "deposit"
+                              ? `+`
+                              : trx.type === "withdraw"
+                                ? `-`
+                                : null}
+                            <CurrencySign />
+                            {trx?.amount
+                              ? numeral(trx.amount).format("0,0.00")
+                              : numeral(0).format("0,0.00")}
+                          </div>
+                          <div style={{ width: "30px" }}>
+                            {displayMenu && (
+                              <div className="relative">
+                                <button
+                                  style={{
+                                    border: "none",
+                                    backgroundColor: "transparent",
+                                  }}
+                                  type="btn"
+                                  onClick={() => setShowMenu(trx._id)}
+                                >
+                                  {" "}
+                                  <FaEllipsisVertical />
+                                </button>
+                                {showMenu === trx._id && (
+                                  <ManageTrans
+                                    isOpen={showMenu}
+                                    trxId={trx?._id}
+                                    onClose={() => setShowMenu(false)}
+                                  />
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      )}
+                      </div>
                     </div>
                   );
                 })

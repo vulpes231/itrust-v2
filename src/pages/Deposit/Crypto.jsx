@@ -300,10 +300,10 @@ const Crypto = ({ settings, user }) => {
                 Address
               </Label>
 
-              <div className="position-relative">
+              <div className="d-flex align-items-center gap-2">
                 <Input
                   type="text"
-                  className="form-control pe-5"
+                  className="form-control fs-14"
                   id="address"
                   value={
                     getUserAddress(
@@ -332,7 +332,7 @@ const Crypto = ({ settings, user }) => {
                         ),
                     )
                   }
-                  className="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-1 bg-transparent border-0"
+                  className="d-flex align-items-center gap-1 bg-transparent border-0 flex-shrink-0"
                 >
                   <span
                     className={`${

@@ -7,6 +7,7 @@ import { MdOutlineCancel, MdOutlineCheckCircle } from "react-icons/md";
 import { GoArrowRight, GoClock } from "react-icons/go";
 import FeatherIcon from "feather-icons-react";
 import { FaEllipsisVertical } from "react-icons/fa6";
+import ManageTrans from "../ManageTrans";
 
 const MobileTrnxs = ({ data }) => {
   const ITEMS_PER_PAGE = 7;
@@ -148,50 +149,58 @@ const MobileTrnxs = ({ data }) => {
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "end",
-                  whiteSpace: "nowrap",
-                }}
-                className={`fs-15 fw-medium ms-2 ${
-                  trx.type === "deposit"
-                    ? "text-success"
-                    : trx.type === "transfer"
-                      ? "text-warning"
-                      : trx.type === "withdraw"
-                        ? "text-danger"
-                        : "text-info"
-                }`}
-              >
-                {trx.type === "deposit"
-                  ? "+"
-                  : trx.type === "withdraw"
-                    ? "-"
-                    : null}
-                {trx?.amount != null
-                  ? numeral(trx.amount).format("$0,0.00")
-                  : formatCurrency(0)}
-              </div>
-              {displayMenu && (
-                <div className="position-relative">
-                  <button
-                    style={{ border: "none" }}
-                    type="btn bg-transparent"
-                    onClick={() => setShowMenu(trx._id)}
-                  >
-                    {" "}
-                    <FaEllipsisVertical />
-                  </button>
-                  {showMenu === trx._id && (
-                    <ManageTrans
-                      isOpen={showMenu}
-                      trxId={trx?._id}
-                      onClose={() => setShowMenu(false)}
-                    />
+              <div className="d-flex gap-2">
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "end",
+                    whiteSpace: "nowrap",
+                  }}
+                  className={`fs-15 fw-medium ms-2 ${
+                    trx.type === "deposit"
+                      ? "text-success"
+                      : trx.type === "transfer"
+                        ? "text-warning"
+                        : trx.type === "withdraw"
+                          ? "text-danger"
+                          : "text-info"
+                  }`}
+                >
+                  {trx.type === "deposit"
+                    ? "+"
+                    : trx.type === "withdraw"
+                      ? "-"
+                      : null}
+                  {trx?.amount != null
+                    ? numeral(trx.amount).format("$0,0.00")
+                    : formatCurrency(0)}
+                </div>
+
+                <div style={{ width: "30px" }}>
+                  {displayMenu && (
+                    <div className="position-relative">
+                      <button
+                        style={{
+                          border: "none",
+                          backgroundColor: "transparent",
+                        }}
+                        type="btn"
+                        onClick={() => setShowMenu(trx._id)}
+                      >
+                        {" "}
+                        <FaEllipsisVertical />
+                      </button>
+                      {showMenu === trx._id && (
+                        <ManageTrans
+                          isOpen={showMenu}
+                          trxId={trx?._id}
+                          onClose={() => setShowMenu(false)}
+                        />
+                      )}
+                    </div>
                   )}
                 </div>
-              )}
+              </div>
             </div>
           );
         })
